@@ -1,6 +1,8 @@
 <!--
 https://tabler.io/icons
 https://gradienty.codes/tailwind-colors
+
+https://dummyjson.com/docs
 -->
 
 <template>

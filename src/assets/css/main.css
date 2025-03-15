@@ -23,6 +23,12 @@ a {
     text-decoration: none;
 }
 
+a.router-link-active {
+    /*color: #819cf8;*/
+    color: #0ea5e9;
+    background: #0ea5e922;
+}
+
 .sp-1 {
     height: 1rem;
 }
