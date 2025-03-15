@@ -36,7 +36,7 @@ export default {
 }
 
 .layout-content {
-	background-color: #313239;
+	background-color: #313339;
 	//background-image:
 	//	linear-gradient(#414249 1px, transparent 1px),
 	//	linear-gradient(90deg, #414249 1px, transparent 1px);

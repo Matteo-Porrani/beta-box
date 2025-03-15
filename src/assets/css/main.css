@@ -6,10 +6,12 @@
 
 body {
     background: #212329;
-    color: #E1E2E9;
-    font-family: monospace;
+    color: #E1E3E9;
     height: 100vh;
     display: grid;
+
+    font-family: "Anaheim", sans-serif;
+    font-size: 1.125rem;
 }
 
 #app {
@@ -20,3 +22,22 @@ a {
     color: inherit;
     text-decoration: none;
 }
+
+.sp-1 {
+    height: 1rem;
+}
+
+.sp-2 {
+    height: 2rem;
+}
+
+/*
+COLORS
+#212329
+#313339
+#E1E3E9
+
+indigo
+    400: #818cf8
+ */
+

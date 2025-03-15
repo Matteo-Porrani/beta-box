@@ -1,3 +1,7 @@
+<!--
+https://tabler.io/icons
+-->
+
 <template>
 	<section class="app-root">
 		<router-view/>

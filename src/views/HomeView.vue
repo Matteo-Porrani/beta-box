@@ -1,13 +1,17 @@
 <template>
 	<DefaultLayout>
 		<div class="home-view-content">
-			<h1>
-<!--				<IconHome color="#E1E2E9" :size="48" stroke-width="1" />-->
-				<IconSmartHome color="#E1E2E9" />
+			<h2>
 				Home
-			</h1>
+			</h2>
 
-<!--			<DummyOne :count="123"/>-->
+			<div class="sp-1"></div>
+
+			<p>
+				<span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda cumque deleniti doloribus ea, eaque esse fugit porro, quo reiciendis reprehenderit totam vel. Atque beatae doloribus et officia perferendis ratione rem?</span><span>Accusantium, architecto assumenda deserunt doloribus eos in ipsa iure iusto maxime modi molestiae recusandae, reprehenderit sed. Assumenda error eveniet incidunt laborum magni nihil nisi, omnis praesentium similique velit veniam vitae?</span>
+				<span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda cumque deleniti doloribus ea, eaque esse fugit porro, quo reiciendis reprehenderit totam vel. Atque beatae doloribus et officia perferendis ratione rem?</span><span>Accusantium, architecto assumenda deserunt doloribus eos in ipsa iure iusto maxime modi molestiae recusandae, reprehenderit sed. Assumenda error eveniet incidunt laborum magni nihil nisi, omnis praesentium similique velit veniam vitae?</span>
+			</p>
+			<DummyOne :count="123"/>
 		</div>
 	</DefaultLayout>
 </template>
@@ -16,23 +20,20 @@
 
 import DummyOne from "@/components/DummyOne.vue";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
-import { IconHome, IconSmartHome } from '@tabler/icons-vue';
 
 
 export default {
 	name: 'HomeView',
 	components: {
 		DefaultLayout,
-		// IconHome,
-		IconSmartHome,
-		// DummyOne
+		DummyOne
 	},
 };
 </script>
 
 
 <style>
-h1 {
+h2 {
 	display: flex;
 	align-items: center;
 	gap: 8px;
