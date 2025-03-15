@@ -30,7 +30,8 @@ export default {
 }
 
 .layout-menu {
-	background: #414349;
+	//background: #414349;
+	background: #313339;
 	border-radius: 4px;
 	padding: 1rem;
 }
