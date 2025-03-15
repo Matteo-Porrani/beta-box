@@ -1,7 +1,12 @@
 <template>
-  <router-view/>
+	<section class="app-root">
+		<router-view/>
+	</section>
 </template>
 
-<style>
 
+<style>
+.app-root {
+	padding: 1rem;
+}
 </style>
