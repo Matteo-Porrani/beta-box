@@ -2,7 +2,7 @@
 	<div>
 		<h1>
 			<IconPackage :size="32" color="#818cf8"/>
-			<span>Beta-Box</span>
+			<span>B-Box</span>
 		</h1>
 
 		<router-link to="/">Home</router-link>

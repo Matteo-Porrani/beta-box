@@ -1,5 +1,6 @@
 <!--
 https://tabler.io/icons
+https://gradienty.codes/tailwind-colors
 -->
 
 <template>

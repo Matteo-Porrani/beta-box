@@ -25,12 +25,12 @@ export default {
 <style scoped>
 .default-layout-root {
 	display: grid;
-	grid-template-columns: 1fr 8fr;
+	grid-template-columns: 1fr 5fr;
 	gap: 1rem;
 }
 
 .layout-menu {
-	background: #414249;
+	background: #414349;
 	border-radius: 4px;
 	padding: 1rem;
 }
@@ -38,8 +38,8 @@ export default {
 .layout-content {
 	background-color: #313339;
 	//background-image:
-	//	linear-gradient(#414249 1px, transparent 1px),
-	//	linear-gradient(90deg, #414249 1px, transparent 1px);
+	//	linear-gradient(#414349 1px, transparent 1px),
+	//	linear-gradient(90deg, #414349 1px, transparent 1px);
 	//background-size: 2vw 2vw;
 	border-radius: 4px;
 	padding: 1rem;
