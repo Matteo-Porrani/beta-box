@@ -1,0 +1,11 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background: #212329;
+    color: #E1E2E9;
+    font-family: monospace;
+}
