@@ -9,15 +9,23 @@ interface ApiError {
 }
 
 export class HttpSrv {
+    private static instance: HttpSrv;
     private readonly api: AxiosInstance;
 
-    constructor() {
+    private constructor() {
         this.api = axios.create({
             baseURL: BASE_URL,
             headers: {
                 'Content-Type': 'application/json',
             },
         });
+    }
+
+    public static getInstance(): HttpSrv {
+        if (!HttpSrv.instance) {
+            HttpSrv.instance = new HttpSrv();
+        }
+        return HttpSrv.instance;
     }
 
     private handleError(error: AxiosError): never {
@@ -80,5 +88,5 @@ export class HttpSrv {
     }
 }
 
-// Create and export a default instance
-export const httpSrv = new HttpSrv();
+// Export the singleton instance
+export const httpSrv = HttpSrv.getInstance();

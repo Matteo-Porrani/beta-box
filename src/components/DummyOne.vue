@@ -34,7 +34,7 @@ export default {
 			try {
 				const user = await httpSrv.get<User>('/users/1');
 				console.log('User data:', user);
-			} catch (error: any) {
+			} catch (error: never) {
 				console.error(`${error.message} (Status: ${error.status})`);
 				if (error.data) {
 					console.error('Additional error details:', error.data);
