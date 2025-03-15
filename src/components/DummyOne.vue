@@ -26,7 +26,7 @@ export default {
 	},
 
 	async mounted() {
-		await this.testHttp();
+		// await this.testHttp();
 	},
 
 	methods: {
@@ -34,7 +34,7 @@ export default {
 			try {
 				const user = await httpSrv.get<User>('/users/1');
 				console.log('User data:', user);
-			} catch (error: never) {
+			} catch (error: any) {
 				console.error(`${error.message} (Status: ${error.status})`);
 				if (error.data) {
 					console.error('Additional error details:', error.data);

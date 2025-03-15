@@ -1,28 +1,40 @@
 <template>
-  <section class="home-view-root">
+	<DefaultLayout>
+		<div class="home-view-content">
+			<h1>
+<!--				<IconHome color="#E1E2E9" :size="48" stroke-width="1" />-->
+				<IconSmartHome color="#E1E2E9" />
+				Home
+			</h1>
 
-		<h1>Home</h1>
-		<DummyOne :count="123"/>
-
-  </section>
+<!--			<DummyOne :count="123"/>-->
+		</div>
+	</DefaultLayout>
 </template>
 
 <script>
 
 import DummyOne from "@/components/DummyOne.vue";
+import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import { IconHome, IconSmartHome } from '@tabler/icons-vue';
+
 
 export default {
 	name: 'HomeView',
 	components: {
-		DummyOne
-
+		DefaultLayout,
+		// IconHome,
+		IconSmartHome,
+		// DummyOne
 	},
 };
 </script>
 
 
 <style>
-.home-view-root {
-	border: 1px solid #C1C2C9;
+h1 {
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
 </style>

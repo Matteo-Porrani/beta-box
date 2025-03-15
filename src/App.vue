@@ -8,5 +8,6 @@
 <style>
 .app-root {
 	padding: 1rem;
+	display: grid;
 }
 </style>
