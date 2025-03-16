@@ -1,16 +1,19 @@
 <template>
 	<router-link :to="dest">
+
 		<div class="icon-wrapper">
 			<slot name="icon">
 				<IconCircle/>
 			</slot>
 		</div>
 		<span>{{ label }}</span>
+
 	</router-link>
 </template>
 
 
 <script>
+// The component is directly coupled to 'Tabler Icons'
 import { IconCircle } from "@tabler/icons-vue"
 export default {
 

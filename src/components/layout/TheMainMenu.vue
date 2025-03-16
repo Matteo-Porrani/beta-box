@@ -5,21 +5,32 @@
 			<span>B-Box</span>
 		</h1>
 
-		<MenuItem label="Home" dest="/">
+		<!--	specific icon defined here	-->
+		<MenuItem
+			label="Home"
+			dest="/"
+		>
 			<template #icon>
 				<IconHome/>
 			</template>
 		</MenuItem>
-		<MenuItem label="About" dest="/about"/>
 
-		<MenuItem label="Tasks" dest="/tasks">
+		<MenuItem
+			label="Tasks"
+			dest="/tasks"
+		>
 			<template #icon>
 				<IconStack2/>
 			</template>
 		</MenuItem>
+
+		<!--	default icon will be used here	-->
+		<MenuItem
+			label="About"
+			dest="/about"
+		/>
 	</div>
 </template>
-
 
 
 <script>
