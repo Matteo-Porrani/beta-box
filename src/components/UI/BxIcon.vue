@@ -1,6 +1,7 @@
 <template>
-	<span class="bx-icon-root">
+	<span data-test="bx-icon-root">
 		<component
+			:data-test="`bx-icon-${icon}`"
 			:is="currentIcon"
 			:size="computedSize"
 		/>
@@ -8,7 +9,9 @@
 </template>
 
 <script>
-import {defineComponent} from 'vue'
+import { defineComponent } from 'vue'
+// Import all icons from @tabler/icons-vue package
+// This package provides a comprehensive set of icons that can be used as Vue components
 import * as TablerIcons from '@tabler/icons-vue'
 import { ICON_DICT, ICON_SIZE } from "@/utils/icon-utils";
 
@@ -39,8 +42,11 @@ export default defineComponent({
 	},
 
 	created() {
+		// Look up the actual Tabler icon name from our custom ICON_DICT mapping
 		const iconName = ICON_DICT[this.icon]
 		if (iconName) {
+			// Dynamically get the icon component from TablerIcons using the mapped name
+			// This allows us to use any icon from the TablerIcons package
 			this.currentIcon = TablerIcons[iconName]
 		}
 	}
