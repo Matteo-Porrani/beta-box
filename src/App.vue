@@ -1,5 +1,6 @@
 <!--
 https://tabler.io/icons
+https://tabler.io/docs/icons/libraries/vue
 https://gradienty.codes/tailwind-colors
 
 https://dummyjson.com/docs
