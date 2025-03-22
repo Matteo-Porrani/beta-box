@@ -11,8 +11,8 @@
 				data-test="app-main-title"
 				class="text-2xl font-bold mb-10"
 			>
-				<span class="inline-block size-4 rounded bg-orange-500 mr-1"></span>
-				<span class="inline-block size-4 rounded bg-blue-600"></span>
+				<span class="inline-block size-4 rounded-full bg-orange-500 mr-1"></span>
+				<span class="inline-block size-4 rounded-full bg-blue-600"></span>
 				Beta-Box
 			</h1>
 
@@ -53,6 +53,7 @@ import TheMainMenu from "@/components/layout/TheMainMenu.vue";
 
 export default {
 	name: "DefaultLayout",
+
 	components: { TheMainMenu },
 
 	props: {
