@@ -27,12 +27,19 @@
 			<td>{{ new Date(task.dueAt).toLocaleString() }}</td>
 			<td class="text-center">{{ task.done ? '✓' : '✗' }}</td>
 			<td class="text-center">{{ task.starred ? '⭐' : '' }}</td>
-			<td>
+			<td class="flex gap-4">
+				<button
+					class="bg-teal-500 text-stone-200 rounded p-2"
+					@click="editTask(task.id)"
+				>
+					<BxIcon icon="edit" size="small"/>
+				</button>
+
 				<button
 					class="bg-red-500 text-stone-200 rounded p-2"
 					@click="deleteTask(task.id)"
 				>
-					<BxIcon icon="trash"/>
+					<BxIcon icon="trash" size="small"/>
 				</button>
 			</td>
 		</tr>
@@ -64,6 +71,10 @@ export default {
 
 	methods: {
 
+		async editTask(id) {
+			console.log("edit", id);
+		},
+
 		async deleteTask(id) {
 			console.log(id);
 			const res = await dataSrv.delete("task", id);
@@ -73,7 +84,7 @@ export default {
 		async loadTasks() {
 			try {
 				// Load all tasks and sort by dueAt
-				this.tasks = await db.task.orderBy('dueAt').toArray()
+				this.tasks = await db.task.orderBy('id').toArray()
 			} catch (error) {
 				console.error('Failed to load tasks:', error)
 			}

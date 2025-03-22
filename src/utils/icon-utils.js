@@ -29,6 +29,7 @@ export const ICON_DICT = {
 	tag: "IconTag",
 	tag_filled: "IconTagFilled",
 	trash: "IconTrash",
+	edit: "IconEdit",
 	refresh: "IconRefresh",
 }
 

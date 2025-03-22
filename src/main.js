@@ -6,7 +6,7 @@ import "@/assets/css/main.css"
 
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import store from './store/index.js'
 
 /**
  * The new import syntax imports all exports from the moment module and assigns them to the 'moment' namespace
