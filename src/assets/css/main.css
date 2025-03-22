@@ -1,50 +1,17 @@
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
-    background: #212329;
-    color: #E1E3E9;
+    background: #44403c; /* stone-700 */
+    color: #e7e5e4; /* stone-200 */
     height: 100vh;
     display: grid;
 
     font-family: "Anaheim", sans-serif;
-    font-size: 1.125rem;
+    /*font-size: 1.125rem;*/
 }
 
 #app {
     display: grid;
 }
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-a.router-link-active {
-    /*color: #819cf8;*/
-    color: #0ea5e9;
-    background: #0ea5e922;
-}
-
-.sp-1 {
-    height: 1rem;
-}
-
-.sp-2 {
-    height: 2rem;
-}
-
-/*
-COLORS
-#212329
-#313339
-#414349
-#E1E3E9
-
-indigo
-    400: #818cf8
- */
-
