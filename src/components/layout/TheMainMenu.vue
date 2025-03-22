@@ -1,53 +1,35 @@
 <template>
 	<div>
-		<h1>
-			<IconPackage :size="32" color="#0ea5e9"/>
-			<span>B-Box</span>
-		</h1>
+		<h1>B-Box</h1>
 
-		<!--	specific icon defined here	-->
-		<MenuItem
-			label="Home"
-			dest="/"
-		>
-			<template #icon>
-				<IconHome/>
-			</template>
-		</MenuItem>
-
-		<MenuItem
-			label="Tasks"
-			dest="/tasks"
-		>
-			<template #icon>
-				<IconStack2/>
-			</template>
-		</MenuItem>
-
-		<!--	default icon will be used here	-->
-		<MenuItem
-			label="About"
-			dest="/about"
-		/>
+		<router-link
+			v-for="l in links"
+			:key="l[0]"
+			:to="l[1]"
+		>{{ l[0] }}</router-link>
 	</div>
 </template>
 
 
 <script>
-import MenuItem from "@/components/UI/MenuItem.vue";
-import {
-	IconPackage,
-	IconHome,
-	IconStack2,
-} from "@tabler/icons-vue"
+// import {
+// 	IconPackage,
+// 	IconHome,
+// 	IconStack2,
+// } from "@tabler/icons-vue"
 
 export default {
 	name: "TheMainMenu",
-	components: {
-		MenuItem,
-		IconPackage,
-		IconHome,
-		IconStack2
+	components: {},
+
+	data() {
+		return {
+			links: [
+				["Home", "/"],
+				["Tasks", "/tasks"],
+				["About", "/about"],
+			]
+		}
 	}
 }
 </script>
