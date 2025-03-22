@@ -1,7 +1,9 @@
 <template>
-	<DefaultLayout>
+	<DefaultLayout
+		view-title="About"
+	>
 		<div class="about-view-root">
-			<h2>About</h2>
+			<p>A simple Vue app to explore clean code & design patterns</p>
 		</div>
 	</DefaultLayout>
 </template>

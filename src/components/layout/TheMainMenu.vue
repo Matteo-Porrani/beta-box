@@ -4,7 +4,7 @@
 			v-for="l in links"
 			:key="l[0]"
 			:to="l[1]"
-			class="hover:text-emerald-400"
+			class="hover:text-orange-500"
 		>{{ l[0] }}</router-link>
 	</div>
 </template>

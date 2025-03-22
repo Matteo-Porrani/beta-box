@@ -1,10 +1,6 @@
 <template>
-	<DefaultLayout>
+	<DefaultLayout view-title="Home">
 		<div class="home-view-root">
-			<h2>
-				Home
-			</h2>
-
 			<pre>{{ tasks }}</pre>
 		</div>
 	</DefaultLayout>

@@ -1,9 +1,8 @@
 <template>
-	<DefaultLayout>
+	<DefaultLayout
+		view-title="Tasks"
+	>
 		<div class="tasks-view-root">
-			<h2>
-				Tasks
-			</h2>
 		</div>
 	</DefaultLayout>
 </template>
