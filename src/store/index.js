@@ -1,5 +1,5 @@
 import {createStore} from 'vuex'
-import task from './modules/task'
+import task from './modules/store-task'
 
 export default createStore({
     state: {},

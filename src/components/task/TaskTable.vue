@@ -1,11 +1,17 @@
 <template>
-	<button
-		class="flex items-center gap-1 bg-teal-500 hover:bg-teal-400 rounded py-2 px-4 text-stone-800"
-		@click="loadTasks"
-	>
-		<BxIcon icon="refresh"/>
-		Refresh
-	</button>
+
+	<div class="flex gap-4">
+
+		<button
+			class="bg-red-500 hover:bg-red-400 rounded py-2 px-6 text-stone-800"
+			@click="clearAll"
+		>
+			Clear
+		</button>
+
+	</div>
+
+
 
 	<div class="h-4"></div>
 
@@ -24,9 +30,10 @@
 		<tr v-for="task in tasks" :key="task.id">
 			<td>{{ task.id }}</td>
 			<td>{{ task.desc }}</td>
-			<td>{{ new Date(task.dueAt).toLocaleString() }}</td>
-			<td class="text-center">{{ task.done ? '✓' : '✗' }}</td>
-			<td class="text-center">{{ task.starred ? '⭐' : '' }}</td>
+<!--			<td>{{ new Date(task.dueAt).toLocaleString() }}</td>-->
+			<td>{{ task.dueAt }}</td>
+			<td>{{ task.done ? '✓' : '✗' }}</td>
+			<td>{{ task.starred ? '⭐' : '' }}</td>
 			<td class="flex gap-4">
 				<button
 					class="bg-teal-500 text-stone-200 rounded p-2"
@@ -37,7 +44,7 @@
 
 				<button
 					class="bg-red-500 text-stone-200 rounded p-2"
-					@click="deleteTask(task.id)"
+					@click="removeTask(task.id)"
 				>
 					<BxIcon icon="trash" size="small"/>
 				</button>
@@ -48,47 +55,50 @@
 </template>
 
 <script>
-import { db } from "@/service/db"
-import { dataSrv } from "@/service/DataSrv";
+import { mapActions, mapState } from "vuex";
 import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {
 	name: "TaskTable",
+
 	components: { BxIcon },
 
 	data() {
-		return {
-			tasks: []
-		}
+		return {}
 	},
 
-	async mounted() {
-		await this.loadTasks()
-
-		const c = await dataSrv.count("task");
-		console.log(`${c} task(s) found in table`)
+	computed: {
+		...mapState({
+			tasks: $s => $s.task.tasks,
+		})
 	},
+
 
 	methods: {
+
+		...mapActions("task", [
+			"loadTasks",
+			"deleteTask",
+			"clearTasks",
+		]),
 
 		async editTask(id) {
 			console.log("edit", id);
 		},
 
-		async deleteTask(id) {
-			console.log(id);
-			const res = await dataSrv.delete("task", id);
+		async removeTask(id) {
+			const res = await this.deleteTask({ taskId: id });
 			console.log("res", res);
 		},
 
-		async loadTasks() {
-			try {
-				// Load all tasks and sort by dueAt
-				this.tasks = await db.task.orderBy('id').toArray()
-			} catch (error) {
-				console.error('Failed to load tasks:', error)
-			}
+		async clearAll() {
+			const res = await this.deleteTask({
+				taskId: null,
+				all: true
+			});
+			console.log("res", res);
 		}
+
 	}
 }
 </script>
@@ -97,6 +107,10 @@ export default {
 <style scoped>
 td {
 	@apply p-1 border-t
+}
+
+th {
+	@apply text-start
 }
 
 </style>

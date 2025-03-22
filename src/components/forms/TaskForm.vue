@@ -7,7 +7,7 @@
 		<label>
 			desc
 			<input
-				class="block w-64 text-xl text-stone-800 rounded p-1"
+				class="block w-64 text-xl text-stone-800 bg-stone-400 rounded p-1"
 				v-model="desc" type="text" />
 		</label>
 
@@ -36,12 +36,7 @@
 
 		<div class="h-4"></div>
 
-		<button
-			class="bg-red-500 hover:bg-red-400 rounded py-2 px-6 text-stone-800"
-			@click="clearTasks"
-		>
-			Clear
-		</button>
+
 
 		<p>{{status}}</p>
 
@@ -49,8 +44,7 @@
 </template>
 
 <script>
-// import { db } from "@/service/db"
-import { dataSrv } from "@/service/DataSrv";
+import { mapActions } from "vuex";
 
 export default {
 	name: 'TaskForm',
@@ -65,23 +59,22 @@ export default {
 
 	methods: {
 
+		...mapActions("task", [
+			"addTask"
+		]),
+
 		/* =============================================
 			FORM METHODS
 			============================================= */
 
 		resetForm() {
 			this.desc = null;
+			this.starred = false;
 		},
 
 		/* =============================================
 			CRUD
 			============================================= */
-
-		async clearTasks() {
-			const res = await dataSrv.clear("task");
-
-			console.log("res", res)
-		},
 
 		async addTaskByService() {
 			try {
@@ -94,10 +87,7 @@ export default {
 					tagId: null,
 				}
 
-				// const id = await dataSrv.api.task.add(newTask);
-				const id = await dataSrv.add("task", newTask);
-
-				this.status = `Task ${this.desc} successfully added. Got id ${id}`;
+				await this.addTask(newTask);
 
 				this.resetForm();
 

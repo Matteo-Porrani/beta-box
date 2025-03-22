@@ -24,19 +24,27 @@ class DataSrv {
 		return DataSrv.instance;
 	}
 	
+	/* =============================================
+		CRUD
+		============================================= */
+	
+	async load(tableName) {
+		console.log(`%c${"load/" + tableName}`, "background: turquoise; color: black; padding: 2px;")
+		return this.api[tableName].orderBy('id').toArray();
+	}
 	
 	async add(tableName, item) {
-		console.log(`%c${"add"}`, "background: gold; color: black; padding: 2px;")
+		console.log(`%c${"add/" + tableName}`, "background: gold; color: black; padding: 2px;")
 		return this.api[tableName].add(item);
 	}
 	
 	async delete(tableName, id) {
-		console.log(`%c${"delete" + tableName + "/" + id}`, "background: crimson; color: black; padding: 2px;")
+		console.log(`%c${"delete/" + tableName + "/" + id}`, "background: crimson; color: black; padding: 2px;")
 		return this.api[tableName].delete(id);
 	}
 	
 	async clear(tableName) {
-		console.log(`%c${"clear"}`, "background: crimson; color: black; padding: 2px;")
+		console.log(`%c${"clear/" + tableName}`, "background: crimson; color: black; padding: 2px;")
 		return this.api[tableName].clear();
 	}
 	
