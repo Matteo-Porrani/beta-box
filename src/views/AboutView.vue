@@ -1,9 +1,7 @@
 <template>
 	<DefaultLayout>
-		<div class="about-view-content">
-
-			<h1>About</h1>
-
+		<div class="about-view-root">
+			<h2>About</h2>
 		</div>
 	</DefaultLayout>
 </template>
