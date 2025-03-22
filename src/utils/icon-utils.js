@@ -28,7 +28,8 @@ export const ICON_DICT = {
 	data: "IconDatabase",
 	tag: "IconTag",
 	tag_filled: "IconTagFilled",
-	
+	trash: "IconTrash",
+	refresh: "IconRefresh",
 }
 
 export const ICON_SIZE = {
