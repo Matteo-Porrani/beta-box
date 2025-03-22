@@ -9,6 +9,7 @@
 
 <script>
 import {defineComponent} from 'vue'
+import * as TablerIcons from '@tabler/icons-vue'
 import { ICON_DICT, ICON_SIZE } from "@/utils/icon-utils";
 
 export default defineComponent({
@@ -37,11 +38,10 @@ export default defineComponent({
 		}
 	},
 
-	async mounted() {
+	created() {
 		const iconName = ICON_DICT[this.icon]
 		if (iconName) {
-			const module = await import("@tabler/icons-vue")
-			this.currentIcon = module[iconName]
+			this.currentIcon = TablerIcons[iconName]
 		}
 	}
 })

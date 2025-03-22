@@ -23,11 +23,11 @@
 			<!-- (3) -->
 			<div class="flex items-center gap-4 mb-10">
 				<BxIcon
-					class="text-orange-500"
+					class="text-teal-500"
 					icon="bolt"
 					size="xlarge"
 				/>
-				<p>Icon of size <code>"xlarge"</code>, color is given with <code>.text-orange-500</code> class</p>
+				<p>Icon of size <code>"xlarge"</code>, color is given with <code>.text-teal-500</code> class</p>
 			</div>
 
 			<!-- (4) -->
@@ -84,7 +84,7 @@ export default {
 
 <style scoped>
 code {
-	@apply text-orange-500 text-sm bg-stone-600 rounded p-1;
+	@apply text-rose-400 text-sm bg-stone-700 rounded p-1;
 }
 </style>
 

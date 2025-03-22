@@ -11,8 +11,8 @@
 				data-test="app-main-title"
 				class="text-2xl font-bold mb-10"
 			>
-				<span class="inline-block size-4 rounded-full bg-orange-500 mr-1"></span>
-				<span class="inline-block size-4 rounded-full bg-blue-600"></span>
+				<span class="inline-block size-4 rounded-full bg-teal-500 mr-1"></span>
+				<span class="inline-block size-4 rounded-full bg-blue-500"></span>
 				Beta-Box
 			</h1>
 
@@ -36,7 +36,7 @@
 			<h2
 				v-if="viewTitle"
 				data-test="view-title"
-				class="text-3xl text-stone-400 font-bold mb-8"
+				class="text-3xl font-bold mb-8"
 			>
 				{{ viewTitle }}
 			</h2>
