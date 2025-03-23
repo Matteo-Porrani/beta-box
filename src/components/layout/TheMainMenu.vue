@@ -28,6 +28,7 @@ export default {
 				["Home", "/"],
 				["Tasks", "/tasks"],
 				["About", "/about"],
+				["Dev", "/dev"],
 			]
 		}
 	}
