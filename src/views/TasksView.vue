@@ -6,9 +6,13 @@
 			data-test="tasks-view-root"
 			class=""
 		>
-			<TaskForm/>
+			<TaskForm
+				ref="task_form_ref"
+			/>
 			<div class="h-20"></div>
-			<TaskTable/>
+			<TaskTable
+				@edit-task="onEditTask"
+			/>
 		</div>
 	</DefaultLayout>
 </template>
@@ -39,6 +43,11 @@ export default {
 
 	methods: {
 		...mapActions("task", ["loadTasks"]),
+
+		onEditTask(taskId) {
+			console.log("...task to be updated", taskId)
+			this.$refs.task_form_ref.getTaskForPrefill(taskId);
+		}
 	}
 
 };

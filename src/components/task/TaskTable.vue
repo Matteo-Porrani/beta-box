@@ -36,7 +36,7 @@
 				<td class="flex gap-4">
 					<button
 						class="bg-teal-500 text-stone-200 rounded p-2"
-						@click="editTask(task.id)"
+						@click="openTaskForEdit(task.id)"
 					>
 						<BxIcon icon="edit" size="small"/>
 					</button>
@@ -65,6 +65,8 @@ export default {
 
 	components: { BxIcon },
 
+	emitted: ["editTask"],
+
 	data() {
 		return {}
 	},
@@ -81,8 +83,9 @@ export default {
 			"deleteTask",
 		]),
 
-		async editTask(id) {
+		async openTaskForEdit(id) {
 			console.log("edit", id);
+			this.$emit("editTask", id);
 		},
 
 		async removeTask(id) {

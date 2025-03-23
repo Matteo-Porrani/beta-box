@@ -23,10 +23,10 @@ class DataSrv {
 		
 		return DataSrv.instance;
 	}
-	
-	/* =============================================
-		CRUD
-		============================================= */
+
+// =============================================
+// CRUD
+// =============================================
 	
 	async load(tableName) {
 		console.log(`%c${"load/" + tableName}`, "background: turquoise; color: black; padding: 2px;")
@@ -48,9 +48,9 @@ class DataSrv {
 		return this.api[tableName].clear();
 	}
 	
-	/* =============================================
-		UTILITIES
-		============================================= */
+	// =============================================
+	// UTILITIES
+	// =============================================
 	
 	async count(tableName) {
 		console.log(`%c${"count"}`, "background: blue; color: black; padding: 2px;")
