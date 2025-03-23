@@ -1,4 +1,6 @@
 import { dataSrv } from "@/service/DataSrv";
+// types
+import { DatabaseActionResponse } from "@/types/DatabaseActionResponse";
 
 const TABLE_TASK = "task";
 
@@ -50,7 +52,7 @@ const actions = {
         return await dispatch("execDatabaseAction", async () => {
             const tasks = await dataSrv.load(TABLE_TASK);
             commit('SET_TASKS', tasks);
-            return { result: "OK", message: "tasks loaded" }
+            return new DatabaseActionResponse(true, "tasks successfully loaded");
         });
     },
     
@@ -58,15 +60,15 @@ const actions = {
         return await dispatch("execDatabaseAction", async () => {
             const id = await dataSrv.add(TABLE_TASK, newTask);
             await dispatch("loadTasks");
-            return { result: "OK", message: `task ${id} created` }
+            return new DatabaseActionResponse(true, `task ${id} added`);
         });
     },
     
     async updateTask({ dispatch }, task) {
         return await dispatch("execDatabaseAction", async () => {
-            const id = await dataSrv.update(TABLE_TASK, task);
+            await dataSrv.update(TABLE_TASK, task);
             await dispatch("loadTasks");
-            return { result: "OK", message: `task ${id} created` }
+            return new DatabaseActionResponse(true, `task ${task.id} successfully updated`);
         });
     },
     
@@ -84,30 +86,9 @@ const actions = {
               : "delete";
             await dataSrv[m](TABLE_TASK, taskId);
             await dispatch("loadTasks");
-            return { result: "OK", message: `Task #${taskId} deleted` }
+            return new DatabaseActionResponse(true, `task #${taskId} deleted`);
         });
     },
-
-    
-    /*
-
-    async updateTask({ commit }, { id, changes }) {
-        commit('SET_LOADING', true)
-        try {
-            await dataSrv.api.task.update(id, changes)
-            const updatedTask = { id, ...changes }
-            commit('UPDATE_TASK', updatedTask)
-            commit('SET_ERROR', null)
-        } catch (error) {
-            commit('SET_ERROR', error.message)
-            console.error('Failed to update task:', error)
-            throw error
-        } finally {
-            commit('SET_LOADING', false)
-        }
-    },
-    
-     */
 }
 
 export default {

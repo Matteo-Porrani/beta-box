@@ -67,7 +67,10 @@
 </template>
 
 <script>
+// Vue
 import { mapActions, mapGetters } from "vuex";
+// Types
+import { Task } from "@/types/Task";
 
 export default {
 	name: 'TaskForm',
@@ -91,7 +94,9 @@ export default {
 		]),
 
 		taskIdLabel() {
-			return this.currTaskId ? `TASK #${this.currTaskId}` : "NEW TASK";
+			return this.currTaskId
+				? `TASK #${this.currTaskId}`
+				: "NEW TASK";
 		},
 	},
 
@@ -106,23 +111,22 @@ export default {
 		// FORM HANDLING
 		// =============================================
 
+		getTaskForPrefill(taskId) {
+			this.currTaskId = taskId;
+			const task = this.getTaskById(taskId);
+			this.initForm(task);
+		},
+
+		initForm(task) {
+			this.desc = task.desc;
+			this.done = task.done;
+			this.starred = task.starred;
+		},
+
 		resetForm() {
 			this.currTaskId = null;
 			this.desc = null;
 			this.starred = false;
-		},
-
-		getTaskForPrefill(taskId) {
-			console.log("/// getTaskForPrefill")
-			this.currTaskId = taskId;
-			const task = this.getTaskById(taskId);
-			this.prefillForm(task)
-		},
-
-		prefillForm(task) {
-			this.desc = task.desc;
-			this.done = task.done;
-			this.starred = task.starred;
 		},
 
 		// =============================================
@@ -130,15 +134,12 @@ export default {
 		// =============================================
 
 		async onSaveButton() {
-			const action = this.currTaskId ? "$UPDATE" : "$ADD";
-			console.log("action", action);
-
 			const execMap = {
-				// 		withId		storeAction
 				$ADD: [false, "addTask"],
 				$UPDATE: [true, "updateTask"],
 			}
 
+			const action = this.currTaskId ? "$UPDATE" : "$ADD";
 			const [withId, storeAction] = execMap[action];
 			const task = this.makeTask(withId);
 			await this[storeAction](task);
@@ -146,17 +147,13 @@ export default {
 		},
 
 		makeTask(withId = false) {
-			const t = {
+			return new Task({
+				id: withId ? this.currTaskId : undefined,
 				desc: this.desc,
 				done: this.done,
 				starred: this.starred,
-				dueAt: new Date().getTime() + 1000 * 60 * 60 * 24, // tomorrow at the same time
-				tagId: null,
-			}
-
-			if (withId) t.id = this.currTaskId;
-
-			return t;
+				tagId: null
+			});
 		},
 
 	},
