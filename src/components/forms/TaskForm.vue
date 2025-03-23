@@ -1,9 +1,6 @@
 <template>
 	<div data-test="task-form-root" class="border border-stone-700 w-1/2 rounded p-4">
-
-		<p class="h-12 bg-stone-700 rounded p-1">{{ feedback }}</p>
-
-		<div class="h-4"></div>
+		<p class="font-bold text-xl text-teal-500">{{ taskIdLabel }}</p>
 
 		<label>
 			Description
@@ -61,10 +58,10 @@
 		<div class="h-6"></div>
 
 		<button
-			class="bg-teal-500 hover:bg-teal-400 rounded py-2 px-6 text-stone-800"
-			@click="addNewTask"
+			class="w-36 bg-teal-500 hover:bg-teal-400 rounded py-2 px-6 text-stone-800"
+			@click="onSaveButton"
 		>
-			Add
+			{{ currTaskId ? 'Update' : 'Add' }}
 		</button>
 	</div>
 </template>
@@ -80,6 +77,8 @@ export default {
 	data: () => {
 		return {
 			feedback: null,
+			currTaskId: null,
+
 			desc: "",
 			done: false,
 			starred: false,
@@ -89,13 +88,18 @@ export default {
 	computed: {
 		...mapGetters("task", [
 			"getTaskById",
-		])
+		]),
+
+		taskIdLabel() {
+			return this.currTaskId ? `TASK #${this.currTaskId}` : "NEW TASK";
+		},
 	},
 
 	methods: {
 
 		...mapActions("task", [
-			"addTask"
+			"addTask",
+			"updateTask",
 		]),
 
 		// =============================================
@@ -103,27 +107,46 @@ export default {
 		// =============================================
 
 		resetForm() {
+			this.currTaskId = null;
 			this.desc = null;
 			this.starred = false;
 		},
 
 		getTaskForPrefill(taskId) {
 			console.log("/// getTaskForPrefill")
+			this.currTaskId = taskId;
 			const task = this.getTaskById(taskId);
 			this.prefillForm(task)
 		},
 
 		prefillForm(task) {
 			this.desc = task.desc;
+			this.done = task.done;
 			this.starred = task.starred;
 		},
 
 		// =============================================
-		// CRUD
+		// ADD or UPDATE
 		// =============================================
 
-		async addNewTask() {
-			const newTask = {
+		async onSaveButton() {
+			const action = this.currTaskId ? "$UPDATE" : "$ADD";
+			console.log("action", action);
+
+			const execMap = {
+				// 		withId		storeAction
+				$ADD: [false, "addTask"],
+				$UPDATE: [true, "updateTask"],
+			}
+
+			const [withId, storeAction] = execMap[action];
+			const task = this.makeTask(withId);
+			await this[storeAction](task);
+			this.resetForm();
+		},
+
+		makeTask(withId = false) {
+			const t = {
 				desc: this.desc,
 				done: this.done,
 				starred: this.starred,
@@ -131,9 +154,9 @@ export default {
 				tagId: null,
 			}
 
-			await this.addTask(newTask);
+			if (withId) t.id = this.currTaskId;
 
-			this.resetForm();
+			return t;
 		},
 
 	},

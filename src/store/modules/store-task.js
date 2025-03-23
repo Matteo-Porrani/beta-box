@@ -62,6 +62,14 @@ const actions = {
         });
     },
     
+    async updateTask({ dispatch }, task) {
+        return await dispatch("execDatabaseAction", async () => {
+            const id = await dataSrv.update(TABLE_TASK, task);
+            await dispatch("loadTasks");
+            return { result: "OK", message: `task ${id} created` }
+        });
+    },
+    
     /**
      * DELETE and CLEAR
      * @param dispatch

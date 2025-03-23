@@ -38,6 +38,11 @@ class DataSrv {
 		return this.api[tableName].add(item);
 	}
 	
+	async update(tableName, item) {
+		console.log(`%c${"update/" + tableName}`, "background: gold; color: black; padding: 2px;")
+		return this.api[tableName].update(item.id, item);
+	}
+	
 	async delete(tableName, id) {
 		console.log(`%c${"delete/" + tableName + "/" + id}`, "background: crimson; color: black; padding: 2px;")
 		return this.api[tableName].delete(id);
