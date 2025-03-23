@@ -72,11 +72,26 @@ import { mapActions, mapGetters } from "vuex";
 // Types
 import { Task } from "@/types/Task";
 
+/**
+ * @component TaskForm
+ * @description A form component for creating and editing tasks. Supports adding new tasks
+ * and updating existing ones with description, starred status, and completion status.
+ */
 export default {
 	name: 'TaskForm',
 
+	// Expose method for parent components to prefill form
 	expose: ["getTaskForPrefill"],
 
+	/**
+	 * Component's local state
+	 * @returns {Object} Component data
+	 * @property {string|null} feedback - Feedback message for form operations
+	 * @property {number|null} currTaskId - ID of task being edited, null for new tasks
+	 * @property {string} desc - Task description input value
+	 * @property {boolean} done - Task completion status
+	 * @property {boolean} starred - Task starred status
+	 */
 	data: () => {
 		return {
 			feedback: null,
@@ -93,6 +108,10 @@ export default {
 			"getTaskById",
 		]),
 
+		/**
+		 * Computes the label for the task form based on whether it's a new task or editing existing
+		 * @returns {string} Label indicating if it's a new task or showing existing task ID
+		 */
 		taskIdLabel() {
 			return this.currTaskId
 				? `TASK #${this.currTaskId}`
@@ -101,7 +120,6 @@ export default {
 	},
 
 	methods: {
-
 		...mapActions("task", [
 			"addTask",
 			"updateTask",
@@ -111,18 +129,29 @@ export default {
 		// FORM HANDLING
 		// =============================================
 
+		/**
+		 * Prefills the form with existing task data for editing
+		 * @param {number} taskId - ID of the task to edit
+		 */
 		getTaskForPrefill(taskId) {
 			this.currTaskId = taskId;
 			const task = this.getTaskById(taskId);
 			this.initForm(task);
 		},
 
+		/**
+		 * Initializes form fields with task data
+		 * @param {Task} task - Task object containing data to populate the form
+		 */
 		initForm(task) {
 			this.desc = task.desc;
 			this.done = task.done;
 			this.starred = task.starred;
 		},
 
+		/**
+		 * Resets form to initial state after submission or cancellation
+		 */
 		resetForm() {
 			this.currTaskId = null;
 			this.desc = null;
@@ -133,6 +162,11 @@ export default {
 		// ADD or UPDATE
 		// =============================================
 
+		/**
+		 * Handles form submission for both adding new tasks and updating existing ones
+		 * Determines the appropriate action based on whether currTaskId exists
+		 * @async
+		 */
 		async onSaveButton() {
 			const execMap = {
 				$ADD: [false, "addTask"],
@@ -146,6 +180,11 @@ export default {
 			this.resetForm();
 		},
 
+		/**
+		 * Creates a new Task instance from form data
+		 * @param {boolean} withId - Whether to include the current task ID (for updates)
+		 * @returns {Task} New Task instance with form data
+		 */
 		makeTask(withId = false) {
 			return new Task({
 				id: withId ? this.currTaskId : undefined,
@@ -155,7 +194,6 @@ export default {
 				tagId: null
 			});
 		},
-
 	},
 };
 </script>
