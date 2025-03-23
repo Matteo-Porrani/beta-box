@@ -6,25 +6,21 @@
 			data-test="tasks-view-root"
 			class=""
 		>
-
-
-
 			<TaskForm/>
-
 			<div class="h-20"></div>
-
 			<TaskTable/>
-
 		</div>
 	</DefaultLayout>
 </template>
 
-<script>
 
+<script>
+// Vue
+import { mapActions } from "vuex";
+// Components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import TaskForm from "@/components/forms/TaskForm.vue";
 import TaskTable from "@/components/task/TaskTable.vue";
-import { mapActions } from "vuex";
 
 
 export default {
