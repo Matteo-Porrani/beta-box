@@ -3,9 +3,10 @@
 		<div class="flex gap-4">
 
 			<button
-				class="bg-red-500 hover:bg-red-400 rounded py-2 px-6 text-stone-800"
+				class="flex items-center gap-1 bg-red-500 hover:bg-red-400 rounded py-2 px-4"
 				@click="clearAll"
 			>
+				<BxIcon icon="trash" size="small"/>
 				Clear
 			</button>
 
@@ -13,7 +14,7 @@
 
 		<div class="h-4"></div>
 
-		<table class="w-full bg-stone-700 rounded">
+		<table class="w-full">
 			<thead>
 			<tr>
 				<th>ID</th>
@@ -35,14 +36,14 @@
 				<!-- ACTIONS -->
 				<td class="flex gap-4">
 					<button
-						class="bg-teal-500 text-stone-200 rounded p-2"
+						class="bg-teal-500 rounded p-2"
 						@click="openTaskForEdit(task.id)"
 					>
 						<BxIcon icon="edit" size="small"/>
 					</button>
 
 					<button
-						class="bg-red-500 text-stone-200 rounded p-2"
+						class="bg-red-500 rounded p-2"
 						@click="removeTask(task.id)"
 					>
 						<BxIcon icon="trash" size="small"/>
@@ -107,12 +108,19 @@ export default {
 
 
 <style scoped>
-td {
-	@apply p-1 border-t
+
+tr {
+	display: grid;
+	grid-template-columns: 1fr 6fr 1fr 1fr 1fr 2fr;
 }
 
 th {
-	@apply text-start
+	@apply p-2 text-start bg-stone-700
 }
+
+td {
+	@apply p-2 border border-stone-600
+}
+
 </style>
 

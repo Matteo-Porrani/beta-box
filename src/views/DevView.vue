@@ -2,6 +2,38 @@
 	<DefaultLayout view-title="Dev">
 		<div class="dev-view-root">
 
+
+			<!--	MODAL		-->
+			<BxModal
+				ref="dev_modal_ref"
+			>
+
+				<template #header>
+					<h3 class="text-xl">Some nice header</h3>
+				</template>
+
+				<template #body>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, ab consectetur et eveniet minus quisquam sed
+						voluptate. Cum, debitis dolorem explicabo, hic in labore perspiciatis placeat quis reprehenderit sapiente
+						voluptate!</p>
+				</template>
+
+			</BxModal>
+
+			<button
+				class="w-36 bg-teal-500 hover:bg-teal-400 rounded py-2 px-6 text-stone-800"
+				@click="openModal"
+			>
+				Open modal
+			</button>
+
+			<div class="h-10"></div>
+
+
+			<!--	======================================================================		-->
+			<!--	ICONS SAMPLES		-->
+
+
 			<!-- (1) -->
 			<div class="flex items-center gap-4 mb-10">
 				<BxIcon
@@ -63,12 +95,14 @@
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import { mapState } from "vuex";
 import BxIcon from "@/components/UI/BxIcon.vue";
+import BxModal from "@/components/UI/BxModal.vue";
 
 
 export default {
 	name: 'DevView',
 
 	components: {
+		BxModal,
 		BxIcon,
 		DefaultLayout,
 	},
@@ -77,7 +111,14 @@ export default {
 		...mapState({
 			tasks: state => state.task.tasks,
 		})
+	},
+
+	methods: {
+		openModal() {
+			this.$refs.dev_modal_ref.open();
+		}
 	}
+
 };
 </script>
 

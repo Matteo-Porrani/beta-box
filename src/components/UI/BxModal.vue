@@ -11,11 +11,16 @@
 					<slot name="body">default body</slot>
 				</div>
 
+				<div class="h-10"></div>
+
 				<div class="bx-modal-footer">
 					<slot name="footer">
 
-						<button @click="show = false">
-							CLOSE
+						<button
+							class="w-36 bg-teal-500 hover:bg-teal-400 rounded py-2 px-6 text-stone-800"
+							@click="show = false"
+						>
+							Close
 						</button>
 
 					</slot>
@@ -49,17 +54,17 @@ function open() {
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
 	display: flex;
-	transition: opacity 0.3s ease;
+	transition: opacity 0.2s ease;
 }
 
 .modal-container {
-	@apply bg-stone-600;
+	@apply bg-stone-700;
 	width: 30vw;
 	margin: auto;
 	padding: 20px 30px;
 	border-radius: 8px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-	transition: all 0.3s ease;
+	transition: all 0.2s ease;
 }
 
 .bx-modal-header {
@@ -95,7 +100,7 @@ function open() {
 
 .bx-modal-enter-from .modal-container,
 .bx-modal-leave-to .modal-container {
-	-webkit-transform: scale(1.1);
-	transform: scale(1.1);
+	-webkit-transform: scale(1.025);
+	transform: scale(1.025);
 }
 </style>
