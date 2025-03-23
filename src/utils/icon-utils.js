@@ -31,6 +31,7 @@ export const ICON_DICT = {
 	trash: "IconTrash",
 	edit: "IconEdit",
 	refresh: "IconRefresh",
+	reset: "IconRotate",
 }
 
 export const ICON_SIZE = {

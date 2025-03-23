@@ -1,7 +1,7 @@
 <template>
 	<section
 		data-test="default-layout-root"
-		class="grid grid-cols-6 gap-4"
+		class="grid grid-cols-8 gap-4"
 	>
 		<aside
 			data-test="layout-menu"
@@ -24,7 +24,7 @@
 
 		<div
 			data-test="layout-content"
-			class="col-span-5 bg-stone-800 rounded p-2"
+			class="col-span-7 bg-stone-800 rounded p-2"
 		>
 			<div
 				v-if="hasBreadcrumb"

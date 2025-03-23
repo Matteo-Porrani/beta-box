@@ -111,7 +111,7 @@ export default {
 
 tr {
 	display: grid;
-	grid-template-columns: 1fr 6fr 1fr 1fr 1fr 2fr;
+	grid-template-columns: 1fr 5fr 2fr 1fr 1fr 2fr;
 }
 
 th {
@@ -119,7 +119,7 @@ th {
 }
 
 td {
-	@apply p-2 border border-stone-600
+	@apply p-2 border border-stone-700
 }
 
 </style>

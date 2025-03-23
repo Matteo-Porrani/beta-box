@@ -1,23 +1,46 @@
 <template>
-	<div data-test="task-form-root" class="border border-stone-700 w-1/2 rounded p-4">
-		<p class="font-bold text-xl text-teal-500">{{ taskIdLabel }}</p>
+	<div
+		data-test="task-form-root"
+		class="grid grid-cols-3 gap-4 border border-stone-700 w-1/2 rounded p-4"
+	>
 
-		<label>
-			Description
+		<div class="left col-span-2">
+			<p class="font-bold text-xl text-teal-500">{{ taskIdLabel }}</p>
+
+			<label>
+				Description
+				<input
+					v-model="desc"
+					type="text"
+					class="block w-full text-xl text-stone-800 bg-stone-400 rounded p-1"
+				/>
+			</label>
+
+			<div class="h-2"></div>
+
+			<label>Due before</label>
+
 			<input
-				v-model="desc"
-				type="text"
-				class="block w-72 text-xl text-stone-800 bg-stone-400 rounded p-1"
-			/>
-		</label>
+				v-model="dueAtDate"
+				type="date"
+				class="block w-48 text-xl text-stone-800 bg-stone-400 rounded p-1"
+			>
 
-		<div class="h-4"></div>
+			<div class="h-2"></div>
 
-		<!-- STARRED -->
-		<label class="inline-flex items-center cursor-pointer">
+			<input
+				v-model="dueAtTime"
+				type="time"
+				class="block w-48 text-xl text-stone-800 bg-stone-400 rounded p-1"
+			>
+
+			<div class="h-2"></div>
+
+			<!-- STARRED -->
+			<label class="inline-flex items-center cursor-pointer">
 			<span class="relative">
-				<input 
-					type="checkbox" 
+				<input
+					type="checkbox"
 					class="sr-only peer"
 					v-model="starred"
 				/>
@@ -30,13 +53,13 @@
 						after:size-5 after:transition-all peer-checked:bg-teal-500"
 				></span>
 			</span>
-			<span class="ml-3 text-sm font-medium">Starred</span>
-		</label>
+				<span class="ml-3 text-sm font-medium">Starred</span>
+			</label>
 
-		<div class="h-4"></div>
+			<br>
 
-		<!-- DONE -->
-		<label class="inline-flex items-center cursor-pointer">
+			<!-- DONE -->
+			<label class="inline-flex items-center cursor-pointer">
 			<span class="relative">
 				<input
 					type="checkbox"
@@ -52,17 +75,34 @@
 						after:size-5 after:transition-all peer-checked:bg-teal-500"
 				></span>
 			</span>
-			<span class="ml-3 text-sm font-medium">Done</span>
-		</label>
+				<span class="ml-3 text-sm font-medium">Done</span>
+			</label>
+		</div>
 
-		<div class="h-6"></div>
 
-		<button
-			class="w-36 bg-teal-500 hover:bg-teal-400 rounded py-2 px-6 text-stone-800"
-			@click="onSaveButton"
-		>
-			{{ currTaskId ? 'Update' : 'Add' }}
-		</button>
+
+		<div class="right">
+			<button
+				:disabled="desc === ''"
+				class="w-full bg-teal-500 hover:bg-teal-400 disabled:bg-zinc-700 disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
+				@click="onSaveButton"
+			>
+				{{ currTaskId ? 'Update' : 'Add' }}
+			</button>
+
+			<div class="h-2"></div>
+
+			<button
+				:disabled="formIsEmpty"
+				class="w-full flex items-center justify-center gap-1 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-700 disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
+				@click="resetForm"
+			>
+				<BxIcon icon="reset" class="-ms-2"/>
+				Reset
+			</button>
+		</div>
+
+
 	</div>
 </template>
 
@@ -71,6 +111,7 @@
 import { mapActions, mapGetters } from "vuex";
 // Types
 import { Task } from "@/types/Task";
+import BxIcon from "@/components/UI/BxIcon.vue";
 
 /**
  * @component TaskForm
@@ -79,6 +120,7 @@ import { Task } from "@/types/Task";
  */
 export default {
 	name: 'TaskForm',
+	components: { BxIcon },
 
 	// Expose method for parent components to prefill form
 	expose: ["getTaskForPrefill"],
@@ -98,6 +140,8 @@ export default {
 			currTaskId: null,
 
 			desc: "",
+			dueAtDate: null,
+			dueAtTime: "00:00",
 			done: false,
 			starred: false,
 		};
@@ -117,6 +161,18 @@ export default {
 				? `TASK #${this.currTaskId}`
 				: "NEW TASK";
 		},
+
+		dueAtDateTime() {
+			return `${this.dueAtDate}@${this.dueAtTime}`
+		},
+
+		formIsEmpty() {
+			return this.desc === ""
+				&& this.dueAtDate === null
+				&& this.dueAtTime === "00:00"
+				&& this.done === false
+				&& this.starred === false;
+		}
 	},
 
 	methods: {
@@ -147,6 +203,12 @@ export default {
 			this.desc = task.desc;
 			this.done = task.done;
 			this.starred = task.starred;
+
+			if (task.dueAt) {
+				const [d, t] = task.dueAt.split("@");
+				this.dueAtDate = d;
+				this.dueAtTime = t;
+			}
 		},
 
 		/**
@@ -154,8 +216,10 @@ export default {
 		 */
 		resetForm() {
 			this.currTaskId = null;
-			this.desc = null;
+			this.desc = "";
 			this.starred = false;
+			this.dueAtDate = null;
+			this.dueAtTime = "00:00";
 		},
 
 		// =============================================
@@ -189,6 +253,7 @@ export default {
 			return new Task({
 				id: withId ? this.currTaskId : undefined,
 				desc: this.desc,
+				dueAt: this.dueAtDate ? this.dueAtDateTime : null,
 				done: this.done,
 				starred: this.starred,
 				tagId: null

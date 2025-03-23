@@ -20,12 +20,13 @@ export class Task {
   desc: string;
   done: boolean;
   starred: boolean;
-  dueAt: number;
+  dueAt: string;
   tagId: number | null;
 
   constructor(data: {
     id?: number;
     desc: string;
+    dueAt: string;
     done?: boolean;
     starred?: boolean;
     tagId?: number | null;
@@ -34,7 +35,7 @@ export class Task {
     this.desc = data.desc;
     this.done = data.done ?? false;
     this.starred = data.starred ?? false;
-    this.dueAt = new Date().getTime() + 1000 * 60 * 60 * 24; // tomorrow at the same time
+    this.dueAt = data.dueAt ?? null;
     this.tagId = data.tagId ?? null;
   }
 
@@ -47,7 +48,7 @@ export class Task {
   }
 
   isOverdue(): boolean {
-    return this.dueAt < new Date().getTime();
+    return new Date(this.dueAt).getTime() < new Date().getTime();
   }
 
   toJSON() {
