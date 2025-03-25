@@ -26,6 +26,7 @@ export default {
 		return {
 			links: [
 				["Home", "/"],
+				["Admin", "/admin"],
 				["Tasks", "/tasks"],
 				["About", "/about"],
 				["Dev", "/dev"],
