@@ -79,19 +79,7 @@
 			</label>
 		</div>
 
-
-
-		<div class="right">
-			<button
-				:disabled="desc === ''"
-				class="w-full bg-teal-500 hover:bg-teal-400 disabled:bg-zinc-700 disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
-				@click="onSaveButton"
-			>
-				{{ currTaskId ? 'Update' : 'Add' }}
-			</button>
-
-			<div class="h-2"></div>
-
+		<div class="right flex flex-col justify-between">
 			<button
 				:disabled="formIsEmpty"
 				class="w-full flex items-center justify-center gap-1 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-700 disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
@@ -100,9 +88,14 @@
 				<BxIcon icon="reset" class="-ms-2"/>
 				Reset
 			</button>
+			<button
+				:disabled="desc === ''"
+				class="w-full bg-teal-500 hover:bg-teal-400 disabled:bg-zinc-700 disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
+				@click="onSaveButton"
+			>
+				{{ currTaskId ? 'Update' : 'Add' }}
+			</button>
 		</div>
-
-
 	</div>
 </template>
 
