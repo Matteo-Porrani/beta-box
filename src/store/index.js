@@ -1,5 +1,8 @@
 import {createStore} from 'vuex'
+
+import form from "./modules/store-form";
 import task from './modules/store-task'
+
 
 export default createStore({
     state: {},
@@ -7,6 +10,7 @@ export default createStore({
     mutations: {},
     actions: {},
     modules: {
+        form,
         task,
     }
 })

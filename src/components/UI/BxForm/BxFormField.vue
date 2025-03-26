@@ -1,7 +1,7 @@
 <template>
 	<div
 		data-test="bx-form-field-root"
-		class="flex flex-col w-72 border rounded p-1"
+		class="flex flex-col w-72 h-16 border rounded p-1"
 	>
 		<label class="text-sm">{{ fieldDesc.field }}</label>
 

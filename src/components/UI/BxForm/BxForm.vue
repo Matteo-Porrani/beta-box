@@ -1,14 +1,15 @@
 <template>
 	<div
 		data-test="bx-form-root"
-		class="h-[60vh] w-1/2 flex flex-col flex-wrap gap-2 border rounded p-1"
+		class="max-h-[60vh] w-1/2 flex flex-col flex-wrap gap-2 border rounded p-1"
 	>
+
+		<p v-if="title" class="text-xl">{{ title }}</p>
 
 		<BxFormField
 			v-for="f in formDescription"
 			:key="f.id"
 			:fieldDesc="f"
-			:formValues="formValues"
 		/>
 
 	</div>
@@ -31,9 +32,9 @@ export default defineComponent({
 			type: Array,
 			default: () => [],
 		},
-		formValues: {
-			type: Object,
-			required: true,
+		title: {
+			type: String,
+			default: null,
 		}
 	},
 

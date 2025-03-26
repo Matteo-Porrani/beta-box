@@ -4,6 +4,7 @@
 
 	<BxForm
 		:formDescription="formDescription"
+		title="Category"
 	/>
 
 
@@ -11,7 +12,10 @@
 
 
 <script>
-import { ADMIN_FORM_DESC } from "@/const/const-admin";
+import {
+	// ADMIN_FORM_DESC,
+	CATEGORY_FORM_DESC
+} from "@/const/const-admin";
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
 
 export default {
@@ -21,7 +25,7 @@ export default {
 
 	data() {
 		return {
-			formDescription: ADMIN_FORM_DESC,
+			formDescription: CATEGORY_FORM_DESC,
 		}
 	}
 

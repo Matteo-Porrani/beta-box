@@ -290,3 +290,60 @@ export const ADMIN_FORM_DESC = [
 ];
 
 
+export const CATEGORY_FORM_DESC = [
+	{
+		entity: "FieldDefinition",
+		order: 1,
+		field: "id",
+		pk: true,
+		type: "N",
+		rel_entity: null,
+		list: null,
+		multiple: null,
+		min: null,
+		max: null,
+		readonly: true,
+		picker_col: true,
+		filter: null,
+		info: null,
+		comment: null,
+	},
+	
+	{
+		entity: "FieldDefinition",
+		order: 2,
+		field: "name",
+		pk: false,
+		type: "T",
+		rel_entity: null,
+		list: null,
+		multiple: null,
+		min: null,
+		max: null,
+		readonly: false,
+		picker_col: true,
+		filter: null,
+		info: null,
+		comment: null,
+	},
+	
+	{
+		entity: "FieldDefinition",
+		order: 2,
+		field: "isFavorite",
+		pk: false,
+		type: "B",
+		rel_entity: null,
+		list: null,
+		multiple: null,
+		min: null,
+		max: null,
+		readonly: false,
+		picker_col: true,
+		filter: null,
+		info: null,
+		comment: null,
+	},
+
+]
+
