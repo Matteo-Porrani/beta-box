@@ -10,6 +10,7 @@
 				type="text"
 				class="w-full"
 				:readonly="fieldDesc.readonly"
+				v-model="value"
 			>
 		</template>
 
@@ -18,32 +19,18 @@
 				type="number"
 				class="w-24"
 				:readonly="fieldDesc.readonly"
+				v-model="value"
 			>
 		</template>
 
-<!--		<template v-if="fieldDesc.type === 'B'">-->
-<!--			<input-->
-<!--				type="checkbox"-->
-<!--				class="size-6"-->
-<!--				:readonly="fieldDesc.readonly"-->
-<!--			>-->
-<!--		</template>-->
-
 		<template v-if="fieldDesc.type === 'B'">
-			<span class="relative mt-1">
-				<input
-					type="checkbox"
-					class="sr-only peer"
-				/>
-				<span
-					class="
-						block w-11 h-6 bg-stone-400 rounded-full
-						peer peer-checked:after:translate-x-full peer-checked:after:border-white
-						after:content-[''] after:absolute after:top-[2px] after:left-[2px]
-						after:bg-white after:border-gray-300 after:border after:rounded-full
-						after:size-5 after:transition-all peer-checked:bg-teal-500"
-				></span>
-			</span>
+
+			<input
+				type="checkbox"
+				class="size-6 accent-teal-500"
+				v-model="value"
+			/>
+
 		</template>
 	</div>
 </template>
@@ -51,6 +38,7 @@
 
 <script>
 import {defineComponent} from 'vue'
+import { mapMutations } from "vuex";
 
 export default defineComponent({
 	name: "BxFormField",
@@ -60,6 +48,31 @@ export default defineComponent({
 			type: Object,
 			required: true,
 		},
+	},
+
+	expose: ["initField"],
+
+	data() {
+		return {
+			value: null
+		}
+	},
+
+	watch: {
+		value(newVal) {
+			this.SET_FIELD({
+				key: this.fieldDesc.field,
+				value: newVal,
+			})
+		}
+	},
+
+	methods: {
+		...mapMutations("form", ["SET_FIELD"]),
+
+		initField(initVal) {
+			this.value = initVal;
+		}
 	}
 
 
@@ -71,7 +84,5 @@ export default defineComponent({
 input {
 	@apply bg-stone-700 rounded text-stone-200 p-1
 }
-
-
 </style>
 

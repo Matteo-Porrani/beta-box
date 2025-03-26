@@ -9,6 +9,7 @@
 		<BxFormField
 			v-for="f in formDescription"
 			:key="f.id"
+			:ref="`fieldRef_${f.field}`"
 			:fieldDesc="f"
 		/>
 
@@ -17,7 +18,8 @@
 
 
 <script>
-import {defineComponent} from 'vue'
+import { defineComponent } from 'vue'
+import { mapMutations } from "vuex";
 import BxFormField from "@/components/UI/BxForm/BxFormField.vue";
 
 export default defineComponent({
@@ -37,6 +39,46 @@ export default defineComponent({
 			default: null,
 		}
 	},
+
+	expose: [
+		"initForm",
+		"resetForm",
+	],
+
+	data() {
+		return {
+			childrenRefs: {},
+		}
+	},
+
+	mounted() {
+		for (const k of this.formDescription.map(f => f.field)) {
+			this.childrenRefs[k] = this.$refs[`fieldRef_${k}`][0];
+		}
+	},
+
+	methods: {
+		...mapMutations("form", ["RESET_FORM"]),
+
+		initForm(values) {
+			const isReset = Object.keys(values).length < 1;
+			for (const k of this.formDescription.map(f => f.field)) {
+				if (this.childrenRefs[k]) {
+					const v = isReset
+						? null
+						: values[k];
+					// set value on a single field
+					this.childrenRefs[k].initField(v);
+				}
+			}
+
+			if (isReset) setTimeout(() => {
+				this.RESET_FORM();
+			}, 500)
+
+		},
+
+	}
 
 
 })
