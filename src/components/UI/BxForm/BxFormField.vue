@@ -24,13 +24,11 @@
 		</template>
 
 		<template v-if="fieldDesc.type === 'B'">
-
 			<input
 				type="checkbox"
 				class="size-6 accent-teal-500"
 				v-model="value"
 			/>
-
 		</template>
 	</div>
 </template>
@@ -74,7 +72,6 @@ export default defineComponent({
 			this.value = initVal;
 		}
 	}
-
 
 })
 </script>

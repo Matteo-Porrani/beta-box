@@ -5,7 +5,6 @@
 	<BxForm
 		ref="bxForm"
 		:formDescription="formDescription"
-		title="Category"
 	/>
 
 	<div class="h-4"></div>
@@ -86,11 +85,11 @@ export default {
 
 		openItem(id) {
 			const item = this.categories.find(el => el.id === id);
-			this.$refs.bxForm.initForm(item)
+			this.$refs.bxForm.initForm(item);
 		},
 
 		onReset() {
-			this.$refs.bxForm.initForm({});
+			this.$refs.bxForm.initForm({}); // empty object will reset
 		},
 	}
 
