@@ -15,6 +15,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 
 	{
@@ -33,6 +34,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -51,6 +53,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -69,6 +72,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -87,6 +91,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -105,6 +110,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -123,6 +129,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -141,6 +148,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -159,6 +167,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -177,6 +186,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -195,6 +205,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -213,6 +224,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -231,6 +243,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -249,6 +262,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -267,6 +281,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -285,6 +300,7 @@ export const ADMIN_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 ];
@@ -307,6 +323,7 @@ export const CATEGORY_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: false,
 	},
 	
 	{
@@ -325,6 +342,7 @@ export const CATEGORY_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 
 	{
@@ -343,11 +361,12 @@ export const CATEGORY_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: false,
 	},
 	
 	{
 		entity: "FieldDefinition",
-		order: 4,
+		order: 10,
 		field: "isFavorite",
 		pk: false,
 		type: "B",
@@ -361,6 +380,7 @@ export const CATEGORY_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: false,
 	},
 	
 	{
@@ -379,6 +399,7 @@ export const CATEGORY_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
+		required: true,
 	},
 	
 	{
@@ -388,7 +409,7 @@ export const CATEGORY_FORM_DESC = [
 		pk: false,
 		type: "L",
 		rel_entity: null,
-		list: null,
+		list: "$cities",
 		multiple: null,
 		min: null,
 		max: null,
@@ -397,7 +418,7 @@ export const CATEGORY_FORM_DESC = [
 		filter: null,
 		info: null,
 		comment: null,
-		options: [ { value: "P", label: "Paris" }, { value: "M", label: "Milan" }, { value: "R", label: "Rome" }, ]
+		required: true,
 	},
 ]
 

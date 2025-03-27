@@ -3,7 +3,12 @@
 		data-test="bx-form-field-root"
 		class="grid grid-cols-[1fr_4fr] items-center border rounded p-1"
 	>
-		<label class="text-sm">{{ fieldDesc.field }}</label>
+		<label class="text-sm">
+			{{ fieldDesc.field }}
+			<span v-if="fieldDesc.required">*</span>
+		</label>
+
+		<!--	EVERY INPUT TYPE MUST BE ISOLATED IN SPECIFIC COMPONENT	-->
 
 		<template v-if="fieldDesc.type === 'T'">
 			<input
@@ -34,7 +39,7 @@
 		<template v-if="fieldDesc.type === 'L'">
 			<select v-model="value">
 				<option
-					v-for="o in fieldDesc.options"
+					v-for="o in options"
 					:key="o.value"
 					:value="o.value"
 				>
@@ -64,7 +69,7 @@
 
 <script>
 import {defineComponent} from 'vue'
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default defineComponent({
 	name: "BxFormField",
@@ -85,6 +90,14 @@ export default defineComponent({
 				date: null,
 				time: "00:00"
 			}
+		}
+	},
+
+	computed: {
+		...mapGetters("list", ["getList"]),
+
+		options() {
+			return this.getList(this.fieldDesc.list);
 		}
 	},
 
@@ -113,7 +126,9 @@ export default defineComponent({
 
 		initField(initVal) {
 			if (this.fieldDesc.type === "D") {
-				const [date, time] = initVal.split("@");
+				const [date, time] = initVal !== null
+					? initVal.split("@")
+					: [null, "00:00"];
 				this.dateTimeValue = {
 					date,
 					time,
@@ -132,6 +147,10 @@ export default defineComponent({
 input,
 select {
 	@apply bg-stone-700 rounded text-stone-200 p-1 text-sm
+}
+
+input[readonly] {
+	@apply bg-stone-800 text-stone-200
 }
 </style>
 

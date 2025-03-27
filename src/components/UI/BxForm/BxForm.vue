@@ -4,7 +4,7 @@
 		class="max-h-[60vh] w-1/2 flex flex-col flex-wrap gap-2 border rounded p-1"
 	>
 		<BxFormField
-			v-for="f in formDescription"
+			v-for="f in sortedDescription"
 			:key="f.id"
 			:ref="`fieldRef_${f.field}`"
 			:fieldDesc="f"
@@ -34,6 +34,7 @@ export default defineComponent({
 
 	expose: [
 		"initForm",
+		"resetForm",
 	],
 
 	data() {
@@ -42,8 +43,16 @@ export default defineComponent({
 		}
 	},
 
+	computed: {
+		sortedDescription() {
+			return this.formDescription
+				.map(f => f) // create new array to avoid mutating prop
+				.sort((a, b) => a.order - b.order);
+		}
+	},
+
 	mounted() {
-		for (const k of this.formDescription.map(f => f.field)) {
+		for (const k of this.sortedDescription.map(f => f.field)) {
 			this.childrenRefs[k] = this.$refs[`fieldRef_${k}`][0];
 		}
 	},
@@ -51,15 +60,23 @@ export default defineComponent({
 	methods: {
 		...mapMutations("form", ["RESET_FORM"]),
 
+		/**
+		 * This method is only needed to be exposed
+		 * to have a more intuitive API
+		 */
+		resetForm() {
+			this.initForm({});
+		},
+
 		initForm(values) {
 			const isReset = Object.keys(values).length < 1;
-			for (const k of this.formDescription.map(f => f.field)) {
-				if (this.childrenRefs[k]) {
+			for (const field of this.formDescription.map(f => f.field)) {
+				if (this.childrenRefs[field]) {
 					const v = isReset
 						? null
-						: values[k];
+						: values[field];
 					// set value on a single field
-					this.childrenRefs[k].initField(v);
+					this.childrenRefs[field].initField(v);
 				}
 			}
 
