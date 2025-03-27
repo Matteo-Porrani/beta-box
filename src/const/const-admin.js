@@ -362,6 +362,42 @@ export const CATEGORY_FORM_DESC = [
 		info: null,
 		comment: null,
 	},
-
+	
+	{
+		entity: "FieldDefinition",
+		order: 5,
+		field: "start",
+		pk: false,
+		type: "D",
+		rel_entity: null,
+		list: null,
+		multiple: null,
+		min: null,
+		max: null,
+		readonly: false,
+		picker_col: true,
+		filter: null,
+		info: null,
+		comment: null,
+	},
+	
+	{
+		entity: "FieldDefinition",
+		order: 6,
+		field: "city",
+		pk: false,
+		type: "L",
+		rel_entity: null,
+		list: null,
+		multiple: null,
+		min: null,
+		max: null,
+		readonly: false,
+		picker_col: true,
+		filter: null,
+		info: null,
+		comment: null,
+		options: [ { value: "P", label: "Paris" }, { value: "M", label: "Milan" }, { value: "R", label: "Rome" }, ]
+	},
 ]
 

@@ -9,25 +9,28 @@
 
 	<div class="h-4"></div>
 
-	<button
-		class="
+
+	<div class="flex justify-between w-1/2 border rounded p-1">
+		<button
+			class="
 			w-32 bg-teal-500 hover:bg-teal-400 disabled:bg-zinc-700
 			disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
-		@click="onSave"
-	>
-		Save
-	</button>
+			@click="onSave"
+		>
+			Save
+		</button>
 
-	<div class="h-2"></div>
-
-	<button
-		class="
+		<button
+			class="
 			w-32 bg-yellow-500 hover:bg-yellow-400 disabled:bg-zinc-700
 			disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
-		@click="onReset"
-	>
-		Reset
-	</button>
+			@click="onReset"
+		>
+			Reset
+		</button>
+	</div>
+
+
 
 	<div class="h-12"></div>
 
@@ -63,9 +66,9 @@ export default {
 			formDescription: CATEGORY_FORM_DESC,
 
 			categories: [
-				{ id: 11, name: "sports", isFavorite: false },
-				{ id: 25, name: "nature", isFavorite: true },
-				{ id: 36, name: "music", isFavorite: true },
+				{ id: 11, name: "sports", info: "some more info",  isFavorite: false, start: "2025-03-21@09:12", city: "M" },
+				{ id: 25, name: "nature", info: "about the",  isFavorite: true, start: "2025-05-31@12:30", city: "R" },
+				{ id: 36, name: "music", info: "some more info",  isFavorite: true, start: "2025-03-21@02:11", city: "P" },
 			],
 
 		}
