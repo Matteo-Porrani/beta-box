@@ -35,14 +35,14 @@
 	<div class="h-12"></div>
 
 	<!-- TEMPORARY TABLE -->
-	<div v-for="c in categories" :key="c.id" class="w-64 grid grid-cols-3 items-center gap-4 border p-1">
-		<button
-			class="border rounded p-1 hover:bg-stone-700"
-			@click="openItem(c.id)"
-		>{{ c.id }}</button>
-		<p>{{ c.name }}</p>
-		<p>{{ c.isFavorite }}</p>
-	</div>
+<!--	<div v-for="c in categories" :key="c.id" class="w-64 grid grid-cols-3 items-center gap-4 border p-1">-->
+<!--		<button-->
+<!--			class="border rounded p-1 hover:bg-stone-700"-->
+<!--			@click="openItem(c.id)"-->
+<!--		>{{ c.id }}</button>-->
+<!--		<p>{{ c.name }}</p>-->
+<!--		<p>{{ c.isFavorite }}</p>-->
+<!--	</div>-->
 
 </template>
 
@@ -51,7 +51,8 @@
 import { mapState } from "vuex";
 import {
 	// ADMIN_FORM_DESC,
-	CATEGORY_FORM_DESC
+	// CATEGORY_FORM_DESC,
+	COLOR_FORM_DESC,
 } from "@/const/const-admin";
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
 
@@ -63,7 +64,7 @@ export default {
 
 	data() {
 		return {
-			formDescription: CATEGORY_FORM_DESC,
+			formDescription: COLOR_FORM_DESC,
 
 			categories: [
 				{ id: 11, name: "sports", info: "some more info",  isFavorite: false, start: "2025-03-21@09:12", city: "M" },
