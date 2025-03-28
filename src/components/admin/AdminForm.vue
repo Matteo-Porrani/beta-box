@@ -95,6 +95,8 @@ export default {
 		...mapActions("entity", [
 			"loadItems",
 			"addItem",
+			"updateItem",
+			"deleteItem",
 		]),
 
 		async onSave() {
@@ -104,9 +106,12 @@ export default {
 
 			const r = await this[action]({
 				tableName: "color",
-				newItem: { ...this.formValues },
+				item: { ...this.formValues },
 			})
+
 			console.log("save", r)
+
+			this.onReset();
 		},
 
 		/**
@@ -121,13 +126,17 @@ export default {
 			console.log("@ ADMIN", item)
 			this.$refs.bxForm.initForm(item);
 		},
-		onDeleteItem(item) {
-			console.log("@ ADMIN", item)
-		},
 
 		onReset() {
 			this.$refs.bxForm.resetForm();
 		},
+
+		onDeleteItem(item) {
+			console.log("@ ADMIN", item)
+			this.deleteItem({ tableName: this.tableName, id: item.id });
+		},
+
+
 	}
 
 };

@@ -52,16 +52,59 @@ export default {
 			});
 		},
 		
-		async addItem({ dispatch }, { tableName, newItem }) {
-			console.log(JSON.stringify(newItem))
+		/**
+		 * ADD
+		 * @param dispatch
+		 * @param tableName
+		 * @param newItem
+		 * @returns {Promise<*>}
+		 */
+		async addItem({ dispatch }, { tableName, item }) {
+			console.log(JSON.stringify(item))
 			return await dispatch("execDatabaseAction", async () => {
-				const id = await dataSrv.add(tableName, newItem);
+				const id = await dataSrv.add(tableName, item);
 				// reload
 				await dispatch("loadItems", tableName);
 				return new DatabaseActionResponse(true, `item ${id} added`);
 			});
 		},
 		
+		/**
+		 * UPDATE
+		 * @param dispatch
+		 * @param tableName
+		 * @param item
+		 * @returns {Promise<*>}
+		 */
+		async updateItem({ dispatch }, { tableName, item }) {
+			return await dispatch("execDatabaseAction", async () => {
+				await dataSrv.update(tableName, item);
+				// reload
+				await dispatch("loadItems", tableName);
+				return new DatabaseActionResponse(true, `item ${item.id} successfully updated`);
+			});
+		},
+		
+		/**
+		 * DELETE & CLEAR
+		 * @param dispatch
+		 * @param tableName
+		 * @param id
+		 * @param all
+		 * @returns {Promise<*>}
+		 */
+		async deleteItem({ dispatch }, { tableName, id, all = false }) {
+			return await dispatch("execDatabaseAction", async () => {
+				const m = (!id && all)
+					? "clear"
+					: "delete";
+
+				await dataSrv[m](tableName, id);
+				// reload
+				await dispatch("loadItems", tableName);
+				return new DatabaseActionResponse(true, `item #${id} deleted`);
+			});
+		},
 	}
 	
 }
