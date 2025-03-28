@@ -2,6 +2,14 @@ export function isNull(value) {
 	return value === null;
 }
 
+export function isUndefined(value) {
+	return value === undefined;
+}
+
+export function isNullOrUndefined(value) {
+	return isNull(value) || isUndefined(value);
+}
+
 // Returns true if the value is falsy
 export function isFalsy(value) {
 	return !value;

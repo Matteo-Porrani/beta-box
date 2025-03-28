@@ -29,23 +29,7 @@
 		</template>
 
 		<template v-if="fieldDesc.type === 'B'">
-			<label class="inline-flex items-center cursor-pointer">
-				<input
-					type="checkbox"
-					class="sr-only peer"
-					v-model="value"
-				>
-				<div
-					class="
-						relative w-11 h-6 rounded-full
-						peer bg-stone-700
-						peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
-						peer-checked:after:border-white
-						after:content-[''] after:absolute after:top-[2px] after:start-[2px]
-						after:bg-stone-300 after:rounded-full
-						after:size-5 after:transition-all peer-checked:bg-teal-500
-					"/>
-			</label>
+			<BxSwitch v-model="value" />
 		</template>
 
 		<template v-if="fieldDesc.type === 'L'">
@@ -82,9 +66,14 @@
 <script>
 import { defineComponent } from 'vue'
 import { mapGetters, mapMutations, mapState } from "vuex";
+import BxSwitch from '../BxSwitch.vue';
 
 export default defineComponent({
 	name: "BxFormField",
+
+	components: {
+		BxSwitch
+	},
 
 	props: {
 		fieldDesc: {
@@ -162,6 +151,10 @@ export default defineComponent({
 					date,
 					time,
 				}
+				return;
+			}
+			if (this.fieldDesc.type === "B") {
+				this.value = initVal ?? false;
 				return;
 			}
 			this.value = initVal;

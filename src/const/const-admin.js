@@ -557,6 +557,25 @@ export const ENTITY_TEMP_DESC = {
 			required: true,
 		},
 	
+		{
+			entity: "FieldDefinition",
+			order: 4,
+			field: "isFavorite",
+			pk: false,
+			type: "B",
+			rel_entity: null,
+			list: null,
+			multiple: null,
+			min: null,
+			max: null,
+			readonly: false,
+			picker_col: true,
+			filter: null,
+			info: null,
+			comment: null,
+			required: true,
+		},
+	
 	]
 }
 
