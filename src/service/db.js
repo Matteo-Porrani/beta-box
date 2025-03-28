@@ -2,8 +2,10 @@
 import Dexie from 'dexie';
 
 export const db = new Dexie('betaBoxDatabase');
-db.version(1).stores({
+
+db.version(2).stores({
 	field_definition: '++id, entity, list, rel_entity',
+	list_option: '++id, code, value',
 	task: '++id, desc, dueAt',
 	tag: '++id, name',
 	color: '++id, label',

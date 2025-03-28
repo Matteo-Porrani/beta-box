@@ -1,4 +1,6 @@
 <template>
+
+	<!-- THE FORM -->
 	<BxForm
 		ref="bxForm"
 		:formDescription="formDescription"
@@ -6,6 +8,7 @@
 
 	<div class="h-4"></div>
 
+	<!-- THE BUTTONS -->
 	<div class="flex justify-between w-1/2 border rounded p-1">
 		<button
 			class="
@@ -114,8 +117,7 @@ export default {
 		 * The public API of BxForm exposes 2 methods : initForm() & resetForm().
 		 * Internally, only one method actually does the job (init),
 		 * while the other one (reset) only executes the first one with an empty object {}.
-		 * Clients of BxForm don't need to know this !!
-		 * All they need is a clear and intuitive API :
+		 * Clients of BxForm don't need to know this !! All they need is a clear and intuitive API :
 		 * calling resetForm() is more intuitive than calling initForm({})
 		 */
 		onEditItem(item) {
@@ -138,7 +140,6 @@ export default {
 				id: item.id
 			});
 		},
-
 
 	}
 
