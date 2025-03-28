@@ -83,7 +83,7 @@ export default {
 	methods: {
 		onSave() {
 			console.log("SAVE")
-			console.log(this.formValues)
+			console.table(this.formValues)
 		},
 
 		/**

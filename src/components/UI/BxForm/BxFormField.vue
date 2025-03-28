@@ -29,11 +29,22 @@
 		</template>
 
 		<template v-if="fieldDesc.type === 'B'">
-			<input
-				type="checkbox"
-				class="size-6 accent-teal-500"
-				v-model="value"
-			/>
+			<label class="inline-flex items-center cursor-pointer">
+				<input
+					type="checkbox"
+					class="sr-only peer"
+					v-model="value"
+				>
+				<div
+					class="
+						relative w-11 h-6 rounded-full
+						peer bg-stone-700
+						peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
+						peer-checked:after:border-white
+						after:content-[''] after:absolute after:top-[2px] after:start-[2px]
+						after:bg-stone-300 after:rounded-full
+						after:size-5 after:transition-all peer-checked:bg-teal-500"/>
+			</label>
 		</template>
 
 		<template v-if="fieldDesc.type === 'L'">
@@ -68,7 +79,7 @@
 
 
 <script>
-import {defineComponent} from 'vue'
+import { defineComponent } from 'vue'
 import { mapGetters, mapMutations } from "vuex";
 
 export default defineComponent({
