@@ -1,47 +1,51 @@
 <template>
 
-	<!-- THE FORM -->
-	<BxForm
-		ref="bxForm"
-		:formDescription="formDescription"
-	/>
+	<div
+		v-if="contentLoaded"
+		data-test="admin-form-root">
 
-	<div class="h-4"></div>
 
-	<!-- THE BUTTONS -->
-	<div class="flex justify-between w-1/2 border rounded p-1">
-		<button
-			class="
+		<!-- THE FORM -->
+		<BxForm
+			ref="bxForm"
+			:formDescription="formDescription"
+		/>
+
+		<div class="h-4"></div>
+
+		<!-- THE BUTTONS -->
+		<div class="flex justify-between w-1/2 border rounded p-1">
+			<button
+				class="
 			w-32 bg-teal-500 hover:bg-teal-400 disabled:bg-zinc-700
 			disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
-			@click="onSave"
-		>
-			{{ formValues.id ? 'Update' : 'Add' }}
-		</button>
+				@click="onSave"
+			>
+				{{ formValues.id ? 'Update' : 'Add' }}
+			</button>
 
-		<button
-			class="
+			<button
+				class="
 			w-32 bg-yellow-500 hover:bg-yellow-400 disabled:bg-zinc-700
 			disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
-			@click="onReset"
-		>
-			Reset
-		</button>
+				@click="onReset"
+			>
+				Reset
+			</button>
+		</div>
+
+
+		<div class="h-12"></div>
+
+		<BxTable
+			:cols="formDescription.map(c => c.field)"
+			:rows="rows"
+			@edit-item="onEditItem"
+			@duplicate-item="onDuplicateItem"
+			@delete-item="onDeleteItem"
+		/>
+
 	</div>
-
-
-
-	<div class="h-12"></div>
-
-	<BxTable
-		:cols="formDescription.map(c => c.field)"
-		:rows="rows"
-		@edit-item="onEditItem"
-		@duplicate-item="onDuplicateItem"
-		@delete-item="onDeleteItem"
-	/>
-
-
 </template>
 
 
@@ -66,7 +70,9 @@ export default {
 
 	data() {
 		return {
-			tableName: "color",
+			contentLoaded: false,
+			// tableName: "list_option",
+			tableName: "dummy",
 		}
 	},
 
@@ -86,8 +92,12 @@ export default {
 	},
 
 	async mounted() {
-		const r = await this.loadItems(this.tableName);
-		console.log(r)
+		const r1 = await this.loadItems("list_option");
+		console.log(r1)
+		const r2 = await this.loadItems(this.tableName);
+		console.log(r2)
+
+		this.contentLoaded = true;
 	},
 
 	methods: {
@@ -104,7 +114,7 @@ export default {
 				: "addItem";
 
 			const r = await this[action]({
-				tableName: "color",
+				tableName: this.tableName,
 				item: prepareItem(this.formValues)
 			})
 
@@ -140,7 +150,6 @@ export default {
 				id: item.id
 			});
 		},
-
 	}
 
 };

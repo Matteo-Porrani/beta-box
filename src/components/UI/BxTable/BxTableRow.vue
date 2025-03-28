@@ -61,7 +61,6 @@ export default {
 
 	methods: {
 		onAction(action) {
-			console.log("@", action)
 			this.$emit(`${action}`, this.row);
 		}
 	}
@@ -71,11 +70,11 @@ export default {
 <style scoped>
 th,
 td {
-	@apply p-2 border border-stone-700
+	@apply border border-stone-700 text-sm py-1 px-2
 }
 
 th,
 td[data-field="id"] {
-	@apply text-yellow-500 bg-stone-700 font-bold min-w-24 text-start p-2
+	@apply text-yellow-500 bg-stone-700 font-bold min-w-24 text-start
 }
 </style>

@@ -43,7 +43,8 @@
 						peer-checked:after:border-white
 						after:content-[''] after:absolute after:top-[2px] after:start-[2px]
 						after:bg-stone-300 after:rounded-full
-						after:size-5 after:transition-all peer-checked:bg-teal-500"/>
+						after:size-5 after:transition-all peer-checked:bg-teal-500
+					"/>
 			</label>
 		</template>
 
@@ -80,7 +81,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapState } from "vuex";
 
 export default defineComponent({
 	name: "BxFormField",
@@ -105,7 +106,10 @@ export default defineComponent({
 	},
 
 	computed: {
-		...mapGetters("list", ["getList"]),
+		...mapState({
+			entities: $s => $s.entity.entities,
+		}),
+		...mapGetters("entity", ["getList"]),
 
 		options() {
 			return this.getList(this.fieldDesc.list);
@@ -120,6 +124,21 @@ export default defineComponent({
 			})
 		},
 
+		/**
+		 * If the field is a list and the value is not set, set the default value
+		 */
+		options: {
+			immediate: true,
+			handler(newOptions) {
+				if (this.fieldDesc.type === 'L' && !this.value) {
+					const defaultOption = newOptions?.find(o => o.default === true);
+					if (defaultOption) {
+						this.value = defaultOption.value;
+					}
+				}
+			}
+		},
+
 		dateTimeValue: {
 			deep: true,
 			handler: function (newVal) {
@@ -129,7 +148,6 @@ export default defineComponent({
 				})
 			}
 		},
-
 	},
 
 	methods: {
@@ -157,7 +175,7 @@ export default defineComponent({
 <style scoped>
 input,
 select {
-	@apply bg-stone-700 rounded text-stone-200 p-1 text-sm
+	@apply bg-stone-700 rounded text-stone-200 p-1 text-lg
 }
 
 input[readonly] {

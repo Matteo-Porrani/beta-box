@@ -11,6 +11,17 @@ export default {
 		}
 	},
 	
+	getters: {
+		getList: (state) => {
+			return (listCode) => {
+				console.log("/// getList", listCode)
+				return state.entities.list_option
+					.filter(el => el.list === listCode)
+					.map(el => ({ value: el.code, label: el.label, default: el.default }))
+			}
+		}
+	},
+	
 	mutations: {
 		SET_LOADING(state, loading) {
 			state.loading = loading
