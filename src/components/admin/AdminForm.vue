@@ -98,9 +98,11 @@ export default {
 		]),
 
 		async onSave() {
-			console.log("SAVE")
-			console.table(this.formValues)
-			const r = await this.addItem({
+			const action = Object.keys(this.formValues).includes("id")
+				? "updateItem"
+				: "addItem";
+
+			const r = await this[action]({
 				tableName: "color",
 				newItem: { ...this.formValues },
 			})

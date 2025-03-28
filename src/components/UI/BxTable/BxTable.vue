@@ -1,5 +1,5 @@
 <template>
-	<table>
+	<table class="rounded overflow-hidden">
 		<tbody>
 		<BxTableRow
 			is-header

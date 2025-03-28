@@ -62,6 +62,7 @@ export default {
 </script>
 
 <style scoped>
+th,
 td {
 	@apply p-2 border border-stone-700
 }
