@@ -17,7 +17,7 @@
 			disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
 			@click="onSave"
 		>
-			Save
+			{{ formValues.id ? 'Update' : 'Add' }}
 		</button>
 
 		<button
@@ -34,36 +34,36 @@
 
 	<div class="h-12"></div>
 
-	<!-- TEMPORARY TABLE -->
-<!--	<div v-for="c in categories" :key="c.id" class="w-64 grid grid-cols-3 items-center gap-4 border p-1">-->
-<!--		<button-->
-<!--			class="border rounded p-1 hover:bg-stone-700"-->
-<!--			@click="openItem(c.id)"-->
-<!--		>{{ c.id }}</button>-->
-<!--		<p>{{ c.name }}</p>-->
-<!--		<p>{{ c.isFavorite }}</p>-->
-<!--	</div>-->
+	<BxTable
+		:cols="formDescription.map(c => c.field)"
+		:rows="rows"
+		@edit-item="onEditItem"
+		@delete-item="onDeleteItem"
+	/>
+
 
 </template>
 
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import {
 	// ADMIN_FORM_DESC,
 	// CATEGORY_FORM_DESC,
 	COLOR_FORM_DESC,
 } from "@/const/const-admin";
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
+import BxTable from "@/components/UI/BxTable/BxTable.vue";
 
 export default {
 
 	name: "AdminForm",
 
-	components: { BxForm },
+	components: { BxTable, BxForm },
 
 	data() {
 		return {
+			tableName: "color",
 			formDescription: COLOR_FORM_DESC,
 
 			categories: [
@@ -77,14 +77,34 @@ export default {
 
 	computed: {
 		...mapState({
+			entities: $s => $s.entity.entities,
 			formValues: $s => $s.form.formValues,
-		})
+		}),
+
+		rows() {
+			return this.entities[this.tableName] ?? [];
+		},
+	},
+
+	async mounted() {
+		const r = await this.loadItems("color");
+		console.log(r)
 	},
 
 	methods: {
-		onSave() {
+		...mapActions("entity", [
+			"loadItems",
+			"addItem",
+		]),
+
+		async onSave() {
 			console.log("SAVE")
 			console.table(this.formValues)
+			const r = await this.addItem({
+				tableName: "color",
+				newItem: { ...this.formValues },
+			})
+			console.log("save", r)
 		},
 
 		/**
@@ -95,9 +115,12 @@ export default {
 		 * All they need is a clear and intuitive API :
 		 * calling resetForm() is more intuitive than calling initForm({})
 		 */
-		openItem(id) {
-			const item = this.categories.find(el => el.id === id);
+		onEditItem(item) {
+			console.log("@ ADMIN", item)
 			this.$refs.bxForm.initForm(item);
+		},
+		onDeleteItem(item) {
+			console.log("@ ADMIN", item)
 		},
 
 		onReset() {

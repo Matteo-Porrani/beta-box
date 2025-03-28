@@ -57,6 +57,9 @@ const actions = {
     },
     
     async addTask({ dispatch }, newTask) {
+        
+        console.log(JSON.stringify(newTask))
+        
         return await dispatch("execDatabaseAction", async () => {
             const id = await dataSrv.add(TABLE_TASK, newTask);
             await dispatch("loadTasks");
