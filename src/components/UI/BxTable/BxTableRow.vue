@@ -13,18 +13,14 @@
 			class="space-x-4"
 		>
 			<template v-if="!isHeader">
-				<button>
+				<button
+					v-for="b in buttons"
+					:key="b[1]"
+				>
 					<BxIcon
-						icon="edit"
+						:icon="b[1]"
 						size="small"
-						@click="onAction('editItem')"
-					/>
-				</button>
-				<button>
-					<BxIcon
-						icon="trash"
-						size="small"
-						@click="onAction('deleteItem')"
+						@click="onAction(b[0])"
 					/>
 				</button>
 			</template>
@@ -50,7 +46,18 @@ export default {
 	emits: [
 		"editItem",
 		"deleteItem",
+		"duplicateItem",
 	],
+
+	data() {
+		return {
+			buttons: [
+				["editItem", "edit"],
+				["duplicateItem", "copy"],
+				["deleteItem", "trash"],
+			]
+		}
+	},
 
 	methods: {
 		onAction(action) {

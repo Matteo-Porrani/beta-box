@@ -1,14 +1,10 @@
 <template>
-
-<!--<pre>{{ formDescription }}</pre>-->
-
 	<BxForm
 		ref="bxForm"
 		:formDescription="formDescription"
 	/>
 
 	<div class="h-4"></div>
-
 
 	<div class="flex justify-between w-1/2 border rounded p-1">
 		<button
@@ -38,6 +34,7 @@
 		:cols="formDescription.map(c => c.field)"
 		:rows="rows"
 		@edit-item="onEditItem"
+		@duplicate-item="onDuplicateItem"
 		@delete-item="onDeleteItem"
 	/>
 
@@ -46,14 +43,17 @@
 
 
 <script>
+// Vue related
 import { mapActions, mapState } from "vuex";
-import {
-	// ADMIN_FORM_DESC,
-	// CATEGORY_FORM_DESC,
-	COLOR_FORM_DESC,
-} from "@/const/const-admin";
+// utils
+import { isFalsy } from "@/utils/core-utils";
+import { prepareItem } from "@/utils/entity-utils";
+// const
+import { ENTITY_TEMP_DESC } from "@/const/const-admin";
+// components
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
 import BxTable from "@/components/UI/BxTable/BxTable.vue";
+
 
 export default {
 
@@ -64,14 +64,6 @@ export default {
 	data() {
 		return {
 			tableName: "color",
-			formDescription: COLOR_FORM_DESC,
-
-			categories: [
-				{ id: 11, name: "sports", info: "some more info",  isFavorite: false, start: "2025-03-21@09:12", city: "M" },
-				{ id: 25, name: "nature", info: "about the",  isFavorite: true, start: "2025-05-31@12:30", city: "R" },
-				{ id: 36, name: "music", info: "some more info",  isFavorite: true, start: "2025-03-21@02:11", city: "P" },
-			],
-
 		}
 	},
 
@@ -81,13 +73,17 @@ export default {
 			formValues: $s => $s.form.formValues,
 		}),
 
+		formDescription() {
+			return ENTITY_TEMP_DESC[this.tableName] ?? [];
+		},
+
 		rows() {
 			return this.entities[this.tableName] ?? [];
 		},
 	},
 
 	async mounted() {
-		const r = await this.loadItems("color");
+		const r = await this.loadItems(this.tableName);
 		console.log(r)
 	},
 
@@ -100,13 +96,13 @@ export default {
 		]),
 
 		async onSave() {
-			const action = Object.keys(this.formValues).includes("id")
+			const action = !isFalsy(this.formValues.id)
 				? "updateItem"
 				: "addItem";
 
 			const r = await this[action]({
 				tableName: "color",
-				item: { ...this.formValues },
+				item: prepareItem(this.formValues)
 			})
 
 			console.log("save", r)
@@ -123,17 +119,24 @@ export default {
 		 * calling resetForm() is more intuitive than calling initForm({})
 		 */
 		onEditItem(item) {
-			console.log("@ ADMIN", item)
 			this.$refs.bxForm.initForm(item);
+		},
+
+		onDuplicateItem(item) {
+			const clone = { ...item }
+			delete clone.id;
+			this.$refs.bxForm.initForm(clone);
 		},
 
 		onReset() {
 			this.$refs.bxForm.resetForm();
 		},
 
-		onDeleteItem(item) {
-			console.log("@ ADMIN", item)
-			this.deleteItem({ tableName: this.tableName, id: item.id });
+		async onDeleteItem(item) {
+			await this.deleteItem({
+				tableName: this.tableName,
+				id: item.id
+			});
 		},
 
 

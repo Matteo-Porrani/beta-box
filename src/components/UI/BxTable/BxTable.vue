@@ -12,6 +12,7 @@
 				:cols="cols"
 				:row="r"
 				@edit-item="onEditItem"
+				@duplicate-item="onDuplicateItem"
 				@delete-item="onDeleteItem"
 			/>
 		</tbody>
@@ -34,6 +35,7 @@ export default {
 
 	emits: [
 		"editItem",
+		"duplicateItem",
 		"deleteItem",
 	],
 
@@ -48,15 +50,15 @@ export default {
 
 	methods: {
 		onEditItem(item) {
-			console.log("@ ///", item)
 			this.$emit("editItem", item);
 		},
+		onDuplicateItem(item) {
+			this.$emit("duplicateItem", item);
+		},
 		onDeleteItem(item) {
-			console.log("@ ///", item)
 			this.$emit("deleteItem", item);
 		},
 	}
-
 }
 </script>
 

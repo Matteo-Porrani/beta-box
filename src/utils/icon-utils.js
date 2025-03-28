@@ -30,6 +30,7 @@ export const ICON_DICT = {
 	tag_filled: "IconTagFilled",
 	trash: "IconTrash",
 	edit: "IconEdit",
+	copy: "IconCopy",
 	refresh: "IconRefresh",
 	reset: "IconRotate",
 }

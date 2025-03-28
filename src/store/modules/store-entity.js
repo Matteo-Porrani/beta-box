@@ -56,6 +56,7 @@ export default {
 		 * ADD
 		 * @param dispatch
 		 * @param tableName
+		 * @param item
 		 * @param newItem
 		 * @returns {Promise<*>}
 		 */
@@ -77,6 +78,7 @@ export default {
 		 * @returns {Promise<*>}
 		 */
 		async updateItem({ dispatch }, { tableName, item }) {
+			console.log(JSON.stringify(item))
 			return await dispatch("execDatabaseAction", async () => {
 				await dataSrv.update(tableName, item);
 				// reload

@@ -2,6 +2,11 @@ export function isNull(value) {
 	return value === null;
 }
 
+// Returns true if the value is falsy
+export function isFalsy(value) {
+	return !value;
+}
+
 // Transforms a string in PascalCase to snake_case
 export function pascalToSnake(str) {
 	return str.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
