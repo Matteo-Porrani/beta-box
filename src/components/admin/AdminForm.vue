@@ -53,7 +53,7 @@
 // Vue related
 import { mapActions, mapState } from "vuex";
 // utils
-import { isFalsy } from "@/utils/core-utils";
+import { isFalsy, isInteger } from "@/utils/core-utils";
 import { prepareItem } from "@/utils/entity-utils";
 // const
 import { ENTITY_TEMP_DESC } from "@/const/const-admin";
@@ -109,9 +109,9 @@ export default {
 		]),
 
 		async onSave() {
-			const action = !isFalsy(this.formValues.id)
+			const action = isInteger(this.formValues.id)
 				? "updateItem"
-				: "addItem";
+				: "addItem"
 
 			const r = await this[action]({
 				tableName: this.tableName,

@@ -1,3 +1,7 @@
+// =============================================
+// TYPE CHECKING
+// =============================================
+
 export function isNull(value) {
 	return value === null;
 }
@@ -10,10 +14,26 @@ export function isNullOrUndefined(value) {
 	return isNull(value) || isUndefined(value);
 }
 
+export function isNaN(value) {
+	return Number.isNaN(value);
+}
+
+export function isNumber(value) {
+	return typeof value === 'number';
+}
+
+export function isInteger(value) {
+	return Number.isInteger(value);
+}
+
 // Returns true if the value is falsy
 export function isFalsy(value) {
 	return !value;
 }
+
+// =============================================
+// STRING CASE CONVERSION
+// =============================================
 
 // Transforms a string in PascalCase to snake_case
 export function pascalToSnake(str) {

@@ -101,7 +101,9 @@ export default defineComponent({
 		...mapGetters("entity", ["getList"]),
 
 		options() {
-			return this.getList(this.fieldDesc.list);
+			return this.fieldDesc.type === "L"
+				? this.getList(this.fieldDesc.list)
+				: []; // avoid calling getList() if it's not a list type
 		}
 	},
 
