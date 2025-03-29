@@ -75,6 +75,6 @@ td {
 
 th,
 td[data-field="id"] {
-	@apply text-yellow-500 bg-stone-700 font-bold min-w-24 text-start
+	@apply text-yellow-500 bg-stone-700 font-bold text-start
 }
 </style>

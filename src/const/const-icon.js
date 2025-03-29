@@ -42,6 +42,8 @@ export const ICON_DICT = {
 	refresh: "IconRefresh",
 	reset: "IconRotate",
 	loader: "IconLoader2",
+	add: "IconPlus",
+	bars: "IconMenu2",
 }
 
 export const ICON_SIZE = {

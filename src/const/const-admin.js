@@ -92,7 +92,7 @@ export const ENTITY_TEMP_DESC = {
 			filter: null,
 			info: null,
 			comment: null,
-			required: true,
+			required: false,
 		},
 		
 		{
@@ -100,9 +100,9 @@ export const ENTITY_TEMP_DESC = {
 			order: 6,
 			field: "type",
 			pk: false,
-			type: "T",
+			type: "L",
 			rel_entity: null,
-			list: null,
+			list: "$field_types",
 			multiple: null,
 			min: null,
 			max: null,
@@ -130,7 +130,7 @@ export const ENTITY_TEMP_DESC = {
 			filter: null,
 			info: null,
 			comment: null,
-			required: true,
+			required: false,
 		},
 		
 		{
@@ -149,7 +149,7 @@ export const ENTITY_TEMP_DESC = {
 			filter: null,
 			info: null,
 			comment: null,
-			required: true,
+			required: false,
 		},
 		
 		{
@@ -168,7 +168,7 @@ export const ENTITY_TEMP_DESC = {
 			filter: null,
 			info: null,
 			comment: null,
-			required: true,
+			required: false,
 		},
 		
 		{
@@ -187,7 +187,7 @@ export const ENTITY_TEMP_DESC = {
 			filter: null,
 			info: null,
 			comment: null,
-			required: true,
+			required: false,
 		},
 		
 		{
@@ -206,7 +206,7 @@ export const ENTITY_TEMP_DESC = {
 			filter: null,
 			info: null,
 			comment: null,
-			required: true,
+			required: false,
 		},
 		
 		{
@@ -225,7 +225,7 @@ export const ENTITY_TEMP_DESC = {
 			filter: null,
 			info: null,
 			comment: null,
-			required: true,
+			required: false,
 		},
 		
 		{
@@ -244,7 +244,7 @@ export const ENTITY_TEMP_DESC = {
 			filter: null,
 			info: null,
 			comment: null,
-			required: true,
+			required: false,
 		},
 		
 		{
@@ -263,7 +263,7 @@ export const ENTITY_TEMP_DESC = {
 			filter: null,
 			info: null,
 			comment: null,
-			required: true,
+			required: false,
 		},
 		
 		{
@@ -282,7 +282,7 @@ export const ENTITY_TEMP_DESC = {
 			filter: null,
 			info: null,
 			comment: null,
-			required: true,
+			required: false,
 		},
 		
 		{
@@ -301,10 +301,12 @@ export const ENTITY_TEMP_DESC = {
 			filter: null,
 			info: null,
 			comment: null,
-			required: true,
+			required: false,
 		},
 	
 	],
+	
+
 	list_option: [
 		{
 			entity: "FieldDefinition",

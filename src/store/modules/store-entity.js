@@ -17,6 +17,7 @@ export default {
 				console.log("/// getList", listCode)
 				return state.entities.list_option
 					.filter(el => el.list === listCode)
+					.sort((a, b) => a.order - b.order)
 					.map(el => ({ value: el.code, label: el.label, default: el.default }))
 			}
 		}

@@ -62,6 +62,8 @@ export default {
 		formDescription: Array,
 	},
 
+	emits: ["itemSaved"],
+
 	expose: ["onEditItem"],
 
 	data() {
@@ -73,10 +75,6 @@ export default {
 			// entities: $s => $s.entity.entities,
 			formValues: $s => $s.form.formValues,
 		}),
-
-		// rows() {
-		// 	return this.entities[this.tableName] ?? [];
-		// },
 	},
 
 
@@ -101,6 +99,7 @@ export default {
 			console.log("save", r)
 
 			this.onReset();
+			this.$emit("itemSaved")
 		},
 
 		/**

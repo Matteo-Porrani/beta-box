@@ -56,7 +56,7 @@
 		<div
 			v-if="notifStack.length > 0"
 			data-test="app-notification"
-			class="absolute flex flex-col gap-2 w-96 top-2 right-2 rounded p-1"
+			class="absolute flex flex-col gap-2 w-96 bottom-2 right-2 rounded p-1"
 		>
 			<TransitionGroup
 				name="notif"

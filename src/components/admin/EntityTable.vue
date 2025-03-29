@@ -4,7 +4,7 @@
 		:cols="formDescription.map(c => c.field)"
 		:rows="rows"
 		@edit-item="onEditItem"
-		@duplicate-item="onEditItem(true)"
+		@duplicate-item="onDuplicateItem"
 		@delete-item="onDeleteItem"
 	/>
 
@@ -56,10 +56,14 @@ export default {
 		 * Clients of BxForm don't need to know this !! All they need is a clear and intuitive API :
 		 * calling resetForm() is more intuitive than calling initForm({})
 		 */
-		onEditItem(item, duplicate = false) {
-			const copy =  { ...item };
-			if (duplicate) delete copy.id;
-			this.$emit("editItem", copy); // emit to AdminView
+		onEditItem(item) {
+			console.log("==>", JSON.stringify(item))
+			this.$emit("editItem", item); // emit to AdminView
+		},
+
+		onDuplicateItem(item) {
+			delete item.id;
+			this.onEditItem(item, true);
 		},
 
 		async onDeleteItem(item) {
