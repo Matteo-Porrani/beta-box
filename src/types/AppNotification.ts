@@ -10,7 +10,7 @@ export class AppNotification {
     constructor(
         status: NotifType,
         message: string,
-        duration = 2000,
+        duration = 3000,
     ) {
         this.id = new Date().getTime();
         this.status = status;
@@ -23,7 +23,7 @@ export class AppNotification {
             ERROR: "error",
             INFO: "info",
             WARNING: "alert",
-            SUCCESS: "alert",
+            SUCCESS: "success",
         }[this.status]
     }
 

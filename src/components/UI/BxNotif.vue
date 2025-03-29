@@ -1,22 +1,26 @@
 <template>
-	<article>
+	<article
+		class="border bg-stone-700 rounded p-1"
+	>
 		<BxIcon
 			:icon=" notif?.getIcon()"
-			:class="notif?.getTextColorClass()"
+			:class="textCC"
 			size="large"
 		/>
-
-		<p>{{ notif.id }}</p>
-		<p>{{ notif?.message }}</p>
+		<p class="text-2xl">{{ notif?.message }}</p>
 	</article>
 </template>
 
 
 <script setup>
-import {defineProps} from 'vue'
+import { computed, defineProps } from 'vue'
 import BxIcon from "@/components/UI/BxIcon.vue";
 import { AppNotification } from "@/types/AppNotification";
-defineProps({
+const $p = defineProps({
 	notif: AppNotification
+})
+
+const textCC = computed(() => {
+	return $p.notif?.getTextColorClass()
 })
 </script>

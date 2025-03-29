@@ -56,7 +56,7 @@
 		<div
 			v-if="notifStack.length > 0"
 			data-test="app-notification"
-			class="absolute border border-stone-700 w-96 top-2 right-2 rounded p-1"
+			class="absolute flex flex-col gap-2 w-96 top-2 right-2 rounded p-1"
 		>
 			<BxNotif
 				v-for="n in notifStack"
@@ -95,7 +95,6 @@ export default {
 	computed: {
 		...mapState({
 			loading: $s => $s.entity.loading,
-			currNotif: $s => $s.notif.currNotif,
 			notifStack: $s => $s.notif.notifStack,
 		})
 	}

@@ -37,28 +37,31 @@ class DataSrv {
 	
 	async load(tableName) {
 		console.log(`%c${"load/" + tableName}`, "background: turquoise; color: black; padding: 2px;")
-		this.showNotif("SUCCESS", `table "${tableName}" loaded`);
+		this.showNotif("SUCCESS", `Table "${tableName}" loaded`);
 		return this.api[tableName].orderBy('id').toArray();
 	}
 	
 	async add(tableName, item) {
 		console.log(`%c${"add/" + tableName}`, "background: gold; color: black; padding: 2px;")
-		return this.api[tableName].add(item);
+		return await this.api[tableName].add(item);
 	}
 	
 	async update(tableName, item) {
 		console.log(`%c${"update/" + tableName}`, "background: gold; color: black; padding: 2px;")
-		return this.api[tableName].update(item.id, item);
+		this.showNotif("SUCCESS", `New item updated`);
+		return await this.api[tableName].update(item.id, item);
 	}
 	
 	async delete(tableName, id) {
 		console.log(`%c${"delete/" + tableName + "/" + id}`, "background: crimson; color: black; padding: 2px;")
-		return this.api[tableName].delete(id);
+		this.showNotif("SUCCESS", `Item deleted`);
+		return await this.api[tableName].delete(id);
 	}
 	
 	async clear(tableName) {
 		console.log(`%c${"clear/" + tableName}`, "background: crimson; color: black; padding: 2px;")
-		return this.api[tableName].clear();
+		this.showNotif("SUCCESS", `Table has been cleared`);
+		return await this.api[tableName].clear();
 	}
 	
 	// =============================================
@@ -72,7 +75,6 @@ class DataSrv {
 	
 	showNotif(status, message) {
 		const n = new AppNotification(status, message);
-		// call mutation SET_CURR_NOTIF in 'notif' store
 		store.dispatch('notif/showNotif', n)
 	}
 }
