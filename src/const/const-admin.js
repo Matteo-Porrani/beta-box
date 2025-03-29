@@ -303,6 +303,25 @@ export const ENTITY_TEMP_DESC = {
 			comment: null,
 			required: false,
 		},
+		
+		{
+			entity: "FieldDefinition",
+			order: 17,
+			field: "required",
+			pk: false,
+			type: "B",
+			rel_entity: null,
+			list: null,
+			multiple: null,
+			min: null,
+			max: null,
+			readonly: false,
+			picker_col: false,
+			filter: null,
+			info: null,
+			comment: null,
+			required: false,
+		},
 	
 	],
 	

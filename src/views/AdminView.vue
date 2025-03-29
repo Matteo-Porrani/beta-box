@@ -69,6 +69,7 @@
 	</DefaultLayout>
 </template>
 
+
 <script>
 // Vue related
 import { nextTick } from "vue";
@@ -96,7 +97,8 @@ export default {
 		return {
 			contentLoaded: false,
 			viewMode: "$L",
-			tableName: "field_definition",
+			tableName: "",
+			formDescription: [],
 
 			links: [
 				{ code: '$L', label: 'List' },
@@ -109,16 +111,34 @@ export default {
 		...mapState({
 			entities: $s => $s.entity.entities,
 		}),
-		...mapGetters("entity", ["getList"]),
+		...mapGetters("entity", ["getList", "getEntityDescription"]),
 
 		entitiesList() {
 			// if (Object.keys(this.entities).length === 0) return [];
 			return this.getList('$entities') ?? [];
 		},
 
-		formDescription() {
-			return ENTITY_TEMP_DESC[this.tableName] ?? [];
-		},
+		// formDescription() {
+		// 	return ENTITY_TEMP_DESC[this.tableName] ?? [];
+		// },
+	},
+
+	watch: {
+
+		tableName(newVal) {
+			console.log("WATCH", newVal)
+			const desc = this.getEntityDescription(newVal);
+
+			if (desc.length > 0) {
+				const desc = this.getEntityDescription(newVal);
+				console.log("desc", desc)
+				this.formDescription = desc;
+			} else {
+				this.formDescription = ENTITY_TEMP_DESC[newVal] ?? [];
+			}
+
+		}
+
 	},
 
 	async mounted() {
@@ -135,6 +155,7 @@ export default {
 		// const r2 = await this.loadItems(this.tableName);
 		// console.log(r2)
 
+		this.tableName = "field_definition";
 		this.contentLoaded = true;
 	},
 

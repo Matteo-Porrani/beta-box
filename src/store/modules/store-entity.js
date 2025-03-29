@@ -1,5 +1,6 @@
 import { dataSrv } from "@/service/DataSrv";
 import { DatabaseActionResponse } from "@/types/DatabaseActionResponse";
+import { pascalToSnake, snakeToPascal } from "@/utils/core-utils";
 
 export default {
 	namespaced: true,
@@ -18,9 +19,24 @@ export default {
 				return state.entities.list_option
 					.filter(el => el.list === listCode)
 					.sort((a, b) => a.order - b.order)
-					.map(el => ({ value: el.code, label: el.label, default: el.default }))
+					.map(el => ({
+						value: el.code,
+						label: el.label,
+						default: el.default
+					}));
+			}
+		},
+		
+		getEntityDescription: (state) => {
+			return (entityName) => {
+				const en = snakeToPascal(entityName);
+				console.log("/// get description", en)
+				return state.entities.field_definition
+					.filter(el => el.entity === en)
+					.sort((a, b) => a.order - b.order);
 			}
 		}
+		
 	},
 	
 	mutations: {

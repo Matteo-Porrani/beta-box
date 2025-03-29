@@ -68,6 +68,11 @@ export default {
 </script>
 
 <style scoped>
+tr:has(td:hover),
+tr:has(td:hover) > td[data-field="id"] {
+	@apply bg-indigo-950
+}
+
 th,
 td {
 	@apply border border-stone-700 text-sm py-1 px-2
@@ -77,4 +82,6 @@ th,
 td[data-field="id"] {
 	@apply text-yellow-500 bg-stone-700 font-bold text-start
 }
+
+
 </style>

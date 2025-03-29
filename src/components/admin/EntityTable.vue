@@ -39,7 +39,12 @@ export default {
 		}),
 
 		rows() {
-			return this.entities[this.tableName] ?? [];
+			if (!this.entities[this.tableName]) return [];
+			const rows = this.entities[this.tableName].map(r => r);
+
+			return (this.tableName === 'list_option')
+				? rows.sort((a, b) => a.order - b.order).sort((a, b) => a.list.localeCompare(b.list))
+				: rows;
 		},
 	},
 
