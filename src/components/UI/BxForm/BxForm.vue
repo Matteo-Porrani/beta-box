@@ -26,9 +26,9 @@ export default defineComponent({
 	},
 
 	props: {
-		formDescription: {
+		description: {
 			type: Array,
-			default: () => [],
+			required: true,
 		}
 	},
 
@@ -45,7 +45,7 @@ export default defineComponent({
 
 	computed: {
 		sortedDescription() {
-			return this.formDescription
+			return this.description
 				.map(f => f) // create new array to avoid mutating prop
 				.sort((a, b) => a.order - b.order);
 		}
@@ -70,7 +70,7 @@ export default defineComponent({
 
 		initForm(values) {
 			const isReset = Object.keys(values).length < 1;
-			for (const field of this.formDescription.map(f => f.field)) {
+			for (const field of this.description.map(f => f.field)) {
 				if (this.childrenRefs[field]) {
 					const v = isReset
 						? null

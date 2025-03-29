@@ -8,7 +8,7 @@
 		<!-- THE FORM -->
 		<BxForm
 			ref="bxForm"
-			:formDescription="formDescription"
+			:description="formDescription"
 		/>
 
 		<div class="h-4"></div>
