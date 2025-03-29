@@ -1,7 +1,7 @@
 <template>
 	<section
 		data-test="default-layout-root"
-		class="grid grid-cols-8 gap-4"
+		class="relative grid grid-cols-8 gap-4"
 	>
 		<aside
 			data-test="layout-menu"
@@ -44,6 +44,8 @@
 			<!-- main content will go here (default slot) -->
 			<slot/>
 		</div>
+
+		<div class="absolute top-2 right-2 size-10 border"></div>
 	</section>
 </template>
 

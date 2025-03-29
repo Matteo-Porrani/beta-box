@@ -13,7 +13,7 @@ import { defineComponent } from 'vue'
 // Import all icons from @tabler/icons-vue package
 // This package provides a comprehensive set of icons that can be used as Vue components
 import * as TablerIcons from '@tabler/icons-vue'
-import { ICON_DICT, ICON_SIZE } from "@/utils/icon-utils";
+import { ICON_DICT, ICON_SIZE } from "@/const/const-icon";
 
 export default defineComponent({
 	name: "BxIcon",

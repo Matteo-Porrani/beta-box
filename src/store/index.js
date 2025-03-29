@@ -7,10 +7,6 @@ import list from "./modules/store-list";
 
 
 export default createStore({
-    state: {},
-    getters: {},
-    mutations: {},
-    actions: {},
     modules: {
         entity,
         form,

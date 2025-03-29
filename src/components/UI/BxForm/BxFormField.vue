@@ -66,7 +66,7 @@
 <script>
 import { defineComponent } from 'vue'
 import { mapGetters, mapMutations, mapState } from "vuex";
-import BxSwitch from '../BxSwitch.vue';
+import BxSwitch from './fields/BxSwitch.vue';
 
 export default defineComponent({
 	name: "BxFormField",
