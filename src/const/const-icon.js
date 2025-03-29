@@ -21,6 +21,14 @@ export const ICON_DICT = {
 	arrow_down: "IconArrowDown",
 	
 	/*
+	NOTIF
+	 */
+	info: "IconInfoSquare",
+	alert: "IconAlertSquare",
+	error: "IconSquareX",
+	success: "IconSquareCheck",
+	
+	/*
 	COMMON CONCEPTS
 	 */
 	home: "IconHome",
@@ -33,6 +41,7 @@ export const ICON_DICT = {
 	copy: "IconCopy",
 	refresh: "IconRefresh",
 	reset: "IconRotate",
+	loader: "IconLoader2",
 }
 
 export const ICON_SIZE = {

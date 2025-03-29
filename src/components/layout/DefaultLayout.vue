@@ -45,18 +45,41 @@
 			<slot/>
 		</div>
 
-		<div class="absolute top-2 right-2 size-10 border"></div>
+		<div
+			v-if="loading"
+			data-test="app-loader"
+			class="absolute grid place-content-center top-2 right-2 size-10"
+		>
+			<BxIcon icon="loader" size="xlarge" class="animate-spin"/>
+		</div>
+
+		<div
+			v-if="notifStack.length > 0"
+			data-test="app-notification"
+			class="absolute border border-stone-700 w-96 top-2 right-2 rounded p-1"
+		>
+			<BxNotif
+				v-for="n in notifStack"
+				:key="n.id"
+				:notif="n"
+			/>
+		</div>
+
 	</section>
 </template>
 
 
 <script>
+// components
 import TheMainMenu from "@/components/layout/TheMainMenu.vue";
+import BxIcon from "@/components/UI/BxIcon.vue";
+import { mapState } from "vuex";
+import BxNotif from "@/components/UI/BxNotif.vue";
 
 export default {
 	name: "DefaultLayout",
 
-	components: { TheMainMenu },
+	components: { BxNotif, BxIcon, TheMainMenu },
 
 	props: {
 		viewTitle: {
@@ -67,6 +90,14 @@ export default {
 			type: Boolean,
 			default: false,
 		}
+	},
+
+	computed: {
+		...mapState({
+			loading: $s => $s.entity.loading,
+			currNotif: $s => $s.notif.currNotif,
+			notifStack: $s => $s.notif.notifStack,
+		})
 	}
 }
 </script>

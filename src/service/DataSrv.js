@@ -5,8 +5,15 @@ through Dexie API.
 
  */
 
+// I need to import store
 
+// Vue related
+import store from '@/store/index.js'
+// data
 import { db } from "@/data/db";
+// types
+import { AppNotification } from "@/types/AppNotification";
+
 
 class DataSrv {
 
@@ -30,6 +37,7 @@ class DataSrv {
 	
 	async load(tableName) {
 		console.log(`%c${"load/" + tableName}`, "background: turquoise; color: black; padding: 2px;")
+		this.showNotif("SUCCESS", `table "${tableName}" loaded`);
 		return this.api[tableName].orderBy('id').toArray();
 	}
 	
@@ -60,6 +68,12 @@ class DataSrv {
 	async count(tableName) {
 		console.log(`%c${"count"}`, "background: blue; color: black; padding: 2px;")
 		return this.api[tableName].count();
+	}
+	
+	showNotif(status, message) {
+		const n = new AppNotification(status, message);
+		// call mutation SET_CURR_NOTIF in 'notif' store
+		store.dispatch('notif/showNotif', n)
 	}
 }
 

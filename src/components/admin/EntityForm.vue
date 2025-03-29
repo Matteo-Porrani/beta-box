@@ -64,7 +64,7 @@ import BxTable from "@/components/UI/BxTable/BxTable.vue";
 
 export default {
 
-	name: "AdminForm",
+	name: "EntityForm",
 
 	components: { BxTable, BxForm },
 

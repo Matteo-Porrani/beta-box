@@ -2,7 +2,7 @@
 	<DefaultLayout view-title="Admin">
 		<div class="admin-view-root">
 
-			<AdminForm/>
+			<EntityForm/>
 
 		</div>
 	</DefaultLayout>
@@ -11,14 +11,14 @@
 <script>
 import { mapState } from "vuex";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
-import AdminForm from "@/components/admin/AdminForm.vue";
+import EntityForm from "@/components/admin/EntityForm.vue";
 
 
 export default {
 	name: 'AdminView',
 
 	components: {
-		AdminForm,
+		EntityForm,
 		DefaultLayout,
 	},
 
