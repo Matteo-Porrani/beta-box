@@ -17,7 +17,7 @@
 		<div class="flex justify-between w-1/2 border rounded p-1">
 			<button
 				class="
-			w-32 bg-teal-500 hover:bg-teal-400 disabled:bg-zinc-700
+			w-32 bg-lime-600 hover:bg-lime-500 disabled:bg-zinc-700
 			disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
 				@click="onSave"
 			>
@@ -26,7 +26,7 @@
 
 			<button
 				class="
-			w-32 bg-yellow-500 hover:bg-yellow-400 disabled:bg-zinc-700
+			w-32 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-700
 			disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
 				@click="onReset"
 			>

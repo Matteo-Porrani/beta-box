@@ -12,8 +12,7 @@
 				class="flex items-center gap-1 text-2xl font-bold mb-10"
 			>
 				<span class="inline-block h-2 w-2 rounded bg-yellow-400"></span>
-				<span class="inline-block h-4 w-2 rounded bg-teal-500"></span>
-				<span class="inline-block h-6 w-2 rounded bg-blue-500"></span>
+				<span class="inline-block h-4 w-2 rounded bg-lime-600"></span>
 				Beta-Box
 			</h1>
 

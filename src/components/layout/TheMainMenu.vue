@@ -28,8 +28,8 @@ export default {
 				["Home", "/"],
 				["Admin", "/admin"],
 				["Tasks", "/tasks"],
-				["About", "/about"],
 				["Dev", "/dev"],
+				["About", "/about"],
 			]
 		}
 	}
@@ -39,6 +39,6 @@ export default {
 
 <style scoped>
 .router-link-active {
-	@apply text-teal-500;
+	@apply text-lime-600 border-s-2 border-lime-600 ps-1
 }
 </style>
