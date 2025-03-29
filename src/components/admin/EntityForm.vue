@@ -1,9 +1,6 @@
 <template>
 
-	<div
-		v-if="contentLoaded"
-		data-test="admin-form-root">
-
+	<div data-test="admin-form-root">
 
 		<!-- THE FORM -->
 		<BxForm
@@ -15,35 +12,28 @@
 
 		<!-- THE BUTTONS -->
 		<div class="flex justify-between w-1/2 border rounded p-1">
+
 			<button
 				class="
-			w-32 bg-lime-600 hover:bg-lime-500 disabled:bg-zinc-700
-			disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
+					w-32 bg-stone-800 border border-yellow-400 text-yellow-400 hover:bg-yellow-950
+					disabled:hover:cursor-not-allowed rounded py-2 px-6
+				"
+				@click="onReset"
+			>
+				Reset
+			</button>
+
+			<button
+				class="
+					w-32 bg-lime-600 border border-lime-600 hover:bg-lime-500
+					disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800
+				"
 				@click="onSave"
 			>
 				{{ formValues.id ? 'Update' : 'Add' }}
 			</button>
 
-			<button
-				class="
-			w-32 bg-yellow-400 hover:bg-yellow-300 disabled:bg-zinc-700
-			disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800"
-				@click="onReset"
-			>
-				Reset
-			</button>
 		</div>
-
-
-		<div class="h-12"></div>
-
-		<BxTable
-			:cols="formDescription.map(c => c.field)"
-			:rows="rows"
-			@edit-item="onEditItem"
-			@duplicate-item="onDuplicateItem"
-			@delete-item="onDeleteItem"
-		/>
 
 	</div>
 </template>
@@ -53,56 +43,46 @@
 // Vue related
 import { mapActions, mapState } from "vuex";
 // utils
-import { isFalsy, isInteger } from "@/utils/core-utils";
+import { isInteger } from "@/utils/core-utils";
 import { prepareItem } from "@/utils/entity-utils";
-// const
-import { ENTITY_TEMP_DESC } from "@/const/const-admin";
 // components
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
-import BxTable from "@/components/UI/BxTable/BxTable.vue";
 
 
 export default {
 
 	name: "EntityForm",
 
-	components: { BxTable, BxForm },
+	components: {
+		BxForm
+	},
+
+	props: {
+		tableName: String,
+		formDescription: Array,
+	},
+
+	expose: ["onEditItem"],
 
 	data() {
-		return {
-			contentLoaded: false,
-			// tableName: "list_option",
-			tableName: "dummy",
-		}
+		return {}
 	},
 
 	computed: {
 		...mapState({
-			entities: $s => $s.entity.entities,
+			// entities: $s => $s.entity.entities,
 			formValues: $s => $s.form.formValues,
 		}),
 
-		formDescription() {
-			return ENTITY_TEMP_DESC[this.tableName] ?? [];
-		},
-
-		rows() {
-			return this.entities[this.tableName] ?? [];
-		},
+		// rows() {
+		// 	return this.entities[this.tableName] ?? [];
+		// },
 	},
 
-	async mounted() {
-		const r1 = await this.loadItems("list_option");
-		console.log(r1)
-		const r2 = await this.loadItems(this.tableName);
-		console.log(r2)
 
-		this.contentLoaded = true;
-	},
 
 	methods: {
 		...mapActions("entity", [
-			"loadItems",
 			"addItem",
 			"updateItem",
 			"deleteItem",

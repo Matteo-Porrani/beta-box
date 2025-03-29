@@ -170,7 +170,7 @@ export default defineComponent({
 <style scoped>
 input,
 select {
-	@apply bg-stone-700 rounded text-stone-200 p-1 text-lg
+	@apply bg-stone-700 rounded text-stone-200 p-1 text-xl
 }
 
 input[readonly] {

@@ -501,7 +501,7 @@ export const ENTITY_TEMP_DESC = {
 	
 	dummy: [
 		{
-			entity: "FieldDefinition",
+			entity: "Dummy",
 			order: 1,
 			field: "id",
 			pk: true,
@@ -520,7 +520,7 @@ export const ENTITY_TEMP_DESC = {
 		},
 		
 		{
-			entity: "FieldDefinition",
+			entity: "Dummy",
 			order: 2,
 			field: "name",
 			pk: false,
@@ -539,7 +539,7 @@ export const ENTITY_TEMP_DESC = {
 		},
 		
 		{
-			entity: "FieldDefinition",
+			entity: "Dummy",
 			order: 3,
 			field: "type",
 			pk: false,
@@ -558,7 +558,7 @@ export const ENTITY_TEMP_DESC = {
 		},
 	
 		{
-			entity: "FieldDefinition",
+			entity: "Dummy",
 			order: 4,
 			field: "isFavorite",
 			pk: false,
