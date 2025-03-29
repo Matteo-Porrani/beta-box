@@ -5,8 +5,6 @@ through Dexie API.
 
  */
 
-// I need to import store
-
 // Vue related
 import store from '@/store/index.js'
 // data
@@ -37,31 +35,37 @@ class DataSrv {
 	
 	async load(tableName) {
 		console.log(`%c${"load/" + tableName}`, "background: turquoise; color: black; padding: 2px;")
+		const items = await this.api[tableName].orderBy('id').toArray();
 		this.showNotif("SUCCESS", `Table "${tableName}" loaded`);
-		return this.api[tableName].orderBy('id').toArray();
+		return items;
 	}
 	
 	async add(tableName, item) {
 		console.log(`%c${"add/" + tableName}`, "background: gold; color: black; padding: 2px;")
-		return await this.api[tableName].add(item);
+		const newId = await this.api[tableName].add(item)
+		this.showNotif("SUCCESS", `New item #${newId} added`);
+		return newId;
 	}
 	
 	async update(tableName, item) {
 		console.log(`%c${"update/" + tableName}`, "background: gold; color: black; padding: 2px;")
-		this.showNotif("SUCCESS", `New item updated`);
-		return await this.api[tableName].update(item.id, item);
+		const res = await this.api[tableName].update(item.id, item);
+		this.showNotif("SUCCESS", `Item #${item.id} updated`);
+		return res;
 	}
 	
 	async delete(tableName, id) {
 		console.log(`%c${"delete/" + tableName + "/" + id}`, "background: crimson; color: black; padding: 2px;")
-		this.showNotif("SUCCESS", `Item deleted`);
-		return await this.api[tableName].delete(id);
+		const res = await this.api[tableName].delete(id);
+		this.showNotif("SUCCESS", `Item #${id} deleted`);
+		return res;
 	}
 	
 	async clear(tableName) {
 		console.log(`%c${"clear/" + tableName}`, "background: crimson; color: black; padding: 2px;")
+		const res = await this.api[tableName].clear();
 		this.showNotif("SUCCESS", `Table has been cleared`);
-		return await this.api[tableName].clear();
+		return res;
 	}
 	
 	// =============================================
@@ -70,7 +74,7 @@ class DataSrv {
 	
 	async count(tableName) {
 		console.log(`%c${"count"}`, "background: blue; color: black; padding: 2px;")
-		return this.api[tableName].count();
+		return await this.api[tableName].count();
 	}
 	
 	showNotif(status, message) {

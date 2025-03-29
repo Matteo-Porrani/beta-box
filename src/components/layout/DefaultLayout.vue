@@ -58,11 +58,18 @@
 			data-test="app-notification"
 			class="absolute flex flex-col gap-2 w-96 top-2 right-2 rounded p-1"
 		>
-			<BxNotif
-				v-for="n in notifStack"
-				:key="n.id"
-				:notif="n"
-			/>
+			<TransitionGroup
+				name="notif"
+				tag="div"
+				class="flex flex-col gap-2"
+			>
+				<BxNotif
+					v-for="n in notifStack"
+					:key="n.id"
+					:notif="n"
+					class="transform transition-all duration-300 ease-out"
+				/>
+			</TransitionGroup>
 		</div>
 
 	</section>
@@ -100,3 +107,20 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+.notif-enter-active,
+.notif-leave-active {
+	transition: all 0.3s ease-out;
+}
+
+.notif-enter-from {
+	opacity: 0;
+	transform: translateX(100px);
+}
+
+.notif-leave-to {
+	opacity: 0;
+	transform: translateX(100px);
+}
+</style>

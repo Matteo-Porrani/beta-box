@@ -15,9 +15,7 @@ export default {
 		
 		NOTIF_TIMEOUT(state, notif) {
 			setTimeout(() => {
-				console.log(`removing ${notif.id}`)
 				state.notifStack = state.notifStack.filter(n => n.id !== notif.id);
-				console.log(`notif ${notif.id} removed`)
 			}, notif.duration)
 		}
 	},
