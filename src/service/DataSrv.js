@@ -6,7 +6,7 @@ through Dexie API.
  */
 
 
-import { db } from "@/service/db";
+import { db } from "@/data/db";
 
 class DataSrv {
 
