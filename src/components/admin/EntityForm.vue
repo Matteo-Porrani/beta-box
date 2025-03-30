@@ -1,3 +1,18 @@
+<!--
+This is the last DOMAIN layer before the UI layer
+
+BxForm is a graphic component. It doesn't know what it's dealing with.
+All it knows is field names, field types & values.
+
+EntityForm must pass :
+- an already ordered description
+- all the list data needed to properly display fields of type LIST
+
+-->
+
+
+
+
 <template>
 	<div data-test="admin-form-root">
 		<!-- THE FORM -->
@@ -61,10 +76,6 @@ export default {
 
 	expose: ["onEditItem"],
 
-	data() {
-		return {}
-	},
-
 	computed: {
 		...mapState({
 			formValues: $s => $s.form.formValues,
@@ -91,12 +102,10 @@ export default {
 				? "updateItem"
 				: "addItem"
 
-			const r = await this[action]({
+			await this[action]({
 				tableName: this.tableName,
 				item: prepareItem(this.formValues)
 			})
-
-			console.log("save", r)
 
 			this.onReset();
 			this.$emit("itemSaved")
@@ -120,7 +129,7 @@ export default {
 			this.$refs.bxForm.resetForm();
 			setTimeout(() => {
 				this.RESET_FORM();
-			}, 500);
+			}, 300);
 		},
 	}
 

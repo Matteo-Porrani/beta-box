@@ -4,7 +4,7 @@
 		class="max-h-[60vh] flex flex-col flex-wrap gap-2 border border-stone-500 rounded p-1"
 	>
 		<BxFormField
-			v-for="f in sortedDescription"
+			v-for="f in description"
 			:key="f.id"
 			:ref="`fieldRef_${f.field}`"
 			:fieldDesc="f"
@@ -42,16 +42,8 @@ export default defineComponent({
 		}
 	},
 
-	computed: {
-		sortedDescription() {
-			return this.description
-				.map(f => f) // create new array to avoid mutating prop
-				.sort((a, b) => a.order - b.order);
-		}
-	},
-
 	mounted() {
-		for (const k of this.sortedDescription.map(f => f.field)) {
+		for (const k of this.description.map(f => f.field)) {
 			this.childrenRefs[k] = this.$refs[`fieldRef_${k}`][0];
 		}
 	},

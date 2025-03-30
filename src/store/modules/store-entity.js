@@ -1,6 +1,6 @@
 import { dataSrv } from "@/service/DataSrv";
 import { DatabaseActionResponse } from "@/types/DatabaseActionResponse";
-import { pascalToSnake, snakeToPascal } from "@/utils/core-utils";
+import { nrm, pascalToSnake, snakeToPascal } from "@/utils/core-utils";
 
 export default {
 	namespaced: true,
@@ -27,13 +27,41 @@ export default {
 			}
 		},
 		
-		getEntityDescription: (state) => {
+		getEntityDescription: (state, getters) => {
 			return (entityName) => {
 				const en = snakeToPascal(entityName);
 				console.log("/// get description", en)
+				
+				
+				const orderedFields = getters._getOrderedFields(en);
+				console.log("orderedFields", orderedFields);
+				
+				const hydratedFields = getters._getOptionsForListFields(orderedFields);
+				console.log("hydratedFields", hydratedFields);
+				
+				return nrm(hydratedFields);
+			}
+		},
+		
+		_getOrderedFields: (state) => {
+			return (en) => {
 				return state.entities.field_definition
 					.filter(el => el.entity === en)
 					.sort((a, b) => a.order - b.order);
+			}
+		},
+		
+		_getOptionsForListFields: (state, getters) => {
+			return (fields) => {
+				for (const f of fields) {
+					if (f.list) {
+						console.log(`${f.field} => ${f.list}`)
+						
+						f.options = getters.getList(f.list);
+					}
+				}
+				
+				return fields;
 			}
 		}
 		

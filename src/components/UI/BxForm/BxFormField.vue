@@ -50,7 +50,7 @@
 		<template v-if="fieldDesc.type === 'L'">
 			<select v-model="value">
 				<option
-					v-for="o in options"
+					v-for="o in fieldDesc.options"
 					:key="o.value"
 					:value="o.value"
 				>
@@ -75,7 +75,6 @@
 <script>
 // Vue related
 import { defineComponent } from 'vue'
-import { mapGetters, mapMutations, mapState } from "vuex";
 // utils
 import { isFalsy } from "@/utils/core-utils";
 // components
@@ -112,14 +111,9 @@ export default defineComponent({
 	},
 
 	computed: {
-		...mapState({
-			entities: $s => $s.entity.entities,
-		}),
-		...mapGetters("entity", ["getList"]),
-
 		options() {
 			return this.fieldDesc.type === "L"
-				? this.getList(this.fieldDesc.list)
+				? this.fieldDesc.options
 				: []; // avoid calling getList() if it's not a list type
 		}
 	},

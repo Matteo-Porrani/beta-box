@@ -121,19 +121,14 @@ export default {
 	watch: {
 
 		tableName(newVal) {
-			console.log("WATCH", newVal)
 			const desc = this.getEntityDescription(newVal);
 
-			if (desc.length > 0) {
-				const desc = this.getEntityDescription(newVal);
-				console.log("desc", desc)
-				this.formDescription = desc;
+			if (desc?.length > 0) {
+				this.formDescription = this.getEntityDescription(newVal);
 			} else {
 				this.formDescription = ENTITY_TEMP_DESC[newVal] ?? [];
 			}
-
 		}
-
 	},
 
 	async mounted() {
