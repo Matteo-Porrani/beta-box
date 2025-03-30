@@ -29,7 +29,7 @@ export default {
 				["Admin", "/admin"],
 				["Tasks", "/tasks"],
 				["Dev", "/dev"],
-				["About", "/about"],
+				["Data Manager", "/data-manager"],
 			]
 		}
 	}

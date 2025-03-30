@@ -1,28 +1,22 @@
 <template>
-	<DefaultLayout view-title="Home">
-		<div class="home-view-root">
+	<DefaultLayout view-title="Data Manager">
+		<div data-test="data-manager-view-root">
 
 		</div>
 	</DefaultLayout>
 </template>
 
 <script>
-import { mapState } from "vuex";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 
 
 export default {
-	name: 'HomeView',
+	name: 'DataManagerView',
 
 	components: {
 		DefaultLayout,
 	},
 
-	computed: {
-		...mapState({
-			tasks: state => state.task.tasks,
-		})
-	}
 };
 </script>
 
