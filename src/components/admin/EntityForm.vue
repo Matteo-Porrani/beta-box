@@ -10,9 +10,6 @@ EntityForm must pass :
 
 -->
 
-
-
-
 <template>
 	<div data-test="admin-form-root">
 		<!-- THE FORM -->
@@ -73,7 +70,6 @@ export default {
 	},
 
 	emits: ["itemSaved"],
-
 	expose: ["onEditItem"],
 
 	computed: {
@@ -90,7 +86,6 @@ export default {
 		...mapActions("entity", [
 			"addItem",
 			"updateItem",
-			"deleteItem",
 		]),
 
 		onFieldValueChanged(changeData) {
@@ -118,10 +113,8 @@ export default {
 		 * Clients of BxForm don't need to know this !! All they need is a clear and intuitive API :
 		 * calling resetForm() is more intuitive than calling initForm({})
 		 */
-
-
-		// this method is called by parent AdminView when we switch to FORM mode
 		onEditItem(item) {
+			// this method is called by parent AdminView when we switch to FORM mode
 			this.$refs.bxForm.initForm(item);
 		},
 
@@ -135,3 +128,4 @@ export default {
 
 };
 </script>
+
