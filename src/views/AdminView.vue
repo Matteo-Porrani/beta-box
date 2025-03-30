@@ -4,15 +4,6 @@
 			v-if="contentLoaded"
 			class="admin-view-root"
 		>
-<!--			<nav class="space-x-4">-->
-<!--				<button-->
-<!--					v-for="l in links"-->
-<!--					:key="l.code"-->
-<!--					@click="setMode(l.code)"-->
-<!--				>-->
-<!--					{{ l.label }}-->
-<!--				</button>-->
-<!--			</nav>-->
 
 			<div data-test="entity-selector">
 				<select
@@ -23,7 +14,9 @@
 						v-for="e in entitiesList"
 						:key="e.value"
 						:value="e.value"
-					>{{ e.label }}</option>
+					>
+						{{ e.label }}
+					</option>
 				</select>
 			</div>
 
@@ -147,9 +140,8 @@ export default {
 		// list_option table must be loaded first
 		await this.loadItems("list_option");
 
-		for (const e of this.entitiesList) {
-			const res = await this.loadItems(e.value);
-			console.log(res)
+		for (const e of this.entitiesList.filter(ent => ent.value !== "list_option")) {
+			await this.loadItems(e.value);
 		}
 
 		this.tableName = "task";
