@@ -99,7 +99,6 @@ export default {
 
 		rows() {
 			const snakeRelEntityName = pascalToSnake(this.entity);
-			console.log("snakeRelEntityName", snakeRelEntityName)
 			return this.entities[snakeRelEntityName] ?? [];
 		},
 
@@ -127,7 +126,6 @@ export default {
 
 		initBinding() {
 			for (const r of this.rows) {
-				console.log("r.id", r.id)
 				this.values[r.id] = false;
 			}
 		},

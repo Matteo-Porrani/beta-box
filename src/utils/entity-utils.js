@@ -16,9 +16,7 @@ export function prepareItem(srcObject) {
 
 export function getPickerColsFromDef(def) {
 	return def.reduce((acc, defEntry) => {
-		console.log("--", defEntry.field, defEntry.picker_col)
 		if (defEntry.picker_col === true) {
-			console.log("...pushing", defEntry.field)
 			acc.push(defEntry.field);
 		}
 		return acc;
