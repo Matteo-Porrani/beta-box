@@ -144,7 +144,7 @@ export default {
 			await this.loadItems(e.value);
 		}
 
-		this.tableName = "task";
+		this.tableName = "field_definition";
 		this.contentLoaded = true;
 	},
 

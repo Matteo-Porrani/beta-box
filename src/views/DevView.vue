@@ -21,11 +21,24 @@
 			</BxModal>
 
 			<button
-				class="w-36 bg-teal-500 hover:bg-teal-400 rounded py-2 px-6 text-stone-800"
+				class="w-36 bg-lime-600 hover:bg-teal-400 rounded py-2 px-6 text-stone-800"
 				@click="openModal"
 			>
 				Open modal
 			</button>
+
+			<div class="h-10"></div>
+
+
+			<!--	======================================================================		-->
+			<!--	COLORS		-->
+
+			<div class="flex gap-2">
+				<div class="size-10 bg-yellow-400 rounded"></div>
+				<div class="size-10 bg-lime-600 rounded"></div>
+				<div class="size-10 bg-rose-700 rounded"></div>
+			</div>
+
 
 			<div class="h-10"></div>
 
