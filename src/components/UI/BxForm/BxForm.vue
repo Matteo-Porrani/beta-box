@@ -21,9 +21,7 @@ import BxFormField from "@/components/UI/BxForm/BxFormField.vue";
 export default defineComponent({
 	name: "BxForm",
 
-	components: {
-		BxFormField,
-	},
+	components: { BxFormField },
 
 	props: {
 		description: {
@@ -33,7 +31,6 @@ export default defineComponent({
 	},
 
 	emits: ["fieldValueChanged"],
-
 	expose: ["initForm", "resetForm",],
 
 	data() {
@@ -49,7 +46,6 @@ export default defineComponent({
 	},
 
 	methods: {
-
 		initForm(values) {
 			const isReset = Object.keys(values).length < 1;
 			for (const field of this.description.map(f => f.field)) {
@@ -64,16 +60,13 @@ export default defineComponent({
 		},
 
 		/**
-		 * This method is only needed to be exposed
-		 * to have a more intuitive API
+		 * This method is only exposed to provide a more intuitive API
 		 */
 		resetForm() {
 			this.initForm({});
 		},
-
 	}
 
 })
 </script>
-
 
