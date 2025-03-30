@@ -98,7 +98,6 @@
 				<BxIcon icon="arrow_down"/>
 
 			</div>
-<!--			<pre>{{ tasks }}</pre>-->
 		</div>
 	</DefaultLayout>
 </template>
