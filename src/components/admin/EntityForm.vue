@@ -1,16 +1,18 @@
 <template>
 	<div data-test="admin-form-root">
 		<!-- THE FORM -->
-		<BxForm
-			ref="bxForm"
-			:description="formDescription"
-		/>
+		<div class="w-1/2">
+			<BxForm
+				ref="bxForm"
+				:description="formDescription"
+			/>
+		</div>
 		<div class="h-4"></div>
 		<!-- THE BUTTONS -->
-		<div class="flex justify-between w-1/2 border rounded p-1">
+		<div class="flex justify-between w-1/2 border border-stone-500 rounded p-1">
 			<button
 				class="
-					w-32 bg-stone-800 border border-yellow-400 text-yellow-400 hover:bg-yellow-950
+					w-32 bg-stone-800 border border-stone-500 text-stone-500 hover:bg-stone-900
 					disabled:hover:cursor-not-allowed rounded py-2 px-6
 				"
 				@click="onReset"

@@ -7,7 +7,7 @@
 			:class="textCC"
 			size="large"
 		/>
-		<p class="text-2xl">{{ notif?.message }}</p>
+		<p class="text-xl">{{ notif?.message }}</p>
 	</article>
 </template>
 

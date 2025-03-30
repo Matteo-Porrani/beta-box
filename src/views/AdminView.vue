@@ -15,7 +15,10 @@
 <!--			</nav>-->
 
 			<div data-test="entity-selector">
-				<select v-model="tableName">
+				<select
+					class="w-96 pr-2"
+					v-model="tableName"
+				>
 					<option
 						v-for="e in entitiesList"
 						:key="e.value"
@@ -149,7 +152,7 @@ export default {
 			console.log(res)
 		}
 
-		this.tableName = "field_definition";
+		this.tableName = "task";
 		this.contentLoaded = true;
 	},
 
@@ -177,7 +180,6 @@ export default {
 
 
 <style scoped>
-input,
 select {
 	@apply bg-stone-700 rounded text-stone-200 p-1 text-xl
 }

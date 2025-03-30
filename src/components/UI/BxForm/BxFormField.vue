@@ -1,7 +1,7 @@
 <template>
 	<div
 		data-test="bx-form-field-root"
-		class="grid grid-cols-[1fr_4fr] items-center border rounded p-1"
+		class="grid grid-cols-[1fr_4fr] items-center border border-stone-500 rounded p-1"
 	>
 		<label class="text-sm">
 			{{ fieldDesc.field }}
