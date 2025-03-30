@@ -42,8 +42,11 @@ class DataSrv {
 	
 	async add(tableName, item) {
 		console.log(`%c${"add/" + tableName}`, "background: gold; color: black; padding: 2px;")
+		
+		console.log("item =", JSON.stringify(item))
+		
 		const newId = await this.api[tableName].add(item)
-		this.showNotif("SUCCESS", `New item #${newId} added`);
+		this.showNotif("SUCCESS", `New item #${newId} added in table [${tableName}]`);
 		return newId;
 	}
 	
