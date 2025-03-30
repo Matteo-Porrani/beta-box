@@ -98,7 +98,7 @@ export default {
 	data() {
 		return {
 			contentLoaded: false,
-			viewMode: "$F",
+			viewMode: "$L",
 			tableName: "",
 			formDescription: [],
 

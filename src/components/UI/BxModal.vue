@@ -36,11 +36,16 @@ import { ref, defineExpose } from "vue";
 
 const show = ref(false);
 
-defineExpose({ open, });
+defineExpose({ open, close });
 
 function open() {
 	show.value = true;
 }
+
+function close() {
+	show.value = false;
+}
+
 </script>
 
 

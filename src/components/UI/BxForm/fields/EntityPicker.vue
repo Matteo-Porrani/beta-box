@@ -2,15 +2,17 @@
 
 	<div class="flex gap-2">
 
-		<input type="text">
+		<input
+			type="text"
+			readonly
+			v-model="parsedValue"
+		>
 
 		<button @click="openModal">
 			<BxIcon icon="bars"/>
 		</button>
 		<pre class="text-sm">{{ entity }}</pre>
 	</div>
-
-
 
 	<BxModal
 		ref="modal_ref"
@@ -42,12 +44,20 @@
 				>
 					<input
 						type="checkbox"
-						class="size-8"
+						class="size-8 accent-lime-600"
 						v-model="values[r.id]"
 					>
 					<p>{{ r.id }}</p>
 					<p>{{ r.name }}</p>
 				</div>
+			</div>
+		</template>
+
+		<template #footer>
+
+			<div class="w-full flex justify-between">
+				<button @click="$refs.modal_ref.close">Close</button>
+				<button @click="submitValue">OK</button>
 			</div>
 		</template>
 	</BxModal>
@@ -58,7 +68,7 @@
 import BxModal from "@/components/UI/BxModal.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
 import { mapGetters, mapState } from "vuex";
-import { nrm, pascalToSnake } from "@/utils/core-utils";
+import { isFalsy, nrm, pascalToSnake } from "@/utils/core-utils";
 import { getPickerColsFromDef } from "@/utils/entity-utils";
 
 export default {
@@ -72,19 +82,16 @@ export default {
 	props: {
 		entity: String,
 		multiple: Boolean,
+		modelValue: [String, Number]
 	},
+
+	emits: ["update:modelValue"],
+
+	expose: ["setValue"],
 
 	data() {
 		return {
-			values: {
-
-			},
-
-			mockCols: ["id", "name"],
-			mockRows: [
-				{ id: 1, name: "Hello" },
-				{ id: 2, name: "World" },
-			]
+			values: {},
 		}
 	},
 
@@ -115,14 +122,28 @@ export default {
 
 		gridColsClass() {
 			return `grid-cols-${this.getCols.length + 1}`;
+		},
+
+		parsedValue() {
+			const parsedValue = Object.keys(this.values).reduce((acc, key) => {
+				if (this.values[key] === true) {
+					acc.push(key);
+				}
+				return acc;
+			}, []);
+			return parsedValue.join(":");
 		}
 	},
 
 	mounted() {
 		this.initBinding();
+		this.initValue();
 	},
 
 	methods: {
+		initValue() {
+			console.log("+++ initValue", "modelValue", this.props)
+		},
 
 		initBinding() {
 			for (const r of this.rows) {
@@ -130,9 +151,22 @@ export default {
 			}
 		},
 
+		setValue(value) {
+			console.log("+++ setValue", value)
+			if (isFalsy(value)) return;
+			this.values[value] = true;
+		},
+
 		openModal() {
 			this.$refs.modal_ref.open();
-		}
+		},
+
+		submitValue() {
+			this.$emit("update:modelValue", this.parsedValue)
+
+			this.$refs.modal_ref.close();
+		},
+
 
 	}
 }

@@ -60,10 +60,11 @@
 		</template>
 
 		<template v-if="fieldDesc.type === 'E'">
-<!--			<input type="text" v-model="value"/>-->
 			<EntityPicker
+				ref="entity_picker_ref"
 				:entity="fieldDesc.rel_entity"
 				:multiple="fieldDesc.multiple"
+				@update:model-value="newValue => value = newValue"
 			/>
 		</template>
 
@@ -155,6 +156,7 @@ export default defineComponent({
 		...mapMutations("form", ["SET_FIELD"]),
 
 		initField(initVal) {
+
 			if (this.fieldDesc.type === "D") {
 				const [date, time] = initVal !== null
 					? initVal.split("@")
@@ -165,10 +167,18 @@ export default defineComponent({
 				}
 				return;
 			}
+
 			if (this.fieldDesc.type === "B") {
 				this.value = initVal ?? false;
 				return;
 			}
+
+			if (this.fieldDesc.type === "E") {
+				console.log("case E", initVal)
+				this.$refs.entity_picker_ref.setValue(initVal);
+				return;
+			}
+
 			this.value = initVal;
 		}
 	}
