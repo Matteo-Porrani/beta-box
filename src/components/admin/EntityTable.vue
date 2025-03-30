@@ -21,7 +21,6 @@ export default {
 
 	components: {
 		BxTable
-
 	},
 
 	props: {
@@ -40,11 +39,18 @@ export default {
 
 		rows() {
 			if (!this.entities[this.tableName]) return [];
-			const rows = this.entities[this.tableName].map(r => r);
+			let rows = this.entities[this.tableName].map(r => r);
 
-			return (this.tableName === 'list_option')
-				? rows.sort((a, b) => a.order - b.order).sort((a, b) => a.list.localeCompare(b.list))
-				: rows;
+			// special sorting (group rows on 'list' or 'entity' column)
+			if (this.tableName === 'list_option') {
+				rows = rows.sort((a, b) => a.order - b.order).sort((a, b) => a.list.localeCompare(b.list))
+			}
+
+			if (this.tableName === 'field_definition') {
+				rows = rows.sort((a, b) => a.order - b.order).sort((a, b) => a.entity.localeCompare(b.entity))
+			}
+
+			return rows;
 		},
 	},
 

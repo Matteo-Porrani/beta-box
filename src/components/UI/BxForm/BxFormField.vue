@@ -35,12 +35,12 @@
 				<input
 					v-model="dateTimeValue.date"
 					type="date"
-					class="block w-32 text-xl text-stone-800 bg-stone-400 rounded p-1"
+					class="block w-48 text-xl text-stone-800 bg-stone-400 rounded p-1"
 				>
 				<input
 					v-model="dateTimeValue.time"
 					type="time"
-					class="block w-32 text-xl text-stone-800 bg-stone-400 rounded p-1"
+					class="block w-48 text-xl text-stone-800 bg-stone-400 rounded p-1"
 				>
 			</div>
 		</template>
@@ -73,8 +73,12 @@
 
 
 <script>
+// Vue related
 import { defineComponent } from 'vue'
 import { mapGetters, mapMutations, mapState } from "vuex";
+// utils
+import { isFalsy } from "@/utils/core-utils";
+// components
 import BxSwitch from './fields/BxSwitch.vue';
 import EntityPicker from "@/components/UI/BxForm/fields/EntityPicker.vue";
 
@@ -159,7 +163,7 @@ export default defineComponent({
 			let date, time;
 			switch (this.fieldDesc.type) {
 				case "D":
-					[date, time] = initVal !== null
+					[date, time] = !isFalsy(initVal)
 						? initVal.split("@")
 						: [null, "00:00"];
 					this.dateTimeValue = { date, time };
