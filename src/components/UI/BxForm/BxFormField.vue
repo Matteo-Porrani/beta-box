@@ -8,8 +8,6 @@
 			<span v-if="fieldDesc.required">*</span>
 		</label>
 
-		<!--	EVERY INPUT TYPE MUST BE ISOLATED IN SPECIFIC COMPONENT	-->
-
 		<template v-if="fieldDesc.type === 'T'">
 			<input
 				type="text"
@@ -32,18 +30,6 @@
 			<BxSwitch v-model="value" />
 		</template>
 
-		<template v-if="fieldDesc.type === 'L'">
-			<select v-model="value">
-				<option
-					v-for="o in options"
-					:key="o.value"
-					:value="o.value"
-				>
-					{{ o.label }}
-				</option>
-			</select>
-		</template>
-
 		<template v-if="fieldDesc.type === 'D'">
 			<div class="flex gap-1">
 				<input
@@ -57,6 +43,20 @@
 					class="block w-32 text-xl text-stone-800 bg-stone-400 rounded p-1"
 				>
 			</div>
+		</template>
+
+		<!--	##################################################################	-->
+
+		<template v-if="fieldDesc.type === 'L'">
+			<select v-model="value">
+				<option
+					v-for="o in options"
+					:key="o.value"
+					:value="o.value"
+				>
+					{{ o.label }}
+				</option>
+			</select>
 		</template>
 
 		<template v-if="fieldDesc.type === 'E'">

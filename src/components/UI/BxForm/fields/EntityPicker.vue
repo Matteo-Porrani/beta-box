@@ -1,5 +1,4 @@
 <template>
-
 	<div class="flex gap-2">
 		<input
 			type="text"
@@ -9,9 +8,8 @@
 		<button @click="openModal">
 			<BxIcon icon="bars"/>
 		</button>
-		<pre class="text-sm">{{ entity }}</pre>
 	</div>
-
+	<!-- MODAL -->
 	<BxModal
 		ref="modal_ref"
 	>
@@ -19,8 +17,6 @@
 			<h2 class="text-2xl font-bold">{{ entity }}</h2>
 			<p>MULTI : {{ multiple ? 'TRUE' : 'FALSE' }}</p>
 		</template>
-
-
 		<template #body>
 			<div class="space-y-2">
 				<div
@@ -29,11 +25,10 @@
 				>
 					<div></div>
 					<div
-						v-for="c in getCols"
+						v-for="c in cols"
 						:key="c"
 					>{{ c }}</div>
 				</div>
-
 				<div
 					v-for="r in rows"
 					:key="r.id"
@@ -44,15 +39,19 @@
 						type="checkbox"
 						class="size-8 accent-lime-600"
 						v-model="values[r.id]"
+						:data-id="r.id"
+						@change="onCheckboxChange"
 					>
-					<p>{{ r.id }}</p>
-					<p>{{ r.name }}</p>
+					<p
+						v-for="c in cols"
+						:key="c"
+					>
+						{{ r[c] }}
+					</p>
 				</div>
 			</div>
 		</template>
-
 		<template #footer>
-
 			<div class="w-full flex justify-between">
 				<button @click="$refs.modal_ref.close">Close</button>
 				<button @click="submitValue">OK</button>
@@ -63,11 +62,14 @@
 
 
 <script>
+// Vue related
+import { mapGetters, mapState } from "vuex";
+// utils
+import { getPickerColsFromDef } from "@/utils/entity-utils";
+import { isFalsy, nrm, pascalToSnake } from "@/utils/core-utils";
+// components
 import BxModal from "@/components/UI/BxModal.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
-import { mapGetters, mapState } from "vuex";
-import { isFalsy, nrm, pascalToSnake } from "@/utils/core-utils";
-import { getPickerColsFromDef } from "@/utils/entity-utils";
 
 export default {
 	name: "EntityPicker",
@@ -101,35 +103,30 @@ export default {
 			"getEntityDescription",
 		]),
 
-		rows() {
-			const snakeRelEntityName = pascalToSnake(this.entity);
-			return this.entities[snakeRelEntityName] ?? [];
-		},
-
 		// get the definition of the entity, with 'picker_col' value
-		getCols() {
+		cols() {
 			let d = this.getEntityDescription(this.entity);
 			d = nrm(d);
 			return getPickerColsFromDef(d);
 		},
 
-		// =============================================
-		// UTILITIES
-		// =============================================
-
-		gridColsClass() {
-			return `grid-cols-${this.getCols.length + 1}`;
+		rows() {
+			const snakeRelEntityName = pascalToSnake(this.entity);
+			return this.entities[snakeRelEntityName] ?? [];
 		},
 
 		parsedValue() {
-			const parsedValue = Object.keys(this.values).reduce((acc, key) => {
-				if (this.values[key] === true) {
-					acc.push(key);
-				}
+			const pv = Object.keys(this.values).reduce((acc, key) => {
+				if (this.values[key] === true) acc.push(key);
 				return acc;
 			}, []);
-			return parsedValue.join(":");
-		}
+			return pv.join(":");
+		},
+
+		gridColsClass() {
+			return `grid-cols-${this.cols.length + 1}`;
+		},
+
 	},
 
 	mounted() {
@@ -137,6 +134,11 @@ export default {
 	},
 
 	methods: {
+
+		// =============================================
+		// INIT
+		// =============================================
+
 		initBinding() {
 			for (const r of this.rows) {
 				this.values[r.id] = false;
@@ -144,21 +146,28 @@ export default {
 		},
 
 		setValue(value) {
-			/*
-			const a = "1"
-			const b = "2:3"
-			console.log(a.split(":")) // ["1"]
-			console.log(b.split(":")) // ["2", "3"]
-			 */
-
 			if (isFalsy(value)) return;
 			for (const key of value.split(":")) {
 				this.values[key] = true;
 			}
 		},
 
-		openModal() {
-			this.$refs.modal_ref.open();
+		// =============================================
+		// VALUE HANDLING & SUBMIT
+		// =============================================
+
+		onCheckboxChange(event) {
+			const lastSelectedId = event.target.dataset.id;
+			if (!this.multiple) {
+				this.setAllValuesToFalse();
+				this.values[lastSelectedId] = true;
+			}
+		},
+
+		setAllValuesToFalse() {
+			for (const k of Object.keys(this.values)) {
+				this.values[k] = false;
+			}
 		},
 
 		submitValue() {
@@ -166,7 +175,13 @@ export default {
 			this.$refs.modal_ref.close();
 		},
 
+		// =============================================
+		// MISC
+		// =============================================
 
+		openModal() {
+			this.$refs.modal_ref.open();
+		},
 	}
 }
 </script>
@@ -185,6 +200,8 @@ input[readonly] {
 grid-cols-2
 grid-cols-3
 grid-cols-4
+grid-cols-5
+grid-cols-6
 */
 </style>
 
