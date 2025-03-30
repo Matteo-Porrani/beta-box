@@ -97,6 +97,8 @@ export default defineComponent({
 		},
 	},
 
+	emits: ["valueChanged"],
+
 	expose: ["initField"],
 
 	data() {
@@ -124,10 +126,11 @@ export default defineComponent({
 
 	watch: {
 		value(newVal) {
-			this.SET_FIELD({
+			const changeData = {
 				key: this.fieldDesc.field,
-				value: newVal,
-			})
+				value: newVal
+			}
+			this.$emit("valueChanged", changeData)
 		},
 
 		/**
@@ -148,7 +151,7 @@ export default defineComponent({
 		dateTimeValue: {
 			deep: true,
 			handler: function (newVal) {
-				this.SET_FIELD({
+				this.$emit("valueChanged", {
 					key: this.fieldDesc.field,
 					value: `${newVal.date}@${newVal.time}`,
 				})
@@ -157,8 +160,6 @@ export default defineComponent({
 	},
 
 	methods: {
-		...mapMutations("form", ["SET_FIELD"]),
-
 		initField(initVal) {
 			let date, time;
 			switch (this.fieldDesc.type) {

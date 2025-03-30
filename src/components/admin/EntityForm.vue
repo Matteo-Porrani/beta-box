@@ -5,6 +5,7 @@
 			<BxForm
 				ref="bxForm"
 				:description="formDescription"
+				@field-value-changed="onFieldValueChanged"
 			/>
 		</div>
 		<div class="h-4"></div>
@@ -72,6 +73,7 @@ export default {
 
 	methods: {
 		...mapMutations("form", [
+			"SET_FIELD",
 			"RESET_FORM",
 		]),
 		...mapActions("entity", [
@@ -79,6 +81,10 @@ export default {
 			"updateItem",
 			"deleteItem",
 		]),
+
+		onFieldValueChanged(changeData) {
+			this.SET_FIELD(changeData);
+		},
 
 		async onSave() {
 			const action = isInteger(this.formValues.id)

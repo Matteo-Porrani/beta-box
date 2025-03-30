@@ -8,6 +8,7 @@
 			:key="f.id"
 			:ref="`fieldRef_${f.field}`"
 			:fieldDesc="f"
+			@value-changed="e => $emit('fieldValueChanged', e)"
 		/>
 	</div>
 </template>
@@ -30,6 +31,8 @@ export default defineComponent({
 			required: true,
 		}
 	},
+
+	emits: ["fieldValueChanged"],
 
 	expose: ["initForm", "resetForm",],
 

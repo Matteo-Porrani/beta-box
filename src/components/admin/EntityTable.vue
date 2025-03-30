@@ -68,7 +68,7 @@ export default {
 		 * calling resetForm() is more intuitive than calling initForm({})
 		 */
 		onEditItem(item) {
-			console.log("==>", JSON.stringify(item))
+			console.log("EDIT ==>", JSON.stringify(item))
 			this.$emit("editItem", item); // emit to AdminView
 		},
 
