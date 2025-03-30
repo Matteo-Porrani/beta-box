@@ -59,6 +59,14 @@
 			</div>
 		</template>
 
+		<template v-if="fieldDesc.type === 'E'">
+<!--			<input type="text" v-model="value"/>-->
+			<EntityPicker
+				:entity="fieldDesc.rel_entity"
+				:multiple="fieldDesc.multiple"
+			/>
+		</template>
+
 	</div>
 </template>
 
@@ -67,11 +75,13 @@
 import { defineComponent } from 'vue'
 import { mapGetters, mapMutations, mapState } from "vuex";
 import BxSwitch from './fields/BxSwitch.vue';
+import EntityPicker from "@/components/UI/BxForm/fields/EntityPicker.vue";
 
 export default defineComponent({
 	name: "BxFormField",
 
 	components: {
+		EntityPicker,
 		BxSwitch
 	},
 

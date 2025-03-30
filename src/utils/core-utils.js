@@ -44,3 +44,11 @@ export function pascalToSnake(str) {
 export function snakeToPascal(str) {
 	return str.replace(/(^|_)(\w)/g, (_, prefix, letter) => letter.toUpperCase());
 }
+
+// =============================================
+// OTHER
+// =============================================
+
+export function nrm(obj){
+	return JSON.parse(JSON.stringify(obj));
+}
