@@ -97,7 +97,6 @@ export default defineComponent({
 	},
 
 	emits: ["valueChanged"],
-
 	expose: ["initField"],
 
 	data() {
@@ -135,9 +134,7 @@ export default defineComponent({
 			handler(newOptions) {
 				if (this.fieldDesc.type === 'L' && !this.value) {
 					const defaultOption = newOptions?.find(o => o.default === true);
-					if (defaultOption) {
-						this.value = defaultOption.value;
-					}
+					if (defaultOption) this.value = defaultOption.value;
 				}
 			}
 		},
@@ -157,14 +154,14 @@ export default defineComponent({
 		initField(initVal) {
 			let date, time;
 			switch (this.fieldDesc.type) {
+				case "B":
+					this.value = initVal ?? false;
+					break;
 				case "D":
 					[date, time] = !isFalsy(initVal)
 						? initVal.split("@")
 						: [null, "00:00"];
 					this.dateTimeValue = { date, time };
-					break;
-				case "B":
-					this.value = initVal ?? false;
 					break;
 				case "E":
 					this.$refs.entity_picker_ref.setValue(initVal);
