@@ -6,7 +6,7 @@ All it knows is field names, field types & values.
 
 EntityForm must pass :
 - an already ordered description
-- all the list data needed to properly display fields of type LIST
+- for LIST fields, description entry will have 'options' key with options to display in the list
 
 -->
 
