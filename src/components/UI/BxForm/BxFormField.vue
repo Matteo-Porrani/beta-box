@@ -156,30 +156,23 @@ export default defineComponent({
 		...mapMutations("form", ["SET_FIELD"]),
 
 		initField(initVal) {
-
-			if (this.fieldDesc.type === "D") {
-				const [date, time] = initVal !== null
-					? initVal.split("@")
-					: [null, "00:00"];
-				this.dateTimeValue = {
-					date,
-					time,
-				}
-				return;
+			let date, time;
+			switch (this.fieldDesc.type) {
+				case "D":
+					[date, time] = initVal !== null
+						? initVal.split("@")
+						: [null, "00:00"];
+					this.dateTimeValue = { date, time };
+					break;
+				case "B":
+					this.value = initVal ?? false;
+					break;
+				case "E":
+					this.$refs.entity_picker_ref.setValue(initVal);
+					break;
+				default:
+					this.value = initVal;
 			}
-
-			if (this.fieldDesc.type === "B") {
-				this.value = initVal ?? false;
-				return;
-			}
-
-			if (this.fieldDesc.type === "E") {
-				console.log("case E", initVal)
-				this.$refs.entity_picker_ref.setValue(initVal);
-				return;
-			}
-
-			this.value = initVal;
 		}
 	}
 
