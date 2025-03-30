@@ -1,13 +1,11 @@
 <template>
 
 	<div class="flex gap-2">
-
 		<input
 			type="text"
 			readonly
 			v-model="parsedValue"
 		>
-
 		<button @click="openModal">
 			<BxIcon icon="bars"/>
 		</button>
@@ -18,7 +16,7 @@
 		ref="modal_ref"
 	>
 		<template #header>
-			<p>{{ entity }}</p>
+			<h2 class="text-2xl font-bold">{{ entity }}</h2>
 			<p>MULTI : {{ multiple ? 'TRUE' : 'FALSE' }}</p>
 		</template>
 
@@ -82,7 +80,6 @@ export default {
 	props: {
 		entity: String,
 		multiple: Boolean,
-		modelValue: [String, Number]
 	},
 
 	emits: ["update:modelValue"],
@@ -137,14 +134,9 @@ export default {
 
 	mounted() {
 		this.initBinding();
-		this.initValue();
 	},
 
 	methods: {
-		initValue() {
-			console.log("+++ initValue", "modelValue", this.props)
-		},
-
 		initBinding() {
 			for (const r of this.rows) {
 				this.values[r.id] = false;
@@ -152,9 +144,17 @@ export default {
 		},
 
 		setValue(value) {
-			console.log("+++ setValue", value)
+			/*
+			const a = "1"
+			const b = "2:3"
+			console.log(a.split(":")) // ["1"]
+			console.log(b.split(":")) // ["2", "3"]
+			 */
+
 			if (isFalsy(value)) return;
-			this.values[value] = true;
+			for (const key of value.split(":")) {
+				this.values[key] = true;
+			}
 		},
 
 		openModal() {
@@ -163,7 +163,6 @@ export default {
 
 		submitValue() {
 			this.$emit("update:modelValue", this.parsedValue)
-
 			this.$refs.modal_ref.close();
 		},
 
