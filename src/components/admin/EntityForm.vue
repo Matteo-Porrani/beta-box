@@ -1,18 +1,13 @@
 <template>
-
 	<div data-test="admin-form-root">
-
 		<!-- THE FORM -->
 		<BxForm
 			ref="bxForm"
 			:description="formDescription"
 		/>
-
 		<div class="h-4"></div>
-
 		<!-- THE BUTTONS -->
 		<div class="flex justify-between w-1/2 border rounded p-1">
-
 			<button
 				class="
 					w-32 bg-stone-800 border border-yellow-400 text-yellow-400 hover:bg-yellow-950
@@ -22,7 +17,6 @@
 			>
 				Reset
 			</button>
-
 			<button
 				class="
 					w-32 bg-lime-600 border border-lime-600 hover:bg-lime-500
@@ -32,16 +26,14 @@
 			>
 				{{ formValues.id ? 'Update' : 'Add' }}
 			</button>
-
 		</div>
-
 	</div>
 </template>
 
 
 <script>
 // Vue related
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 // utils
 import { isInteger } from "@/utils/core-utils";
 import { prepareItem } from "@/utils/entity-utils";
@@ -72,14 +64,14 @@ export default {
 
 	computed: {
 		...mapState({
-			// entities: $s => $s.entity.entities,
 			formValues: $s => $s.form.formValues,
 		}),
 	},
 
-
-
 	methods: {
+		...mapMutations("form", [
+			"RESET_FORM",
+		]),
 		...mapActions("entity", [
 			"addItem",
 			"updateItem",
@@ -109,25 +101,18 @@ export default {
 		 * Clients of BxForm don't need to know this !! All they need is a clear and intuitive API :
 		 * calling resetForm() is more intuitive than calling initForm({})
 		 */
+
+
+		// this method is called by parent AdminView when we switch to FORM mode
 		onEditItem(item) {
 			this.$refs.bxForm.initForm(item);
 		},
 
-		onDuplicateItem(item) {
-			const clone = { ...item }
-			delete clone.id;
-			this.$refs.bxForm.initForm(clone);
-		},
-
 		onReset() {
 			this.$refs.bxForm.resetForm();
-		},
-
-		async onDeleteItem(item) {
-			await this.deleteItem({
-				tableName: this.tableName,
-				id: item.id
-			});
+			setTimeout(() => {
+				this.RESET_FORM();
+			}, 500);
 		},
 	}
 

@@ -4,7 +4,6 @@
 			v-if="contentLoaded"
 			class="admin-view-root"
 		>
-
 <!--			<nav class="space-x-4">-->
 <!--				<button-->
 <!--					v-for="l in links"-->
@@ -27,6 +26,7 @@
 
 			<div class="h-4"></div>
 
+			<!-- LIST -->
 			<template v-if="viewMode === '$L'">
 				<EntityTable
 					:table-name="tableName"
@@ -44,7 +44,7 @@
 					Add
 				</button>
 			</template>
-
+			<!-- FORM -->
 			<template v-else-if="viewMode === '$F'">
 				<EntityForm
 					ref="entity_form_ref"
@@ -64,7 +64,6 @@
 					List
 				</button>
 			</template>
-
 		</div>
 	</DefaultLayout>
 </template>
@@ -142,18 +141,13 @@ export default {
 	},
 
 	async mounted() {
-
-		const r1 = await this.loadItems("list_option");
-		console.log(r1)
+		// list_option table must be loaded first
+		await this.loadItems("list_option");
 
 		for (const e of this.entitiesList) {
 			const res = await this.loadItems(e.value);
 			console.log(res)
 		}
-
-
-		// const r2 = await this.loadItems(this.tableName);
-		// console.log(r2)
 
 		this.tableName = "field_definition";
 		this.contentLoaded = true;

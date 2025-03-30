@@ -15,7 +15,6 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { mapMutations } from "vuex";
 import BxFormField from "@/components/UI/BxForm/BxFormField.vue";
 
 export default defineComponent({
@@ -32,10 +31,7 @@ export default defineComponent({
 		}
 	},
 
-	expose: [
-		"initForm",
-		"resetForm",
-	],
+	expose: ["initForm", "resetForm",],
 
 	data() {
 		return {
@@ -58,15 +54,6 @@ export default defineComponent({
 	},
 
 	methods: {
-		...mapMutations("form", ["RESET_FORM"]),
-
-		/**
-		 * This method is only needed to be exposed
-		 * to have a more intuitive API
-		 */
-		resetForm() {
-			this.initForm({});
-		},
 
 		initForm(values) {
 			const isReset = Object.keys(values).length < 1;
@@ -79,15 +66,17 @@ export default defineComponent({
 					this.childrenRefs[field].initField(v);
 				}
 			}
+		},
 
-			if (isReset) setTimeout(() => {
-				this.RESET_FORM();
-			}, 500);
-
+		/**
+		 * This method is only needed to be exposed
+		 * to have a more intuitive API
+		 */
+		resetForm() {
+			this.initForm({});
 		},
 
 	}
-
 
 })
 </script>
