@@ -126,7 +126,17 @@ export default {
 			if (desc?.length > 0) {
 				this.formDescription = this.getEntityDescription(newVal);
 			} else {
-				this.formDescription = ENTITY_TEMP_DESC[newVal] ?? [];
+				// FIXME -- temporary
+				const desc = ENTITY_TEMP_DESC[newVal] ?? [];
+
+				if (newVal === "field_definition") {
+					const typeEntry = desc.find(e => e.field === "type");
+					console.log("typeEntry", typeEntry)
+
+					typeEntry.options = this.getList(typeEntry.list);
+				}
+
+				this.formDescription = desc;
 			}
 		}
 	},
