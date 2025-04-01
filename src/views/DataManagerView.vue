@@ -4,7 +4,7 @@
 
 			<button
 				@click="exportData"
-				class="bg-blue-800 hover:bg-blue-700 rounded py-1 px-2"
+				class="bg-lime-600 hover:bg-lime-500 text-stone-800 rounded py-1 px-2"
 			>Backup</button>
 
 			<div class="h-4"></div>
