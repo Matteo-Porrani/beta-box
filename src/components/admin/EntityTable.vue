@@ -50,11 +50,11 @@ export default {
 			if (this.tableName === 'list_option') {
 				rows = rows.sort((a, b) => a.order - b.order).sort((a, b) => a.list.localeCompare(b.list))
 			}
-
 			if (this.tableName === 'field_definition') {
 				rows = rows.sort((a, b) => a.order - b.order).sort((a, b) => a.entity.localeCompare(b.entity))
 			}
 
+			// show labels instead of values for lists
 			rows = this.getListLabels(rows);
 
 			return rows;
@@ -68,17 +68,15 @@ export default {
 		]),
 
 		getListLabels(rows) {
-			for (const r of rows) {
+			return rows.map(r => {
 				for (const k of Object.keys(r)) {
 					const match = this.formDescription.find(f => f.field === k);
-
 					if (match && match.type === "L") {
 						r[k] = this.getLabelFromListValue(match.list, r[k]);
 					}
 				}
-			}
-
-			return rows;
+				return r;
+			});
 		},
 
 		/**
