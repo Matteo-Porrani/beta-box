@@ -1,5 +1,4 @@
 <template>
-
 	<BxTable
 		:cols="formDescription.map(c => c.field)"
 		:rows="rows"
@@ -7,14 +6,17 @@
 		@duplicate-item="onDuplicateItem"
 		@delete-item="onDeleteItem"
 	/>
-
 </template>
 
 
 <script>
-import BxTable from "@/components/UI/BxTable/BxTable.vue";
+// Vue related
 import { mapActions, mapGetters, mapState } from "vuex";
+// utils
 import { nrm } from "@/utils/core-utils";
+// components
+import BxTable from "@/components/UI/BxTable/BxTable.vue";
+
 
 export default {
 
@@ -29,9 +31,7 @@ export default {
 		formDescription: Array,
 	},
 
-	emits: [
-		"editItem",
-	],
+	emits: ["editItem",],
 
 	computed: {
 		...mapState({
@@ -44,6 +44,7 @@ export default {
 
 		rows() {
 			if (!this.entities[this.tableName]) return [];
+			// VERY IMPORTANT !!! normalize each 'r' object
 			let rows = this.entities[this.tableName].map(r => nrm(r));
 
 			// special sorting (group rows on 'list' or 'entity' column)
