@@ -20,7 +20,7 @@
 		<template #body>
 			<div class="space-y-2">
 				<div
-					class="grid gap-2 border rounded p-1"
+					class="grid gap-2 bg-stone-800 font-bold rounded p-1"
 					:class="gridColsClass"
 				>
 					<div></div>
@@ -32,7 +32,7 @@
 				<div
 					v-for="r in rows"
 					:key="r.id"
-					class="grid gap-2 border rounded p-1"
+					class="grid gap-2 border border-stone-500 rounded p-1"
 					:class="gridColsClass"
 				>
 					<input
@@ -62,11 +62,8 @@
 
 
 <script>
-// Vue related
-import { mapGetters, mapState } from "vuex";
 // utils
-import { getPickerColsFromDef } from "@/utils/entity-utils";
-import { isFalsy, nrm, pascalToSnake } from "@/utils/core-utils";
+import { isFalsy } from "@/utils/core-utils";
 // components
 import BxModal from "@/components/UI/BxModal.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
@@ -80,6 +77,7 @@ export default {
 	},
 
 	props: {
+		fieldDesc: Object,
 		entity: String,
 		multiple: Boolean,
 	},
@@ -95,24 +93,12 @@ export default {
 	},
 
 	computed: {
-		...mapState({
-			entities: $s => $s.entity.entities,
-		}),
-
-		...mapGetters("entity", [
-			"getEntityDescription",
-		]),
-
-		// get the definition of the entity, with 'picker_col' value
 		cols() {
-			let d = this.getEntityDescription(this.entity);
-			d = nrm(d);
-			return getPickerColsFromDef(d);
+			return this.fieldDesc.entityPickerCols;
 		},
 
 		rows() {
-			const snakeRelEntityName = pascalToSnake(this.entity);
-			return this.entities[snakeRelEntityName] ?? [];
+			return this.fieldDesc.options;
 		},
 
 		parsedValue() {

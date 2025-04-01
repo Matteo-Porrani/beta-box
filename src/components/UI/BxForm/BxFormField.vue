@@ -62,6 +62,7 @@
 		<template v-if="fieldDesc.type === 'E'">
 			<EntityPicker
 				ref="entity_picker_ref"
+				:field-desc="fieldDesc"
 				:entity="fieldDesc.rel_entity"
 				:multiple="fieldDesc.multiple"
 				@update:model-value="newValue => value = newValue"

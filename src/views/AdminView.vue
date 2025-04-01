@@ -106,22 +106,26 @@ export default {
 		...mapState({
 			entities: $s => $s.entity.entities,
 		}),
-		...mapGetters("entity", ["getList", "getEntityDescription"]),
+
+		...mapGetters("entity", [
+			"getListOptions",
+			"getEntityDescription"
+		]),
 
 		entitiesList() {
 			// if (Object.keys(this.entities).length === 0) return [];
-			return this.getList('$entities') ?? [];
+			return this.getListOptions('$entities') ?? [];
 		},
 
-		// formDescription() {
-		// 	return ENTITY_TEMP_DESC[this.tableName] ?? [];
-		// },
 	},
 
 	watch: {
 
 		tableName(newVal) {
 			const desc = this.getEntityDescription(newVal);
+
+			console.log("ADMIN VIEW -- getEntityDescription")
+			console.log(desc)
 
 			if (desc?.length > 0) {
 				this.formDescription = this.getEntityDescription(newVal);
@@ -133,7 +137,7 @@ export default {
 					const typeEntry = desc.find(e => e.field === "type");
 					console.log("typeEntry", typeEntry)
 
-					typeEntry.options = this.getList(typeEntry.list);
+					typeEntry.options = this.getListOptions(typeEntry.list);
 				}
 
 				this.formDescription = desc;
