@@ -124,23 +124,18 @@ export default {
 		tableName(newVal) {
 			const desc = this.getEntityDescription(newVal);
 
-			console.log("ADMIN VIEW -- getEntityDescription")
-			console.log(desc)
-
 			if (desc?.length > 0) {
-				this.formDescription = this.getEntityDescription(newVal);
+				this.formDescription = desc;
 			} else {
 				// FIXME -- temporary
-				const desc = ENTITY_TEMP_DESC[newVal] ?? [];
+				const hcDesc = ENTITY_TEMP_DESC[newVal] ?? [];
 
 				if (newVal === "field_definition") {
-					const typeEntry = desc.find(e => e.field === "type");
-					console.log("typeEntry", typeEntry)
-
+					const typeEntry = hcDesc.find(e => e.field === "type");
 					typeEntry.options = this.getListOptions(typeEntry.list);
 				}
 
-				this.formDescription = desc;
+				this.formDescription = hcDesc;
 			}
 		}
 	},

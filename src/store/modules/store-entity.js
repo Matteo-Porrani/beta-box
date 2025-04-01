@@ -13,9 +13,17 @@ export default {
 	},
 	
 	getters: {
+		getEntityDescription: (state, getters) => {
+			return (entityName) => {
+				const orderedFields = getters._getOrderedFields(snakeToPascal(entityName));
+				const fieldsWithListOpts = getters._getOptionsForListFields(orderedFields);
+				const fieldsWithEntPickerOpts = getters._getOptionsForEntityPickerFields(fieldsWithListOpts);
+				return nrm(fieldsWithEntPickerOpts);
+			}
+		},
+
 		getListOptions: (state) => {
 			return (listCode) => {
-				console.log("/// getListOptions", listCode)
 				return state.entities.list_option
 					.filter(el => el.list === listCode)
 					.sort((a, b) => a.order - b.order)
@@ -24,19 +32,6 @@ export default {
 						label: el.label,
 						default: el.default
 					}));
-			}
-		},
-		
-		getEntityDescription: (state, getters) => {
-			return (entityName) => {
-				const en = snakeToPascal(entityName);
-				console.log("/// get description", en)
-				
-				const orderedFields = getters._getOrderedFields(en);
-				const fieldsWithListOpts = getters._getOptionsForListFields(orderedFields);
-				const fieldsWithEntPickerOpts = getters._getOptionsForEntityPickerFields(fieldsWithListOpts);
-
-				return nrm(fieldsWithEntPickerOpts);
 			}
 		},
 		
@@ -62,12 +57,8 @@ export default {
 			return (fields) => {
 				for (const f of fields) {
 					if (f.type === "E" && f.rel_entity) {
-						console.log(f.field, f.rel_entity)
-						
 						const cols = getters._getPickerCols(f.rel_entity);
-						console.log("[picker_cols]", cols)
 						const rows = state.entities[pascalToSnake(f.rel_entity)];
-						
 						f.options = rows.map(r => {
 							const o = {};
 							for (const k of cols) {
@@ -78,7 +69,6 @@ export default {
 						f.entityPickerCols = cols;
 					}
 				}
-				
 				return fields;
 			}
 		},
@@ -86,8 +76,9 @@ export default {
 		// @return String[]
 		_getPickerCols: (state, getters) => {
 			return (entityName) => {
-				const d = getters.getEntityDescription(entityName);
-				return d.filter(f => f.picker_col === true).map(f => f.field);
+				return getters.getEntityDescription(entityName)
+					.filter(f => f.picker_col === true)
+					.map(f => f.field);
 			}
 		}
 		
