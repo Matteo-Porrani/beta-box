@@ -13,7 +13,8 @@
 
 <script>
 import BxTable from "@/components/UI/BxTable/BxTable.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
+import { nrm } from "@/utils/core-utils";
 
 export default {
 
@@ -37,9 +38,13 @@ export default {
 			entities: $s => $s.entity.entities,
 		}),
 
+		...mapGetters("entity", [
+			"getLabelFromListValue"
+		]),
+
 		rows() {
 			if (!this.entities[this.tableName]) return [];
-			let rows = this.entities[this.tableName].map(r => r);
+			let rows = this.entities[this.tableName].map(r => nrm(r));
 
 			// special sorting (group rows on 'list' or 'entity' column)
 			if (this.tableName === 'list_option') {
@@ -50,6 +55,8 @@ export default {
 				rows = rows.sort((a, b) => a.order - b.order).sort((a, b) => a.entity.localeCompare(b.entity))
 			}
 
+			rows = this.getListLabels(rows);
+
 			return rows;
 		},
 	},
@@ -59,6 +66,20 @@ export default {
 		...mapActions("entity", [
 			"deleteItem",
 		]),
+
+		getListLabels(rows) {
+			for (const r of rows) {
+				for (const k of Object.keys(r)) {
+					const match = this.formDescription.find(f => f.field === k);
+
+					if (match && match.type === "L") {
+						r[k] = this.getLabelFromListValue(match.list, r[k]);
+					}
+				}
+			}
+
+			return rows;
+		},
 
 		/**
 		 * The public API of BxForm exposes 2 methods : initForm() & resetForm().

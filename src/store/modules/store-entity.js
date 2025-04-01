@@ -80,6 +80,14 @@ export default {
 					.filter(f => f.picker_col === true)
 					.map(f => f.field);
 			}
+		},
+		
+		getLabelFromListValue: (state, getters) => {
+			return (listName, value) => {
+				const opts = getters.getListOptions(listName);
+				const match = opts.find(o => o.value === value);
+				return match ? match.label : "";
+			}
 		}
 		
 	},
