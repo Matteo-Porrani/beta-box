@@ -7,7 +7,9 @@ body {
     color: #e7e5e4; /* stone-200 */
     height: 100vh;
     display: grid;
-    font-family: "Anaheim", sans-serif;
+    /*font-family: "Anaheim", sans-serif;*/
+    font-family: "Sunflower", sans-serif;
+    font-weight: 300; /* based on Sunflower */
     overflow-x: hidden;
     /*font-size: 1.125rem;*/
 }

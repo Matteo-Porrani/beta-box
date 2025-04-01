@@ -7,11 +7,12 @@
 			:data-field="c"
 			:class="textColorClass(row[c])"
 		>
-			<div v-html="valueRenderer(row[c])"></div>
+			<div class="cell-content" v-html="valueRenderer(row[c])"></div>
 		</component>
 		<component
 			:is="isHeader ? 'th' : 'td'"
-			class="space-x-4"
+			class="space-x-2"
+			data-field="actions"
 		>
 			<template v-if="!isHeader">
 				<button
@@ -90,6 +91,14 @@ export default {
 					? "text-lime-600"
 					: "text-rose-700"
 			}
+		},
+
+		colsCount() {
+			return this.cols.length;
+		},
+
+		templateColumns() {
+			return `auto repeat(${this.colsCount}, 1fr)`
 		}
 	},
 
@@ -102,6 +111,15 @@ export default {
 </script>
 
 <style scoped>
+tr {
+	display: grid;
+	grid-template-columns: v-bind(templateColumns);
+}
+
+.cell-content {
+	@apply overflow-hidden text-ellipsis whitespace-nowrap;
+}
+
 tr:has(td:hover),
 tr:has(td:hover) > td[data-field="id"] {
 	@apply bg-stone-900
@@ -109,7 +127,7 @@ tr:has(td:hover) > td[data-field="id"] {
 
 th,
 td {
-	@apply border border-stone-700 text-sm py-1 px-2
+	@apply border border-stone-700 text-sm overflow-hidden py-1 px-2
 }
 
 th,
@@ -117,5 +135,13 @@ td[data-field="id"] {
 	@apply text-lime-600 bg-stone-700 font-bold text-start
 }
 
+th[data-field="id"],
+td[data-field="id"] {
+	min-width: 60px;
+}
 
+th[data-field="actions"],
+td[data-field="actions"] {
+	min-width: 80px;
+}
 </style>
