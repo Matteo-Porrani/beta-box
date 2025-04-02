@@ -6,6 +6,7 @@
 			:cols="cols"
 			:row="headerRow"
 		/>
+		<div class="table-content">
 			<BxTableRow
 				v-for="r in rows"
 				:key="r.id"
@@ -15,6 +16,7 @@
 				@duplicate-item="onDuplicateItem"
 				@delete-item="onDeleteItem"
 			/>
+		</div>
 		</tbody>
 	</table>
 </template>
@@ -31,6 +33,10 @@ export default {
 	props: {
 		cols: Array,
 		rows: Array,
+		contentHeight: {
+			type: String,
+			default: "unset"
+		}
 	},
 
 	emits: [
@@ -62,4 +68,11 @@ export default {
 }
 </script>
 
+
+<style scoped>
+.table-content {
+	height: v-bind(contentHeight);
+	overflow-y: auto;
+}
+</style>
 

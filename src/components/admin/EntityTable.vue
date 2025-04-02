@@ -2,6 +2,7 @@
 	<BxTable
 		:cols="formDescription.map(c => c.field)"
 		:rows="rows"
+		content-height="70vh"
 		@edit-item="onEditItem"
 		@duplicate-item="onDuplicateItem"
 		@delete-item="onDeleteItem"
