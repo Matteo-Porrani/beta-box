@@ -24,7 +24,6 @@ export default {
 
 		getListOptions: (state) => {
 			return (listCode) => {
-				console.log("getListOptions", listCode)
 				return state.entities.list_option
 					.filter(el => el.list === listCode)
 					.sort((a, b) => a.order - b.order)

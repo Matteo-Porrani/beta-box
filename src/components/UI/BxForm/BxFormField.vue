@@ -167,6 +167,9 @@ export default defineComponent({
 				case "E":
 					this.$refs.entity_picker_ref.setValue(initVal);
 					break;
+				case "L":
+					console.log("LIST field", initVal)
+					break;
 				default:
 					this.value = initVal;
 			}

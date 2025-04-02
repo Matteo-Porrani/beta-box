@@ -90,7 +90,7 @@ export default {
 		 */
 		onEditItem(item) {
 			console.log("EDIT ==>", JSON.stringify(item))
-			this.$emit("editItem", item); // emit to AdminView
+			this.$emit("editItem", item.id); // emit to AdminView
 		},
 
 		onDuplicateItem(item) {

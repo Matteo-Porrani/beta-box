@@ -158,8 +158,11 @@ export default {
 			"loadItems",
 		]),
 
-		onEditItem(item) {
+		onEditItem(itemId) {
 			this.setMode("$F");
+
+			const item = this.entities[this.tableName].find(r => r.id === itemId);
+			console.log("[item]", item)
 
 			nextTick(() => {
 				this.$refs.entity_form_ref.onEditItem(item)
