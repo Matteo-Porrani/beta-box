@@ -19,9 +19,9 @@
 		</div>
 
 		<div class="p-2 bg-stone-900">
-			<div v-if="activity.tags?.length" class="flex flex-wrap gap-1 mb-1">
+			<div v-if="activity.ticketTitles?.length" class="flex flex-wrap gap-1 mb-1">
 				<span
-					v-for="tag in activity.tags"
+					v-for="tag in activity.ticketTitles"
 					:key="tag"
 					class="text-sm font-bold bg-stone-800 text-stone-300 hover:bg-stone-700 px-2 py-0.5 rounded-md border border-stone-600 cursor-pointer"
 				>
@@ -49,6 +49,7 @@
 					No URL
 				</div>
 			</div>
+
 		</div>
 	</div>
 </template>

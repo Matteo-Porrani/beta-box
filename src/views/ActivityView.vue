@@ -25,6 +25,7 @@ export default {
 	async created() {
 		await this.loadItems("day");
 		await this.loadItems("activity");
+		await this.loadItems("ticket");
 
 		const activities = ActivitySrv.getActivities();
 		console.log('Activities with formatted dates:', activities);
