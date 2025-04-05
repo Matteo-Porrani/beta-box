@@ -67,18 +67,6 @@ export default {
 		activity: {
 			type: Object,
 			required: true,
-			validator: (value) => {
-				return (
-					typeof value.id === 'string' &&
-					typeof value.description === 'string' &&
-					typeof value.duration === 'string' &&
-					/^\d{2}:\d{2}$/.test(value.duration) &&
-					typeof value.type === 'string' &&
-					['$D', '$R', '$A', '$E', '$O'].includes(value.type) &&
-					Array.isArray(value.tags) &&
-					(value.url === undefined || typeof value.url === 'string')
-				);
-			}
 		}
 	},
 

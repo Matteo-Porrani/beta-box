@@ -36,25 +36,6 @@ export default {
 		days: {
 			type: Array,
 			required: true,
-			validator: (value) => {
-				return value.every(day => {
-					return (
-						day.date instanceof Date &&
-						typeof day.title === 'string' &&
-						Array.isArray(day.activities) &&
-						day.activities.every(activity => {
-							return (
-								typeof activity.id === 'string' &&
-								typeof activity.description === 'string' &&
-								typeof activity.duration === 'string' &&
-								typeof activity.type === 'string' &&
-								Array.isArray(activity.tags) &&
-								(activity.url === undefined || typeof activity.url === 'string')
-							);
-						})
-					);
-				});
-			}
 		}
 	},
 
