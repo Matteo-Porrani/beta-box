@@ -1,32 +1,37 @@
 <template>
 	<div
 		data-test="activity-card-root"
-		class="border border-stone-600 rounded p-2 hover:bg-stone-700 transition-colors"
+		class="w-72 border border-stone-600 rounded overflow-hidden hover:border-stone-500 transition-colors"
 	>
-		<div class="flex justify-between items-start mb-2">
-			<div class="flex items-center gap-2">
+		<div
+			class="px-2 py-1 flex justify-between items-center"
+			:class="headerColorClass"
+		>
+			<div class="flex items-center gap-1">
 				<BxIcon
 					:icon="activityIcon"
-					:class="iconColorClass"
-					size="medium"
+					class="text-stone-800"
+					size="xsmall"
 				/>
-				<h4 class="text-lg font-semibold">{{ title }}</h4>
+				<span class="text-xs font-semibold text-stone-800">{{ typeLabel }}</span>
 			</div>
-			<span class="text-sm text-stone-400">{{ formattedTime }}</span>
-		</div>
-		
-		<div class="text-sm text-stone-300">
-			<p>{{ description }}</p>
+			<span class="text-xs font-medium bg-stone-800 text-stone-300 px-2 py-0.5 rounded">{{ duration }}</span>
 		</div>
 
-		<div v-if="tags?.length" class="flex gap-1 mt-2">
-			<span
-				v-for="tag in tags"
-				:key="tag"
-				class="text-xs bg-stone-800 text-stone-400 px-2 py-1 rounded"
-			>
-				{{ tag }}
-			</span>
+		<div class="p-3 hover:bg-stone-700 transition-colors">
+			<div class="h-10 mb-2">
+				<p class="text-sm text-stone-300 line-clamp-2">{{ description }}</p>
+			</div>
+
+			<div v-if="tags?.length" class="flex flex-wrap gap-1">
+				<span
+					v-for="tag in tags"
+					:key="tag"
+					class="text-xs bg-stone-800 text-stone-400 px-2 py-1 rounded"
+				>
+					{{ tag }}
+				</span>
+			</div>
 		</div>
 	</div>
 </template>
@@ -42,21 +47,19 @@ export default {
 	},
 
 	props: {
-		title: {
-			type: String,
-			required: true
-		},
 		description: {
 			type: String,
-			default: ""
-		},
-		time: {
-			type: [String, Date],
 			required: true
+		},
+		duration: {
+			type: String,
+			required: true,
+			validator: (value) => /^\d{2}:\d{2}$/.test(value)
 		},
 		type: {
 			type: String,
-			default: "default"
+			required: true,
+			validator: (value) => ['$D', '$R', '$A', '$E', '$O'].includes(value)
 		},
 		tags: {
 			type: Array,
@@ -64,39 +67,38 @@ export default {
 		}
 	},
 
-	data() {
-		return {
-			// Component data properties
-		}
-	},
-
 	computed: {
-		formattedTime() {
-			if (!this.time) return "";
-			const date = new Date(this.time);
-			return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+		typeLabel() {
+			const labelMap = {
+				'$D': 'Development',
+				'$R': 'Meeting',
+				'$A': 'Analysis',
+				'$E': 'Exchange',
+				'$O': 'Other'
+			};
+			return labelMap[this.type] || 'Unknown';
+		},
+
+		headerColorClass() {
+			const colorMap = {
+				'$D': 'bg-yellow-400',
+				'$R': 'bg-lime-400',
+				'$A': 'bg-rose-400',
+				'$E': 'bg-blue-400',
+				'$O': 'bg-stone-400'
+			};
+			return colorMap[this.type] || 'bg-stone-400';
 		},
 
 		activityIcon() {
 			const iconMap = {
-				default: "check",
-				meeting: "users",
-				task: "clipboard",
-				note: "note",
-				call: "phone"
+				'$D': 'code',
+				'$R': 'users',
+				'$A': 'chart',
+				'$E': 'message',
+				'$O': 'dots'
 			};
-			return iconMap[this.type] || iconMap.default;
-		},
-
-		iconColorClass() {
-			const colorMap = {
-				default: "text-lime-600",
-				meeting: "text-blue-500",
-				task: "text-yellow-500",
-				note: "text-stone-400",
-				call: "text-teal-500"
-			};
-			return colorMap[this.type] || colorMap.default;
+			return iconMap[this.type] || 'dots';
 		}
 	},
 
