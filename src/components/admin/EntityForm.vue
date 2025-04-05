@@ -1,5 +1,29 @@
 <!--
-This is the last DOMAIN layer before the UI layer
+EntityForm is a form component that serves as the last domain layer before the UI layer in the admin interface.
+It provides a standardized way to create and edit entity data through a form interface.
+
+Key features:
+- Wraps the BxForm UI component with domain-specific logic
+- Handles form state management through Vuex store
+- Provides form reset and save functionality
+- Supports both create and update operations
+- Maintains proper field ordering and list options
+- Integrates with Vuex store for data management:
+  * Maps to the 'form' module for form state management
+  * Maps to the 'entity' module for data operations
+  * Uses mapState to access formValues
+  * Uses mapMutations for form field updates and resets
+  * Uses mapActions for addItem and updateItem operations
+
+Props:
+- tableName: String - Name of the entity table being edited
+- formDescription: Array - Ordered array of field descriptions with types and options
+
+Emits:
+- itemSaved: Emitted when an item is successfully saved
+
+Exposed Methods:
+- onEditItem: Public method to initialize form with existing item data
 
 BxForm is a graphic component. It doesn't know what it's dealing with.
 All it knows is field names, field types & values.
