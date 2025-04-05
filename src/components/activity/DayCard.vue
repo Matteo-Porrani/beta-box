@@ -1,64 +1,46 @@
 <template>
 	<div
 		data-test="day-card-root"
-		class="border border-stone-500 rounded p-2"
+		class="w-full bg-stone-900 rounded border border-stone-800"
 	>
-		<div class="flex justify-between items-center mb-2">
-			<h3 class="text-xl font-bold">{{ dayTitle }}</h3>
-			<span class="text-sm text-stone-400">{{ formattedDate }}</span>
-		</div>
-		<div class="space-y-2">
-			<slot></slot>
+		<h3 class="text-sm font-medium text-stone-300 p-2 pb-0">{{ title }}</h3>
+		<div class="p-2">
+			<div class="space-y-2">
+				<slot></slot>
+			</div>
+			<button
+				@click="$emit('add-activity')"
+				class="w-full mt-2 py-1.5 px-2 flex items-center justify-center gap-1 text-xs font-medium text-stone-400 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded transition-colors"
+			>
+				<BxIcon icon="plus" size="xsmall" class="text-stone-400" />
+				Add Activity
+			</button>
 		</div>
 	</div>
 </template>
 
 <script>
+import BxIcon from "@/components/UI/BxIcon.vue";
+
 export default {
 	name: "DayCard",
 
+	components: {
+		BxIcon
+	},
+
 	props: {
-		date: {
-			type: [String, Date],
-			required: true
-		},
 		title: {
 			type: String,
-			default: "Today"
-		}
-	},
-
-	data() {
-		return {
-			// Component data properties
-		}
-	},
-
-	computed: {
-		formattedDate() {
-			if (!this.date) return "";
-			const date = new Date(this.date);
-			return date.toLocaleDateString();
+			required: true
 		},
-
-		dayTitle() {
-			return this.title;
+		date: {
+			type: Date,
+			required: true
 		}
 	},
 
-
-	watch: {
-		// Component watchers
-	},
-
-	mounted() {
-		// Component mounted hook
-	},
-
-	methods: {
-		// Component methods
-	},
-
+	emits: ['add-activity']
 }
 </script>
 
