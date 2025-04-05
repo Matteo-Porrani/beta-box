@@ -70,13 +70,9 @@ export default {
 	},
 
 	async created() {
-
 		for (const t of ["list_option", "field_definition", "ticket", "day", "activity"]) {
 			await this.loadItems(t);
 		}
-
-		const activities = activitySrv.getActivities();
-		console.log('Activities with formatted dates:', activities);
 	},
 
 	data() {
@@ -119,7 +115,6 @@ export default {
 		},
 
 		onAddAct(dayId) {
-			console.log('Add activity for dayID:', dayId);
 			this.SET_FIELD({ key: "day", value: String(dayId)})
 			this.SET_FIELD({ key: "duration", value: 30})
 
@@ -130,10 +125,7 @@ export default {
 		},
 
 		onEditAct(activityData) {
-			console.log("onEditAct", activityData)
-
 			const strDuration = activityData.duration;
-
 			activityData.duration = parseDurationInMin(strDuration);
 
 			this.openModal();

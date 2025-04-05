@@ -92,10 +92,10 @@ export default {
 
 		headerColorClass() {
 			const colorMap = {
-				'$D': 'bg-yellow-400',
-				'$R': 'bg-lime-400',
-				'$A': 'bg-rose-400',
-				'$E': 'bg-blue-400',
+				'$D': 'bg-yellow-300',
+				'$R': 'bg-lime-500',
+				'$A': 'bg-sky-400',
+				'$E': 'bg-orange-400',
 				'$O': 'bg-stone-400'
 			};
 			return colorMap[this.activity.type] || 'bg-stone-400';
@@ -115,7 +115,6 @@ export default {
 
 	methods: {
 		onEditActivity() {
-			console.log(0)
 			this.$emit("editActivity", nrm(this.activity));
 		}
 	},

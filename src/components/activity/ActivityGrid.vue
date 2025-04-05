@@ -44,7 +44,6 @@ export default {
 
 	methods: {
 		onEditActivity(activityData) {
-			console.log(1)
 			this.$emit("editActivity", activityData);
 		}
 	}
