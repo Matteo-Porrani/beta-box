@@ -16,13 +16,13 @@
 		>
 			<template v-if="!isHeader">
 				<button
-					v-for="b in buttons"
-					:key="b[1]"
+					v-for="a in actions"
+					:key="a.name"
+					@click="onAction(a.name)"
 				>
 					<BxIcon
-						:icon="b[1]"
+						:icon="a.icon"
 						size="small"
-						@click="onAction(b[0])"
 					/>
 				</button>
 			</template>
@@ -32,6 +32,7 @@
 
 
 <script>
+import { nrm } from "@/utils/core-utils";
 import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {
@@ -40,26 +41,13 @@ export default {
 	components: { BxIcon },
 
 	props: {
-		cols: Array,
-		row: Object,
-		isHeader: Boolean
+		cols: { type: Array, required: true },
+		row: { type: Object, required: true },
+		isHeader: { type: Boolean, default: false },
+		actions: { type: [Array, null], required: true }
 	},
 
-	emits: [
-		"editItem",
-		"deleteItem",
-		"duplicateItem",
-	],
-
-	data() {
-		return {
-			buttons: [
-				["editItem", "edit"],
-				["duplicateItem", "copy"],
-				["deleteItem", "trash"],
-			]
-		}
-	},
+	emits: [ "rowAction" ],
 
 	computed: {
 		valueRenderer() {
@@ -103,12 +91,16 @@ export default {
 	},
 
 	methods: {
-		onAction(action) {
-			this.$emit(`${action}`, this.row);
+		onAction(actionName) {
+			this.$emit("rowAction", {
+				action: actionName,
+				data: nrm(this.row),
+			});
 		}
 	}
 }
 </script>
+
 
 <style scoped>
 tr {

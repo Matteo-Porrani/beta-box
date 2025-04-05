@@ -5,6 +5,7 @@
 			is-header
 			:cols="cols"
 			:row="headerRow"
+			:actions="actions"
 		/>
 		<div class="table-content">
 			<BxTableRow
@@ -12,9 +13,8 @@
 				:key="r.id"
 				:cols="cols"
 				:row="r"
-				@edit-item="onEditItem"
-				@duplicate-item="onDuplicateItem"
-				@delete-item="onDeleteItem"
+				:actions="actions"
+				@row-action="onRowAction"
 			/>
 		</div>
 		</tbody>
@@ -33,17 +33,17 @@ export default {
 	props: {
 		cols: Array,
 		rows: Array,
+		actions: {
+			type: [Array, null],
+			default: null,
+		},
 		contentHeight: {
 			type: String,
 			default: "unset"
 		}
 	},
 
-	emits: [
-		"editItem",
-		"duplicateItem",
-		"deleteItem",
-	],
+	emits: [ "rowAction" ],
 
 	computed: {
 		headerRow() {
@@ -54,15 +54,13 @@ export default {
 		}
 	},
 
+	mounted() {
+		console.log("MOUNTED BxTable", this.actions)
+	},
+
 	methods: {
-		onEditItem(item) {
-			this.$emit("editItem", item);
-		},
-		onDuplicateItem(item) {
-			this.$emit("duplicateItem", item);
-		},
-		onDeleteItem(item) {
-			this.$emit("deleteItem", item);
+		onRowAction(payload) {
+			this.$emit("rowAction", payload);
 		},
 	}
 }
