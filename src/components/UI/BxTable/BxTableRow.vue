@@ -50,6 +50,7 @@ export default {
 	emits: [ "rowAction" ],
 
 	computed: {
+
 		valueRenderer() {
 			const svgTemplate = (content) => `
 				<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
@@ -72,6 +73,10 @@ export default {
 			}
 		},
 
+		// =============================================
+		// STYLING
+		// =============================================
+
 		textColorClass() {
 			return function (value) {
 				if (![true, false].includes(value)) return "";
@@ -81,12 +86,8 @@ export default {
 			}
 		},
 
-		colsCount() {
-			return this.cols.length;
-		},
-
 		templateColumns() {
-			return `auto repeat(${this.colsCount}, 1fr)`
+			return `auto repeat(${this.cols.length}, 1fr)`
 		}
 	},
 
