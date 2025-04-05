@@ -1,3 +1,30 @@
+<!-- 
+EntityTable is a reusable table component for displaying and managing entity data in the admin interface.
+It provides a standardized way to display tabular data with built-in actions (edit, duplicate, delete) for each row.
+
+Key features:
+- Displays data in a table format using BxTable component
+- Supports custom column definitions through formDescription prop
+- Handles special sorting for list_option and field_definition entities
+- Automatically converts list values to their corresponding labels
+- Provides row-level actions (edit, duplicate, delete)
+- Integrates with Vuex store for data management:
+  * Maps to the 'entity' module in the store
+  * Uses mapState to access entities data
+  * Uses mapGetters to access getLabelFromListValue for list value conversion
+  * Uses mapActions to handle deleteItem operation
+  * Maintains reactive data binding with the store
+
+Props:
+- tableName: String - Name of the entity table to display
+- formDescription: Array - Array of column definitions with field and type information
+
+Emits:
+- editItem: When edit action is triggered
+- duplicateItem: When duplicate action is triggered
+- deleteItem: When delete action is triggered
+-->
+
 <template>
 	<BxTable
 		:cols="formDescription.map(c => c.field)"
