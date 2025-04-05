@@ -38,7 +38,7 @@ Emits:
 
 <script>
 // Vue related
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 // utils
 import { nrm } from "@/utils/core-utils";
 // components
@@ -89,18 +89,29 @@ export default {
 			// VERY IMPORTANT !!! normalize each 'r' object
 			let rows = this.entities[this.tableName].map(r => nrm(r));
 
-			// special sorting (group rows on 'list' or 'entity' column)
-			if (this.tableName === 'list_option') {
-				rows = rows.sort((a, b) => a.order - b.order).sort((a, b) => a.list.localeCompare(b.list))
-			}
-			if (this.tableName === 'field_definition') {
-				rows = rows.sort((a, b) => a.order - b.order).sort((a, b) => a.entity.localeCompare(b.entity))
-			}
+			// apply sorting based on table configuration
+			rows = this.applySorting(rows);
 
 			// show labels instead of values for lists
 			rows = this.getListLabels(rows);
 
 			return rows;
+		},
+
+		/**
+		 * Defines sorting configuration for different table types
+		 * @returns {Object|undefined} Configuration object containing:
+		 *   - orderBy: field to sort records by (e.g., 'order')
+		 *   - groupBy: field to group records by (e.g., 'list', 'entity')
+		 */
+		sortConfig() {
+			const config = {
+				// Sort list_options first by order, then group by list name
+				'list_option': { orderBy: 'order', groupBy: 'list' },
+				// Sort field definitions first by order, then group by entity name
+				'field_definition': { orderBy: 'order', groupBy: 'entity' }
+			};
+			return config[this.tableName];
 		},
 	},
 
@@ -133,6 +144,28 @@ export default {
 				}
 				return r;
 			});
+		},
+
+		/**
+		 * Applies multi-level sorting to rows based on configuration
+		 * @param {Array} rows - Array of row objects to sort
+		 * @returns {Array} Sorted array of rows
+		 * 
+		 * Example:
+		 * For list_option table:
+		 * 1. First sorts by 'order' field numerically
+		 * 2. Then sorts by 'list' field alphabetically
+		 */
+		applySorting(rows) {
+			const config = this.sortConfig;
+			// Return original rows if no sorting config exists for this table
+			if (!config) return rows;
+
+			return rows
+				// Primary sort: numeric sort by orderBy field (e.g., 'order')
+				.sort((a, b) => a[config.orderBy] - b[config.orderBy])
+				// Secondary sort: alphabetical sort by groupBy field (e.g., 'list' or 'entity')
+				.sort((a, b) => a[config.groupBy].localeCompare(b[config.groupBy]));
 		},
 
 	}
