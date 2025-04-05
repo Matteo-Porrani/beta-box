@@ -83,6 +83,23 @@ export default {
 			"deleteItem",
 		]),
 
+		// =============================================
+		// EVENT HANDLERS
+		// =============================================
+
+		onRowAction(payload) {
+			const { action, data } = payload;
+			this.emitSpecificEvent(action, data.id);
+		},
+
+		emitSpecificEvent(action, id) {
+			this.$emit(`${action}Item`, id);
+		},
+
+		// =============================================
+		// UTILITY
+		// =============================================
+
 		getListLabels(rows) {
 			return rows.map(r => {
 				for (const k of Object.keys(r)) {
@@ -93,23 +110,6 @@ export default {
 				}
 				return r;
 			});
-		},
-
-		/**
-		 * The public API of BxForm exposes 2 methods : initForm() & resetForm().
-		 * Internally, only one method actually does the job (init),
-		 * while the other one (reset) only executes the first one with an empty object {}.
-		 * Clients of BxForm don't need to know this !! All they need is a clear and intuitive API :
-		 * calling resetForm() is more intuitive than calling initForm({})
-		 */
-		onRowAction(payload) {
-			console.log("EntityTable receiving @row-action", payload);
-			const { action, data } = payload;
-			this.emitSpecificEvent(action, data.id);
-		},
-
-		emitSpecificEvent(action, id) {
-			this.$emit(`${action}Item`, id);
 		},
 
 	}

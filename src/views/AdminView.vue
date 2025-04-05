@@ -182,18 +182,19 @@ export default {
 			this._cloneItemAndEmitEdit(itemId, true);
 		},
 
+		/**
+		 * private method called for both 'edit' & 'duplicate' actions
+		 * @param {number} itemId
+		 * @param {boolean} isDuplication
+		 * @private
+		 */
 		_cloneItemAndEmitEdit(itemId, isDuplication = false) {
 			const srcObject = this.entities[this.tableName].find(r => r.id === itemId);
 			const clone = nrm(srcObject);
-			if (isDuplication) {
-				delete clone.id;
-				console.log("is DUPLICATION")
-			}
+			if (isDuplication) delete clone.id;
 
 			this.setMode("$F");
-			nextTick(() => {
-				this.$refs.entity_form_ref.onEditItem(clone);
-			});
+			nextTick(() => this.$refs.entity_form_ref.onEditItem(clone));
 		},
 
 		// =============================================

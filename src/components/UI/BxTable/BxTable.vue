@@ -20,6 +20,8 @@
 		</tbody>
 	</table>
 </template>
+
+
 <script>
 import BxTableRow from "@/components/UI/BxTable/BxTableRow.vue";
 
