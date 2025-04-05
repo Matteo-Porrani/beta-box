@@ -28,6 +28,8 @@
 					:table-name="tableName"
 					:form-description="formDescription"
 					@edit-item="onEditItem"
+					@duplicate-item="onDuplicateItem"
+					@edit-delete="onDeleteItem"
 				/>
 
 				<div class="h-4"/>
@@ -69,6 +71,8 @@
 // Vue related
 import { nextTick } from "vue";
 import { mapActions, mapGetters, mapState } from "vuex";
+// utils
+import { nrm } from "@/utils/core-utils";
 // const
 import { ENTITY_TEMP_DESC } from "@/const/const-admin";
 // components
@@ -156,18 +160,45 @@ export default {
 
 		...mapActions("entity", [
 			"loadItems",
+			"deleteItem",
 		]),
 
-		onEditItem(itemId) {
-			this.setMode("$F");
+		// =============================================
+		// EVENT HANDLERS
+		// =============================================
 
-			const item = this.entities[this.tableName].find(r => r.id === itemId);
-			console.log("[item]", item)
-
-			nextTick(() => {
-				this.$refs.entity_form_ref.onEditItem(item)
+		async onDeleteItem(id) {
+			await this.deleteItem({ // call to store-entity action
+				tableName: this.tableName,
+				id: id
 			});
 		},
+
+		onEditItem(itemId) {
+			this._cloneItemAndEmitEdit(itemId);
+		},
+
+		onDuplicateItem(itemId) {
+			this._cloneItemAndEmitEdit(itemId, true);
+		},
+
+		_cloneItemAndEmitEdit(itemId, isDuplication = false) {
+			const srcObject = this.entities[this.tableName].find(r => r.id === itemId);
+			const clone = nrm(srcObject);
+			if (isDuplication) {
+				delete clone.id;
+				console.log("is DUPLICATION")
+			}
+
+			this.setMode("$F");
+			nextTick(() => {
+				this.$refs.entity_form_ref.onEditItem(clone);
+			});
+		},
+
+		// =============================================
+		// COMPONENT DISPLAY
+		// =============================================
 
 		setMode(mode) {
 			this.viewMode = mode;

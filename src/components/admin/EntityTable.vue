@@ -2,10 +2,9 @@
 	<BxTable
 		:cols="formDescription.map(c => c.field)"
 		:rows="rows"
+		:actions="actions"
 		content-height="70vh"
-		@edit-item="onEditItem"
-		@duplicate-item="onDuplicateItem"
-		@delete-item="onDeleteItem"
+		@row-action="onRowAction"
 	/>
 </template>
 
@@ -32,7 +31,21 @@ export default {
 		formDescription: Array,
 	},
 
-	emits: ["editItem",],
+	emits: [
+		"editItem",
+		"duplicateItem",
+		"deleteItem",
+	],
+
+	data() {
+		return {
+			actions: [
+				{ name: "edit", icon: "edit" },
+				{ name: "duplicate", icon: "copy" },
+				{ name: "delete", icon: "trash" },
+			],
+		}
+	},
 
 	computed: {
 		...mapState({
@@ -45,6 +58,7 @@ export default {
 
 		rows() {
 			if (!this.entities[this.tableName]) return [];
+
 			// VERY IMPORTANT !!! normalize each 'r' object
 			let rows = this.entities[this.tableName].map(r => nrm(r));
 
@@ -88,26 +102,16 @@ export default {
 		 * Clients of BxForm don't need to know this !! All they need is a clear and intuitive API :
 		 * calling resetForm() is more intuitive than calling initForm({})
 		 */
-		onEditItem(item) {
-			console.log("EDIT ==>", JSON.stringify(item))
-			this.$emit("editItem", item.id); // emit to AdminView
+		onRowAction(payload) {
+			console.log("EntityTable receiving @row-action", payload);
+			const { action, data } = payload;
+			this.emitSpecificEvent(action, data.id);
 		},
 
-		/**
-		 * FIXME !!!
-		 * onEditItem() is now based on edit id for retrieval...
-		 */
-		onDuplicateItem(item) {
-			delete item.id;
-			this.onEditItem(item, true);
+		emitSpecificEvent(action, id) {
+			this.$emit(`${action}Item`, id);
 		},
 
-		async onDeleteItem(item) {
-			await this.deleteItem({ // call to store-entity action
-				tableName: this.tableName,
-				id: item.id
-			});
-		},
 	}
 
 }
