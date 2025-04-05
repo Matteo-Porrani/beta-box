@@ -1,17 +1,13 @@
 import store from '@/store';
 
 class ActivitySrv {
-	constructor() {
-		if (ActivitySrv.instance) {
-			return ActivitySrv.instance;
-		}
-		ActivitySrv.instance = this;
-	}
+	static instance;
 
 	static getInstance() {
 		if (!ActivitySrv.instance) {
 			ActivitySrv.instance = new ActivitySrv();
 		}
+
 		return ActivitySrv.instance;
 	}
 	
@@ -132,15 +128,11 @@ class ActivitySrv {
 	// =============================================
 	
 	_formatDate(dateString) {
-		console.log('Input dateString:', dateString);
 		const date = new Date(dateString.replace('@', 'T'));
-		console.log('Parsed date:', date);
 		const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 		const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 		
-		const formatted = `${days[date.getDay()]} - ${months[date.getMonth()]} ${date.getDate()}`;
-		console.log('Formatted result:', formatted);
-		return formatted;
+		return `${days[date.getDay()]} - ${months[date.getMonth()]} ${date.getDate()}`;
 	}
 	
 	_formatDuration(minutes) {
@@ -155,5 +147,5 @@ class ActivitySrv {
 	}
 }
 
-export default ActivitySrv.getInstance(); 
+export const activitySrv = ActivitySrv.getInstance();
 

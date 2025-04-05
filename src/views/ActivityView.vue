@@ -10,7 +10,7 @@
 <script>
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import ActivityGrid from "@/components/activity/ActivityGrid.vue";
-import ActivitySrv from "@/services/ActivitySrv";
+import { activitySrv } from "@/services/ActivitySrv";
 import { mockDays } from "@/mocks/activities";
 import { mapActions } from "vuex";
 
@@ -23,23 +23,22 @@ export default {
 	},
 
 	async created() {
-		await this.loadItems("day");
-		await this.loadItems("activity");
-		await this.loadItems("ticket");
 
-		const activities = ActivitySrv.getActivities();
+		for (const t of ["ticket", "day", "activity"]) {
+			await this.loadItems(t);
+		}
+
+		const activities = activitySrv.getActivities();
 		console.log('Activities with formatted dates:', activities);
 	},
 
 	data() {
-		return {
-			days: mockDays
-		};
+		return {};
 	},
 
 	computed: {
 		activities() {
-			return ActivitySrv.getActivities();
+			return activitySrv.getActivities();
 		}
 	},
 
