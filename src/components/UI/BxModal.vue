@@ -63,7 +63,7 @@ function close() {
 }
 
 .modal-container {
-	@apply bg-stone-700;
+	@apply bg-stone-900 border border-stone-500;
 	width: 30vw;
 	margin: auto;
 	padding: 20px 30px;
