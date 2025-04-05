@@ -13,12 +13,16 @@
 				<slot></slot>
 			</div>
 
+			<div
+				v-if="day.activities?.length > 0"
+				class="h-2"
+			/>
+
 			<button
 				@click="$emit('add-activity')"
-				class="w-full mt-2 py-1 px-2 flex items-center justify-center gap-1 text-xs font-medium text-stone-400 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded transition-colors"
+				class="py-1 px-2 flex items-center justify-center gap-1 text-xs font-medium text-stone-400 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded transition-colors"
 			>
-				<BxIcon icon="plus" size="xsmall" class="text-stone-400" />
-				Add Activity
+				<BxIcon icon="add" size="small" class="text-stone-400" />
 			</button>
 		</div>
 	</div>

@@ -19,7 +19,7 @@
 
 		<template v-if="fieldDesc.type === 'TA'">
 			<textarea
-				class="w-full h-32"
+				class="w-full h-24"
 				:readonly="fieldDesc.readonly"
 				v-model="value"
 			></textarea>
@@ -196,8 +196,10 @@ input[readonly] {
 	@apply bg-stone-800 text-stone-200
 }
 
+/*
 textarea {
 	@apply text-sm
 }
+ */
 </style>
 

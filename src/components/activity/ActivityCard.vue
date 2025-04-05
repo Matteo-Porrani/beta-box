@@ -27,14 +27,14 @@
 				<span
 					v-for="tag in activity.ticketTitles"
 					:key="tag"
-					class="text-sm font-bold bg-stone-800 text-stone-300 hover:bg-stone-700 px-2 py-0.5 rounded-md border border-stone-600 cursor-pointer"
+					class="text-sm font-bold bg-stone-800 text-stone-300 px-2 py-0.5 rounded-md border border-stone-600"
 				>
 					{{ tag }}
 				</span>
 			</div>
 
-			<div class="h-8 mb-1">
-				<p class="text-xs text-stone-300 line-clamp-2">{{ activity.description }}</p>
+			<div class="h-10 mb-1">
+				<p class="text-stone-300 line-clamp-2">{{ activity.description }}</p>
 			</div>
 
 			<div class="h-5 flex items-center">
@@ -42,7 +42,7 @@
 					v-if="activity.url"
 					:href="activity.url"
 					target="_blank"
-					class="text-xs text-blue-400 hover:text-blue-300 bg-stone-800 px-1.5 py-0.5 rounded truncate"
+					class="text-xs text-stone-400 hover:text-lime-600 bg-stone-800 px-1.5 py-0.5 rounded truncate"
 				>
 					{{ activity.url }}
 				</a>
@@ -92,10 +92,10 @@ export default {
 
 		headerColorClass() {
 			const colorMap = {
-				'$D': 'bg-yellow-300',
-				'$R': 'bg-lime-500',
-				'$A': 'bg-sky-400',
-				'$E': 'bg-orange-400',
+				'$D': 'bg-lime-500',
+				'$R': 'bg-sky-400',
+				'$A': 'bg-violet-400',
+				'$E': 'bg-yellow-400',
 				'$O': 'bg-stone-400'
 			};
 			return colorMap[this.activity.type] || 'bg-stone-400';
