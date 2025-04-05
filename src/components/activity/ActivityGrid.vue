@@ -14,6 +14,7 @@
 					v-for="activity in day.activities"
 					:key="activity.id"
 					:activity="activity"
+					@edit-activity="onEditActivity"
 				/>
 			</div>
 		</DayCard>
@@ -39,7 +40,14 @@ export default {
 		}
 	},
 
-	emits: ['add-activity']
+	emits: ['add-activity', 'editActivity'],
+
+	methods: {
+		onEditActivity(activityData) {
+			console.log(1)
+			this.$emit("editActivity", activityData);
+		}
+	}
 }
 </script>
 

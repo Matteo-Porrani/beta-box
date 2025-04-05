@@ -8,11 +8,15 @@
 			:class="headerColorClass"
 		>
 			<div class="flex items-center gap-1">
-				<BxIcon
-					:icon="activityIcon"
-					class="text-stone-800"
-					size="xsmall"
-				/>
+				<button
+					@click="onEditActivity"
+				>
+					<BxIcon
+						icon="edit"
+						class="text-stone-800"
+						size="small"
+					/>
+				</button>
 				<span class="text-xs font-semibold text-stone-800">{{ typeLabel }}</span>
 			</div>
 			<span class="text-xs font-medium bg-stone-800 text-stone-300 px-2 py-0.5 rounded">{{ activity.duration }}</span>
@@ -56,6 +60,7 @@
 
 <script>
 import BxIcon from "@/components/UI/BxIcon.vue";
+import { nrm } from "@/utils/core-utils";
 
 export default {
 	name: "ActivityCard",
@@ -70,6 +75,8 @@ export default {
 			required: true,
 		}
 	},
+
+	emits: ["editActivity"],
 
 	computed: {
 		typeLabel() {
@@ -107,7 +114,10 @@ export default {
 	},
 
 	methods: {
-		// Component methods
+		onEditActivity() {
+			console.log(0)
+			this.$emit("editActivity", nrm(this.activity));
+		}
 	},
 
 	watch: {

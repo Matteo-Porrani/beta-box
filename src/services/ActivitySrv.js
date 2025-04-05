@@ -141,6 +141,16 @@ class ActivitySrv {
 		return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
 	}
 	
+	_parseDurationInMin(strDuration) {
+		// returns 90 from 01:30
+		// returns 60 from 01:00
+		// returns 120 from 02:00
+		// returns 30 from 0:30
+		
+		const [hours, minutes] = strDuration.split(':').map(Number);
+		return (hours * 60) + minutes;
+	}
+	
 	_calculateTotalDuration(activities) {
 		const totalMinutes = activities.reduce((sum, activity) => sum + activity.duration, 0);
 		return this._formatDuration(totalMinutes);
