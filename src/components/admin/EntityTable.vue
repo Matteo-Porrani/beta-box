@@ -93,6 +93,10 @@ export default {
 			this.$emit("editItem", item.id); // emit to AdminView
 		},
 
+		/**
+		 * FIXME !!!
+		 * onEditItem() is now based on edit id for retrieval...
+		 */
 		onDuplicateItem(item) {
 			delete item.id;
 			this.onEditItem(item, true);
