@@ -1,5 +1,3 @@
-
-
 export const ICON_DICT = {
 	
 	
@@ -44,6 +42,7 @@ export const ICON_DICT = {
 	loader: "IconLoader2",
 	add: "IconPlus",
 	bars: "IconMenu2",
+	xmark: "IconX",
 }
 
 export const ICON_SIZE = {

@@ -8,6 +8,9 @@
 		<button @click="openModal">
 			<BxIcon icon="bars"/>
 		</button>
+		<button @click="reset" class="text-stone-500">
+			<BxIcon icon="xmark"/>
+		</button>
 	</div>
 	<!-- MODAL -->
 	<BxModal
@@ -84,7 +87,7 @@ export default {
 
 	emits: ["update:modelValue"],
 
-	expose: ["setValue"],
+	expose: ["setValue", "reset"],
 
 	data() {
 		return {
@@ -129,6 +132,11 @@ export default {
 			for (const r of this.rows) {
 				this.values[r.id] = false;
 			}
+		},
+
+		reset() {
+			this.setAllValuesToFalse();
+			this.$emit("update:modelValue", "");
 		},
 
 		setValue(value) {

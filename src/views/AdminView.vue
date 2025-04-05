@@ -24,16 +24,6 @@
 
 			<!-- LIST -->
 			<template v-if="viewMode === '$L'">
-				<EntityTable
-					:table-name="tableName"
-					:form-description="formDescription"
-					@edit-item="onEditItem"
-					@duplicate-item="onDuplicateItem"
-					@delete-item="onDeleteItem"
-				/>
-
-				<div class="h-4"/>
-
 				<button
 					class="flex items-center gap-1 hover:text-lime-600"
 					@click="setMode('$F')"
@@ -41,7 +31,18 @@
 					<BxIcon icon="add"/>
 					Add
 				</button>
+
+				<div class="h-4"/>
+
+				<EntityTable
+					:table-name="tableName"
+					:form-description="formDescription"
+					@edit-item="onEditItem"
+					@duplicate-item="onDuplicateItem"
+					@delete-item="onDeleteItem"
+				/>
 			</template>
+
 			<!-- FORM -->
 			<template v-else-if="viewMode === '$F'">
 				<EntityForm
