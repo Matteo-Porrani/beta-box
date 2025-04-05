@@ -123,6 +123,9 @@ export default {
 
 			if (desc?.length > 0) {
 				this.formDescription = desc;
+
+				console.log("desc", desc)
+
 			} else {
 				// FIXME -- temporary
 				const hcDesc = ENTITY_TEMP_DESC[newVal] ?? [];

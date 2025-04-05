@@ -7,7 +7,7 @@
 			v-for="day in days"
 			:key="day.date"
 			:day="day"
-			@add-activity="$emit('add-activity', day.date)"
+			@add-activity="$emit('add-activity', day.id)"
 		>
 			<div class="space-y-2">
 				<ActivityCard

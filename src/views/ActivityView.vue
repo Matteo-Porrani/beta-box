@@ -8,11 +8,10 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+import { activitySrv } from "@/services/ActivitySrv";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import ActivityGrid from "@/components/activity/ActivityGrid.vue";
-import { activitySrv } from "@/services/ActivitySrv";
-import { mockDays } from "@/mocks/activities";
-import { mapActions } from "vuex";
 
 export default {
 	name: "ActivityView",
@@ -37,9 +36,19 @@ export default {
 	},
 
 	computed: {
+
+		...mapGetters("entity", [
+			"getListOptions",
+			"getEntityDescription"
+		]),
+
 		activities() {
 			return activitySrv.getActivities();
-		}
+		},
+
+		activityFormDesc() {
+			return this.getEntityDescription("activity")
+		},
 	},
 
 	methods: {
@@ -49,7 +58,7 @@ export default {
 		]),
 
 		handleAddActivity(date) {
-			console.log('Add activity for date:', date);
+			console.log('Add activity for dayID:', date);
 			// TODO: Implement activity addition logic
 		}
 	}
