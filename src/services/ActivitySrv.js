@@ -27,6 +27,12 @@ class ActivitySrv {
 		return formatted;
 	}
 
+	_formatDuration(minutes) {
+		const hours = Math.floor(minutes / 60);
+		const mins = minutes % 60;
+		return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+	}
+
 	_getDays() {
 		// this is the format of the days:
 		// [{"date":"2025-04-07@00:00","id":1},{"date":"2025-04-08@00:00","id":2}]
@@ -36,17 +42,32 @@ class ActivitySrv {
 		return store.state.entity.entities.day;
 	}
 
+	_calculateTotalDuration(activities) {
+		const totalMinutes = activities.reduce((sum, activity) => sum + activity.duration, 0);
+		return this._formatDuration(totalMinutes);
+	}
+
 	_hydrateDays(days) {
 		// this is the format of the activities:
 		// [{"type":"$D","day":"1","description":"hello","tickets":"1","duration":120,"id":14},{"type":"$R","day":"1","description":"daily","url":"localhost:8080/activity","tickets":"","duration":30,"id":15}]
 
-		return days.map(day => ({
-			...day,
-			formattedDate: this._formatDate(day.date),
-			activities: store?.state?.entity?.entities?.activity?.filter(
+		return days.map(day => {
+			const activities = store?.state?.entity?.entities?.activity?.filter(
 				activity => activity.day === day.id.toString()
-			)
-		}));
+			) || [];
+
+			const formattedActivities = activities.map(activity => ({
+				...activity,
+				duration: this._formatDuration(activity.duration)
+			}));
+
+			return {
+				...day,
+				formattedDate: this._formatDate(day.date),
+				totalDuration: this._calculateTotalDuration(activities),
+				activities: formattedActivities
+			};
+		});
 	}
 
 	getActivities() {
