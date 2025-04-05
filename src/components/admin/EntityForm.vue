@@ -52,9 +52,9 @@ EntityForm must pass :
 					w-32 bg-stone-800 border border-stone-500 text-stone-500 hover:bg-stone-900
 					disabled:hover:cursor-not-allowed rounded py-2 px-6
 				"
-				@click="onReset"
+				@click="onCancel"
 			>
-				Reset
+				Cancel
 			</button>
 			<button
 				class="
@@ -93,13 +93,17 @@ export default {
 		formDescription: Array,
 	},
 
-	emits: ["itemSaved"],
+	emits: ["itemSaved", "cancel"],
 	expose: ["onEditItem"],
 
 	computed: {
 		...mapState({
 			formValues: $s => $s.form.formValues,
 		}),
+	},
+
+	mounted() {
+		this.initBoolFields(); // on new items, boolean fields are set to false
 	},
 
 	methods: {
@@ -148,6 +152,17 @@ export default {
 				this.RESET_FORM();
 			}, 300);
 		},
+
+		onCancel() {
+			this.onReset();
+			this.$emit("cancel");
+		},
+
+		initBoolFields() {
+			this.formDescription.forEach(descEntry => {
+				if (descEntry.type === "B") this.SET_FIELD({ key: descEntry.field, value: false });
+			});
+		}
 	}
 
 };

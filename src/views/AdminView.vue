@@ -50,6 +50,7 @@
 					:table-name="tableName"
 					:form-description="formDescription"
 					@item-saved="setMode('$L')"
+					@cancel="setMode('$L')"
 				/>
 
 				<div class="h-4"/>
