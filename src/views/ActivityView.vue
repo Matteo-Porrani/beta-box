@@ -10,14 +10,9 @@
 				</div>
 			</DayCard>
 
-			<DayCard
-				:date="yesterday"
-				title="Yesterday"
-			>
-				<div class="p-2 bg-stone-700 rounded">
-					<p>Yesterday's activities will go here</p>
-				</div>
-			</DayCard>
+
+
+
 		</div>
 	</DefaultLayout>
 </template>

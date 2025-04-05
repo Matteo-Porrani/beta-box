@@ -46,9 +46,6 @@ export default {
 		}
 	},
 
-	methods: {
-		// Component methods
-	},
 
 	watch: {
 		// Component watchers
@@ -56,7 +53,12 @@ export default {
 
 	mounted() {
 		// Component mounted hook
-	}
+	},
+
+	methods: {
+		// Component methods
+	},
+
 }
 </script>
 
