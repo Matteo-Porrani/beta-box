@@ -195,5 +195,9 @@ select {
 input[readonly] {
 	@apply bg-stone-800 text-stone-200
 }
+
+textarea {
+	@apply text-sm
+}
 </style>
 

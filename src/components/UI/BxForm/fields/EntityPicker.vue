@@ -144,6 +144,7 @@ export default {
 			for (const key of value.split(":")) {
 				this.values[key] = true;
 			}
+			this.$emit("update:modelValue", this.parsedValue)
 		},
 
 		// =============================================
