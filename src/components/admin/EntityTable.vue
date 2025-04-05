@@ -106,10 +106,6 @@ export default {
 
 	methods: {
 
-		...mapActions("entity", [
-			"deleteItem",
-		]),
-
 		// =============================================
 		// EVENT HANDLERS
 		// =============================================

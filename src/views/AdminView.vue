@@ -29,7 +29,7 @@
 					:form-description="formDescription"
 					@edit-item="onEditItem"
 					@duplicate-item="onDuplicateItem"
-					@edit-delete="onDeleteItem"
+					@delete-item="onDeleteItem"
 				/>
 
 				<div class="h-4"/>
