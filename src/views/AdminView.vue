@@ -54,15 +54,6 @@
 				/>
 
 				<div class="h-4"/>
-
-
-				<button
-					class="flex items-center gap-1 hover:text-lime-600"
-					@click="setMode('$L')"
-				>
-					<BxIcon icon="bars"/>
-					List
-				</button>
 			</template>
 		</div>
 	</DefaultLayout>

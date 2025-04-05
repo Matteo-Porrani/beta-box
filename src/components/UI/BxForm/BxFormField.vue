@@ -17,6 +17,14 @@
 			>
 		</template>
 
+		<template v-if="fieldDesc.type === 'TA'">
+			<textarea
+				class="w-full h-32"
+				:readonly="fieldDesc.readonly"
+				v-model="value"
+			></textarea>
+		</template>
+
 		<template v-if="fieldDesc.type === 'N'">
 			<input
 				type="number"
@@ -179,6 +187,7 @@ export default defineComponent({
 
 <style scoped>
 input,
+textarea,
 select {
 	@apply bg-stone-700 rounded text-stone-200 p-1 text-xl
 }
