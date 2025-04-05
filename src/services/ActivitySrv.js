@@ -14,24 +14,15 @@ class ActivitySrv {
 		}
 		return ActivitySrv.instance;
 	}
-
-	_formatDate(dateString) {
-		console.log('Input dateString:', dateString);
-		const date = new Date(dateString.replace('@', 'T'));
-		console.log('Parsed date:', date);
-		const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-		const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
-		
-		const formatted = `${days[date.getDay()]} - ${months[date.getMonth()]} ${date.getDate()}`;
-		console.log('Formatted result:', formatted);
-		return formatted;
+	
+	getActivities() {
+		const days = this._getDays();
+		return this._hydrateDays(days);
 	}
-
-	_formatDuration(minutes) {
-		const hours = Math.floor(minutes / 60);
-		const mins = minutes % 60;
-		return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-	}
+	
+	// =============================================
+	// DATA RETRIEVAL
+	// =============================================
 
 	_getDays() {
 		// this is the format of the days:
@@ -41,10 +32,28 @@ class ActivitySrv {
 		
 		return store.state.entity.entities.day;
 	}
-
-	_calculateTotalDuration(activities) {
-		const totalMinutes = activities.reduce((sum, activity) => sum + activity.duration, 0);
-		return this._formatDuration(totalMinutes);
+	
+	_getTicketTitles(ticketIds) {
+		// 1. Handle empty case
+		if (!ticketIds) return [];
+		
+		// 2. Split the ticketIds string into array
+		// "1:2:4" -> ["1", "2", "4"]
+		const ids = ticketIds.split(':');
+		
+		// 3. Get tickets from store
+		// Handle case where store or entities.ticket might be undefined
+		const tickets = store?.state?.entity?.entities?.ticket || [];
+		
+		// 4. Map through IDs and find corresponding titles
+		// Handle cases where ticket ID doesn't exist in store
+		// Return only the titles that were found
+		return ids
+			.map(id => tickets.find(t => t.id.toString() === id)?.title)
+			.filter(title => title !== undefined);
+		
+		// 5. Return array of titles
+		// ["RDTW-1234", "6543", "444"]
 	}
 
 	_hydrateDays(days) {
@@ -117,33 +126,32 @@ class ActivitySrv {
 			ticketTitles: this._getTicketTitles(activity.tickets)
 		}));
 	}
-
-	_getTicketTitles(ticketIds) {
-		// 1. Handle empty case
-		if (!ticketIds) return [];
+	
+	// =============================================
+	// UTILITY
+	// =============================================
+	
+	_formatDate(dateString) {
+		console.log('Input dateString:', dateString);
+		const date = new Date(dateString.replace('@', 'T'));
+		console.log('Parsed date:', date);
+		const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+		const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 		
-		// 2. Split the ticketIds string into array
-		// "1:2:4" -> ["1", "2", "4"]
-		const ids = ticketIds.split(':');
-		
-		// 3. Get tickets from store
-		// Handle case where store or entities.ticket might be undefined
-		const tickets = store?.state?.entity?.entities?.ticket || [];
-		
-		// 4. Map through IDs and find corresponding titles
-		// Handle cases where ticket ID doesn't exist in store
-		// Return only the titles that were found
-		return ids
-			.map(id => tickets.find(t => t.id.toString() === id)?.title)
-			.filter(title => title !== undefined);
-		
-		// 5. Return array of titles
-		// ["RDTW-1234", "6543", "444"]
+		const formatted = `${days[date.getDay()]} - ${months[date.getMonth()]} ${date.getDate()}`;
+		console.log('Formatted result:', formatted);
+		return formatted;
 	}
-
-	getActivities() {
-		const days = this._getDays();
-		return this._hydrateDays(days);
+	
+	_formatDuration(minutes) {
+		const hours = Math.floor(minutes / 60);
+		const mins = minutes % 60;
+		return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+	}
+	
+	_calculateTotalDuration(activities) {
+		const totalMinutes = activities.reduce((sum, activity) => sum + activity.duration, 0);
+		return this._formatDuration(totalMinutes);
 	}
 }
 
