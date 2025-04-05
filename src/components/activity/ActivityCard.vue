@@ -15,13 +15,13 @@
 				/>
 				<span class="text-xs font-semibold text-stone-800">{{ typeLabel }}</span>
 			</div>
-			<span class="text-xs font-medium bg-stone-800 text-stone-300 px-2 py-0.5 rounded">{{ duration }}</span>
+			<span class="text-xs font-medium bg-stone-800 text-stone-300 px-2 py-0.5 rounded">{{ activity.duration }}</span>
 		</div>
 
 		<div class="p-2 bg-stone-900">
-			<div v-if="tags?.length" class="flex flex-wrap gap-1 mb-1">
+			<div v-if="activity.tags?.length" class="flex flex-wrap gap-1 mb-1">
 				<span
-					v-for="tag in tags"
+					v-for="tag in activity.tags"
 					:key="tag"
 					class="text-sm font-bold bg-stone-800 text-stone-300 hover:bg-stone-700 px-2 py-0.5 rounded-md border border-stone-600 cursor-pointer"
 				>
@@ -30,17 +30,17 @@
 			</div>
 
 			<div class="h-8 mb-1">
-				<p class="text-xs text-stone-300 line-clamp-2">{{ description }}</p>
+				<p class="text-xs text-stone-300 line-clamp-2">{{ activity.description }}</p>
 			</div>
 
 			<div class="h-5 flex items-center">
 				<a
-					v-if="url"
-					:href="url"
+					v-if="activity.url"
+					:href="activity.url"
 					target="_blank"
 					class="text-xs text-blue-400 hover:text-blue-300 bg-stone-800 px-1.5 py-0.5 rounded truncate"
 				>
-					{{ url }}
+					{{ activity.url }}
 				</a>
 				<div
 					v-else
@@ -64,27 +64,21 @@ export default {
 	},
 
 	props: {
-		description: {
-			type: String,
-			required: true
-		},
-		duration: {
-			type: String,
+		activity: {
+			type: Object,
 			required: true,
-			validator: (value) => /^\d{2}:\d{2}$/.test(value)
-		},
-		type: {
-			type: String,
-			required: true,
-			validator: (value) => ['$D', '$R', '$A', '$E', '$O'].includes(value)
-		},
-		tags: {
-			type: Array,
-			default: () => []
-		},
-		url: {
-			type: String,
-			default: ""
+			validator: (value) => {
+				return (
+					typeof value.id === 'string' &&
+					typeof value.description === 'string' &&
+					typeof value.duration === 'string' &&
+					/^\d{2}:\d{2}$/.test(value.duration) &&
+					typeof value.type === 'string' &&
+					['$D', '$R', '$A', '$E', '$O'].includes(value.type) &&
+					Array.isArray(value.tags) &&
+					(value.url === undefined || typeof value.url === 'string')
+				);
+			}
 		}
 	},
 
@@ -97,7 +91,7 @@ export default {
 				'$E': 'Exchange',
 				'$O': 'Other'
 			};
-			return labelMap[this.type] || 'Unknown';
+			return labelMap[this.activity.type] || 'Unknown';
 		},
 
 		headerColorClass() {
@@ -108,7 +102,7 @@ export default {
 				'$E': 'bg-blue-400',
 				'$O': 'bg-stone-400'
 			};
-			return colorMap[this.type] || 'bg-stone-400';
+			return colorMap[this.activity.type] || 'bg-stone-400';
 		},
 
 		activityIcon() {
@@ -119,7 +113,7 @@ export default {
 				'$E': 'message',
 				'$O': 'dots'
 			};
-			return iconMap[this.type] || 'dots';
+			return iconMap[this.activity.type] || 'dots';
 		}
 	},
 

@@ -3,78 +3,20 @@
 		data-test="activity-grid-root"
 		class="grid grid-cols-5 gap-4"
 	>
-		<template v-for="i in 5" :key="i">
-			<DayCard
-				:date="new Date()"
-				:title="`Day ${i}`"
-				@add-activity="handleAddActivity(i)"
-			>
-				<div class="space-y-2">
-					<template v-if="i === 1">
-						<ActivityCard
-							description="Daily sync with the development team to discuss progress and blockers"
-							duration="19:35"
-							type="$R"
-							:tags="['1234', '5678']"
-							url="https://meet.google.com/abc-defg-hij"
-						/>
-
-						<ActivityCard
-							description="Implement new user authentication flow"
-							duration="21:35"
-							type="$D"
-							:tags="['2345', '6789']"
-							url="https://github.com/org/repo/pull/123"
-						/>
-
-						<ActivityCard
-							description="Analyze and optimize database queries"
-							duration="23:35"
-							type="$A"
-							:tags="['3456', '7890']"
-						/>
-
-						<ActivityCard
-							description="Review and clarify new feature requirements with the client"
-							duration="01:35"
-							type="$E"
-							:tags="['4567', '8901']"
-							url="https://docs.google.com/document/d/123"
-						/>
-
-						<ActivityCard
-							description="Update API documentation with new endpoints and examples"
-							duration="03:35"
-							type="$O"
-							:tags="['5678', '9012']"
-							url="https://confluence.company.com/api-docs"
-						/>
-					</template>
-					<template v-else>
-						<ActivityCard
-							description="Daily sync with the development team to discuss progress and blockers"
-							duration="19:35"
-							type="$R"
-							:tags="['1234', '5678']"
-						/>
-
-						<ActivityCard
-							description="Implement new user authentication flow"
-							duration="21:35"
-							type="$D"
-							:tags="['2345', '6789']"
-						/>
-
-						<ActivityCard
-							description="Analyze and optimize database queries"
-							duration="23:35"
-							type="$A"
-							:tags="['3456', '7890']"
-						/>
-					</template>
-				</div>
-			</DayCard>
-		</template>
+		<DayCard
+			v-for="day in days"
+			:key="day.date"
+			:day="day"
+			@add-activity="$emit('add-activity', day.date)"
+		>
+			<div class="space-y-2">
+				<ActivityCard
+					v-for="activity in day.activities"
+					:key="activity.id"
+					:activity="activity"
+				/>
+			</div>
+		</DayCard>
 	</div>
 </template>
 
@@ -90,19 +32,29 @@ export default {
 		ActivityCard
 	},
 
-	data() {
-		return {
-			// Component data properties
-		}
-	},
-
-	computed: {
-		// Component computed properties
-	},
-
-	methods: {
-		handleAddActivity(dayIndex) {
-			this.$emit('add-activity', dayIndex);
+	props: {
+		days: {
+			type: Array,
+			required: true,
+			validator: (value) => {
+				return value.every(day => {
+					return (
+						day.date instanceof Date &&
+						typeof day.title === 'string' &&
+						Array.isArray(day.activities) &&
+						day.activities.every(activity => {
+							return (
+								typeof activity.id === 'string' &&
+								typeof activity.description === 'string' &&
+								typeof activity.duration === 'string' &&
+								typeof activity.type === 'string' &&
+								Array.isArray(activity.tags) &&
+								(activity.url === undefined || typeof activity.url === 'string')
+							);
+						})
+					);
+				});
+			}
 		}
 	},
 
