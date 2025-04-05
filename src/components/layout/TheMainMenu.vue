@@ -30,6 +30,7 @@ export default {
 				["Tasks", "/tasks"],
 				["Dev", "/dev"],
 				["Data Manager", "/data-manager"],
+				["Activity", "/activity"],
 			]
 		}
 	}
