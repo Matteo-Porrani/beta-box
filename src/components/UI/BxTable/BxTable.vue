@@ -56,10 +56,6 @@ export default {
 		}
 	},
 
-	mounted() {
-		console.log("MOUNTED BxTable", this.actions)
-	},
-
 	methods: {
 		onRowAction(payload) {
 			this.$emit("rowAction", payload);
