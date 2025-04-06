@@ -44,6 +44,7 @@ export const ICON_DICT = {
 	bars: "IconMenu2",
 	xmark: "IconX",
 	link: "IconExternalLink",
+	stop_watch: "IconStopwatch",
 }
 
 export const ICON_SIZE = {

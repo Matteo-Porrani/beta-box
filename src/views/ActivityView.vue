@@ -22,7 +22,7 @@
 					flex items-center gap-2
 					w-32 bg-rose-600 border border-rose-600 hover:bg-rose-500
 					disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800
-					mb-4
+					ms-auto mb-4
 				"
 				@click="onDeleteActivity"
 			>
@@ -39,10 +39,10 @@
 		</template>
 		<template #footer>
 			<!-- THE BUTTONS -->
-			<div class="w-full flex justify-between w-1/2 border border-stone-500 rounded p-1">
+			<div class="w-full flex justify-between">
 				<button
 					class="
-					w-32 bg-stone-800 border border-stone-500 text-stone-500 hover:bg-stone-900
+					w-32 border border-stone-500 text-stone-500 hover:bg-stone-800
 					disabled:hover:cursor-not-allowed rounded py-2 px-6
 				"
 					@click="onCancel"

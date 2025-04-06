@@ -56,8 +56,24 @@
 		</template>
 		<template #footer>
 			<div class="w-full flex justify-between">
-				<button @click="$refs.modal_ref.close">Close</button>
-				<button @click="submitValue">OK</button>
+				<button
+					class="
+						w-32 bg-stone-800 border border-stone-500 text-stone-500 hover:bg-stone-900
+						disabled:hover:cursor-not-allowed rounded py-2 px-6
+					"
+					@click="$refs.modal_ref.close"
+				>
+					Cancel
+				</button>
+				<button
+					class="
+						w-32 bg-lime-600 border border-lime-600 hover:bg-lime-500
+						disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800
+					"
+					@click="submitValue"
+				>
+					Ok
+				</button>
 			</div>
 		</template>
 	</BxModal>
