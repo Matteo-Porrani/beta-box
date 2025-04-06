@@ -1,10 +1,10 @@
 <template>
 	<div
 		data-test="activity-card-root"
-		class="w-full border border-stone-600 rounded overflow-hidden"
+		class="w-full h-36 grid grid-cols-[auto_1fr] border border-stone-500 rounded overflow-hidden"
 	>
 		<div
-			class="px-2 py-0.5 flex justify-between items-center"
+			class="relative flex flex-col justify-between items-center p-0.5"
 			:class="headerColorClass"
 		>
 			<div class="flex items-center gap-1">
@@ -17,43 +17,40 @@
 						size="small"
 					/>
 				</button>
-				<span class="text-xs font-semibold text-stone-800">{{ typeLabel }}</span>
+				<span class="absolute origin-left -rotate-90 bottom-1 text-sm left-2 font-semibold text-stone-800">{{ typeLabel }}</span>
 			</div>
-			<span class="text-xs font-medium bg-stone-800 text-stone-300 px-2 py-0.5 rounded">{{ activity.duration }}</span>
+
 		</div>
 
-		<div class="p-2 bg-stone-900">
-			<div v-if="activity.ticketTitles?.length" class="flex flex-wrap gap-1 mb-1">
+		<div class="relative bg-stone-900 py-1 px-2 overflow-hidden">
+			<div class="bg-stone-400 w-fit text-stone-800 text-end text-sm font-bold ms-auto rounded px-2 py-0.5 mb-1">{{ activity.duration }}</div>
+
+			<div class="main-content">
+				<div v-if="activity.ticketTitles?.length" class="flex flex-wrap gap-1 mb-1">
 				<span
-					v-for="tag in activity.ticketTitles"
-					:key="tag"
-					class="text-sm font-bold bg-stone-800 text-stone-300 px-2 py-0.5 rounded-md border border-stone-600"
+					v-for="ticket in activity.ticketTitles"
+					:key="ticket"
+					class="text-sm font-bold text-stone-300 px-2 py-0.5 rounded border border-stone-500"
 				>
-					{{ tag }}
+					{{ ticket }}
 				</span>
-			</div>
+				</div>
 
-			<div class="h-10 mb-1">
-				<p class="text-stone-300 line-clamp-2">{{ activity.description }}</p>
-			</div>
-
-			<div class="h-5 flex items-center">
-				<a
-					v-if="activity.url"
-					:href="activity.url"
-					target="_blank"
-					class="text-xs text-stone-400 hover:text-lime-600 bg-stone-800 px-1.5 py-0.5 rounded truncate"
-				>
-					{{ activity.url }}
-				</a>
-				<div
-					v-else
-					class="text-xs text-stone-600 bg-stone-800 px-1.5 py-0.5 rounded w-full"
-				>
-					No URL
+				<div class="h-12 mb-1">
+					<p class="text-stone-300 line-clamp-2">{{ activity.description }}</p>
 				</div>
 			</div>
 
+			<!--	URL		-->
+			<div class="absolute bottom-1 left-1 right-1 overflow-ellipsis overflow-x-hidden">
+				<a
+					:href="activity.url"
+					target="_blank"
+					class="text-xs font-mono text-stone-400 hover:text-lime-600 text-nowrap"
+				>
+					{{ activity.url ?? '-' }}
+				</a>
+			</div>
 		</div>
 	</div>
 </template>
@@ -81,11 +78,11 @@ export default {
 	computed: {
 		typeLabel() {
 			const labelMap = {
-				'$D': 'Development',
-				'$R': 'Meeting',
-				'$A': 'Analysis',
-				'$E': 'Exchange',
-				'$O': 'Other'
+				'$D': 'develop',
+				'$R': 'meet',
+				'$A': 'analyze',
+				'$E': 'exchange',
+				'$O': 'other'
 			};
 			return labelMap[this.activity.type] || 'Unknown';
 		},

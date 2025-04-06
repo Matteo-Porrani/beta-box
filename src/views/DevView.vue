@@ -29,6 +29,15 @@
 
 			<div class="h-10"></div>
 
+			<div class="w-96">
+				<ActivityCard :activity="mockActivity"/>
+			</div>
+
+
+
+
+			<div class="h-10"></div>
+
 
 			<!--	======================================================================		-->
 			<!--	COLORS		-->
@@ -108,15 +117,23 @@ import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import { mapState } from "vuex";
 import BxIcon from "@/components/UI/BxIcon.vue";
 import BxModal from "@/components/UI/BxModal.vue";
+import ActivityCard from "@/components/activity/ActivityCard.vue";
 
 
 export default {
 	name: 'DevView',
 
 	components: {
+		ActivityCard,
 		BxModal,
 		BxIcon,
 		DefaultLayout,
+	},
+
+	data() {
+		return {
+			mockActivity: {"type":"$D","day":"1","description":"hello","tickets":"1","duration":"02:00","id":14,"url":"http://localhost:8080/admin","ticketTitles":["RDTW-1234"]},
+		}
 	},
 
 	computed: {
