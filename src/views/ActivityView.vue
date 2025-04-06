@@ -1,10 +1,12 @@
 <template>
 	<DefaultLayout view-title="Activity">
-		<ActivityGrid
-			:days="activities"
-			@add-activity="onAddActivity"
-			@edit-activity="onEditActivity"
-		/>
+		<div class="max-h-[85vh] overflow-y-auto">
+			<ActivityGrid
+				:days="activities"
+				@add-activity="onAddActivity"
+				@edit-activity="onEditActivity"
+			/>
+		</div>
 	</DefaultLayout>
 
 	<!--	MODAL		-->

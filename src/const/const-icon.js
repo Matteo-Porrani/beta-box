@@ -43,6 +43,7 @@ export const ICON_DICT = {
 	add: "IconPlus",
 	bars: "IconMenu2",
 	xmark: "IconX",
+	link: "IconExternalLink",
 }
 
 export const ICON_SIZE = {
