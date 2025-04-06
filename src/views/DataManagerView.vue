@@ -18,7 +18,7 @@
 				<button
 					@click="initData"
 					class="bg-yellow-400 hover:bg-yellow-300 text-stone-800 rounded py-1 px-2"
-				>Init App Data</button>
+				>Initialize Data</button>
 
 				<div class="h-4"></div>
 
