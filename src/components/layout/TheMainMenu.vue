@@ -12,6 +12,19 @@
 		>
 			{{ l[0] }}
 		</router-link>
+
+		<div class="border border-stone-500 mt-16"></div>
+
+		<router-link
+			v-for="l in confLinks"
+			:key="l[0]"
+			:to="l[1]"
+			:data-test="`main-menu-link-${l[0]}`"
+			class="hover:underline w-fit text-lg"
+		>
+			{{ l[0] }}
+		</router-link>
+
 	</div>
 </template>
 
@@ -26,11 +39,13 @@ export default {
 		return {
 			links: [
 				["Home", "/"],
-				["Admin", "/admin"],
-				// ["Tasks", "/tasks"],
 				["Activity", "/activity"],
+				// ["Tasks", "/tasks"],
+			],
+			confLinks: [
+				["Admin", "/admin"],
 				["Data Manager", "/data-manager"],
-				["Dev", "/dev"],
+				// ["Dev", "/dev"],
 			]
 		}
 	}
