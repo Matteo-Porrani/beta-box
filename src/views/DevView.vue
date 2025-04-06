@@ -13,7 +13,7 @@
 				</template>
 
 				<template #body>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, ab consectetur et eveniet minus quisquam sed
+					<p v-for="n in 20" :key="n">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, ab consectetur et eveniet minus quisquam sed
 						voluptate. Cum, debitis dolorem explicabo, hic in labore perspiciatis placeat quis reprehenderit sapiente
 						voluptate!</p>
 				</template>
@@ -21,7 +21,7 @@
 			</BxModal>
 
 			<button
-				class="w-36 bg-lime-600 hover:bg-teal-400 rounded py-2 px-6 text-stone-800"
+				class="w-36 bg-lime-600 hover:bg-lime-500 rounded py-2 px-6 text-stone-800"
 				@click="openModal"
 			>
 				Open modal

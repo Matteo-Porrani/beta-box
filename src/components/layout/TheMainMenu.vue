@@ -28,9 +28,9 @@ export default {
 				["Home", "/"],
 				["Admin", "/admin"],
 				// ["Tasks", "/tasks"],
-				// ["Dev", "/dev"],
 				["Activity", "/activity"],
 				["Data Manager", "/data-manager"],
+				["Dev", "/dev"],
 			]
 		}
 	}

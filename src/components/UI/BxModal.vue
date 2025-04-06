@@ -17,7 +17,7 @@
 					<slot name="footer">
 
 						<button
-							class="w-36 bg-teal-500 hover:bg-teal-400 rounded py-2 px-6 text-stone-800"
+							class="w-36 bg-lime-600 hover:bg-lime-500 rounded py-2 px-6 text-stone-800"
 							@click="show = false"
 						>
 							Close
@@ -79,6 +79,8 @@ function close() {
 
 .bx-modal-body {
 	margin: 20px 0;
+	max-height: 65vh;
+	overflow-y: auto;
 }
 
 .bx-modal-footer {
