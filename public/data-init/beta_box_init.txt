@@ -1,0 +1,631 @@
+{
+    "list_option": [
+        {
+            "list": "$field_types",
+            "code": "T",
+            "label": "Text",
+            "order": 1,
+            "id": 7,
+            "type": "B",
+            "default": true
+        },
+        {
+            "list": "$field_types",
+            "code": "N",
+            "label": "Number",
+            "order": 2,
+            "id": 8
+        },
+        {
+            "list": "$field_types",
+            "code": "B",
+            "label": "Switch",
+            "order": 3,
+            "id": 9
+        },
+        {
+            "list": "$field_types",
+            "code": "L",
+            "label": "List",
+            "order": 4,
+            "id": 10
+        },
+        {
+            "list": "$field_types",
+            "code": "D",
+            "label": "DateTime",
+            "order": 5,
+            "id": 11
+        },
+        {
+            "list": "$field_types",
+            "code": "E",
+            "label": "EntityPicker",
+            "order": 6,
+            "id": 12
+        },
+        {
+            "default": false,
+            "code": "list_option",
+            "label": "ListOption",
+            "order": 1,
+            "id": 14,
+            "list": "$entities"
+        },
+        {
+            "list": "$entities",
+            "code": "dummy",
+            "label": "Dummy",
+            "order": 3,
+            "default": false,
+            "id": 16
+        },
+        {
+            "list": "$entities",
+            "code": "task",
+            "label": "Task",
+            "order": 4,
+            "default": false,
+            "id": 17
+        },
+        {
+            "list": "$entities",
+            "code": "field_definition",
+            "label": "FieldDefinition",
+            "order": 2,
+            "default": false,
+            "id": 18
+        },
+        {
+            "list": "$colors",
+            "code": "$red",
+            "label": "red",
+            "order": 1,
+            "default": true,
+            "id": 19
+        },
+        {
+            "list": "$colors",
+            "code": "$blue",
+            "label": "blue",
+            "order": 2,
+            "default": false,
+            "id": 20
+        },
+        {
+            "list": "$feelings",
+            "code": "$H",
+            "label": "Happiness",
+            "order": 1,
+            "default": true,
+            "id": 21,
+            "name": "Distant Planet",
+            "isValid": false
+        },
+        {
+            "list": "$entities",
+            "code": "tag",
+            "label": "Tag",
+            "order": 5,
+            "default": false,
+            "id": 22
+        },
+        {
+            "list": "$colors",
+            "code": "$yellow",
+            "label": "yellow",
+            "order": 4,
+            "default": false,
+            "id": 23
+        },
+        {
+            "list": "$colors",
+            "code": "$indigo",
+            "label": "indigo",
+            "order": 5,
+            "default": false,
+            "id": 24
+        },
+        {
+            "list": "$colors",
+            "code": "$teal",
+            "label": "teal",
+            "order": 6,
+            "default": false,
+            "id": 25
+        },
+        {
+            "list": "$activity_type",
+            "code": "$D",
+            "label": "develop",
+            "order": 1,
+            "default": true,
+            "id": 26
+        },
+        {
+            "list": "$activity_type",
+            "code": "$R",
+            "label": "meet",
+            "order": 2,
+            "default": false,
+            "id": 27
+        },
+        {
+            "list": "$activity_type",
+            "code": "$A",
+            "label": "analyze",
+            "order": 3,
+            "default": false,
+            "id": 28
+        },
+        {
+            "list": "$activity_type",
+            "code": "$E",
+            "label": "exchange",
+            "order": 4,
+            "default": false,
+            "id": 29
+        },
+        {
+            "list": "$entities",
+            "code": "ticket",
+            "label": "Ticket",
+            "order": 6,
+            "default": false,
+            "id": 30
+        },
+        {
+            "list": "$entities",
+            "code": "activity",
+            "label": "Activity",
+            "order": 7,
+            "default": false,
+            "id": 31
+        },
+        {
+            "list": "$feelings",
+            "code": "$A",
+            "label": "Anger",
+            "order": 2,
+            "default": false,
+            "id": 32
+        },
+        {
+            "list": "$feelings",
+            "code": "$M",
+            "label": "Melancholy",
+            "order": 3,
+            "default": false,
+            "id": 33
+        },
+        {
+            "feeling": "$A",
+            "name": "Lennon Stella",
+            "isValid": false,
+            "list": "$feelings",
+            "code": "$F",
+            "label": "Fear",
+            "order": 4,
+            "default": false,
+            "id": 34
+        },
+        {
+            "list": "$feelings",
+            "code": "$S",
+            "label": "Shame",
+            "order": 5,
+            "default": false,
+            "id": 35
+        },
+        {
+            "list": "$feelings",
+            "code": "$SR",
+            "label": "Surprise",
+            "order": 6,
+            "default": false,
+            "id": 36
+        },
+        {
+            "default": false,
+            "list": "$field_types",
+            "code": "TA",
+            "label": "TextArea",
+            "order": 7,
+            "id": 37
+        },
+        {
+            "default": false,
+            "list": "$activity_type",
+            "code": "$O",
+            "label": "other",
+            "order": 5,
+            "id": 38
+        },
+        {
+            "default": false,
+            "list": "$entities",
+            "code": "day",
+            "label": "Day",
+            "order": 8,
+            "id": 39
+        }
+    ],
+    "field_definition": [
+        {
+            "entity": "Task",
+            "order": 1,
+            "field": "id",
+            "pk": true,
+            "type": "N",
+            "readonly": true,
+            "picker_col": true,
+            "id": 1,
+            "multiple": false,
+            "desc": "Write clean code",
+            "done": false,
+            "starred": false,
+            "required": false
+        },
+        {
+            "type": "T",
+            "entity": "Task",
+            "order": 2,
+            "field": "desc",
+            "pk": false,
+            "multiple": false,
+            "readonly": false,
+            "picker_col": true,
+            "id": 2,
+            "required": true
+        },
+        {
+            "type": "B",
+            "entity": "Task",
+            "order": 5,
+            "field": "done",
+            "pk": false,
+            "multiple": false,
+            "readonly": false,
+            "picker_col": true,
+            "id": 3,
+            "required": false
+        },
+        {
+            "type": "B",
+            "entity": "Task",
+            "order": 4,
+            "field": "starred",
+            "pk": false,
+            "multiple": false,
+            "readonly": false,
+            "picker_col": false,
+            "id": 4
+        },
+        {
+            "type": "E",
+            "entity": "Task",
+            "order": 6,
+            "field": "tagId",
+            "pk": false,
+            "rel_entity": "Tag",
+            "multiple": true,
+            "readonly": false,
+            "picker_col": false,
+            "id": 5,
+            "required": false
+        },
+        {
+            "type": "N",
+            "entity": "Tag",
+            "order": 1,
+            "field": "id",
+            "pk": true,
+            "multiple": false,
+            "readonly": true,
+            "picker_col": true,
+            "id": 6,
+            "color": "$red",
+            "name": "first",
+            "required": false
+        },
+        {
+            "type": "T",
+            "entity": "Tag",
+            "order": 2,
+            "field": "name",
+            "pk": false,
+            "multiple": false,
+            "readonly": false,
+            "picker_col": true,
+            "id": 7,
+            "required": true
+        },
+        {
+            "type": "L",
+            "entity": "Tag",
+            "order": 3,
+            "field": "color",
+            "pk": false,
+            "list": "$colors",
+            "multiple": false,
+            "readonly": false,
+            "picker_col": false,
+            "id": 8
+        },
+        {
+            "type": "D",
+            "name": "test",
+            "isFavorite": false,
+            "desc": "Magical",
+            "done": false,
+            "starred": false,
+            "entity": "Task",
+            "order": 3,
+            "field": "expiresOn",
+            "pk": false,
+            "multiple": false,
+            "readonly": false,
+            "picker_col": false,
+            "required": false,
+            "id": 9,
+            "color": "$indigo",
+            "expiresOn": "2025-03-04@20:05"
+        },
+        {
+            "type": "N",
+            "entity": "Ticket",
+            "order": 1,
+            "field": "id",
+            "pk": true,
+            "readonly": true,
+            "id": 10,
+            "multiple": false,
+            "picker_col": true,
+            "required": false
+        },
+        {
+            "type": "T",
+            "entity": "Ticket",
+            "order": 2,
+            "field": "title",
+            "pk": false,
+            "multiple": false,
+            "max": 50,
+            "readonly": false,
+            "picker_col": true,
+            "required": true,
+            "id": 11
+        },
+        {
+            "type": "T",
+            "entity": "Ticket",
+            "order": 3,
+            "field": "description",
+            "pk": false,
+            "multiple": false,
+            "max": "",
+            "readonly": false,
+            "picker_col": false,
+            "required": true,
+            "id": 12
+        },
+        {
+            "type": "N",
+            "entity": "Activity",
+            "order": 1,
+            "field": "id",
+            "pk": true,
+            "readonly": true,
+            "id": 13
+        },
+        {
+            "type": "L",
+            "entity": "Activity",
+            "order": 3,
+            "field": "type",
+            "list": "$activity_type",
+            "id": 14,
+            "pk": false,
+            "multiple": false,
+            "readonly": false,
+            "picker_col": false,
+            "required": false,
+            "options": [
+                {
+                    "value": "$D",
+                    "label": "develop",
+                    "default": true
+                },
+                {
+                    "value": "$R",
+                    "label": "meet",
+                    "default": false
+                },
+                {
+                    "value": "$A",
+                    "label": "analyze",
+                    "default": false
+                },
+                {
+                    "value": "$E",
+                    "label": "exchange",
+                    "default": false
+                },
+                {
+                    "value": "$O",
+                    "label": "other",
+                    "default": false
+                }
+            ]
+        },
+        {
+            "type": "TA",
+            "entity": "Activity",
+            "order": 4,
+            "field": "description",
+            "pk": false,
+            "list": "",
+            "multiple": false,
+            "readonly": false,
+            "picker_col": false,
+            "required": false,
+            "id": 15
+        },
+        {
+            "type": "T",
+            "entity": "Activity",
+            "order": 5,
+            "field": "url",
+            "pk": false,
+            "list": "",
+            "multiple": false,
+            "readonly": false,
+            "picker_col": false,
+            "required": false,
+            "id": 16
+        },
+        {
+            "type": "E",
+            "entity": "Activity",
+            "order": 6,
+            "field": "tickets",
+            "pk": false,
+            "list": "",
+            "rel_entity": "Ticket",
+            "multiple": true,
+            "readonly": false,
+            "picker_col": false,
+            "required": false,
+            "id": 17,
+            "description": "review de l'implémentation back pour DSN histo",
+            "ticket": "2",
+            "options": [
+                {
+                    "id": 1,
+                    "title": "RDTW-1234"
+                },
+                {
+                    "id": 2,
+                    "title": "6543"
+                },
+                {
+                    "id": 3,
+                    "title": "9876"
+                },
+                {
+                    "id": 4,
+                    "title": "555x"
+                }
+            ],
+            "entityPickerCols": [
+                "id",
+                "title"
+            ]
+        },
+        {
+            "type": "N",
+            "entity": "Activity",
+            "order": 7,
+            "field": "duration",
+            "pk": false,
+            "list": "",
+            "rel_entity": "",
+            "multiple": false,
+            "readonly": false,
+            "picker_col": false,
+            "required": false,
+            "id": 19
+        },
+        {
+            "type": "L",
+            "entity": "Task",
+            "order": 7,
+            "field": "color",
+            "pk": false,
+            "list": "$colors",
+            "rel_entity": "",
+            "multiple": false,
+            "readonly": false,
+            "picker_col": false,
+            "required": false,
+            "id": 20
+        },
+        {
+            "type": "N",
+            "pk": true,
+            "multiple": false,
+            "readonly": true,
+            "picker_col": true,
+            "required": false,
+            "entity": "Day",
+            "order": 1,
+            "field": "id",
+            "id": 26
+        },
+        {
+            "type": "D",
+            "pk": true,
+            "multiple": false,
+            "readonly": false,
+            "picker_col": true,
+            "required": true,
+            "entity": "Day",
+            "order": 2,
+            "field": "date",
+            "id": 27
+        },
+        {
+            "type": "E",
+            "pk": false,
+            "multiple": false,
+            "readonly": false,
+            "picker_col": false,
+            "required": false,
+            "entity": "Activity",
+            "order": 2,
+            "field": "day",
+            "list": "",
+            "rel_entity": "Day",
+            "id": 28,
+            "options": [
+                {
+                    "id": 1,
+                    "date": "2025-04-07@00:00"
+                },
+                {
+                    "id": 2,
+                    "date": "2025-04-08@00:00"
+                },
+                {
+                    "id": 3,
+                    "date": "2025-04-09@00:00"
+                },
+                {
+                    "id": 4,
+                    "date": "2025-04-10@00:00"
+                },
+                {
+                    "id": 5,
+                    "date": "2025-04-11@00:00"
+                }
+            ],
+            "entityPickerCols": [
+                "id",
+                "date"
+            ]
+        }
+    ],
+    "ticket": [
+        {
+            "title": "RDTW-1234",
+            "description": "Sample Ticket",
+            "id": 1
+        }
+    ],
+    "day": [
+        {
+            "date": "2025-04-07@00:00",
+            "id": 1
+        }
+    ]
+}
