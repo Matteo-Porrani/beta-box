@@ -69,22 +69,6 @@
             "id": 18
         },
         {
-            "list": "$colors",
-            "code": "$red",
-            "label": "red",
-            "order": 1,
-            "default": true,
-            "id": 19
-        },
-        {
-            "list": "$colors",
-            "code": "$blue",
-            "label": "blue",
-            "order": 2,
-            "default": false,
-            "id": 20
-        },
-        {
             "list": "$feelings",
             "code": "$H",
             "label": "Happiness",
@@ -101,30 +85,6 @@
             "order": 5,
             "default": false,
             "id": 22
-        },
-        {
-            "list": "$colors",
-            "code": "$yellow",
-            "label": "yellow",
-            "order": 4,
-            "default": false,
-            "id": 23
-        },
-        {
-            "list": "$colors",
-            "code": "$indigo",
-            "label": "indigo",
-            "order": 5,
-            "default": false,
-            "id": 24
-        },
-        {
-            "list": "$colors",
-            "code": "$teal",
-            "label": "teal",
-            "order": 6,
-            "default": false,
-            "id": 25
         },
         {
             "list": "$activity_type",

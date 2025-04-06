@@ -147,12 +147,20 @@ export default {
 		// =============================================
 
 		onAddActivity(dayId) {
-			this.SET_FIELD({ key: "day", value: String(dayId)})
-			this.SET_FIELD({ key: "duration", value: 30})
+			// set some default values
+			const DEFAULT_VALUES = {
+				day: String(dayId),
+				duration: 30,
+				type: "$D"
+			}
+
+			for (const k of Object.keys(DEFAULT_VALUES)) {
+				this.SET_FIELD({ key: k, value: DEFAULT_VALUES[k] });
+			}
 
 			this.openModal();
 			nextTick(() => {
-				this.$refs.bxForm.initForm({ day: String(dayId), duration: 30 })
+				this.$refs.bxForm.initForm(DEFAULT_VALUES);
 			})
 		},
 

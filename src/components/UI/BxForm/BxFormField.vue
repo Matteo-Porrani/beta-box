@@ -85,7 +85,7 @@
 // Vue related
 import { defineComponent } from 'vue'
 // utils
-import { isFalsy } from "@/utils/core-utils";
+import { isFalsy, nrm } from "@/utils/core-utils";
 // components
 import BxSwitch from './fields/BxSwitch.vue';
 import EntityPicker from "@/components/UI/BxForm/fields/EntityPicker.vue";
@@ -141,8 +141,10 @@ export default defineComponent({
 		options: {
 			immediate: true,
 			handler(newOptions) {
+				console.log('newOptions', nrm(newOptions))
 				if (this.fieldDesc.type === 'L' && !this.value) {
 					const defaultOption = newOptions?.find(o => o.default === true);
+					console.log("set value to", defaultOption.value)
 					if (defaultOption) this.value = defaultOption.value;
 				}
 			}
@@ -176,6 +178,7 @@ export default defineComponent({
 					this.$refs.entity_picker_ref.setValue(initVal);
 					break;
 				default:
+					console.log("field initVal", initVal)
 					this.value = initVal;
 			}
 		}
