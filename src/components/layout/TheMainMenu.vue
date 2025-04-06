@@ -27,10 +27,10 @@ export default {
 			links: [
 				["Home", "/"],
 				["Admin", "/admin"],
-				["Tasks", "/tasks"],
-				["Dev", "/dev"],
-				["Data Manager", "/data-manager"],
+				// ["Tasks", "/tasks"],
+				// ["Dev", "/dev"],
 				["Activity", "/activity"],
+				["Data Manager", "/data-manager"],
 			]
 		}
 	}
