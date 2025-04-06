@@ -54,14 +54,6 @@
         },
         {
             "list": "$entities",
-            "code": "dummy",
-            "label": "Dummy",
-            "order": 3,
-            "default": false,
-            "id": 16
-        },
-        {
-            "list": "$entities",
             "code": "task",
             "label": "Task",
             "order": 4,

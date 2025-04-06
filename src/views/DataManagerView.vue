@@ -50,7 +50,6 @@ import { mapState } from "vuex";
 // services
 import { exportSrv } from "@/service/ExportSrv";
 import { dataSrv } from "@/service/DataSrv";
-import { activitySrv } from "@/services/ActivitySrv";
 // components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 
@@ -111,11 +110,6 @@ export default {
 							const json = JSON.parse(e.target.result);
 							console.log("IMPORTING data", json);
 							this.uploadedData = json;
-						} 
-						// Initialization path
-						else {
-							// Fetch and store initialization data from public folder
-							this.uploadedData = await fetch('/data-init/beta_box_init.txt').then(r => r.json());
 						}
 
 					} catch(e) {
@@ -126,6 +120,7 @@ export default {
 				// Start reading the file
 				reader.readAsText(file);
 			}
+
 			// Direct initialization path (no file involved)
 			else if (fromInit) {
 				try {
