@@ -50,7 +50,7 @@ export default {
 
 	methods: {
 		async checkIfDatabaseExists() {
-			const dbName = 'hello'; // Replace with your database name
+			const dbName = 'betaBoxDatabase'; // Replace with your database name
 
 			await indexedDB.databases().then(databases => {
 				const exists = databases.some(db => db.name === dbName);
@@ -62,8 +62,7 @@ export default {
 		},
 
 		initializeApp() {
-			// TODO: Implement initialization logic
-			console.log('Initializing app...');
+			this.$router.push("/data-manager");
 		}
 	}
 };

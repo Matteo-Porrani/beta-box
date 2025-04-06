@@ -1,48 +1,64 @@
 <template>
 	<DefaultLayout view-title="Data Manager">
-		<div data-test="data-manager-view-root">
+		<div
+			data-test="data-manager-view-root"
+			class="grid grid-cols-2 gap-4 h-[70vh]"
+		>
 
-			<button
-				@click="initData"
-				class="bg-yellow-400 hover:bg-yellow-300 text-stone-800 rounded py-1 px-2"
-			>Init App Data</button>
-
-			<div class="h-4"></div>
-
-			<button
-				@click="exportData"
-				class="bg-lime-600 hover:bg-lime-500 text-stone-800 rounded py-1 px-2"
-			>Backup</button>
-
-			<div class="h-4"></div>
-
-			<input
-				type="file"
-				accept=".txt"
-				@change="prepareJsonData"
-			>
-
-			<div class="h-4"></div>
-
-			<template v-if="uploadedData">
-
-				<pre>{{ JSON.stringify(Object.keys(uploadedData)) }}</pre>
-
+			<div class="backup border border-stone-500 rounded p-4">
 				<button
-					@click="importTables"
-					class="bg-blue-800 hover:bg-blue-700 rounded py-1 px-2"
-				>Import tables</button>
+					@click="exportData"
+					class="bg-lime-600 hover:bg-lime-500 text-stone-800 rounded py-1 px-2"
+				>Backup</button>
+
+				<div class="h-4"></div>
+			</div>
+
+			<div class="import border border-stone-500 rounded p-4">
+				<button
+					@click="initData"
+					class="bg-yellow-400 hover:bg-yellow-300 text-stone-800 rounded py-1 px-2"
+				>Init App Data</button>
 
 				<div class="h-4"></div>
 
-				<div class="bg-stone-700 max-h-[60vh] overflow-y-auto text-blue-300 text-xs rounded p-2">
-					<pre>{{ uploadedData }}</pre>
-				</div>
-			</template>
+				<input
+					type="file"
+					accept=".txt"
+					@change="prepareJsonData"
+				>
+
+				<div class="h-4"></div>
+
+				<template v-if="uploadedData">
+
+					<div class="flex gap-2 flex-wrap mb-2">
+						<p
+							v-for="t in Object.keys(uploadedData)"
+							:key="t"
+							class="border border-stone-300 text-stone-300 font-mono text-xs rounded px-2 py-1"
+						>
+							{{ t }}
+						</p>
+					</div>
+
+					<button
+						@click="importTables"
+						class="bg-lime-600 hover:bg-lime-500 text-stone-800 rounded py-1 px-2"
+					>Import tables</button>
+
+					<div class="h-4"></div>
+
+					<div class="bg-stone-700 max-h-[60vh] overflow-y-auto text-stone-300 text-xs rounded p-2">
+						<pre>{{ uploadedData }}</pre>
+					</div>
+				</template>
+			</div>
 
 		</div>
 	</DefaultLayout>
 </template>
+
 
 <script>
 // Vue related
