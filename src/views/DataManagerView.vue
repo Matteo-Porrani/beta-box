@@ -19,7 +19,7 @@
 			<input
 				type="file"
 				accept=".txt"
-				@change="uploadJson"
+				@change="prepareJsonData"
 			>
 
 			<div class="h-4"></div>
@@ -75,16 +75,25 @@ export default {
 	},
 
 	methods: {
+
+		// =============================================
+		// EXPORT
+		// =============================================
+
 		exportData() {
 			exportSrv.downloadJson(this.entities);
 		},
 
+		// =============================================
+		// INIT & IMPORT
+		// =============================================
+
 		/**
-		 * Initializes the application data by triggering uploadJson with initialization parameters
+		 * Initializes the application data by triggering prepareJsonData with initialization parameters
 		 */
 		async initData() {
-			// Call uploadJson with null event and fromInit flag set to true
-			await this.uploadJson(null, true);
+			// Call prepareJsonData with null event and fromInit flag set to true
+			await this.prepareJsonData(null, true);
 		},
 
 		/**
@@ -92,7 +101,7 @@ export default {
 		 * @param {Event|null} e - File input change event or null if called from initData
 		 * @param {boolean} fromInit - Flag indicating if called from initialization (true) or file upload (false)
 		 */
-		async uploadJson(e, fromInit = false) {
+		async prepareJsonData(e, fromInit = false) {
 			let file;
 
 			// Only get file from event if it's a regular upload (not initialization)
@@ -102,32 +111,36 @@ export default {
 
 			// Process file if it exists (regular upload path)
 			if (file) {
-				const reader = new FileReader();
-				reader.onload = (e) => {
-
-					try {
-
-						// Regular file upload path
-						if (e && !fromInit) {
-							// Parse and store uploaded JSON file
-							this.uploadedData = JSON.parse(e.target.result);
-						}
-
-					} catch(e) {
-						console.error(e);
-					}
-				};
-
-				// Start reading the file
-				reader.readAsText(file);
+				this._importJsonFromFile(file);
 			} else if (fromInit) { // Direct initialization path (no file involved)
+				this.uploadedData = await this._importJsonFromInitFile();
+			}
+		},
+
+		async _importJsonFromInitFile() {
+			try {
+				// Fetch and store initialization data from public folder
+				return await fetch('/data-init/beta_box_init.txt').then(r => r.json());
+			} catch(e) {
+				console.error(e);
+				return {};
+			}
+		},
+
+		_importJsonFromFile(file) {
+			const reader = new FileReader();
+
+			reader.onload = (e) => {
 				try {
-					// Fetch and store initialization data from public folder
-					this.uploadedData = await fetch('/data-init/beta_box_init.txt').then(r => r.json());
+					// Parse and store uploaded JSON file
+					this.uploadedData = JSON.parse(e.target.result);
 				} catch(e) {
 					console.error(e);
 				}
-			}
+			};
+
+			// Start reading the file
+			reader.readAsText(file);
 		},
 
 		// =============================================
