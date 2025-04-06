@@ -7,10 +7,9 @@ class ActivitySrv {
 		if (!ActivitySrv.instance) {
 			ActivitySrv.instance = new ActivitySrv();
 		}
-
 		return ActivitySrv.instance;
 	}
-	
+
 	getActivities() {
 		const days = this._getDays();
 		return this._hydrateDays(days);
@@ -139,16 +138,6 @@ class ActivitySrv {
 		const hours = Math.floor(minutes / 60);
 		const mins = minutes % 60;
 		return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-	}
-	
-	_parseDurationInMin(strDuration) {
-		// returns 90 from 01:30
-		// returns 60 from 01:00
-		// returns 120 from 02:00
-		// returns 30 from 0:30
-		
-		const [hours, minutes] = strDuration.split(':').map(Number);
-		return (hours * 60) + minutes;
 	}
 	
 	_calculateTotalDuration(activities) {
