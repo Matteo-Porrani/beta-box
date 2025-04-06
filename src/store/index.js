@@ -13,5 +13,9 @@ export default createStore({
         form,
         list,
         notif,
+    },
+    
+    state: {
+        APP_VERSION: "0.0.3",
     }
 })

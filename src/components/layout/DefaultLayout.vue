@@ -9,12 +9,15 @@
 		>
 			<h1
 				data-test="app-main-title"
-				class="flex items-center gap-1 text-2xl font-bold mb-10"
+				class="flex items-center gap-1 text-2xl font-bold"
 			>
 				<span class="inline-block h-2 w-2 rounded bg-yellow-400"></span>
 				<span class="inline-block h-4 w-2 rounded bg-lime-600"></span>
 				Beta-Box
 			</h1>
+			<span class="text-xs font-mono">{{ appVersion }}</span>
+
+			<div class="h-10"></div>
 
 			<slot name="menu">
 				<TheMainMenu/>
@@ -101,6 +104,7 @@ export default {
 
 	computed: {
 		...mapState({
+			appVersion: $s => $s.APP_VERSION,
 			loading: $s => $s.entity.loading,
 			notifStack: $s => $s.notif.notifStack,
 		})
