@@ -50,7 +50,7 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
-import { activitySrv } from "@/services/ActivitySrv";
+import { activitySrv } from "@/service/ActivitySrv";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import ActivityGrid from "@/components/activity/ActivityGrid.vue";
 import BxModal from "@/components/UI/BxModal.vue";
