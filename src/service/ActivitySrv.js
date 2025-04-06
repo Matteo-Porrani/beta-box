@@ -132,8 +132,8 @@ class ActivitySrv {
 	
 	_formatDate(dateString) {
 		const date = new Date(dateString.replace('@', 'T'));
-		const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-		const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+		const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+		const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		
 		return `${days[date.getDay()]} - ${months[date.getMonth()]} ${date.getDate()}`;
 	}
