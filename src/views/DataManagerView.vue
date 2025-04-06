@@ -79,28 +79,42 @@ export default {
 			exportSrv.downloadJson(this.entities);
 		},
 
+		/**
+		 * Initializes the application data by triggering uploadJson with initialization parameters
+		 */
 		async initData() {
+			// Call uploadJson with null event and fromInit flag set to true
 			await this.uploadJson(null, true);
 		},
 
+		/**
+		 * Handles JSON data upload from either file input or initialization
+		 * @param {Event|null} e - File input change event or null if called from initData
+		 * @param {boolean} fromInit - Flag indicating if called from initialization (true) or file upload (false)
+		 */
 		async uploadJson(e, fromInit = false) {
 			let file;
 
+			// Only get file from event if it's a regular upload (not initialization)
 			if (e && !fromInit) {
 				file = e.target.files[0];
 			}
 
+			// Process file if it exists (regular upload path)
 			if (file) {
 				const reader = new FileReader();
 				reader.onload = async (e) => {
 					try {
-
+						// Regular file upload path
 						if (e && !fromInit) {
+							// Parse and store uploaded JSON file
 							const json = JSON.parse(e.target.result);
 							console.log("IMPORTING data", json);
-
 							this.uploadedData = json;
-						} else {
+						} 
+						// Initialization path
+						else {
+							// Fetch and store initialization data from public folder
 							this.uploadedData = await fetch('/data-init/beta_box_init.txt').then(r => r.json());
 						}
 
@@ -109,7 +123,17 @@ export default {
 					}
 				};
 
+				// Start reading the file
 				reader.readAsText(file);
+			}
+			// Direct initialization path (no file involved)
+			else if (fromInit) {
+				try {
+					// Fetch and store initialization data from public folder
+					this.uploadedData = await fetch('/data-init/beta_box_init.txt').then(r => r.json());
+				} catch(e) {
+					console.error(e);
+				}
 			}
 		},
 
