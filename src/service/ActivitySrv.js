@@ -126,6 +126,10 @@ class ActivitySrv {
 	// UTILITY
 	// =============================================
 	
+	getLabelFromActivityCode(code) {
+		return store.getters["entity/getLabelFromListValue"]("$activity_type", code);
+	}
+	
 	_formatDate(dateString) {
 		const date = new Date(dateString.replace('@', 'T'));
 		const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

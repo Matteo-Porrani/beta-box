@@ -56,8 +56,9 @@
 </template>
 
 <script>
-import BxIcon from "@/components/UI/BxIcon.vue";
+import { activitySrv } from "@/service/ActivitySrv";
 import { nrm } from "@/utils/core-utils";
+import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {
 	name: "ActivityCard",
@@ -76,38 +77,24 @@ export default {
 	emits: ["editActivity"],
 
 	computed: {
+
 		typeLabel() {
-			const labelMap = {
-				'$D': 'develop',
-				'$R': 'meet',
-				'$A': 'analyze',
-				'$E': 'exchange',
-				'$O': 'other'
-			};
-			return labelMap[this.activity.type] || 'Unknown';
+			return this.activity?.type
+				? activitySrv.getLabelFromActivityCode(this.activity.type)
+				: "-";
 		},
 
 		headerColorClass() {
 			const colorMap = {
-				'$D': 'bg-lime-500',
+				'$D': 'bg-yellow-400',
+				'$E': 'bg-violet-400',
 				'$R': 'bg-sky-400',
-				'$A': 'bg-violet-400',
-				'$E': 'bg-yellow-400',
+				'$A': 'bg-lime-500',
 				'$O': 'bg-stone-400'
 			};
 			return colorMap[this.activity.type] || 'bg-stone-400';
 		},
 
-		activityIcon() {
-			const iconMap = {
-				'$D': 'code',
-				'$R': 'users',
-				'$A': 'chart',
-				'$E': 'message',
-				'$O': 'dots'
-			};
-			return iconMap[this.activity.type] || 'dots';
-		}
 	},
 
 	methods: {
@@ -116,16 +103,6 @@ export default {
 		}
 	},
 
-	watch: {
-		// Component watchers
-	},
-
-	mounted() {
-		// Component mounted hook
-	}
 }
 </script>
 
-<style scoped>
-/* Component specific styles */
-</style> 

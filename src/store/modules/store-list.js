@@ -5,14 +5,7 @@ export default {
 	
 	state: () => {
 		return {
-			lists: {
-				$cities: [
-					{ value: null, label: "Pick a city" }, // null value is the default
-					{ value: "P", label: "Paris" },
-					{ value: "M", label: "Milan" },
-					{ value: "R", label: "Rome" },
-				]
-			}
+			lists: {}
 		}
 	},
 	
