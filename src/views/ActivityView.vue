@@ -49,30 +49,32 @@
 </template>
 
 <script>
+// Vue related
+import { nextTick } from "vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+// service
 import { activitySrv } from "@/service/ActivitySrv";
+// utils
+import { isInteger, parseDurationInMin } from "@/utils/core-utils";
+import { prepareItem } from "@/utils/entity-utils";
+// components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import ActivityGrid from "@/components/activity/ActivityGrid.vue";
 import BxModal from "@/components/UI/BxModal.vue";
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
-import { isInteger, parseDurationInMin } from "@/utils/core-utils";
-import { prepareItem } from "@/utils/entity-utils";
-import { nextTick } from "vue";
 
 export default {
 	name: "ActivityView",
 
 	components: {
-		BxForm,
-		BxModal,
 		DefaultLayout,
-		ActivityGrid
+		ActivityGrid,
+		BxModal,
+		BxForm
 	},
 
 	async created() {
-		for (const t of ["list_option", "field_definition", "ticket", "day", "activity"]) {
-			await this.loadItems(t);
-		}
+		await this.loadTables(["list_option", "field_definition", "ticket", "day", "activity"]);
 	},
 
 	data() {
@@ -105,7 +107,7 @@ export default {
 		]),
 
 		...mapActions("entity", [
-			"loadItems",
+			"loadTables",
 			"addItem",
 			"updateItem",
 		]),

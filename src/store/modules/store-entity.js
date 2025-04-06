@@ -124,6 +124,12 @@ export default {
 			}
 		},
 		
+		async loadTables({ dispatch }, tables) {
+			for (const t of tables) {
+				await dispatch("loadItems", t);
+			}
+		},
+		
 		async loadItems({ dispatch, commit }, tableName) {
 			return await dispatch("execDatabaseAction", async () => {
 				const items = await dataSrv.load(tableName);
