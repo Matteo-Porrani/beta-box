@@ -56,9 +56,6 @@ export function nrm(obj){
 export function parseDurationInMin(strDuration) {
 	// returns 90 from 01:30
 	// returns 60 from 01:00
-	// returns 120 from 02:00
-	// returns 30 from 0:30
-	
 	const [hours, minutes] = strDuration.split(':').map(Number);
 	return (hours * 60) + minutes;
 }

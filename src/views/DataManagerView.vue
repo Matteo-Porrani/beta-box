@@ -52,6 +52,7 @@ import { exportSrv } from "@/service/ExportSrv";
 import { dataSrv } from "@/service/DataSrv";
 // components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import { nrm } from "@/utils/core-utils";
 
 
 export default {
@@ -102,14 +103,14 @@ export default {
 			// Process file if it exists (regular upload path)
 			if (file) {
 				const reader = new FileReader();
-				reader.onload = async (e) => {
+				reader.onload = (e) => {
+
 					try {
+
 						// Regular file upload path
 						if (e && !fromInit) {
 							// Parse and store uploaded JSON file
-							const json = JSON.parse(e.target.result);
-							console.log("IMPORTING data", json);
-							this.uploadedData = json;
+							this.uploadedData = JSON.parse(e.target.result);
 						}
 
 					} catch(e) {
@@ -119,10 +120,7 @@ export default {
 
 				// Start reading the file
 				reader.readAsText(file);
-			}
-
-			// Direct initialization path (no file involved)
-			else if (fromInit) {
+			} else if (fromInit) { // Direct initialization path (no file involved)
 				try {
 					// Fetch and store initialization data from public folder
 					this.uploadedData = await fetch('/data-init/beta_box_init.txt').then(r => r.json());
@@ -138,11 +136,9 @@ export default {
 
 		async importTables() {
 			for (const tableName of Object.keys(this.uploadedData)) {
-				console.log(">>> table", tableName)
-
 				for (const row of this.uploadedData[tableName]) {
-					console.log(">>> row", row.id, row)
-					const clone = JSON.parse(JSON.stringify(row))
+					console.log(">>> table", tableName, ">>> row", row.id, row)
+					const clone = nrm(row);
 					await dataSrv.add(tableName, clone);
 
 					await new Promise(res => setTimeout(res, 500));
