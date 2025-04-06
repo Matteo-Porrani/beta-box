@@ -2,8 +2,8 @@
 	<DefaultLayout view-title="Activity">
 		<ActivityGrid
 			:days="activities"
-			@add-activity="onAddAct"
-			@edit-activity="onEditAct"
+			@add-activity="onAddActivity"
+			@edit-activity="onEditActivity"
 		/>
 	</DefaultLayout>
 
@@ -15,6 +15,20 @@
 			<h2 class="font-bold text-3xl">Activity</h2>
 		</template>
 		<template #body>
+			<button
+				class="
+					flex items-center gap-2
+					w-32 bg-rose-600 border border-rose-600 hover:bg-rose-500
+					disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800
+					mb-4
+				"
+				@click="onDeleteActivity"
+			>
+				<BxIcon icon="trash"/>
+				Delete
+			</button>
+
+
 			<BxForm
 				ref="bxForm"
 				:description="activityFormDesc"
@@ -62,11 +76,13 @@ import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import ActivityGrid from "@/components/activity/ActivityGrid.vue";
 import BxModal from "@/components/UI/BxModal.vue";
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
+import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {
 	name: "ActivityView",
 
 	components: {
+		BxIcon,
 		DefaultLayout,
 		ActivityGrid,
 		BxModal,
@@ -110,13 +126,27 @@ export default {
 			"loadTables",
 			"addItem",
 			"updateItem",
+			"deleteItem",
 		]),
+
+		// =============================================
+		// FORM HANDLING
+		// =============================================
 
 		onFieldValueChanged(changeData) {
 			this.SET_FIELD(changeData);
 		},
 
-		onAddAct(dayId) {
+		onReset() {
+			this.$refs.bxForm.resetForm();
+			setTimeout(() => this.RESET_FORM(), 300);
+		},
+
+		// =============================================
+		// CRUD ACTIONS
+		// =============================================
+
+		onAddActivity(dayId) {
 			this.SET_FIELD({ key: "day", value: String(dayId)})
 			this.SET_FIELD({ key: "duration", value: 30})
 
@@ -126,7 +156,7 @@ export default {
 			})
 		},
 
-		onEditAct(activityData) {
+		onEditActivity(activityData) {
 			const strDuration = activityData.duration;
 			activityData.duration = parseDurationInMin(strDuration);
 
@@ -134,14 +164,6 @@ export default {
 			nextTick(() => {
 				this.$refs.bxForm.initForm(activityData)
 			})
-		},
-
-		openModal() {
-			this.$refs.modal_ref.open();
-		},
-
-		onCancel() {
-			this.$refs.modal_ref.close();
 		},
 
 		async onSave() {
@@ -155,15 +177,25 @@ export default {
 			})
 
 			this.onReset();
-			this.$emit("itemSaved");
 			this.$refs.modal_ref.close();
 		},
 
-		onReset() {
-			this.$refs.bxForm.resetForm();
-			setTimeout(() => {
-				this.RESET_FORM();
-			}, 300);
+		onDeleteActivity() {
+			this.deleteItem({ tableName: "activity", id: this.formValues.id });
+			this.onReset();
+			this.$refs.modal_ref.close();
+		},
+
+		// =============================================
+		// MODAL HANDLING
+		// =============================================
+
+		openModal() {
+			this.$refs.modal_ref.open();
+		},
+
+		onCancel() {
+			this.$refs.modal_ref.close();
 		},
 	}
 }
