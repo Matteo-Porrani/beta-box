@@ -23,7 +23,7 @@
 		</div>
 
 		<div class="relative bg-stone-900 py-1 px-2 overflow-hidden">
-			<div class="bg-stone-400 w-fit text-stone-800 text-end text-sm font-bold ms-auto rounded px-2 py-0.5 mb-1">{{ activity.duration }}</div>
+			<div class="bg-stone-400 w-fit text-stone-800 text-end text-sm ms-auto rounded px-2 py-0.5 mb-1">{{ activity.duration }}</div>
 
 			<div class="main-content">
 				<div v-if="activity.ticketTitles?.length" class="flex flex-wrap gap-1 mb-1">
