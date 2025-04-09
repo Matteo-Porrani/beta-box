@@ -109,7 +109,7 @@ export default {
 			sortBy: "id",
 			sortOrder: 0,
 			filterBy: "id",
-			filterMatch: "abc",
+			filterMatch: null,
 
 			actions: [
 				{ name: "edit", icon: "edit" },

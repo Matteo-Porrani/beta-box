@@ -18,7 +18,6 @@
 	>
 		<template #header>
 			<h2 class="text-2xl font-bold">{{ entity }}</h2>
-			<p>MULTI : {{ multiple ? 'TRUE' : 'FALSE' }}</p>
 		</template>
 		<template #body>
 			<div class="space-y-2">
