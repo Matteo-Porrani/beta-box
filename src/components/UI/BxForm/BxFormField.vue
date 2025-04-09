@@ -141,10 +141,10 @@ export default defineComponent({
 		options: {
 			immediate: true,
 			handler(newOptions) {
-				console.log('newOptions', nrm(newOptions))
+				// console.log('newOptions', nrm(newOptions))
 				if (this.fieldDesc.type === 'L' && !this.value) {
 					const defaultOption = newOptions?.find(o => o.default === true);
-					console.log("set value to", defaultOption.value)
+					// console.log("set value to", defaultOption.value)
 					if (defaultOption) this.value = defaultOption.value;
 				}
 			}
@@ -178,7 +178,7 @@ export default defineComponent({
 					this.$refs.entity_picker_ref.setValue(initVal);
 					break;
 				default:
-					console.log("field initVal", initVal)
+					// console.log("field initVal", initVal)
 					this.value = initVal;
 			}
 		}

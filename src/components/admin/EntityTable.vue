@@ -26,13 +26,47 @@ Emits:
 -->
 
 <template>
-	<BxTable
-		:cols="formDescription.map(c => c.field)"
-		:rows="rows"
-		:actions="actions"
-		content-height="70vh"
-		@row-action="onRowAction"
-	/>
+	<div class="entity-table-root">
+
+		<div class="grid grid-cols-2 gap-2 border border-stone-500 rounded p-1">
+			<div class="flex items-center gap-4">
+				Sort
+				<select v-model="sortBy">
+					<option
+						v-for="c in cols"
+						:key="c"
+						:value="c"
+					>{{ c }}</option>
+				</select>
+
+				<select v-model="sortOrder">
+					<option :value="0">ASC</option>
+					<option :value="1">DESC</option>
+				</select>
+			</div>
+			<div class="flex items-center gap-4">
+				<p>Filter</p>
+				<select v-model="filterBy">
+					<option
+						v-for="c in cols"
+						:key="c"
+						:value="c"
+					>{{ c }}</option>
+				</select>
+				<input type="text" v-model="filterMatch">
+			</div>
+		</div>
+
+		<div class="h-2"/>
+
+		<BxTable
+			:cols="formDescription.map(c => c.field)"
+			:rows="rows"
+			:actions="actions"
+			content-height="70vh"
+			@row-action="onRowAction"
+		/>
+	</div>
 </template>
 
 
@@ -66,6 +100,11 @@ export default {
 
 	data() {
 		return {
+			sortBy: "id",
+			sortOrder: 0,
+			filterBy: "id",
+			filterMatch: "abc",
+
 			actions: [
 				{ name: "edit", icon: "edit" },
 				{ name: "duplicate", icon: "copy" },
@@ -82,6 +121,10 @@ export default {
 		...mapGetters("entity", [
 			"getLabelFromListValue"
 		]),
+
+		cols() {
+			return this.formDescription ? this.formDescription.map(f => f.field) : [];
+		},
 
 		rows() {
 			if (!this.entities[this.tableName]) return [];
@@ -113,6 +156,10 @@ export default {
 			};
 			return config[this.tableName];
 		},
+	},
+
+	mounted() {
+		console.log("MOUNTED -- EntityTable")
 	},
 
 	methods: {
@@ -172,3 +219,10 @@ export default {
 
 }
 </script>
+
+<style scoped>
+input,
+select {
+	@apply bg-stone-700 rounded text-stone-200 p-1
+}
+</style>

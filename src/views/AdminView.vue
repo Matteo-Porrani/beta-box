@@ -23,7 +23,7 @@
 			<div class="h-4"></div>
 
 			<!-- LIST -->
-			<template v-if="viewMode === '$L'">
+			<div v-show="viewMode === '$L'">
 				<button
 					class="flex items-center gap-1 hover:text-lime-600"
 					@click="setMode('$F')"
@@ -41,10 +41,10 @@
 					@duplicate-item="onDuplicateItem"
 					@delete-item="onDeleteItem"
 				/>
-			</template>
+			</div>
 
 			<!-- FORM -->
-			<template v-else-if="viewMode === '$F'">
+			<template v-if="viewMode === '$F'">
 				<EntityForm
 					ref="entity_form_ref"
 					:table-name="tableName"
