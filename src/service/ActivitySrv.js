@@ -153,43 +153,25 @@ class ActivitySrv {
 	}
 	
 	_parseTypesBar(activities) {
-		console.log("activities", activities);
-		
 		const parts = {};
 		
 		["$D", "$R", "$O", "$A", "$E"].forEach(t => {
 			const typedActivities = activities.filter(a => a.type === t);
-			const tot = this._sumActivitiesByType(typedActivities);
-			parts[t] = tot;
+			parts[t] = this._sumActivitiesByType(typedActivities);
 		})
-		
-		console.log("parts", parts)
 		
 		// Step 1: Compute the total sum based on all positive values
 		const total = Object.values(parts).reduce((sum, value) =>
 			value > 0 ? sum + value : sum, 0
 		);
 
-// Step 2: Create a new object with percentage values
-		const percentages = Object.fromEntries(
+		// Step 2: Create a new object with percentage values
+		return Object.fromEntries(
 			Object.entries(parts).map(([key, value]) => [
 				key,
 				total > 0 ? parseFloat(((value / total) * 100).toFixed(2)) : 0
 			])
 		);
-		
-		console.log("percentages", percentages);
-		/*
-		{
-				"$D": 0,
-				"$R": 80,
-				"$O": 0,
-				"$A": 10,
-				"$E": 10
-		}
-		 */
-		
-		return percentages;
 	}
 	
 	_sumActivitiesByType(typedActivities) {
