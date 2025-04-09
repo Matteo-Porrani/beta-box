@@ -29,6 +29,23 @@ Emits:
 	<div class="entity-table-root">
 
 		<div class="grid grid-cols-2 gap-2 border border-stone-500 rounded p-1">
+			<!-- FILTER -->
+			<div class="flex items-center gap-4">
+				<button
+					class="bg-stone-700 hover:bg-stone-600 rounded py-1 px-4"
+					@click="resetFilter">Reset</button>
+				<p>Filter</p>
+				<select v-model="filterBy">
+					<option
+						v-for="c in cols"
+						:key="c"
+						:value="c"
+					>{{ c }}</option>
+				</select>
+				<input type="text" v-model="filterMatch">
+			</div>
+
+			<!-- SORT -->
 			<div class="flex items-center gap-4">
 				Sort
 				<select v-model="sortBy">
@@ -43,17 +60,6 @@ Emits:
 					<option :value="0">ASC</option>
 					<option :value="1">DESC</option>
 				</select>
-			</div>
-			<div class="flex items-center gap-4">
-				<p>Filter</p>
-				<select v-model="filterBy">
-					<option
-						v-for="c in cols"
-						:key="c"
-						:value="c"
-					>{{ c }}</option>
-				</select>
-				<input type="text" v-model="filterMatch">
 			</div>
 		</div>
 
@@ -123,7 +129,9 @@ export default {
 		]),
 
 		cols() {
-			return this.formDescription ? this.formDescription.map(f => f.field) : [];
+			return this.formDescription
+				? this.formDescription.map(f => f.field)
+				: [];
 		},
 
 		rows() {
@@ -134,6 +142,10 @@ export default {
 
 			// apply sorting based on table configuration
 			rows = this.applySorting(rows);
+
+			rows = this.applyCustomSorting(rows, this.sortBy, this.sortOrder);
+
+			rows = this.applyFilter(rows, this.filterBy, this.filterMatch);
 
 			// show labels instead of values for lists
 			rows = this.getListLabels(rows);
@@ -149,9 +161,9 @@ export default {
 		 */
 		sortConfig() {
 			const config = {
-				// Sort list_options first by order, then group by list name
+				// Sort 'list_options' first by order, then group by list name
 				'list_option': { orderBy: 'order', groupBy: 'list' },
-				// Sort field definitions first by order, then group by entity name
+				// Sort 'field_definitions' first by order, then group by entity name
 				'field_definition': { orderBy: 'order', groupBy: 'entity' }
 			};
 			return config[this.tableName];
@@ -214,6 +226,28 @@ export default {
 				// Secondary sort: alphabetical sort by groupBy field (e.g., 'list' or 'entity')
 				.sort((a, b) => a[config.groupBy].localeCompare(b[config.groupBy]));
 		},
+
+		applyCustomSorting(rows, byKey, order) {
+			const sortedRows = rows.sort((a, b) => String(a[byKey]).localeCompare(String(b[byKey])));
+			if (order > 0) sortedRows.reverse();
+			return sortedRows;
+		},
+
+		// =============================================
+		// FILTERING
+		// =============================================
+
+		applyFilter(rows, byKey, match) {
+			if (!match) return rows;
+			return rows.filter(r => {
+				return String(r[byKey]).includes(match);
+			})
+		},
+
+		resetFilter() {
+			this.filterBy = "id";
+			this.filterMatch = null;
+		}
 
 	}
 
