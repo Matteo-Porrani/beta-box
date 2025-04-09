@@ -102,11 +102,11 @@ export default {
 
 		headerColorClass() {
 			const colorMap = {
-				'$D': 'bg-yellow-400',
-				'$E': 'bg-violet-400',
-				'$R': 'bg-sky-400',
-				'$A': 'bg-lime-500',
-				'$O': 'bg-stone-400'
+				'$D': 'bg-yellow-400', // develop
+				'$A': 'bg-purple-500', // analyze
+				'$R': 'bg-sky-400', // meet
+				'$E': 'bg-orange-500', // exchange
+				'$O': 'bg-stone-400', // other
 			};
 			return colorMap[this.activity.type] || 'bg-stone-400';
 		},
