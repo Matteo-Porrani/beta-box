@@ -1,4 +1,5 @@
 import store from '@/store';
+import { nrm } from "@/utils/core-utils";
 
 class ActivitySrv {
 	static instance;
@@ -68,12 +69,14 @@ class ActivitySrv {
 
 			// Then hydrate with ticket titles
 			const hydratedActivities = this._hydrateActivities(activitiesWithDuration);
+			
 
 			return {
 				...day,
 				formattedDate: this._formatDate(day.date),
 				totalDuration: this._calculateTotalDuration(activities),
-				activities: hydratedActivities
+				activities: hydratedActivities,
+				parts: this._parseTypesBar(nrm(activities))
 			};
 		});
 	}
@@ -147,6 +150,53 @@ class ActivitySrv {
 	_calculateTotalDuration(activities) {
 		const totalMinutes = activities.reduce((sum, activity) => sum + activity.duration, 0);
 		return this._formatDuration(totalMinutes);
+	}
+	
+	_parseTypesBar(activities) {
+		console.log("activities", activities);
+		
+		const parts = {};
+		
+		["$D", "$R", "$O", "$A", "$E"].forEach(t => {
+			const typedActivities = activities.filter(a => a.type === t);
+			const tot = this._sumActivitiesByType(typedActivities);
+			parts[t] = tot;
+		})
+		
+		console.log("parts", parts)
+		
+		// Step 1: Compute the total sum based on all positive values
+		const total = Object.values(parts).reduce((sum, value) =>
+			value > 0 ? sum + value : sum, 0
+		);
+
+// Step 2: Create a new object with percentage values
+		const percentages = Object.fromEntries(
+			Object.entries(parts).map(([key, value]) => [
+				key,
+				total > 0 ? parseFloat(((value / total) * 100).toFixed(2)) : 0
+			])
+		);
+		
+		console.log("percentages", percentages);
+		/*
+		{
+				"$D": 0,
+				"$R": 80,
+				"$O": 0,
+				"$A": 10,
+				"$E": 10
+		}
+		 */
+		
+		return percentages;
+	}
+	
+	_sumActivitiesByType(typedActivities) {
+		return typedActivities.reduce((acc, act) => {
+			acc += act.duration;
+			return acc;
+		}, 0)
 	}
 }
 

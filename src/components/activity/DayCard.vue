@@ -8,6 +8,18 @@
 			<p class="bg-stone-700 rounded py-1 px-2">{{ day.totalDuration }}</p>
 		</div>
 
+		<!-- PARTS BAR -->
+		<div class="px-2 mb-2">
+			<div class="flex rounded h-2 overflow-hidden">
+				<div
+					v-for="t in Object.entries(day.parts)"
+					:key="t[0]"
+					:class="bgColorMap[t[0]]"
+					:style="`width: ${t[1]}%`"
+				/>
+			</div>
+		</div>
+
 		<div class="p-2">
 			<div class="space-y-2">
 				<slot></slot>
@@ -20,7 +32,11 @@
 
 			<button
 				@click="$emit('add-activity')"
-				class="py-1 px-2 flex items-center justify-center gap-1 text-xs font-medium text-stone-400 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded transition-colors"
+				class="
+					py-1 px-2 flex items-center justify-center gap-1 text-xs font-medium
+					text-stone-400 bg-stone-800 hover:bg-stone-700 border border-stone-700
+					rounded transition-colors
+				"
 			>
 				<BxIcon icon="add" size="small" class="text-stone-400" />
 			</button>
@@ -45,10 +61,32 @@ export default {
 		}
 	},
 
-	emits: ['add-activity']
+	emits: ['add-activity'],
+
+	data() {
+		return {
+			bgColorMap: {
+				$D: 'bg-yellow-400',
+				$A: 'bg-purple-500',
+				$R: 'bg-sky-400',
+				$E: 'bg-orange-500',
+				$O: 'bg-stone-400',
+			}
+		}
+	}
 }
 </script>
 
 <style scoped>
 /* Component specific styles */
+/*
+
+bg-yellow-400 // develop
+bg-purple-500 // analyze
+bg-sky-400 // meet
+bg-orange-500 // exchange
+bg-stone-400 // other
+
+ */
+
 </style> 
