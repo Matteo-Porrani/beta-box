@@ -23,31 +23,35 @@
 		<template #body>
 			<div class="space-y-2">
 				<div
-					class="grid gap-2 bg-stone-800 font-bold rounded p-1"
-					:class="gridColsClass"
+					class="flex items-center gap-2 bg-stone-800 font-bold rounded p-1"
 				>
-					<div></div>
+					<div data-field="id"/>
 					<div
 						v-for="c in cols"
 						:key="c"
+						:data-field="c"
 					>{{ c }}</div>
 				</div>
+
 				<div
 					v-for="r in rows"
 					:key="r.id"
-					class="grid gap-2 border border-stone-500 rounded p-1"
-					:class="gridColsClass"
+					class="flex items-center gap-2 border border-stone-500 rounded p-1"
 				>
-					<input
-						type="checkbox"
-						class="size-8 accent-lime-600"
-						v-model="values[r.id]"
-						:data-id="r.id"
-						@change="onCheckboxChange"
-					>
+					<div data-field="id" class="grid">
+						<input
+							type="checkbox"
+							class="size-8 accent-lime-600"
+							v-model="values[r.id]"
+							:data-id="r.id"
+							@change="onCheckboxChange"
+						>
+					</div>
+
 					<p
 						v-for="c in cols"
 						:key="c"
+						:data-field="c"
 					>
 						{{ r[c] }}
 					</p>
@@ -207,6 +211,10 @@ select {
 
 input[readonly] {
 	@apply bg-stone-800 text-stone-200
+}
+
+[data-field="id"] {
+	width: 60px;
 }
 /*
 grid-cols-2
