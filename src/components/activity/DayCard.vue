@@ -3,9 +3,9 @@
 		data-test="day-card-root"
 		class="w-full bg-stone-900 rounded border border-stone-800"
 	>
-		<div class="flex justify-between items-center p-2">
-			<h3 class="font-bold text-stone-300">{{ day.formattedDate }}</h3>
-			<p class="bg-stone-700 rounded py-1 px-2">{{ day.totalDuration }}</p>
+		<div class="flex justify-between items-center font-bold p-2">
+			<h3 class="text-stone-300">{{ day.formattedDate }}</h3>
+			<p class="text-xl">{{ day.totalDuration }}</p>
 		</div>
 
 		<!-- PARTS BAR -->
