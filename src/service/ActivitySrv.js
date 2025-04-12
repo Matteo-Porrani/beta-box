@@ -37,6 +37,8 @@ class ActivitySrv {
 
 	_getDaysOnPeriod({ start, end }) {
 		const days = store.getters["entity/getItemsFromTable"]("day");
+		// IMPORTANT !!! always sort by date
+		days.sort((a, b) => a.date.localeCompare(b.date));
 		
 		const match = [];
 		
@@ -49,7 +51,7 @@ class ActivitySrv {
 			}
 		}
 		
-		return match;
+		return match
 	}
 	
 	_dateIsBeforeOrSameRef(ref, date) {

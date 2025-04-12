@@ -6,7 +6,7 @@ class WeekSelectorController {
 	
 	constructor() {
 		this.weeks = this._getWeekItems();
-		this.days = this._getDayItems();
+		this.days = this._getDayItems().sort((a, b) => a.date.localeCompare(b.date));
 		this.hydratedWeeks = [];
 	}
 	
@@ -94,8 +94,9 @@ class WeekSelectorController {
 	
 	_parseWeekLabel(hydratedWeek) {
 		const id = hydratedWeek.id;
-		const s = hydratedWeek.days.at(0).date;
-		const e = hydratedWeek.days.at(-1).date;
+		
+		const s = hydratedWeek.days.sort((a, b) => a.date.localeCompare(b.date)).at(0).date;
+		const e = hydratedWeek.days.sort((a, b) => a.date.localeCompare(b.date)).at(-1).date;
 		
 		hydratedWeek.dayStart = s; // "2025-04-10@00:00"
 		hydratedWeek.dayEnd = e;
@@ -127,7 +128,9 @@ class WeekSelectorController {
 	}
 	
 	_getDayItems() {
-		return this._getItems("day");
+		const days = this._getItems("day");
+		days.sort((a, b) => a.date.localeCompare(b.date));
+		return days;
 	}
 	
 	_getItems(tableName) {
