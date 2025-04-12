@@ -13,6 +13,13 @@ export default {
 	},
 	
 	getters: {
+		getItemsFromTable: (state) => {
+			// console.log("%c/getItemsFromTable/", "background: purple; color: white; padding: 2px; border-radius: 4px;")
+			return tableName => {
+				return state.entities[tableName] ?? [];
+			}
+		},
+		
 		getEntityDescription: (state, getters) => {
 			return (entityName) => {
 				const orderedFields = getters._getOrderedFields(snakeToPascal(entityName));

@@ -1,8 +1,13 @@
 <template>
 	<DefaultLayout view-title="Activity">
 		<div class="max-h-[85vh] overflow-y-auto">
+			<WeekSelector
+				@week-selected="onWeekSelected"
+			/>
+
 			<ActivityGrid
-				:days="activities"
+				v-if="selectedWeekId"
+				:days="activitiesByWeek"
 				@add-activity="onAddActivity"
 				@edit-activity="onEditActivity"
 			/>
@@ -79,11 +84,13 @@ import ActivityGrid from "@/components/activity/ActivityGrid.vue";
 import BxModal from "@/components/UI/BxModal.vue";
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
+import WeekSelector from "@/components/activity/WeekSelector.vue";
 
 export default {
 	name: "ActivityView",
 
 	components: {
+		WeekSelector,
 		BxIcon,
 		DefaultLayout,
 		ActivityGrid,
@@ -92,11 +99,13 @@ export default {
 	},
 
 	async created() {
-		await this.loadTables(["list_option", "field_definition", "ticket", "day", "activity"]);
+		await this.loadTables(["list_option", "field_definition", "ticket", "week", "day", "activity"]);
 	},
 
 	data() {
-		return {};
+		return {
+			selectedWeekId: null,
+		};
 	},
 
 	computed: {
@@ -109,8 +118,8 @@ export default {
 			"getEntityDescription"
 		]),
 
-		activities() {
-			return activitySrv.getActivities();
+		activitiesByWeek() {
+			return activitySrv.getActivitiesByWeekId(this.selectedWeekId)
 		},
 
 		activityFormDesc() {
@@ -130,6 +139,16 @@ export default {
 			"updateItem",
 			"deleteItem",
 		]),
+
+		// =============================================
+		// WEEK NAVIGATION
+		// =============================================
+
+		onWeekSelected(weekId) {
+			this.selectedWeekId = weekId;
+			activitySrv.getActivitiesByWeekId(this.selectedWeekId);
+		},
+
 
 		// =============================================
 		// FORM HANDLING
@@ -211,5 +230,4 @@ export default {
 }
 </script>
 
-<style scoped></style>
 

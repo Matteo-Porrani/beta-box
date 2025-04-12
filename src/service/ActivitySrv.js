@@ -1,4 +1,5 @@
 import store from '@/store';
+import { weekSelectorController } from "@/controller/WeekSelectorController";
 import { nrm } from "@/utils/core-utils";
 
 class ActivitySrv {
@@ -10,23 +11,67 @@ class ActivitySrv {
 		}
 		return ActivitySrv.instance;
 	}
+	
+	// =============================================
+	// PUBLIC
+	// =============================================
 
-	getActivities() {
-		const days = this._getDays();
-		return this._hydrateDays(days);
+	getActivitiesByWeekId(weekId) {
+		const limits = weekSelectorController.getWeekLimitsById(weekId);
+		// { "start": "2025-04-21@00:00", "end": "2025-04-22@00:00" }
+		
+		const daysOnPeriod = this._getDaysOnPeriod(limits);
+		/*
+		[
+				{ "date": "2025-04-21@00:00", "id": 11 }
+				{ "date": "2025-04-22@00:00", "id": 12 }
+		]
+		 */
+		
+		return this._hydrateDays(daysOnPeriod);
 	}
 	
 	// =============================================
 	// DATA RETRIEVAL
 	// =============================================
 
-	_getDays() {
-		// this is the format of the days:
-		// [{"date":"2025-04-07@00:00","id":1},{"date":"2025-04-08@00:00","id":2}]
+	_getDaysOnPeriod({ start, end }) {
+		const days = store.getters["entity/getItemsFromTable"]("day");
 		
-		if (!store?.state?.entity?.entities?.day) return [];
+		const match = [];
 		
-		return store.state.entity.entities.day;
+		for (const d of days) {
+			if (
+				this._dateIsAfterOrSameRef(start, d.date)
+				&& this._dateIsBeforeOrSameRef(end, d.date)
+			) {
+				match.push(nrm(d));
+			}
+		}
+		
+		return match;
+	}
+	
+	_dateIsBeforeOrSameRef(ref, date) {
+		if (!ref || !date) return false;
+		// "2024-04-12@00:00"
+		
+		const refDate = ref.split("@")[0];
+		const dateDate = date.split("@")[0];
+		// console.log(`${new Date(dateDate).getTime()} <= ${new Date(refDate).getTime()}`)
+		
+		return new Date(dateDate).getTime() <= new Date(refDate).getTime();
+	}
+	
+	_dateIsAfterOrSameRef(ref, date) {
+		if (!ref || !date) return false;
+		// "2024-04-12@00:00"
+		
+		const refDate = ref.split("@")[0];
+		const dateDate = date.split("@")[0];
+		// console.log(`${new Date(dateDate).getTime()} >= ${new Date(refDate).getTime()}`)
+		
+		return new Date(dateDate).getTime() >= new Date(refDate).getTime();
 	}
 	
 	_getTicketTitles(ticketIds) {
