@@ -1,6 +1,26 @@
 import store from '@/store';
 import { nrm } from "@/utils/core-utils";
 
+/**
+ * WeekSelectorController manages the organization and presentation of week-based data in the application.
+ * 
+ * This controller handles:
+ * - Retrieving and organizing week and day data from the store
+ * - Creating formatted week options with start and end dates
+ * - Managing week boundaries and date formatting
+ * - Providing a singleton instance for consistent week data access
+ * 
+ * Key Features:
+ * - Maintains a list of weeks and days sorted by date
+ * - Formats dates into user-friendly strings (DD/MM/YYYY)
+ * - Provides week options with formatted labels (e.g., "10/04/2025 - 14/04/2025")
+ * - Allows retrieval of week boundaries by week ID
+ * 
+ * The controller uses a singleton pattern to ensure consistent data access
+ * across the application and maintains hydrated week data for efficient
+ * retrieval of week information.
+ */
+
 class WeekSelectorController {
 	static instance;
 	
