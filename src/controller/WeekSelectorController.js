@@ -70,16 +70,9 @@ class WeekSelectorController {
 	getWeekLimitsById(weekId) {
 		const hw = this.hydratedWeeks.find(w => w.id === Number(weekId))
 		
-		if (hw) {
-			return {
-				start: hw.dayStart,
-				end: hw.dayEnd,
-			}
-		}
-		
 		return {
-			start: null,
-			end: null,
+			start: hw ? hw.dayStart : null,
+			end: hw ? hw.dayEnd : null,
 		}
 		
 	}
@@ -118,8 +111,10 @@ class WeekSelectorController {
 	_parseWeekLabel(hydratedWeek) {
 		const id = hydratedWeek.id;
 		
-		const s = hydratedWeek.days.sort((a, b) => a.date.localeCompare(b.date)).at(0).date;
-		const e = hydratedWeek.days.sort((a, b) => a.date.localeCompare(b.date)).at(-1).date;
+		const sortedDays = hydratedWeek.days.sort((a, b) => a.date.localeCompare(b.date));
+		
+		const s = sortedDays.at(0).date;
+		const e = sortedDays.at(-1).date;
 		
 		hydratedWeek.dayStart = s; // "2025-04-10@00:00"
 		hydratedWeek.dayEnd = e;
