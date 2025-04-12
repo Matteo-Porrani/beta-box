@@ -228,7 +228,19 @@ export default {
 		},
 
 		applyCustomSorting(rows, byKey, order) {
-			const sortedRows = rows.sort((a, b) => String(a[byKey]).localeCompare(String(b[byKey])));
+			const sortedRows = rows.sort((a, b) => {
+				const valA = a[byKey];
+				const valB = b[byKey];
+				
+				// If both values are numbers, compare numerically
+				if (!isNaN(valA) && !isNaN(valB)) {
+					return Number(valA) - Number(valB);
+				}
+				
+				// Otherwise, compare as strings
+				return String(valA).localeCompare(String(valB));
+			});
+			
 			if (order > 0) sortedRows.reverse();
 			return sortedRows;
 		},
