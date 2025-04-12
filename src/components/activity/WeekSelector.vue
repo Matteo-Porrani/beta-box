@@ -56,7 +56,9 @@ export default {
 
 	mounted() {
 		this.weekOptions = weekSelectorController.getWeekOptions();
-		this.selectedWeekId = this.weekOptions ? this.weekOptions.at(-1).id : 1;
+		this.selectedWeekId = this.weekOptions && Array.isArray(this.weekOptions) && this.weekOptions.length > 0
+			? this.weekOptions.at(-1).id
+			: 1;
 	},
 
 	methods: {

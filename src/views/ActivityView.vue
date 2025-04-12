@@ -1,6 +1,9 @@
 <template>
 	<DefaultLayout view-title="Activity">
-		<div class="max-h-[85vh] overflow-y-auto">
+		<div
+			v-if="loadDone"
+			class="max-h-[85vh] overflow-y-auto"
+		>
 			<WeekSelector
 				@week-selected="onWeekSelected"
 			/>
@@ -99,11 +102,22 @@ export default {
 	},
 
 	async created() {
-		await this.loadTables(["list_option", "field_definition", "ticket", "week", "day", "activity"]);
+		await this.loadTables([
+			"list_option",
+			"field_definition",
+			"ticket",
+			"week",
+			"day",
+			"activity"
+		]);
+
+
+		this.loadDone = true;
 	},
 
 	data() {
 		return {
+			loadDone: false,
 			selectedWeekId: null,
 		};
 	},
