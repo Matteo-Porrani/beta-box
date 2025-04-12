@@ -3,7 +3,7 @@
 
 		<div class="option-selector border border-stone-600 flex gap-4 w-fit rounded p-1">
 
-			<button>
+			<button @click="stepByOne(0)">
 				&lt;
 			</button>
 
@@ -20,7 +20,7 @@
 				>
 			</select>
 
-			<button>
+			<button @click="stepByOne(1)">
 				&gt;
 			</button>
 
@@ -58,7 +58,16 @@ export default {
 	},
 
 	methods: {
+		stepByOne(dir = 0) {
+			// 0 is prev | 1 is next
+			let posIdx = this.weekOptions.findIndex(o => o.id === this.selectedWeekId);
+			posIdx = dir ? posIdx + 1 : posIdx - 1;
 
+			const target = this.weekOptions[posIdx];
+			if (!target) return;
+
+			this.selectedWeekId = this.weekOptions[posIdx].id;
+		}
 	}
 
 }
