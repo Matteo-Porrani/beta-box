@@ -69,7 +69,7 @@ Emits:
 			:cols="formDescription.map(c => c.field)"
 			:rows="rows"
 			:actions="actions"
-			content-height="70vh"
+			content-height="65vh"
 			@row-action="onRowAction"
 		/>
 	</div>
