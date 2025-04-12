@@ -22,20 +22,23 @@ import { nrm } from "@/utils/core-utils";
  */
 
 class WeekSelectorController {
-	static instance;
+	static #instance = null; // Private static field
 	
 	constructor() {
+		if (WeekSelectorController.#instance) {
+			throw new Error('WeekSelectorController is a singleton. Use getInstance() instead.');
+		}
 		this.weeks = this._getWeekItems();
 		this.days = this._getDayItems().sort((a, b) => a.date.localeCompare(b.date));
 		this.hydratedWeeks = [];
+		WeekSelectorController.#instance = this;
 	}
 	
 	static getInstance() {
-		if (!WeekSelectorController.instance) {
-			WeekSelectorController.instance = new WeekSelectorController();
+		if (!WeekSelectorController.#instance) {
+			WeekSelectorController.#instance = new WeekSelectorController();
 		}
-		
-		return WeekSelectorController.instance;
+		return WeekSelectorController.#instance;
 	}
 	
 	// =============================================
