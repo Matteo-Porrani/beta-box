@@ -4,7 +4,7 @@
 		<div class="option-selector border border-stone-600 flex gap-4 w-fit rounded p-1">
 
 			<button @click="stepByOne(0)">
-				&lt;
+				<BxIcon icon="caret_left"/>
 			</button>
 
 			<select
@@ -21,7 +21,7 @@
 			</select>
 
 			<button @click="stepByOne(1)">
-				&gt;
+				<BxIcon icon="caret_right"/>
 			</button>
 
 		</div>
@@ -32,10 +32,12 @@
 
 <script>
 import { weekSelectorController } from "@/controller/WeekSelectorController";
+import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {
 
 	name: "WeekSelector",
+	components: { BxIcon },
 
 	emits: ["weekSelected"],
 
@@ -76,7 +78,7 @@ export default {
 
 <style scoped>
 button {
-	@apply bg-stone-700 w-12 rounded p-1
+	@apply bg-stone-700 hover:bg-stone-600 w-12 grid place-content-center rounded p-1
 }
 select {
 	@apply bg-stone-700 w-96 rounded text-stone-200 p-1 text-lg text-center

@@ -13,6 +13,9 @@ export const ICON_DICT = {
 	/*
 	ARROWS
 	 */
+	caret_left: "IconCaretLeft",
+	caret_right: "IconCaretRight",
+
 	arrow_left: "IconArrowLeft",
 	arrow_right: "IconArrowRight",
 	arrow_up: "IconArrowUp",
