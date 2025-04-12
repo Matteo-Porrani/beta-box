@@ -51,6 +51,7 @@ class WeekSelectorController {
 			this._makeWeekOption(w);
 		}
 		
+		console.log("this.hydratedWeeks", this.hydratedWeeks)
 		return this.hydratedWeeks;
 		
 		/*

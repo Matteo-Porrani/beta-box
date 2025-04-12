@@ -4,7 +4,11 @@
 			v-if="loadDone"
 			class="max-h-[85vh] overflow-y-auto"
 		>
-			<BxOptionSelector
+<!--			<BxOptionSelector-->
+<!--				@week-selected="onWeekSelected"-->
+<!--			/>-->
+
+			<WeekSelector
 				@week-selected="onWeekSelected"
 			/>
 
@@ -87,13 +91,15 @@ import ActivityGrid from "@/components/activity/ActivityGrid.vue";
 import BxModal from "@/components/UI/BxModal.vue";
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
-import BxOptionSelector from "@/components/activity/BxOptionSelector.vue";
+// import BxOptionSelector from "@/components/activity/BxOptionSelector.vue";
+import WeekSelector from "@/components/activity/WeekSelector.vue";
 
 export default {
 	name: "ActivityView",
 
 	components: {
-		BxOptionSelector,
+		WeekSelector,
+		// BxOptionSelector,
 		BxIcon,
 		DefaultLayout,
 		ActivityGrid,
@@ -159,6 +165,7 @@ export default {
 		// =============================================
 
 		onWeekSelected(weekId) {
+			console.log("weekId", weekId)
 			this.selectedWeekId = weekId;
 			activitySrv.getActivitiesByWeekId(this.selectedWeekId);
 		},
