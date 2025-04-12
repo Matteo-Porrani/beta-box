@@ -8,10 +8,10 @@
 			</button>
 
 			<select
-				v-model="selectedWeekId"
+				v-model="selectedValue"
 			>
 				<option
-					v-for="o in weekOptions"
+					v-for="o in selectOptions"
 					:key="o.id"
 					:value="o.id"
 				>
@@ -43,34 +43,34 @@ export default {
 
 	data() {
 		return {
-			weekOptions: null,
-			selectedWeekId: null,
+			selectOptions: null,
+			selectedValue: null,
 		}
 	},
 
 	watch: {
-		selectedWeekId(newId) {
+		selectedValue(newId) {
 			this.$emit("weekSelected", newId);
 		}
 	},
 
 	mounted() {
-		this.weekOptions = weekSelectorController.getWeekOptions();
-		this.selectedWeekId = this.weekOptions && Array.isArray(this.weekOptions) && this.weekOptions.length > 0
-			? this.weekOptions.at(-1).id
+		this.selectOptions = weekSelectorController.getWeekOptions();
+		this.selectedValue = this.selectOptions && Array.isArray(this.selectOptions) && this.selectOptions.length > 0
+			? this.selectOptions.at(-1).id
 			: 1;
 	},
 
 	methods: {
 		stepByOne(dir = 0) {
 			// 0 is prev | 1 is next
-			let posIdx = this.weekOptions.findIndex(o => o.id === this.selectedWeekId);
+			let posIdx = this.selectOptions.findIndex(o => o.id === this.selectedValue);
 			posIdx = dir ? posIdx + 1 : posIdx - 1;
 
-			const target = this.weekOptions[posIdx];
+			const target = this.selectOptions[posIdx];
 			if (!target) return;
 
-			this.selectedWeekId = this.weekOptions[posIdx].id;
+			this.selectedValue = this.selectOptions[posIdx].id;
 		}
 	}
 
