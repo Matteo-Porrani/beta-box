@@ -4,7 +4,7 @@
 			v-if="loadDone"
 			class="max-h-[85vh] overflow-y-auto"
 		>
-			<WeekSelector
+			<BxOptionSelector
 				@week-selected="onWeekSelected"
 			/>
 
@@ -87,13 +87,13 @@ import ActivityGrid from "@/components/activity/ActivityGrid.vue";
 import BxModal from "@/components/UI/BxModal.vue";
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
-import WeekSelector from "@/components/activity/WeekSelector.vue";
+import BxOptionSelector from "@/components/activity/BxOptionSelector.vue";
 
 export default {
 	name: "ActivityView",
 
 	components: {
-		WeekSelector,
+		BxOptionSelector,
 		BxIcon,
 		DefaultLayout,
 		ActivityGrid,

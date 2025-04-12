@@ -36,7 +36,7 @@ import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {
 
-	name: "WeekSelector",
+	name: "BxOptionSelector",
 	components: { BxIcon },
 
 	emits: ["weekSelected"],
