@@ -1,10 +1,17 @@
 <template>
 	<DefaultLayout>
-		<h1 class="text-3xl">Task Home</h1>
+		<h1 class="text-3xl">Task Home Demo</h1>
 
-		<router-link to="/tasks/detail/3">task 3</router-link>
+		<div class="h-24"></div>
+
+		<router-link to="/tasks/detail/3">link to task 3</router-link>
+
+
+		<div class="h-10"></div>
 
 		<div class="text-3xl">Count : {{ taskCount }}</div>
+
+		<div class="h-10"></div>
 
 		<button
 			@click="INCREMENT_COUNT(99)"

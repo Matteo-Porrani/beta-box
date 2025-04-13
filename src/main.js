@@ -28,13 +28,15 @@ const app = createApp(App)
 // Add global properties
 app.config.globalProperties.moment = moment;
 
-// Install plugins
-app.use(store)
-
 // Register modules
 registerModules({
 	task: taskModule,
 });
+
+// Install plugins
+app.use(store)
+
+
 
 app.use(router)
 
