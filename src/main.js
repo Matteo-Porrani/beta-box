@@ -28,12 +28,13 @@ app.config.globalProperties.moment = moment;
 
 // Install plugins
 app.use(store)
-app.use(router)
 
 // Register modules
 registerModules({
 	task: taskModule,
 });
+
+app.use(router)
 
 // Mount the app
 app.mount('#app')
