@@ -15,12 +15,6 @@ const routes: Array<RouteRecordRaw> = [
   },
 
   {
-    path: '/tasks',
-    name: 'tasks',
-    component: () => import(/* webpackChunkName: "tasks" */ '../views/TasksView.vue')
-  },
-
-  {
     path: '/data-manager',
     name: 'data_manager',
     component: () => import(/* webpackChunkName: "data_manager" */ '../views/DataManagerView.vue')
