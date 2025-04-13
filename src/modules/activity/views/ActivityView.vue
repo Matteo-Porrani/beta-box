@@ -4,9 +4,6 @@
 			v-if="loadDone"
 			class="max-h-[85vh] overflow-y-auto"
 		>
-<!--			<BxOptionSelector-->
-<!--				@week-selected="onWeekSelected"-->
-<!--			/>-->
 
 			<WeekSelector
 				@week-selected="onWeekSelected"
@@ -18,6 +15,7 @@
 				@add-activity="onAddActivity"
 				@edit-activity="onEditActivity"
 			/>
+
 		</div>
 	</DefaultLayout>
 
@@ -90,7 +88,7 @@ import BxModal from "@/components/UI/BxModal.vue";
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
-// module component
+// module components
 import ActivityGrid from "@/modules/activity/components/ActivityGrid.vue";
 import WeekSelector from "@/modules/activity/components/WeekSelector.vue";
 
@@ -115,7 +113,6 @@ export default {
 			"day",
 			"activity"
 		]);
-
 
 		this.loadDone = true;
 	},
@@ -164,11 +161,9 @@ export default {
 		// =============================================
 
 		onWeekSelected(weekId) {
-			console.log("weekId", weekId)
 			this.selectedWeekId = weekId;
 			activitySrv.getActivitiesByWeekId(this.selectedWeekId);
 		},
-
 
 		// =============================================
 		// FORM HANDLING
@@ -206,13 +201,10 @@ export default {
 		},
 
 		onEditActivity(activityData) {
-			const strDuration = activityData.duration;
-			activityData.duration = parseDurationInMin(strDuration);
+			activityData.duration = parseDurationInMin(activityData.duration);
 
 			this.openModal();
-			nextTick(() => {
-				this.$refs.bxForm.initForm(activityData)
-			})
+			nextTick(() => this.$refs.bxForm.initForm(activityData))
 		},
 
 		async onSave() {
@@ -229,8 +221,8 @@ export default {
 			this.$refs.modal_ref.close();
 		},
 
-		onDeleteActivity() {
-			this.deleteItem({ tableName: "activity", id: this.formValues.id });
+		async onDeleteActivity() {
+			await this.deleteItem({ tableName: "activity", id: this.formValues.id });
 			this.onReset();
 			this.$refs.modal_ref.close();
 		},
