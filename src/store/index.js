@@ -16,6 +16,6 @@ export default createStore({
     },
     
     state: {
-        APP_VERSION: "0.0.6",
+        APP_VERSION: "0.0.7",
     }
 })
