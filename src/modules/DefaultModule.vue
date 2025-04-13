@@ -5,8 +5,6 @@
 
 <script>
 export default {
-
-	name: "ModuleTask",
-
+	name: "DefaultModule",
 }
 </script>

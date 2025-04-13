@@ -11,10 +11,10 @@ const registerModule = (name, module) => {
 	}
 };
 
-export const registerModules = modules => {
-	Object.keys(modules).forEach(moduleKey => {
-		const module = modules[moduleKey];
-		registerModule(moduleKey, module);
+export function registerModules(modules) {
+	Object.keys(modules).forEach(key => {
+		const module = modules[key];
+		registerModule(key, module);
 	});
-};
+}
 

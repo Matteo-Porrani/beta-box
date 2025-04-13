@@ -1,14 +1,17 @@
 <template>
-	<div>
-		<h1>Task Detail</h1>
-	</div>
+	<DefaultLayout>
+		<h2>The detail of a task</h2>
+	</DefaultLayout>
 </template>
 
 
 <script>
 
+import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+
 export default {
-	name: "TaskDetail"
+	name: "TaskDetail",
+	components: { DefaultLayout }
 }
 </script>
 

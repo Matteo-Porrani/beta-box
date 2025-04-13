@@ -1,7 +1,7 @@
-// import store from "./store";
-import router from "./router";
+import store from "./store-task";
+import router from "./router-task";
 
 export default {
-	// store,
+	store,
 	router
 };
