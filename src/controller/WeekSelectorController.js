@@ -24,13 +24,13 @@ import { nrm } from "@/utils/core-utils";
 class WeekSelectorController {
 	static #instance = null; // Private static field
 	
+	hydratedWeeks = []
+	
 	constructor() {
 		if (WeekSelectorController.#instance) {
 			throw new Error('WeekSelectorController is a singleton. Use getInstance() instead.');
 		}
-		this.weeks = this._getWeekItems();
-		this.days = this._getDayItems().sort((a, b) => a.date.localeCompare(b.date));
-		this.hydratedWeeks = [];
+
 		WeekSelectorController.#instance = this;
 	}
 	
@@ -47,7 +47,7 @@ class WeekSelectorController {
 	
 	getWeekOptions() {
 		this.hydratedWeeks = [];
-		for (const w of this.weeks) {
+		for (const w of this._getWeekItems()) {
 			this._makeWeekOption(w);
 		}
 		
@@ -102,7 +102,7 @@ class WeekSelectorController {
 		const dayIds = days.split(":");
 		
 		for (const dayId of dayIds) {
-			const day = this.days.find(d => d.id === Number(dayId));
+			const day = this._getDayItems().find(d => d.id === Number(dayId));
 			if (day) hw.days.push(nrm(day));
 		}
 		
