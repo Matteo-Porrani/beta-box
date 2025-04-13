@@ -1,5 +1,5 @@
 import store from '@/store';
-import { weekSelectorController } from "@/controller/WeekSelectorController";
+import { weekSrv } from "@/service/WeekSrv";
 import { nrm } from "@/utils/core-utils";
 
 class ActivitySrv {
@@ -17,7 +17,7 @@ class ActivitySrv {
 	// =============================================
 
 	getActivitiesByWeekId(weekId) {
-		const limits = weekSelectorController.getWeekLimitsById(weekId);
+		const limits = weekSrv.getWeekLimitsById(weekId);
 		// { "start": "2025-04-21@00:00", "end": "2025-04-22@00:00" }
 		
 		const daysOnPeriod = this._getDaysOnPeriod(limits);

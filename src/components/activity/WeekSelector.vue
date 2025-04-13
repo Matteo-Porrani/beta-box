@@ -7,7 +7,7 @@
 * - Communicates week selection changes to parent ActivityView
 *
 * Features:
-* - Uses WeekSelectorController to fetch and format week options
+* - Uses weekSrv to fetch and format week options
 * - Defaults to the last available week on mount
 * - Emits 'weekSelected' event with the selected week ID
 *
@@ -16,7 +16,7 @@
 *
 * Dependencies:
 * - BxOptionSelector: UI component for displaying selectable options
-* - WeekSelectorController: Manages week data and formatting
+* - weekSrv: Manages week data and formatting
 */
 
 <template>
@@ -32,7 +32,7 @@
 
 
 <script>
-import { weekSelectorController } from "@/controller/WeekSelectorController";
+import { weekSrv } from "@/service/WeekSrv";
 import BxOptionSelector from "@/components/UI/BxOptionSelector.vue";
 
 export default {
@@ -47,7 +47,7 @@ export default {
 	},
 
 	mounted() {
-		this.selectOptions = weekSelectorController.getWeekOptions();
+		this.selectOptions = weekSrv.getWeekOptions();
 		this.initValue = Array.isArray(this.selectOptions) && this.selectOptions.length > 0
 			? this.selectOptions.at(-1).id
 			: 1;

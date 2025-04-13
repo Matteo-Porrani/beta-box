@@ -2,9 +2,9 @@ import store from '@/store';
 import { nrm } from "@/utils/core-utils";
 
 /**
- * WeekSelectorController manages the organization and presentation of week-based data in the application.
+ * WeekSrv manages the organization and presentation of week-based data in the application.
  * 
- * This controller handles:
+ * This service handles:
  * - Retrieving and organizing week and day data from the store
  * - Creating formatted week options with start and end dates
  * - Managing week boundaries and date formatting
@@ -21,24 +21,24 @@ import { nrm } from "@/utils/core-utils";
  * retrieval of week information.
  */
 
-class WeekSelectorController {
+class WeekSrv {
 	static #instance = null; // Private static field
 	
 	hydratedWeeks = []
 	
 	constructor() {
-		if (WeekSelectorController.#instance) {
-			throw new Error('WeekSelectorController is a singleton. Use getInstance() instead.');
+		if (WeekSrv.#instance) {
+			throw new Error('WeekSrv is a singleton. Use getInstance() instead.');
 		}
 
-		WeekSelectorController.#instance = this;
+		WeekSrv.#instance = this;
 	}
 	
 	static getInstance() {
-		if (!WeekSelectorController.#instance) {
-			WeekSelectorController.#instance = new WeekSelectorController();
+		if (!WeekSrv.#instance) {
+			WeekSrv.#instance = new WeekSrv();
 		}
-		return WeekSelectorController.#instance;
+		return WeekSrv.#instance;
 	}
 	
 	// =============================================
@@ -158,4 +158,4 @@ class WeekSelectorController {
 
 }
 
-export const weekSelectorController = WeekSelectorController.getInstance();
+export const weekSrv = WeekSrv.getInstance();
