@@ -9,8 +9,8 @@ export default {
 	},
 	
 	mutations: {
-		SET_TASK_COUNT(state, value) {
-			state.taskCount += state.taskCount;
+		INCREMENT_COUNT(state) {
+			state.taskCount += 1;
 		}
 	}
 }

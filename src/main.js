@@ -3,7 +3,6 @@ import "@/assets/css/main.css"
 import { createApp } from 'vue'
 import { registerModules } from "./register-modules";
 
-
 import App from './App.vue'
 import router from './router'
 import store from './store/index.js'
@@ -21,11 +20,20 @@ import { extendMoment } from "moment-range";
 extendMoment(moment);
 moment.locale("fr");
 
+// Create the app instance
+const app = createApp(App)
+
+// Add global properties
+app.config.globalProperties.moment = moment;
+
+// Install plugins
+app.use(store)
+app.use(router)
+
+// Register modules
 registerModules({
 	task: taskModule,
 });
 
-const app = createApp(App)
-app.config.globalProperties.moment = moment;
-
-app.use(store).use(router).mount('#app')
+// Mount the app
+app.mount('#app')

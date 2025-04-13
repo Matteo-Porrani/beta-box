@@ -7,7 +7,7 @@
 		<div class="text-3xl">Count : {{ taskCount }}</div>
 
 		<button
-			@click="SET_TASK_COUNT(99)"
+			@click="INCREMENT_COUNT(99)"
 			class="
 					py-1 px-2 flex items-center justify-center gap-1 text-xl font-medium
 					text-stone-400 bg-stone-800 hover:bg-stone-700 border border-stone-700
@@ -43,7 +43,7 @@ export default {
 	},
 
 	methods: {
-		...mapMutations("task", ["SET_TASK_COUNT"])
+		...mapMutations("task", ["INCREMENT_COUNT"])
 	}
 }
 </script>
