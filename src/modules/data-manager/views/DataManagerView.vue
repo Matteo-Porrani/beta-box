@@ -64,8 +64,8 @@
 // Vue related
 import { mapState } from "vuex";
 // services
-import { exportSrv } from "@/service/ExportSrv";
-import { dataSrv } from "@/service/DataSrv";
+import { exportSrv } from "@/modules/data-manager/services/ExportSrv";
+import { dataSrv } from "@/modules/core/services/DataSrv";
 // components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import { nrm } from "@/utils/core-utils";

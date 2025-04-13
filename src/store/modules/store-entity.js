@@ -1,4 +1,4 @@
-import { dataSrv } from "@/service/DataSrv";
+import { dataSrv } from "@/modules/core/services/DataSrv";
 import { DatabaseActionResponse } from "@/types/DatabaseActionResponse";
 import { nrm, pascalToSnake, snakeToPascal } from "@/utils/core-utils";
 

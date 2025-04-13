@@ -117,7 +117,7 @@ import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import { mapState } from "vuex";
 import BxIcon from "@/components/UI/BxIcon.vue";
 import BxModal from "@/components/UI/BxModal.vue";
-import ActivityCard from "@/components/activity/ActivityCard.vue";
+import ActivityCard from "@/modules/activity/components/ActivityCard.vue";
 
 
 export default {

@@ -86,25 +86,24 @@ import { activitySrv } from "@/service/ActivitySrv";
 import { isInteger, parseDurationInMin } from "@/utils/core-utils";
 import { prepareItem } from "@/utils/entity-utils";
 // components
-import DefaultLayout from "@/components/layout/DefaultLayout.vue";
-import ActivityGrid from "@/components/activity/ActivityGrid.vue";
 import BxModal from "@/components/UI/BxModal.vue";
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
-// import BxOptionSelector from "@/components/activity/BxOptionSelector.vue";
-import WeekSelector from "@/components/activity/WeekSelector.vue";
+import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+// module component
+import ActivityGrid from "@/modules/activity/components/ActivityGrid.vue";
+import WeekSelector from "@/modules/activity/components/WeekSelector.vue";
 
 export default {
 	name: "ActivityView",
 
 	components: {
-		WeekSelector,
-		// BxOptionSelector,
-		BxIcon,
 		DefaultLayout,
-		ActivityGrid,
+		BxIcon,
 		BxModal,
-		BxForm
+		BxForm,
+		ActivityGrid,
+		WeekSelector,
 	},
 
 	async created() {

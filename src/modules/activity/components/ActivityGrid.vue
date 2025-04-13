@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import DayCard from "@/components/activity/DayCard.vue";
-import ActivityCard from "@/components/activity/ActivityCard.vue";
+import DayCard from "@/modules/activity/components/DayCard.vue";
+import ActivityCard from "@/modules/activity/components/ActivityCard.vue";
 
 export default {
 	name: "ActivityGrid",
