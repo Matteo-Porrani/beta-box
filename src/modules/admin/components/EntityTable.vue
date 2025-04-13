@@ -80,7 +80,7 @@ Emits:
 // Vue related
 import { mapState, mapGetters } from "vuex";
 // utils
-import { nrm } from "@/utils/core-utils";
+import { nrm } from "@/modules/core/utils/core-utils";
 // components
 import BxTable from "@/components/UI/BxTable/BxTable.vue";
 

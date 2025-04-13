@@ -1,6 +1,6 @@
 import store from '@/store';
-import { weekSrv } from "@/service/WeekSrv";
-import { nrm } from "@/utils/core-utils";
+import { weekSrv } from "@/modules/activity/services/WeekSrv";
+import { nrm } from "@/modules/core/utils/core-utils";
 
 class ActivitySrv {
 	static instance;

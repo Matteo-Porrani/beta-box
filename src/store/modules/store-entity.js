@@ -1,6 +1,6 @@
 import { dataSrv } from "@/modules/core/services/DataSrv";
 import { DatabaseActionResponse } from "@/types/DatabaseActionResponse";
-import { nrm, pascalToSnake, snakeToPascal } from "@/utils/core-utils";
+import { nrm, pascalToSnake, snakeToPascal } from "@/modules/core/utils/core-utils";
 
 export default {
 	namespaced: true,

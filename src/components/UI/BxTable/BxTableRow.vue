@@ -32,7 +32,7 @@
 
 
 <script>
-import { nrm } from "@/utils/core-utils";
+import { nrm } from "@/modules/core/utils/core-utils";
 import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {

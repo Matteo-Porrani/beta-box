@@ -81,10 +81,10 @@
 import { nextTick } from "vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 // service
-import { activitySrv } from "@/service/ActivitySrv";
+import { activitySrv } from "@/modules/activity/services/ActivitySrv";
 // utils
-import { isInteger, parseDurationInMin } from "@/utils/core-utils";
-import { prepareItem } from "@/utils/entity-utils";
+import { isInteger, parseDurationInMin } from "@/modules/core/utils/core-utils";
+import { prepareItem } from "@/modules/admin/utils/entity-utils";
 // components
 import BxModal from "@/components/UI/BxModal.vue";
 import BxForm from "@/components/UI/BxForm/BxForm.vue";

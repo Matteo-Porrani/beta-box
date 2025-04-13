@@ -74,8 +74,8 @@ EntityForm must pass :
 // Vue related
 import { mapActions, mapMutations, mapState } from "vuex";
 // utils
-import { isInteger } from "@/utils/core-utils";
-import { prepareItem } from "@/utils/entity-utils";
+import { isInteger } from "@/modules/core/utils/core-utils";
+import { prepareItem } from "@/modules/admin/utils/entity-utils";
 // components
 import BxForm from "@/components/UI/BxForm/BxForm.vue";
 

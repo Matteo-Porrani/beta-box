@@ -1,7 +1,7 @@
 
 import { describe, it, expect } from "vitest";
 import { mount } from "@vue/test-utils";
-import { isNull } from "@/utils/core-utils";
+import { isNull } from "@/modules/core/utils/core-utils";
 import DummyOne from "@/components/DummyOne.vue";
 
 

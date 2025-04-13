@@ -65,14 +65,15 @@
 import { nextTick } from "vue";
 import { mapActions, mapGetters, mapState } from "vuex";
 // utils
-import { nrm } from "@/utils/core-utils";
+import { nrm } from "@/modules/core/utils/core-utils";
 // const
-import { ENTITY_TEMP_DESC } from "@/const/const-admin";
+import { ENTITY_TEMP_DESC } from "@/modules/admin/const/const-admin";
 // components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
-import EntityTable from "@/components/admin/EntityTable.vue";
-import EntityForm from "@/components/admin/EntityForm.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
+
+import EntityTable from "@/modules/admin/components/EntityTable.vue";
+import EntityForm from "@/modules/admin/components/EntityForm.vue";
 
 
 export default {

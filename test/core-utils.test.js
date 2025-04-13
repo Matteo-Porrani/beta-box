@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { pascalToSnake, snakeToPascal } from '@/utils/core-utils';
+import { pascalToSnake, snakeToPascal } from '@/modules/core/utils/core-utils';
 
 describe('Core Utils', () => {
   describe('pascalToSnake', () => {

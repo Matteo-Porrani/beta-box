@@ -32,7 +32,7 @@
 
 
 <script>
-import { weekSrv } from "@/service/WeekSrv";
+import { weekSrv } from "@/modules/activity/services/WeekSrv";
 import BxOptionSelector from "@/components/UI/BxOptionSelector.vue";
 
 export default {

@@ -85,7 +85,7 @@
 
 <script>
 // utils
-import { isFalsy } from "@/utils/core-utils";
+import { isFalsy } from "@/modules/core/utils/core-utils";
 // components
 import BxModal from "@/components/UI/BxModal.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";

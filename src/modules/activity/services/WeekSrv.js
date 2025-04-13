@@ -1,5 +1,5 @@
 import store from '@/store';
-import { nrm } from "@/utils/core-utils";
+import { nrm } from "@/modules/core/utils/core-utils";
 
 /**
  * WeekSrv manages the organization and presentation of week-based data in the application.

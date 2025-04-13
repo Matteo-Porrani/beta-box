@@ -9,28 +9,10 @@ const routes: Array<RouteRecordRaw> = [
   },
 
   {
-    path: '/admin',
-    name: 'admin',
-    component: () => import(/* webpackChunkName: "admin" */ '../views/AdminView.vue')
-  },
-
-  // {
-  //   path: '/data-manager',
-  //   name: 'data_manager',
-  //   component: () => import(/* webpackChunkName: "data_manager" */ '../modules/data-manager/views/DataManagerView.vue')
-  // },
-
-  {
     path: '/dev',
     name: 'dev',
     component: () => import(/* webpackChunkName: "dev" */ '../views/DevView.vue')
   },
-
-  // {
-  //   path: '/activity',
-  //   name: 'activity',
-  //   component: () => import(/* webpackChunkName: "activity" */ '../views/ActivityView.vue')
-  // },
 
 ]
 

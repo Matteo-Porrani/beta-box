@@ -7,7 +7,7 @@
 
 
 <script>
-import {httpSrv} from "@/service/HttpSrv";
+import {httpSrv} from "@/modules/core/services/HttpSrv";
 
 // interface User {
 // 	id: number;

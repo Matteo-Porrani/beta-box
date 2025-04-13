@@ -72,8 +72,8 @@
 </template>
 
 <script>
-import { activitySrv } from "@/service/ActivitySrv";
-import { nrm } from "@/utils/core-utils";
+import { activitySrv } from "@/modules/activity/services/ActivitySrv";
+import { nrm } from "@/modules/core/utils/core-utils";
 import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {

@@ -1,4 +1,4 @@
-import { isNullOrUndefined } from "@/utils/core-utils";
+import { isNullOrUndefined } from "@/modules/core/utils/core-utils";
 
 export function prepareItem(srcObject) {
 	const o = {};

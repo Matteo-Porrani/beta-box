@@ -68,7 +68,7 @@ import { exportSrv } from "@/modules/data-manager/services/ExportSrv";
 import { dataSrv } from "@/modules/core/services/DataSrv";
 // components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
-import { nrm } from "@/utils/core-utils";
+import { nrm } from "@/modules/core/utils/core-utils";
 
 
 export default {
