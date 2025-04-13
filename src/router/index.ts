@@ -14,11 +14,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "admin" */ '../views/AdminView.vue')
   },
 
-  {
-    path: '/data-manager',
-    name: 'data_manager',
-    component: () => import(/* webpackChunkName: "data_manager" */ '../views/DataManagerView.vue')
-  },
+  // {
+  //   path: '/data-manager',
+  //   name: 'data_manager',
+  //   component: () => import(/* webpackChunkName: "data_manager" */ '../modules/data-manager/views/DataManagerView.vue')
+  // },
 
   {
     path: '/dev',
