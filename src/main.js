@@ -7,8 +7,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store/index.js'
 
-/* modules */
+// =============================================
+// MODULES
 import taskModule from "./modules/task" // this will import ./modules/task/index.js
+// =============================================
 
 /**
  * The new import syntax imports all exports from the moment module and assigns them to the 'moment' namespace
