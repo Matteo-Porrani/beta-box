@@ -1,6 +1,6 @@
 <template>
 	<DefaultLayout>
-		<h1 class="text-3xl">Task Home Demo</h1>
+		<h1 class="text-3xl">Task Home - Module Demo</h1>
 
 		<div class="h-24"></div>
 

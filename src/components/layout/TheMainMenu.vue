@@ -13,7 +13,7 @@
 			{{ l[0] }}
 		</router-link>
 
-		<div class="border border-stone-500 mt-16"></div>
+		<div class="border border-stone-500 mt-16"/>
 
 		<router-link
 			v-for="l in confLinks"
@@ -40,7 +40,7 @@ export default {
 			links: [
 				["Home", "/"],
 				["Activity", "/activity"],
-				["Tasks (M)", "/tasks"],
+				// ["Tasks (M)", "/tasks"],
 			],
 			confLinks: [
 				["Admin", "/admin"],

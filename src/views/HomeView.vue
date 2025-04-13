@@ -1,6 +1,7 @@
 <template>
-	<DefaultLayout view-title="Home">
-		<div class="p-5">
+	<DefaultLayout>
+		<div class="grid place-content-center py-8">
+
 			<div
 				v-if="needsInitialization"
 				class="bg-stone-800 border border-stone-500 rounded-lg p-8 max-w-lg mx-auto my-10 text-center shadow-xl">
@@ -15,6 +16,20 @@
 				>
 					Initialize App
 				</button>
+			</div>
+
+			<div
+				v-else
+				class="flex flex-col items-center"
+			>
+				<!-- src="@/assets/images/green-robot-1.png" -->
+				<img
+					src="@/assets/images/smiling-robot.svg"
+					alt="Friendly Robot"
+					class="size-56 rounded-full object-cover border border-stone-500"
+				/>
+
+				<h1 class="text-4xl font-bold mt-6">Welcome to BetaBox !</h1>
 			</div>
 		</div>
 	</DefaultLayout>
