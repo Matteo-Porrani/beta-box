@@ -13,6 +13,7 @@ import adminModule from "./modules/admin"
 import dataManagerModule from "./modules/data-manager" // this will import ./modules/data-manager/index.js
 import activityModule from "./modules/activity"
 import taskModule from "./modules/task" // this will import ./modules/task/index.js
+import devModule from "./modules/dev"
 // =============================================
 
 /**
@@ -37,6 +38,7 @@ registerModules({
 	dataManager: dataManagerModule,
 	activity: activityModule,
 	task: taskModule,
+	dev: devModule,
 });
 
 // Install plugins
