@@ -1,11 +1,12 @@
 <template>
 	<div
 		data-test="day-card-root"
-		class="w-full bg-stone-900 rounded border border-stone-800"
+		class="w-full bg-stone-900 rounded border-2"
+		:class="day.isCurrentDay ? 'border-yellow-400' : 'border-transparent'"
 	>
-		<div class="flex justify-between items-center font-bold p-2">
-			<h3 class="text-stone-300">{{ day.formattedDate }}</h3>
-			<p class="text-xl">{{ day.totalDuration }}</p>
+		<div class="flex justify-between items-center font-bold text-stone-300 p-2">
+			<h3>{{ day.formattedDate }}</h3>
+			<p>{{ day.totalDuration }}</p>
 		</div>
 
 		<!-- PARTS BAR -->

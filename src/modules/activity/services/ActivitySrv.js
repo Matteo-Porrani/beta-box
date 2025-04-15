@@ -1,4 +1,5 @@
 import store from '@/store';
+import moment from "moment/moment";
 import { weekSrv } from "@/modules/activity/services/WeekSrv";
 import { nrm } from "@/modules/core/utils/core-utils";
 
@@ -123,6 +124,7 @@ class ActivitySrv {
 
 			return {
 				...day,
+				isCurrentDay: this._isCurrentDay(day.date),
 				formattedDate: this._formatDate(day.date),
 				totalDuration: this._calculateTotalDuration(activities),
 				activities: hydratedActivities,
@@ -173,6 +175,14 @@ class ActivitySrv {
 			...activity,
 			ticketInfo: this._getTicketInfo(activity.tickets)
 		}));
+	}
+	
+	_isCurrentDay(dayDate) {
+		console.log("dayDate", dayDate)
+		
+		const inputDate = moment(dayDate.replace('@', ':'), 'YYYY-MM-DD:HH:mm');
+		return inputDate.isSame(moment(), 'day');
+		// return false;
 	}
 	
 	// =============================================
