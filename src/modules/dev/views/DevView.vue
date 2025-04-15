@@ -132,7 +132,7 @@ export default {
 
 	data() {
 		return {
-			mockActivity: {"type":"$D","day":"1","description":"hello","tickets":"1","duration":"02:00","id":14,"url":"http://localhost:8080/admin","ticketTitles":["RDTW-1234"]},
+			mockActivity: {"type":"$D","day":"1","description":"hello","tickets":"1","duration":"02:00","id":14,"url":"http://localhost:8080/admin","ticketInfo":["RDTW-1234"]},
 		}
 	},
 

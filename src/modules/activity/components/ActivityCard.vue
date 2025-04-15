@@ -19,13 +19,14 @@
 		<div class="relative bg-stone-900 py-1 px-2 overflow-hidden">
 
 			<div class="card-header flex justify-between">
-				<div v-if="activity.ticketTitles?.length" class="flex flex-wrap gap-1 mb-1">
+				<div v-if="activity.ticketInfo?.length" class="flex flex-wrap gap-1 mb-1">
 					<span
-						v-for="ticket in activity.ticketTitles"
-						:key="ticket"
+						v-for="ticket in activity.ticketInfo"
+						:key="ticket.title"
+						:title="ticket.desc"
 						class="text-sm font-bold text-stone-300 px-2 py-0.5 rounded border border-stone-500"
 					>
-						{{ ticket }}
+						{{ ticket.title }}
 					</span>
 				</div>
 				<div v-else></div>

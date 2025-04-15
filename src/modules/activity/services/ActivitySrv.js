@@ -76,7 +76,7 @@ class ActivitySrv {
 		return new Date(dateDate).getTime() >= new Date(refDate).getTime();
 	}
 	
-	_getTicketTitles(ticketIds) {
+	_getTicketInfo(ticketIds) {
 		// 1. Handle empty case
 		if (!ticketIds) return [];
 		
@@ -92,7 +92,10 @@ class ActivitySrv {
 		// Handle cases where ticket ID doesn't exist in store
 		// Return only the titles that were found
 		return ids
-			.map(id => tickets.find(t => t.id.toString() === id)?.title)
+			.map(id => {
+				const match = tickets.find(t => t.id.toString() === id)
+				return { title: match.title, desc: match.description };
+			})
 			.filter(title => title !== undefined);
 		
 		// 5. Return array of titles
@@ -134,7 +137,7 @@ class ActivitySrv {
 		we need to retrieve the 'title' of each linked ticket.
 		
 		"1:2:4" means that the activity is linked to 3 tickets, with id 1, 2, and 4.
-		We should add a new property 'ticketTitles' which is an array containing the titles,
+		We should add a new property 'ticketInfo' which is an array containing the titles,
 		for example ["1234", "5678"... ]
 		
         "activities": [
@@ -168,7 +171,7 @@ class ActivitySrv {
 		
 		return activities.map(activity => ({
 			...activity,
-			ticketTitles: this._getTicketTitles(activity.tickets)
+			ticketInfo: this._getTicketInfo(activity.tickets)
 		}));
 	}
 	
