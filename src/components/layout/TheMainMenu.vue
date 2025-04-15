@@ -40,6 +40,7 @@ export default {
 			links: [
 				["Home", "/"],
 				["Activity", "/activity"],
+				["Project", "/project"],
 				// ["Tasks (M)", "/tasks"],
 			],
 			confLinks: [
