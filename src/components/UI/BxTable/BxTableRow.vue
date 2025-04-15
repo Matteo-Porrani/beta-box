@@ -11,7 +11,7 @@
 		</component>
 		<component
 			:is="isHeader ? 'th' : 'td'"
-			class="space-x-2"
+			class="flex justify-between"
 			data-field="actions"
 		>
 			<template v-if="!isHeader">
@@ -23,6 +23,7 @@
 					<BxIcon
 						:icon="a.icon"
 						size="small"
+						class="hover:text-lime-500"
 					/>
 				</button>
 			</template>
@@ -87,7 +88,7 @@ export default {
 		},
 
 		templateColumns() {
-			return `auto repeat(${this.cols.length}, 1fr)`
+			return `auto repeat(${this.cols.length - 1}, 1fr) 120px`
 		}
 	},
 
