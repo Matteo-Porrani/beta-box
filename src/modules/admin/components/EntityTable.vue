@@ -252,7 +252,8 @@ export default {
 		applyFilter(rows, byKey, match) {
 			if (!match) return rows;
 			return rows.filter(r => {
-				return String(r[byKey]).includes(match);
+				return String(r[byKey]).toLowerCase()
+					.includes(match.toLowerCase());
 			})
 		},
 
