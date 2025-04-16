@@ -1,0 +1,32 @@
+
+<template>
+	<div
+		class="rounded p-1 w-fit min-w-12"
+		:class="bgColorClass"
+	>
+		<span>{{ label }}</span>
+	</div>
+</template>
+
+
+<script>
+export default {
+	name: "BxBadge",
+
+	props: {
+		label : String,
+		color: String,
+		shade: [String, Number],
+	},
+
+	computed: {
+		bgColorClass() {
+			if (!this.color || !this.shade) return "bg-stone-500";
+			return `bg-${this.color}-${this.shade}`;
+		}
+	}
+}
+</script>
+
+
+
