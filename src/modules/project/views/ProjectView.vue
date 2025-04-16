@@ -23,6 +23,11 @@
 				<option value="0">ASC</option>
 				<option value="1">DESC</option>
 			</select>
+
+			<input
+				type="text"
+				v-model="needle"
+			>
 		</div>
 
 
@@ -60,6 +65,7 @@ export default {
 
 			sortKey: "comment",
 			sortOrder: 0,
+			needle: "",
 
 			// NOT REACTIVE
 			sortKeys: ["title", "topic", "comment", "description", "id" ],
@@ -79,7 +85,7 @@ export default {
 
 	computed: {
 		tickets() {
-			return projectSrv.getTickets(this.sortKey, this.sortOrder) ?? []
+			return projectSrv.getTickets(this.sortKey, this.sortOrder, this.needle) ?? []
 		}
 	},
 
@@ -88,6 +94,7 @@ export default {
 
 
 <style scoped>
+input,
 select {
 	@apply bg-stone-700 rounded text-stone-200 p-1
 }

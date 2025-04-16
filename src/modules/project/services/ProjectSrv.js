@@ -1,5 +1,6 @@
 import store from "@/store";
 import { nrm } from "@/modules/core/utils/core-utils";
+import { filterTableByNeedle } from "@/modules/core/utils/table-utils";
 
 class ProjectSrv {
 	
@@ -17,7 +18,7 @@ class ProjectSrv {
 	// MAIN
 	// =============================================
 	
-	getTickets(sortKey = "title", sortOrder = 0) {
+	getTickets(sortKey = "title", sortOrder, needle) {
 		const tickets = nrm(this._getTicketItems());
 		
 		for (const t of tickets) {
@@ -25,7 +26,10 @@ class ProjectSrv {
 		}
 		
 		this._sortBy(tickets, sortKey, sortOrder)
-		return tickets;
+		
+		return needle
+			? filterTableByNeedle(tickets, needle)
+			: tickets;
 	}
 	
 	_hydrateTicket(t) {

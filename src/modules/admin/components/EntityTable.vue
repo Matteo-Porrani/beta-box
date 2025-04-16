@@ -29,21 +29,6 @@ Emits:
 	<div class="entity-table-root">
 
 		<div class="grid grid-cols-2 gap-2 border border-stone-500 rounded p-1">
-			<!-- FILTER -->
-			<div class="flex items-center gap-4">
-				<button
-					class="bg-stone-700 hover:bg-stone-600 rounded py-1 px-4"
-					@click="resetFilter">Reset</button>
-				<p>Filter</p>
-				<select v-model="filterBy">
-					<option
-						v-for="c in cols"
-						:key="c"
-						:value="c"
-					>{{ c }}</option>
-				</select>
-				<input type="text" v-model="filterMatch">
-			</div>
 
 			<!-- SORT -->
 			<div class="flex items-center gap-4">
@@ -61,6 +46,26 @@ Emits:
 					<option :value="1">DESC</option>
 				</select>
 			</div>
+
+			<!-- FILTER -->
+			<div class="flex items-center gap-4">
+				<button
+					class="bg-stone-700 hover:bg-stone-600 rounded py-1 px-4"
+					@click="resetFilter"
+				>
+					<BxIcon icon="xmark"/>
+				</button>
+				<p>Filter</p>
+				<select v-model="filterBy">
+					<option
+						v-for="c in cols"
+						:key="c"
+						:value="c"
+					>{{ c }}</option>
+				</select>
+				<input type="text" v-model="filterMatch">
+			</div>
+
 		</div>
 
 		<div class="h-2"/>
@@ -83,6 +88,7 @@ import { mapState, mapGetters } from "vuex";
 import { nrm } from "@/modules/core/utils/core-utils";
 // components
 import BxTable from "@/components/UI/BxTable/BxTable.vue";
+import BxIcon from "@/components/UI/BxIcon.vue";
 
 
 export default {
@@ -90,6 +96,7 @@ export default {
 	name: "EntityTable",
 
 	components: {
+		BxIcon,
 		BxTable
 	},
 

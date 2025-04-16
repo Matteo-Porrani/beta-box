@@ -7,7 +7,7 @@
 		<div>{{ ticket.id }}</div>
 		<div>{{ ticket.comment }}</div>
 		<div class="font-bold border border-stone-500 rounded px-2 py-1">{{ ticket.title }}</div>
-		<div>{{ ticket.hydratedTopic.name }}</div>
+		<div>{{ ticket.hydratedTopic?.name ?? "-" }}</div>
 		<div>{{ ticket.description }}</div>
 		<div>{{ sprints }}</div>
 
