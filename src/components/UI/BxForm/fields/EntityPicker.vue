@@ -35,7 +35,7 @@
 				<div
 					v-for="r in rows"
 					:key="r.id"
-					class="flex items-center gap-2 border border-stone-500 rounded p-1"
+					class="flex items-center gap-4 border border-stone-500 rounded p-1"
 				>
 					<div data-field="id" class="grid">
 						<input
@@ -51,6 +51,7 @@
 						v-for="c in cols"
 						:key="c"
 						:data-field="c"
+						class="max-w-72 overflow-x-hidden overflow-ellipsis text-nowrap"
 					>
 						{{ r[c] }}
 					</p>

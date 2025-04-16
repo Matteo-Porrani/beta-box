@@ -17,7 +17,7 @@
 			/>
 		</div>
 
-		<div class="font-bold border border-stone-500 rounded px-2 py-1">{{ ticket.title }}</div>
+		<div class="font-bold border border-stone-500 rounded">{{ ticket.title }}</div>
 		<div>{{ ticket.hydratedTopic?.name ?? "-" }}</div>
 		<div>{{ ticket.description }}</div>
 		<div>{{ ticket.comment }}</div>
@@ -61,7 +61,7 @@ article > div {
 	text-wrap: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	padding: 2px;
+	padding: 1px 4px;
 }
 </style>
 

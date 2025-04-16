@@ -10,10 +10,7 @@
 				v-model="sortKey"
 				class="w-64"
 			>
-				<option
-					v-for="o in sortKeys" :key="o"
-					:value="o"
-				>{{ o }}</option>
+				<option v-for="o in sortKeys" :key="o" :value="o">{{ o }}</option>
 			</select>
 
 			<select
@@ -30,9 +27,7 @@
 			>
 		</div>
 
-
-
-		<div class="h-10"/>
+		<div class="h-5"/>
 
 		<TicketRow
 			:ticket="headerTicket"
@@ -68,7 +63,7 @@ export default {
 			needle: "",
 
 			// NOT REACTIVE
-			sortKeys: ["title", "status", "topic", "comment", "description", "id" ],
+			sortKeys: ["status", "title", "topic", "comment", "description", "id" ],
 
 			headerTicket: {
 				isHeader: true,
