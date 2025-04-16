@@ -45,10 +45,33 @@ class ProjectSrv {
 			t.hydratedTopic = this._getTopicObject(t.topic)
 		}
 		
+		if (t.status) {
+			t.hydratedStatus = this._getHydratedStatus(t.status)
+		}
+		
 	}
 	
 	_getTopicObject(topicId) { // must be single
 		return nrm(this._getTopicItems().find(t => t.id === Number(topicId))) ?? null;
+	}
+	
+	_getHydratedStatus(statusId) {
+		
+		const s = this._getStatusObject(statusId);
+		
+		if (s.color) {
+			s.color = this._getColorObject(Number(s.color));
+		}
+		
+		return s;
+	}
+	
+	_getStatusObject(statusId) { // must be single
+		return nrm(this._getStatusItems().find(t => t.id === Number(statusId))) ?? null;
+	}
+	
+	_getColorObject(colorId) { // must be single
+		return nrm(this._getColorItems().find(t => t.id === Number(colorId))) ?? null;
 	}
 	
 	_getSprintObject(sprintId) { // must be single
@@ -93,6 +116,16 @@ class ProjectSrv {
 	_getSprintItems() {
 		// id, name
 		return this._getItems("sprint");
+	}
+	
+	_getStatusItems() {
+		// id, name
+		return this._getItems("status");
+	}
+	
+	_getColorItems() {
+		// id, name
+		return this._getItems("color");
 	}
 	
 	_getItems(tableName) {

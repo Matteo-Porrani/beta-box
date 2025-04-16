@@ -5,10 +5,22 @@
 	>
 
 		<div>{{ ticket.id }}</div>
-		<div>{{ ticket.comment }}</div>
+
+<!--		<div>{{ ticket.hydratedStatus?.name }}</div>-->
+
+		<div :title="ticket.hydratedStatus">
+			<BxBadge
+				v-if="ticket.hydratedStatus"
+				:label="ticket.hydratedStatus.name"
+				:color="ticket.hydratedStatus.color?.name ?? 'stone'"
+				:shade="ticket.hydratedStatus.color?.shade ?? '500'"
+			/>
+		</div>
+
 		<div class="font-bold border border-stone-500 rounded px-2 py-1">{{ ticket.title }}</div>
 		<div>{{ ticket.hydratedTopic?.name ?? "-" }}</div>
 		<div>{{ ticket.description }}</div>
+		<div>{{ ticket.comment }}</div>
 		<div>{{ sprints }}</div>
 
 	</article>
@@ -16,9 +28,12 @@
 
 
 <script>
+import BxBadge from "@/components/UI/BxBadge.vue";
+
 export default {
 
 	name: "TicketRow",
+	components: { BxBadge },
 
 	props: {
 		ticket: Object,
@@ -38,7 +53,7 @@ export default {
 
 <style scoped>
 article {
-	grid-template-columns: 80px 120px 160px 160px 1fr 160px;
+	grid-template-columns: 80px 120px 160px 160px 1fr 120px 160px;
 }
 
 article > div {
@@ -49,3 +64,4 @@ article > div {
 	padding: 2px;
 }
 </style>
+

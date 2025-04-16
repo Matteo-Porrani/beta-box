@@ -63,16 +63,17 @@ export default {
 	data() {
 		return {
 
-			sortKey: "comment",
+			sortKey: "status",
 			sortOrder: 0,
 			needle: "",
 
 			// NOT REACTIVE
-			sortKeys: ["title", "topic", "comment", "description", "id" ],
+			sortKeys: ["title", "status", "topic", "comment", "description", "id" ],
 
 			headerTicket: {
 				isHeader: true,
 				id: "id",
+				status: "status",
 				comment: "comment",
 				hydratedTopic: { name: "topic" },
 				title: "title",

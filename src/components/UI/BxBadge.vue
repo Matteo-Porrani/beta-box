@@ -1,7 +1,7 @@
 
 <template>
 	<div
-		class="rounded p-1 w-fit min-w-12"
+		class="rounded p-1 w-fit min-w-12 text-center text-stone-800"
 		:class="bgColorClass"
 	>
 		<span>{{ label }}</span>
