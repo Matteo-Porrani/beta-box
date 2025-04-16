@@ -51,12 +51,7 @@ class ProjectSrv {
 		
 	}
 	
-	_getTopicObject(topicId) { // must be single
-		return nrm(this._getTopicItems().find(t => t.id === Number(topicId))) ?? null;
-	}
-	
 	_getHydratedStatus(statusId) {
-		
 		const s = this._getStatusObject(statusId);
 		
 		if (s.color) {
@@ -64,6 +59,14 @@ class ProjectSrv {
 		}
 		
 		return s;
+	}
+	
+	// =============================================
+	// GET OBJECTS
+	// =============================================
+	
+	_getTopicObject(topicId) { // must be single
+		return nrm(this._getTopicItems().find(t => t.id === Number(topicId))) ?? null;
 	}
 	
 	_getStatusObject(statusId) { // must be single
@@ -79,7 +82,7 @@ class ProjectSrv {
 	}
 	
 	// =============================================
-	// SEPARATOR
+	// SORTING
 	// =============================================
 	
 	_sortBy(rows, byKey, order) {
@@ -98,7 +101,6 @@ class ProjectSrv {
 		
 		if (Number(order) > 0) rows.reverse();
 	}
-	
 	
 	// =============================================
 	// UTILITY
@@ -128,10 +130,14 @@ class ProjectSrv {
 		return this._getItems("color");
 	}
 	
+	// =============================================
+	// ROOT METHOD
+	// =============================================
+	
 	_getItems(tableName) {
 		return store.getters["entity/getItemsFromTable"](tableName);
 	}
 	
 }
 
-export const projectSrv = ProjectSrv.getInstance();
+export default ProjectSrv.getInstance();

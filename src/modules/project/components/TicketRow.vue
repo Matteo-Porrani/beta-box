@@ -7,12 +7,14 @@
 		<div>{{ ticket.id }}</div>
 
 		<div>
+			<p v-if="ticket.isHeader">{{ ticket.status }}</p>
+
 			<BxBadge
 				v-if="ticket.hydratedStatus"
-				:title="ticket.hydratedStatus.id"
-				:label="ticket.hydratedStatus.name"
-				:color="ticket.hydratedStatus.color?.name ?? 'stone'"
-				:shade="ticket.hydratedStatus.color?.shade ?? '500'"
+				:title="status.id"
+				:label="status.name"
+				:color="status.color?.name ?? 'stone'"
+				:shade="status.color?.shade ?? '500'"
 			/>
 		</div>
 
@@ -43,6 +45,10 @@ export default {
 			return this.ticket.hydratedSprint
 				? this.ticket.hydratedSprint.map(s => s.name).join(" - ")
 				: "-"
+		},
+
+		status() {
+			return this.ticket.hydratedStatus ?? null;
 		}
 	}
 
@@ -52,7 +58,7 @@ export default {
 
 <style scoped>
 article {
-	grid-template-columns: 80px 120px 160px 160px 1fr 120px 160px;
+	grid-template-columns: 70px 120px 10% 10% 1fr 10% 10%;
 }
 
 article > div {

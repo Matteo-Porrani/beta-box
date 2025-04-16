@@ -1,9 +1,9 @@
 <template>
 	<DefaultLayout>
 
-		<h1 class="text-2xl font-bold">Project</h1>
+		<h1 class="text-lg font-bold">Project</h1>
 
-		<div class="h-10"/>
+		<div class="h-4"/>
 
 		<div class="flex gap-6">
 			<select
@@ -27,8 +27,9 @@
 			>
 		</div>
 
-		<div class="h-5"/>
+		<div class="h-4"/>
 
+		<!-- TABLE -->
 		<TicketRow
 			:ticket="headerTicket"
 		/>
@@ -46,7 +47,10 @@
 
 
 <script>
-import { projectSrv } from "@/modules/project/services/ProjectSrv";
+// services
+import ProjectSrv from "@/modules/project/services/ProjectSrv";
+
+// components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import TicketRow from "@/modules/project/components/TicketRow.vue";
 
@@ -57,7 +61,6 @@ export default {
 
 	data() {
 		return {
-
 			sortKey: "status",
 			sortOrder: 0,
 			needle: "",
@@ -73,7 +76,7 @@ export default {
 				hydratedTopic: { name: "topic" },
 				title: "title",
 				name: "name",
-				description: "desc",
+				description: "description",
 				sprint: "sprint",
 			}
 		}
@@ -81,7 +84,7 @@ export default {
 
 	computed: {
 		tickets() {
-			return projectSrv.getTickets(this.sortKey, this.sortOrder, this.needle) ?? []
+			return ProjectSrv.getTickets(this.sortKey, this.sortOrder, this.needle) ?? []
 		}
 	},
 
@@ -95,3 +98,4 @@ select {
 	@apply bg-stone-700 rounded text-stone-200 p-1
 }
 </style>
+
