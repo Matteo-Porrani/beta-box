@@ -46,8 +46,10 @@ export default {
 	data() {
 		return {
 
-			sortKey: "topic",
-			sortKeys: ["id", "title", "topic", "desc"],
+			sortKey: "comment",
+
+			// NOT REACTIVE
+			sortKeys: ["title", "topic", "comment", "description", "id" ],
 
 			headerTicket: {
 				isHeader: true,
@@ -74,6 +76,6 @@ export default {
 
 <style scoped>
 select {
-	@apply bg-stone-700 rounded text-stone-200 p-1 text-xl
+	@apply bg-stone-700 rounded text-stone-200 p-1
 }
 </style>

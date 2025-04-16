@@ -38,7 +38,7 @@ export default {
 
 <style scoped>
 article {
-	grid-template-columns: 80px 200px 160px 160px 1fr 160px;
+	grid-template-columns: 80px 120px 160px 160px 1fr 160px;
 }
 
 article > div {

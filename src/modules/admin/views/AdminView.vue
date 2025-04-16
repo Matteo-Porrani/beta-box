@@ -149,7 +149,7 @@ export default {
 			await this.loadItems(e.value);
 		}
 
-		this.tableName = "field_definition";
+		this.tableName = "ticket";
 		this.contentLoaded = true;
 	},
 
