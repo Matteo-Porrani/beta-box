@@ -1,6 +1,6 @@
 <template>
 	<article
-		class="grid gap-2 border border-stone-500 rounded p-1"
+		class="grid gap-2 border border-stone-500 text-stone-300 rounded p-1"
 		:class="{ 'bg-stone-500' : ticket.isHeader }"
 	>
 

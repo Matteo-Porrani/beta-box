@@ -5,15 +5,27 @@
 
 		<div class="h-10"/>
 
-		<select
-			v-model="sortKey"
-			class="w-64"
-		>
-			<option
-				v-for="o in sortKeys" :key="o"
-				:value="o"
-			>{{ o }}</option>
-		</select>
+		<div class="flex gap-6">
+			<select
+				v-model="sortKey"
+				class="w-64"
+			>
+				<option
+					v-for="o in sortKeys" :key="o"
+					:value="o"
+				>{{ o }}</option>
+			</select>
+
+			<select
+				v-model="sortOrder"
+				class="w-32"
+			>
+				<option value="0">ASC</option>
+				<option value="1">DESC</option>
+			</select>
+		</div>
+
+
 
 		<div class="h-10"/>
 
@@ -47,6 +59,7 @@ export default {
 		return {
 
 			sortKey: "comment",
+			sortOrder: 0,
 
 			// NOT REACTIVE
 			sortKeys: ["title", "topic", "comment", "description", "id" ],
@@ -66,7 +79,7 @@ export default {
 
 	computed: {
 		tickets() {
-			return projectSrv.getTickets(this.sortKey) ?? []
+			return projectSrv.getTickets(this.sortKey, this.sortOrder) ?? []
 		}
 	},
 

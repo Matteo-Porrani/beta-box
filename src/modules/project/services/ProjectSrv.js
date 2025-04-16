@@ -17,18 +17,14 @@ class ProjectSrv {
 	// MAIN
 	// =============================================
 	
-	getTickets(sortKey = "title") {
+	getTickets(sortKey = "title", sortOrder = 0) {
 		const tickets = nrm(this._getTicketItems());
 		
 		for (const t of tickets) {
-			console.log("ticket", t.title)
 			this._hydrateTicket(t);
 		}
 		
-		this._sortBy(tickets, sortKey, 0)
-		
-		console.log("TICKETS", tickets)
-		
+		this._sortBy(tickets, sortKey, sortOrder)
 		return tickets;
 	}
 	
@@ -60,7 +56,7 @@ class ProjectSrv {
 	// =============================================
 	
 	_sortBy(rows, byKey, order) {
-		const sortedRows = rows.sort((a, b) => {
+		rows.sort((a, b) => {
 			const valA = a[byKey];
 			const valB = b[byKey];
 			
@@ -73,8 +69,7 @@ class ProjectSrv {
 			return String(valA).localeCompare(String(valB));
 		});
 		
-		if (order > 0) sortedRows.reverse();
-		return sortedRows;
+		if (Number(order) > 0) rows.reverse();
 	}
 	
 	
