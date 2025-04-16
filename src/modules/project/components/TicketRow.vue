@@ -6,11 +6,10 @@
 
 		<div>{{ ticket.id }}</div>
 
-<!--		<div>{{ ticket.hydratedStatus?.name }}</div>-->
-
-		<div :title="ticket.hydratedStatus">
+		<div>
 			<BxBadge
 				v-if="ticket.hydratedStatus"
+				:title="ticket.hydratedStatus.id"
 				:label="ticket.hydratedStatus.name"
 				:color="ticket.hydratedStatus.color?.name ?? 'stone'"
 				:shade="ticket.hydratedStatus.color?.shade ?? '500'"
