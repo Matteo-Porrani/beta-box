@@ -1,4 +1,5 @@
 import store from "@/store";
+import SearchService from "@/modules/core/services/SearchService";
 import { nrm } from "@/modules/core/utils/core-utils";
 import { filterTableByNeedle } from "@/modules/core/utils/table-utils";
 
@@ -28,7 +29,7 @@ class ProjectSrv {
 		this._sortBy(tickets, sortKey, sortOrder)
 		
 		return needle
-			? filterTableByNeedle(tickets, needle)
+			? SearchService.filterObjectsByNeedle(tickets, needle)
 			: tickets;
 	}
 	
