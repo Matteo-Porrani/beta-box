@@ -7,7 +7,6 @@
  * entity names (table names), retrieved dynamically via EntitySrv.
  */
 
-
 import EntitySrv from "@/modules/core/services/EntitySrv";
 
 
@@ -16,19 +15,8 @@ class HydrationSrv {
 	
 	/** @type {string[] | null} Cache of known entity types (in lowercase) */
 	#entityTypesCache = null;
-	
 	#entityDesc = null;
-	
-	constructor() {
-		if (HydrationSrv.#instance) {
-			throw new Error("Use HydrationSrv.getInstance() to access the singleton instance.");
-		}
-	}
-	
-	/**
-	 * Returns the singleton instance of HydrationSrv.
-	 * @returns {HydrationSrv}
-	 */
+
 	static getInstance() {
 		if (!HydrationSrv.#instance) {
 			HydrationSrv.#instance = new HydrationSrv();
@@ -40,8 +28,6 @@ class HydrationSrv {
 	
 	/**
 	 * Hydrates an object by replacing foreign key IDs with nested entity objects,
-	 * based on detected keys that match known entity types.
-	 *
 	 * This method recursively hydrates entities at multiple levels.
 	 *
 	 * @param {Object} obj - The flat object to hydrate (e.g., a Task with status ID).
@@ -63,16 +49,9 @@ class HydrationSrv {
 		
 		return result;
 	}
-	
-	#initEntityDesc(desc) {
-		this.#entityDesc = desc.filter(f => f.type === "E").reduce((a, f) => {
-			a[f.field] = f.multiple
-			return a;
-		}, {});
-	}
-	
+
 	#hydrateSingle(result, key, value) {
-		const entityList = this.#getEntityTable(key);
+		const entityList = this.#getEntityItems(key);
 		if (!Array.isArray(entityList)) return;
 		
 		const entity = entityList.find(item => item.id === Number(value));
@@ -86,7 +65,7 @@ class HydrationSrv {
 	#hydrateMultiple(result, key, value) {
 		const ids = value.split(":");
 
-		const entityList = this.#getEntityTable(key.toLowerCase());
+		const entityList = this.#getEntityItems(key.toLowerCase());
 		if (!Array.isArray(entityList)) return;
 		
 		result[key] = []
@@ -104,6 +83,13 @@ class HydrationSrv {
 	
 	#shouldHydrate(key) {
 		return this.#getEntityTypes().includes(key.toLowerCase());
+	}
+	
+	#initEntityDesc(desc) {
+		this.#entityDesc = desc.filter(f => f.type === "E").reduce((a, f) => {
+			a[f.field] = f.multiple
+			return a;
+		}, {});
 	}
 	
 	/**
@@ -124,7 +110,7 @@ class HydrationSrv {
 	 * @param {string} tableName - Entity type name (e.g., 'status', 'color').
 	 * @returns {Object[]} Array of flat entity objects.
 	 */
-	#getEntityTable(tableName) {
+	#getEntityItems(tableName) {
 		return EntitySrv.getItems(tableName);
 	}
 }

@@ -21,7 +21,7 @@ class EntitySrv {
 	}
 	
 	getEntityDescription(snakeCaseEntityName) {
-		return store.getters["entity/getEntityDescription"](snakeCaseEntityName)
+		return store.getters["entity/getEntityDescription"](snakeCaseEntityName);
 	}
 	
 }
