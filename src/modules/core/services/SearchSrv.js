@@ -1,17 +1,17 @@
-class SearchService {
+class SearchSrv {
 	static #instance = null;
 	
 	constructor() {
-		if (SearchService.#instance) {
-			throw new Error('Use SearchService.getInstance() to access the singleton instance.');
+		if (SearchSrv.#instance) {
+			throw new Error('Use SearchSrv.getInstance() to access the singleton instance.');
 		}
 	}
 	
 	static getInstance() {
-		if (!SearchService.#instance) {
-			SearchService.#instance = new SearchService();
+		if (!SearchSrv.#instance) {
+			SearchSrv.#instance = new SearchSrv();
 		}
-		return SearchService.#instance;
+		return SearchSrv.#instance;
 	}
 	
 	/**
@@ -74,4 +74,4 @@ class SearchService {
 	}
 }
 
-export default SearchService.getInstance();
+export default SearchSrv.getInstance();
