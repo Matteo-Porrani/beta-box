@@ -20,6 +20,10 @@ class EntitySrv {
 		return store.getters["entity/getListOptions"]("$entities").map(o => o.value);
 	}
 	
+	getEntityDescription(snakeCaseEntityName) {
+		return store.getters["entity/getEntityDescription"](snakeCaseEntityName)
+	}
+	
 }
 
 export default EntitySrv.getInstance();

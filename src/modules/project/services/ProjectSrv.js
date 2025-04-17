@@ -20,10 +20,12 @@ class ProjectSrv {
 	// =============================================
 	
 	getTickets(sortKey = "title", sortOrder, needle) {
+		const desc = this.#getTicketEntityDescription();
+		
 		const tickets = nrm(EntitySrv.getItems("ticket"));
 		
 		const hydratedTickets = tickets.reduce((a, t) => {
-			a.push(HydrationSrv.hydrateObject(t))
+			a.push(HydrationSrv.hydrateObject(t, desc))
 			return a;
 		}, [])
 		
@@ -51,6 +53,9 @@ class ProjectSrv {
 		if (Number(order) > 0) rows.reverse();
 	}
 	
+	#getTicketEntityDescription() {
+		return EntitySrv.getEntityDescription("ticket");
+	}
 }
 
 export default ProjectSrv.getInstance();

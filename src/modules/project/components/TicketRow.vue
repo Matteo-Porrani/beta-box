@@ -43,16 +43,11 @@ export default {
 
 	computed: {
 		sprints() {
+			if (this.ticket.sprint === "sprint") return "sprint";
 
-			if (this.ticket.sprint) {
-				if (Array.isArray(this.ticket.sprint)) {
-					return this.ticket.sprint.map(s => s.name).join(" - ")
-				} else {
-					return this.ticket.sprint.name;
-				}
-			}
-
-			return "-";
+			return (this.ticket.sprint && Array.isArray(this.ticket.sprint))
+				? this.ticket.sprint.map(s => s.name).join(" / ")
+				:  "-";
 		},
 
 		status() {

@@ -17,6 +17,8 @@ class HydrationSrv {
 	/** @type {string[] | null} Cache of known entity types (in lowercase) */
 	#entityTypesCache = null;
 	
+	#entityDesc = null;
+	
 	constructor() {
 		if (HydrationSrv.#instance) {
 			throw new Error("Use HydrationSrv.getInstance() to access the singleton instance.");
@@ -43,22 +45,30 @@ class HydrationSrv {
 	 * This method recursively hydrates entities at multiple levels.
 	 *
 	 * @param {Object} obj - The flat object to hydrate (e.g., a Task with status ID).
+	 * @param {Object[]} desc -
 	 * @returns {Object} The fully hydrated object with nested entity data.
 	 */
-	hydrateObject(obj) {
+	hydrateObject(obj, desc) {
+		if (Array.isArray(desc)) this.#initEntityDesc(desc);
+		
 		let result = { ...obj };
 
 		for (const [key, value] of Object.entries(obj)) {
 			if (!this.#shouldHydrate(key)) continue;
 			
-			// single or multiple hydration
-			result = value.includes(":")
-				? this.#hydrateMultiple(result, key, value)
-				: this.#hydrateSingle(result, key, value);
-			
+			result = this.#entityDesc[key]
+					? this.#hydrateMultiple(result, key, value)
+					: this.#hydrateSingle(result, key, value);
 		}
 		
 		return result;
+	}
+	
+	#initEntityDesc(desc) {
+		this.#entityDesc = desc.filter(f => f.type === "E").reduce((a, f) => {
+			a[f.field] = f.multiple
+			return a;
+		}, {});
 	}
 	
 	#hydrateSingle(result, key, value) {
@@ -68,24 +78,24 @@ class HydrationSrv {
 		const entity = entityList.find(item => item.id === Number(value));
 		if (entity) {
 			// Recursively hydrate the nested entity
-			result[key] = this.hydrateObject(entity);
+			result[key] = this.hydrateObject(entity, this.#entityDesc);
 		}
 		return result;
 	}
 	
 	#hydrateMultiple(result, key, value) {
 		const ids = value.split(":");
-		
+
 		const entityList = this.#getEntityTable(key.toLowerCase());
 		if (!Array.isArray(entityList)) return;
 		
 		result[key] = []
 
 		for (const id of ids) {
-			const entity = entityList.find(item => item.id === id);
+			const entity = entityList.find(item => item.id === Number(id));
 			if (entity) {
 				// Recursively hydrate the nested entity
-				result[key].push(this.hydrateObject(entity));
+				result[key].push(this.hydrateObject(entity, this.#entityDesc));
 			}
 		}
 		
