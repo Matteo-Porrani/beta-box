@@ -47,7 +47,9 @@ class ProjectSrv {
 			}
 			
 			// Otherwise, compare as strings
-			return String(valA).localeCompare(String(valB));
+			return typeof valA === "object"
+				? String(valA?.id).localeCompare(String(valB?.id))
+				: String(valA).localeCompare(String(valB))
 		});
 		
 		if (Number(order) > 0) rows.reverse();

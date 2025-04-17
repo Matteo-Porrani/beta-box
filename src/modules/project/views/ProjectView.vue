@@ -1,11 +1,10 @@
 <template>
 	<DefaultLayout>
-
 		<h1 class="text-lg font-bold">Project</h1>
 
 		<div class="h-4"/>
 
-		<div class="flex gap-6">
+		<section class="flex gap-6">
 			<select
 				v-model="sortKey"
 				class="w-64"
@@ -25,23 +24,21 @@
 				type="text"
 				v-model="needle"
 			>
-		</div>
+		</section>
 
 		<div class="h-4"/>
 
 		<!-- TABLE -->
 		<TicketRow
-			:ticket="headerTicket"
+			:ticket="{ isHeader: true }"
 		/>
-		<div class="ticket-table space-y-1 max-h-[72vh] overflow-y-auto mt-1">
+		<section class="ticket-table space-y-1 max-h-[72vh] overflow-y-auto mt-1">
 			<TicketRow
 				v-for="t in tickets"
 				:key="t.id"
 				:ticket="t"
 			/>
-
-		</div>
-
+		</section>
 	</DefaultLayout>
 </template>
 
@@ -66,20 +63,8 @@ export default {
 			needle: "",
 
 			// NOT REACTIVE
-			sortKeys: ["phase", "status", "title", "topic", "comment", "description", "id" ],
+			sortKeys: ["phase", "status", "title", "topic", "comment", "description" ],
 
-			headerTicket: {
-				isHeader: true,
-				id: "id",
-				status: "status",
-				comment: "comment",
-				hydratedTopic: { name: "topic" },
-				title: "title",
-				name: "name",
-				description: "description",
-				sprint: "sprint",
-				phase: "phase",
-			}
 		}
 	},
 

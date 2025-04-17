@@ -4,26 +4,30 @@
 		:class="{ 'bg-stone-500' : ticket.isHeader }"
 	>
 
-		<div>{{ ticket.id }}</div>
+		<template v-if="ticket.isHeader">
+			<div v-for="l in headerLabels" :key="l">{{ l }}</div>
+		</template>
 
-		<div>
-			<p v-if="ticket.isHeader">{{ ticket.status }}</p>
+		<template v-else>
+			<div>{{ ticket.id }}</div>
+			<div>
+				<p v-if="ticket.isHeader">{{ ticket.status }}</p>
 
-			<BxBadge
-				v-if="ticket.status"
-				:title="ticket.status.id"
-				:label="ticket.status.name"
-				:color="ticket.status.color?.name ?? 'stone'"
-				:shade="ticket.status.color?.shade ?? '500'"
-			/>
-		</div>
-
-		<div class="font-bold border border-stone-500 rounded">{{ ticket.title }}</div>
-		<div>{{ ticket.topic?.name ?? "-" }}</div>
-		<div>{{ ticket.description }}</div>
-		<div>{{ ticket.comment }}</div>
-		<div>{{ sprints }}</div>
-		<div>{{ ticket.phase }}</div>
+				<BxBadge
+					v-if="ticket.status"
+					:title="ticket.status.id"
+					:label="ticket.status.name"
+					:color="ticket.status.color?.name ?? 'stone'"
+					:shade="ticket.status.color?.shade ?? '500'"
+				/>
+			</div>
+			<div class="font-bold border border-stone-500 rounded">{{ ticket.title }}</div>
+			<div>{{ ticket.topic?.name ?? "-" }}</div>
+			<div>{{ ticket.description }}</div>
+			<div>{{ ticket.comment }}</div>
+			<div>{{ sprints }}</div>
+			<div>{{ ticket.phase }}</div>
+		</template>
 
 	</article>
 </template>
@@ -39,6 +43,12 @@ export default {
 
 	props: {
 		ticket: Object,
+	},
+
+	data() {
+		return {
+			headerLabels: ["id", "status", "title", "topic",  "description", "comment", "sprint", "phase"]
+		}
 	},
 
 	computed: {
@@ -61,7 +71,7 @@ export default {
 
 <style scoped>
 article {
-	grid-template-columns: 70px 120px 10% 10% 1fr 10% 6% 6%;
+	grid-template-columns: 70px 120px 10% 10% 1fr 10% 8% 8%;
 }
 
 article > div {
