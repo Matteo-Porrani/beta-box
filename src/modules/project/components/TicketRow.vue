@@ -10,19 +10,20 @@
 			<p v-if="ticket.isHeader">{{ ticket.status }}</p>
 
 			<BxBadge
-				v-if="ticket.hydratedStatus"
-				:title="status.id"
-				:label="status.name"
-				:color="status.color?.name ?? 'stone'"
-				:shade="status.color?.shade ?? '500'"
+				v-if="ticket.status"
+				:title="ticket.status.id"
+				:label="ticket.status.name"
+				:color="ticket.status.color?.name ?? 'stone'"
+				:shade="ticket.status.color?.shade ?? '500'"
 			/>
 		</div>
 
 		<div class="font-bold border border-stone-500 rounded">{{ ticket.title }}</div>
-		<div>{{ ticket.hydratedTopic?.name ?? "-" }}</div>
+		<div>{{ ticket.topic?.name ?? "-" }}</div>
 		<div>{{ ticket.description }}</div>
 		<div>{{ ticket.comment }}</div>
 		<div>{{ sprints }}</div>
+		<div>{{ ticket.phase }}</div>
 
 	</article>
 </template>
@@ -42,13 +43,20 @@ export default {
 
 	computed: {
 		sprints() {
-			return this.ticket.hydratedSprint
-				? this.ticket.hydratedSprint.map(s => s.name).join(" - ")
-				: "-"
+
+			if (this.ticket.sprint) {
+				if (Array.isArray(this.ticket.sprint)) {
+					return this.ticket.sprint.map(s => s.name).join(" - ")
+				} else {
+					return this.ticket.sprint.name;
+				}
+			}
+
+			return "-";
 		},
 
 		status() {
-			return this.ticket.hydratedStatus ?? null;
+			return this.ticket.status ?? null;
 		}
 	}
 
@@ -58,7 +66,7 @@ export default {
 
 <style scoped>
 article {
-	grid-template-columns: 70px 120px 10% 10% 1fr 10% 10%;
+	grid-template-columns: 70px 120px 10% 10% 1fr 10% 6% 6%;
 }
 
 article > div {

@@ -4,8 +4,13 @@
  * to a Task with a nested `status` object).
  *
  * It detects which keys need to be hydrated by checking if they match known
- * entity names (table names), retrieved dynamically via EntityService.
+ * entity names (table names), retrieved dynamically via EntitySrv.
  */
+
+
+import EntitySrv from "@/modules/core/services/EntitySrv";
+
+
 class HydrationSrv {
 	static #instance = null;
 	
@@ -29,6 +34,8 @@ class HydrationSrv {
 		return HydrationSrv.#instance;
 	}
 	
+	// =============================================
+	
 	/**
 	 * Hydrates an object by replacing foreign key IDs with nested entity objects,
 	 * based on detected keys that match known entity types.
@@ -39,53 +46,64 @@ class HydrationSrv {
 	 * @returns {Object} The fully hydrated object with nested entity data.
 	 */
 	hydrateObject(obj) {
-		const result = { ...obj };
-		const entityTypes = this.#getEntityTypes();
-		
+		let result = { ...obj };
+
 		for (const [key, value] of Object.entries(obj)) {
-			if (!this.#shouldHydrate(key, value)) continue;
+			if (!this.#shouldHydrate(key)) continue;
 			
-			const entityList = this.#getEntityTable(key.toLowerCase());
-			if (!Array.isArray(entityList)) continue;
+			// single or multiple hydration
+			result = value.includes(":")
+				? this.#hydrateMultiple(result, key, value)
+				: this.#hydrateSingle(result, key, value);
 			
-			const entity = entityList.find(item => item.id === value);
+		}
+		
+		return result;
+	}
+	
+	#hydrateSingle(result, key, value) {
+		const entityList = this.#getEntityTable(key);
+		if (!Array.isArray(entityList)) return;
+		
+		const entity = entityList.find(item => item.id === Number(value));
+		if (entity) {
+			// Recursively hydrate the nested entity
+			result[key] = this.hydrateObject(entity);
+		}
+		return result;
+	}
+	
+	#hydrateMultiple(result, key, value) {
+		const ids = value.split(":");
+		
+		const entityList = this.#getEntityTable(key.toLowerCase());
+		if (!Array.isArray(entityList)) return;
+		
+		result[key] = []
+
+		for (const id of ids) {
+			const entity = entityList.find(item => item.id === id);
 			if (entity) {
 				// Recursively hydrate the nested entity
-				result[key] = this.hydrateObject(entity);
+				result[key].push(this.hydrateObject(entity));
 			}
 		}
 		
 		return result;
 	}
 	
-	/**
-	 * Determines if a key/value pair should be hydrated.
-	 * Hydration is applied if:
-	 * - The value is a number (assumed to be an ID)
-	 * - The key matches one of the known entity types (case-insensitive)
-	 *
-	 * @param {string} key - Object key to test (e.g., 'status', 'project').
-	 * @param {*} value - The value to test (expected to be a numeric ID).
-	 * @returns {boolean} Whether the key should be hydrated.
-	 */
-	#shouldHydrate(key, value) {
-		const entityTypes = this.#getEntityTypes();
-		return (
-			typeof value === 'number' &&
-			entityTypes.includes(key.toLowerCase())
-		);
+	#shouldHydrate(key) {
+		return this.#getEntityTypes().includes(key.toLowerCase());
 	}
 	
 	/**
 	 * Retrieves and caches the list of known entity types
-	 * using EntityService.getEntityTypes().
 	 *
 	 * @returns {string[]} Array of entity type names in lowercase.
 	 */
 	#getEntityTypes() {
 		if (!this.#entityTypesCache) {
-			const types = EntityService.getEntityTypes(); // e.g., ['Task', 'Status', 'Color']
-			this.#entityTypesCache = types.map(type => type.toLowerCase());
+			this.#entityTypesCache = EntitySrv.getEntityTypes(); // e.g., ['task', 'status', 'color']
 		}
 		return this.#entityTypesCache;
 	}
@@ -97,7 +115,10 @@ class HydrationSrv {
 	 * @returns {Object[]} Array of flat entity objects.
 	 */
 	#getEntityTable(tableName) {
-		return EntityService.getItems(tableName);
+		return EntitySrv.getItems(tableName);
 	}
 }
+
+
+export default HydrationSrv.getInstance();
 

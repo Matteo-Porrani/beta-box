@@ -1,7 +1,9 @@
-import store from "@/store";
+// services
+import EntitySrv from "@/modules/core/services/EntitySrv";
 import SearchSrv from "@/modules/core/services/SearchSrv";
+import HydrationSrv from "@/modules/core/services/HydrationSrv";
+// utils
 import { nrm } from "@/modules/core/utils/core-utils";
-import { filterTableByNeedle } from "@/modules/core/utils/table-utils";
 
 class ProjectSrv {
 	
@@ -16,75 +18,21 @@ class ProjectSrv {
 	}
 	
 	// =============================================
-	// MAIN
-	// =============================================
 	
 	getTickets(sortKey = "title", sortOrder, needle) {
-		const tickets = nrm(this._getTicketItems());
+		const tickets = nrm(EntitySrv.getItems("ticket"));
 		
-		for (const t of tickets) {
-			this._hydrateTicket(t);
-		}
+		const hydratedTickets = tickets.reduce((a, t) => {
+			a.push(HydrationSrv.hydrateObject(t))
+			return a;
+		}, [])
 		
-		this._sortBy(tickets, sortKey, sortOrder)
+		this._sortBy(hydratedTickets, sortKey, sortOrder);
 		
 		return needle
-			? SearchSrv.filterObjectsByNeedle(tickets, needle)
-			: tickets;
+			? SearchSrv.filterObjectsByNeedle(hydratedTickets, needle)
+			: hydratedTickets;
 	}
-	
-	_hydrateTicket(t) {
-		
-		if (t.sprint) {
-			t.hydratedSprint = [];
-			for (const sId of t.sprint.split(":")) {
-				t.hydratedSprint.push(this._getSprintObject(sId))
-			}
-		}
-		
-		if (t.topic) {
-			t.hydratedTopic = this._getTopicObject(t.topic)
-		}
-		
-		if (t.status) {
-			t.hydratedStatus = this._getHydratedStatus(t.status)
-		}
-		
-	}
-	
-	_getHydratedStatus(statusId) {
-		const s = this._getStatusObject(statusId);
-		
-		if (s.color) {
-			s.color = this._getColorObject(Number(s.color));
-		}
-		
-		return s;
-	}
-	
-	// =============================================
-	// GET OBJECTS
-	// =============================================
-	
-	_getTopicObject(topicId) { // must be single
-		return nrm(this._getTopicItems().find(t => t.id === Number(topicId))) ?? null;
-	}
-	
-	_getStatusObject(statusId) { // must be single
-		return nrm(this._getStatusItems().find(t => t.id === Number(statusId))) ?? null;
-	}
-	
-	_getColorObject(colorId) { // must be single
-		return nrm(this._getColorItems().find(t => t.id === Number(colorId))) ?? null;
-	}
-	
-	_getSprintObject(sprintId) { // must be single
-		return nrm(this._getSprintItems().find(t => t.id === Number(sprintId))) ?? null;
-	}
-	
-	// =============================================
-	// SORTING
-	// =============================================
 	
 	_sortBy(rows, byKey, order) {
 		rows.sort((a, b) => {
@@ -101,42 +49,6 @@ class ProjectSrv {
 		});
 		
 		if (Number(order) > 0) rows.reverse();
-	}
-	
-	// =============================================
-	// UTILITY
-	// =============================================
-	
-	_getTicketItems() {
-		return this._getItems("ticket");
-	}
-	
-	_getTopicItems() {
-		// id, name, color
-		return this._getItems("topic");
-	}
-	
-	_getSprintItems() {
-		// id, name
-		return this._getItems("sprint");
-	}
-	
-	_getStatusItems() {
-		// id, name
-		return this._getItems("status");
-	}
-	
-	_getColorItems() {
-		// id, name
-		return this._getItems("color");
-	}
-	
-	// =============================================
-	// ROOT METHOD
-	// =============================================
-	
-	_getItems(tableName) {
-		return store.getters["entity/getItemsFromTable"](tableName);
 	}
 	
 }

@@ -61,12 +61,12 @@ export default {
 
 	data() {
 		return {
-			sortKey: "status",
+			sortKey: "phase",
 			sortOrder: 0,
 			needle: "",
 
 			// NOT REACTIVE
-			sortKeys: ["status", "title", "topic", "comment", "description", "id" ],
+			sortKeys: ["phase", "status", "title", "topic", "comment", "description", "id" ],
 
 			headerTicket: {
 				isHeader: true,
@@ -78,6 +78,7 @@ export default {
 				name: "name",
 				description: "description",
 				sprint: "sprint",
+				phase: "phase",
 			}
 		}
 	},
