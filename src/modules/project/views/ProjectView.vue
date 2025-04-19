@@ -51,6 +51,7 @@
 				:key="t.id"
 				:ticket="t"
 				@edit-ticket="onEditTicket"
+				@open-detail="onOpenDetail"
 			/>
 		</section>
 	</DefaultLayout>
@@ -151,6 +152,10 @@ export default {
 			const clone = nrm(srcObject);
 			this.openModal();
 			nextTick(() => this.$refs.entity_form_ref.onEditItem(clone));
+		},
+
+		onOpenDetail(id) {
+			console.log("/// onOpenDetail", id)
 		},
 
 		openModal() {

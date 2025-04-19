@@ -9,6 +9,14 @@
 		</template>
 
 		<template v-else>
+			<div class="grid place-content-center">
+				<button
+					class="hover:text-lime-500"
+					@click="$emit('openDetail', ticket.id)"
+				>
+					<BxIcon icon="card_id"/>
+				</button>
+			</div>
 			<div>{{ ticket.id }}</div>
 			<div>
 				<BxBadge
@@ -41,19 +49,22 @@
 
 <script>
 import BxBadge from "@/components/UI/BxBadge.vue";
+import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {
 
 	name: "TicketRow",
-	components: { BxBadge },
+	components: { BxIcon, BxBadge },
 
 	props: {
 		ticket: Object,
 	},
 
+	emits: ["openDetail", "editTicket"],
+
 	data() {
 		return {
-			headerLabels: ["id", "status", "title", "topic",  "description", "comment", "sprint", "phase", "active"]
+			headerLabels: ["", "id", "status", "title", "topic",  "description", "comment", "sprint", "phase", "active"]
 		}
 	},
 
@@ -71,7 +82,7 @@ export default {
 
 <style scoped>
 article {
-	grid-template-columns: 70px 120px 10% 10% 1fr 10% 8% 8% 4%;
+	grid-template-columns: 40px 70px 120px 10% 10% 1fr 10% 8% 8% 4%;
 }
 
 article > div {

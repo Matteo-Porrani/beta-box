@@ -35,6 +35,7 @@ export const ICON_DICT = {
 	add: "IconPlus",
 	bars: "IconMenu2",
 	copy: "IconCopy",
+	card_id: "IconId",
 	data: "IconDatabase",
 	edit: "IconEdit",
 	home: "IconHome",
