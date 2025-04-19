@@ -1,4 +1,5 @@
 import store from "@/store";
+import { pascalToSnake } from "@/modules/core/utils/core-utils";
 
 class EntitySrv {
 	
@@ -22,6 +23,21 @@ class EntitySrv {
 	
 	getEntityDescription(snakeCaseEntityName) {
 		return store.getters["entity/getEntityDescription"](snakeCaseEntityName);
+	}
+	
+	/**
+	 * Takes the (pascal case) entity name as input param (eg : "Ticket", "FieldDefinition"),
+	 * and returns a dictionary with the fields of type "L" found in the entity description
+	 * @param pascalCaseEntityName
+	 * @returns {*}
+	 */
+	getEntityListDictionary(pascalCaseEntityName) {
+		const d = this.getEntityDescription(pascalToSnake(pascalCaseEntityName));
+		return d.filter(f => f.type === "L")
+			.reduce((a, f) => {
+				a[f.field] = f.list
+				return a;
+			}, {});
 	}
 	
 }

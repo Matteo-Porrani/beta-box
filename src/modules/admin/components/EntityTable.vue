@@ -50,6 +50,8 @@ Emits:
 <script>
 // Vue related
 import { mapState, mapGetters } from "vuex";
+// services
+import TableSrv from "@/modules/core/services/TableSrv";
 // utils
 import { nrm } from "@/modules/core/utils/core-utils";
 import { sortRows, filterTableByNeedle} from "@/modules/core/utils/table-utils";
@@ -120,7 +122,7 @@ export default {
 			rows = filterTableByNeedle(rows, this.filterNeedle, this.filterByCol);
 
 			// show labels instead of values for lists
-			rows = this.getListLabels(rows);
+			rows = TableSrv.getListLabels(rows, this.tableName);
 
 			return rows;
 		},
@@ -160,16 +162,10 @@ export default {
 
 		// ============================================= UTILITY
 
-		_getListDictionary(entityDesc) {
-			return entityDesc.filter(f => f.type === "L")
-				.reduce((a, f) => {
-					a[f.field] = f.list
-					return a;
-				}, {});
-		},
+		/*
 
-		getListLabels(rows) {
-			const listDictionary = this._getListDictionary(this.formDescription);
+		getListLabels(rows, entityName) {
+			const listDictionary = EntitySrv.getEntityListDictionary(entityName);
 			return Object.keys(listDictionary).length > 0
 				? rows.map(row => this._getLabelsForRow(row, listDictionary))
 				: rows;
@@ -183,6 +179,8 @@ export default {
 			}
 			return row;
 		}
+
+		 */
 
 	}
 
