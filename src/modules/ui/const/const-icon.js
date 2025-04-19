@@ -49,6 +49,7 @@ export const ICON_DICT = {
 	refresh: "IconRefresh",
 	reset: "IconRotate",
 	search: "IconSearch",
+	sprint: "IconRun",
 	stack: "IconStack2",
 	stop_watch: "IconStopwatch",
 	tag: "IconTag",

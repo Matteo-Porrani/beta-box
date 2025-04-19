@@ -3,8 +3,9 @@ import EntitySrv from "@/modules/core/services/EntitySrv";
 import SearchSrv from "@/modules/core/services/SearchSrv";
 import HydrationSrv from "@/modules/core/services/HydrationSrv";
 // utils
-import { nrm } from "@/modules/core/utils/core-utils";
+import { formatDurationFromMin, nrm } from "@/modules/core/utils/core-utils";
 import { sortRows } from "@/modules/core/utils/table-utils";
+import { convertFromAppDateFormatToStdFormat, splitDurationIntoHourPercents } from "@/modules/core/utils/date-utils";
 
 class ProjectSrv {
 	
@@ -48,21 +49,39 @@ class ProjectSrv {
 	getTicketById(id) {
 		const tickets = this.getTickets("id", true, "", null, { showActive: true, showInactive: true});
 		const t = tickets.find(t => t.id === Number(id));
+		const { activities, totalDuration } = this.#getActivitiesByTicketId(id);
+		
 		return {
 			...t,
-			activities: this.#getActivitiesByTicketId(id)
+			activity: {
+				total: totalDuration,
+				items: activities,
+			}
 		}
 	}
 	
 	#getActivitiesByTicketId(id) {
-		const activities = EntitySrv.getItems("activity");
-		return activities.map(a => {
+		let activities = EntitySrv.getItems("activity")
+			.filter(a => Number(a.tickets) === Number(id));
+		
+		const totalDuration = activities.reduce((acc, act) =>{
+			acc += Number(act.duration);
+			return acc;
+		}, 0);
+		
+		activities = activities.map(a => {
+			const dayDate = this.#getDayDateById(Number(a.day))
 			return {
-				day: this.#getDayDateById(Number(a.day)),
-				ticket: Number(a.tickets),
-				duration: a.duration
+				day: convertFromAppDateFormatToStdFormat(dayDate),
+				duration: formatDurationFromMin(a.duration),
+				durationBlocks: splitDurationIntoHourPercents(a.duration),
 			}
-		}).filter(a => a.ticket === Number(id))
+		})
+		
+		return {
+			activities,
+			totalDuration: formatDurationFromMin(totalDuration)
+		}
 	}
 	
 	#getDayDateById(id) {

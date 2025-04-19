@@ -12,9 +12,9 @@
 			</router-link>
 		</div>
 
-		<div class="h-5"/>
+		<div class="h-2"/>
 
-		<div class="grid grid-cols-6 items-center">
+		<div class="grid grid-cols-5 items-center">
 			<h1 class="text-2xl font-bold">{{ ticket.title }}</h1>
 
 			<div class="flex gap-2 items-center">
@@ -25,17 +25,14 @@
 			<div class="flex gap-2 items-center">
 <!--				<DetailIcon icon="cards"/>-->
 				<DetailIcon icon="planet"/>
-				<p>{{ ticket.topic.name }}</p>
+				<p>{{ ticket.topic ? ticket.topic.name : "-" }}</p>
 			</div>
 
-
-			<div></div>
 
 			<div class="flex gap-2 items-center">
 				<DetailIcon icon="dashboard"/>
-				<p>{{ ticket.phase }}</p>
+				<PhaseStepper :curr-phase="ticket.phase"/>
 			</div>
-
 
 			<div class="flex gap-2 justify-end items-center">
 				<BxBadge
@@ -52,7 +49,7 @@
 
 		<div class="h-5"/>
 
-		<div class="grid grid-cols-6 gap-2 h-16 text-xl">
+		<div class="grid grid-cols-6 gap-10 h-16 text-xl">
 			<div class="col-span-4 bg-stone-700 rounded p-1">
 				<p>{{ ticket.description }}</p>
 			</div>
@@ -71,10 +68,11 @@
 import BxBadge from "@/components/UI/BxBadge.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
 import DetailIcon from "@/modules/project/components/detail/DetailIcon.vue";
+import PhaseStepper from "@/modules/project/components/detail/PhaseStepper.vue";
 
 export default {
 	name: "TicketDetailHeader",
-	components: { DetailIcon, BxIcon, BxBadge },
+	components: { PhaseStepper, DetailIcon, BxIcon, BxBadge },
 
 	props: {
 		ticket: Object

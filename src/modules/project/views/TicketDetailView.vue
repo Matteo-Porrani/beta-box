@@ -9,8 +9,20 @@
 
 				<TicketDetailHeader :ticket="ticket"/>
 
+				<div class="body pt-16">
+					<nav class="flex gap-4 text-xl">
+						<router-link
+							to="/activity"
+						>Activity</router-link>
+<!--						<router-link-->
+<!--							to="/notes"-->
+<!--						>Notes</router-link>-->
+					</nav>
 
-				<div class="body border border-blue-400"></div>
+					<div class="h-4"/>
+
+					<router-view/>
+				</div>
 
 				<TicketDetailFooter :ticket="ticket"/>
 
@@ -21,11 +33,12 @@
 
 
 <script>
-
+import { computed } from "vue";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import ProjectSrv from "@/modules/project/services/ProjectSrv";
 import TicketDetailHeader from "@/modules/project/components/detail/TicketDetailHeader.vue";
 import TicketDetailFooter from "@/modules/project/components/detail/TicketDetailFooter.vue";
+import { nrm } from "@/modules/core/utils/core-utils";
 
 export default {
 	name: "TicketDetailView",
@@ -37,11 +50,16 @@ export default {
 		}
 	},
 
-	computed: {
+	provide() {
+		return {
+			activity: computed(() => nrm(this.ticket?.activity))
+		}
+	},
 
+	computed: {
 		ticketId() {
 			return this.$route.params.id
-		}
+		},
 	},
 
 	beforeMount() {
@@ -49,3 +67,4 @@ export default {
 	}
 }
 </script>
+

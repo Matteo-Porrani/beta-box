@@ -155,9 +155,12 @@ export default {
 		},
 
 		onOpenDetail(id) {
-			console.log("/// onOpenDetail", id)
+			/*
+			instead of navigating to /project/detail/:id
+			we navigated directly to /project/detail/:id/activity (which is a children route)
+			 */
 			this.$router.push({
-				name: "ticket_detail",
+				name: "ticket_detail_activity",
 				params: {
 					id: id
 				}

@@ -1,10 +1,10 @@
 <template>
-	<div class="">
+	<div class="border-t border-stone-500 pt-4">
 
 		<div class="grid grid-cols-2 items-center">
 			<div class="flex gap-2 items-center">
-<!--				<BxIcon icon="calendar_cycle" class="text-stone-500"/>-->
-				<DetailIcon icon="calendar_cycle"/>
+<!--				<DetailIcon icon="calendar_cycle"/>-->
+				<DetailIcon icon="sprint"/>
 				<p class="text-xl font-bold">{{ sprints }}</p>
 			</div>
 
