@@ -4,6 +4,7 @@ import SearchSrv from "@/modules/core/services/SearchSrv";
 import HydrationSrv from "@/modules/core/services/HydrationSrv";
 // utils
 import { nrm } from "@/modules/core/utils/core-utils";
+import { sortRows } from "@/modules/core/utils/table-utils";
 
 class ProjectSrv {
 	
@@ -19,7 +20,7 @@ class ProjectSrv {
 	
 	// =============================================
 	
-	getTickets(sortKey = "title", sortOrder, needle) {
+	getTickets(sortByCol, sortAsc, needle, filterByCol) {
 		const desc = this.#getTicketEntityDescription();
 		
 		const tickets = nrm(EntitySrv.getItems("ticket"));
@@ -29,31 +30,31 @@ class ProjectSrv {
 			return a;
 		}, [])
 		
-		this._sortBy(hydratedTickets, sortKey, sortOrder);
+		sortRows(hydratedTickets, sortByCol, sortAsc);
 		
 		return needle
-			? SearchSrv.filterObjectsByNeedle(hydratedTickets, needle)
+			? SearchSrv.filterObjectsByNeedle(hydratedTickets, needle, filterByCol)
 			: hydratedTickets;
 	}
 	
-	_sortBy(rows, byKey, order) {
-		rows.sort((a, b) => {
-			const valA = a[byKey];
-			const valB = b[byKey];
-			
-			// If both values are numbers, compare numerically
-			if (!isNaN(valA) && !isNaN(valB)) {
-				return Number(valA) - Number(valB);
-			}
-			
-			// Otherwise, compare as strings
-			return typeof valA === "object"
-				? String(valA?.id).localeCompare(String(valB?.id))
-				: String(valA).localeCompare(String(valB))
-		});
-		
-		if (Number(order) > 0) rows.reverse();
-	}
+	// _sortBy(rows, byKey, order) {
+	// 	rows.sort((a, b) => {
+	// 		const valA = a[byKey];
+	// 		const valB = b[byKey];
+	//
+	// 		// If both values are numbers, compare numerically
+	// 		if (!isNaN(valA) && !isNaN(valB)) {
+	// 			return Number(valA) - Number(valB);
+	// 		}
+	//
+	// 		// Otherwise, compare as strings
+	// 		return typeof valA === "object"
+	// 			? String(valA?.id).localeCompare(String(valB?.id))
+	// 			: String(valA).localeCompare(String(valB))
+	// 	});
+	//
+	// 	if (Number(order) > 0) rows.reverse();
+	// }
 	
 	#getTicketEntityDescription() {
 		return EntitySrv.getEntityDescription("ticket");

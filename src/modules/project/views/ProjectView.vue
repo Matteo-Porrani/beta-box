@@ -4,27 +4,32 @@
 
 		<div class="h-4"/>
 
-		<section class="flex gap-6">
-			<select
-				v-model="sortKey"
-				class="w-64"
-			>
-				<option v-for="o in sortKeys" :key="o" :value="o">{{ o }}</option>
-			</select>
+		<TheSortFilterBar
+			:column-options="sortKeys"
+			@sort-filter-change="onSortFilterChange"
+		/>
 
-			<select
-				v-model="sortOrder"
-				class="w-32"
-			>
-				<option value="0">ASC</option>
-				<option value="1">DESC</option>
-			</select>
+<!--		<section class="flex gap-6">-->
+<!--			<select-->
+<!--				v-model="sortKey"-->
+<!--				class="w-64"-->
+<!--			>-->
+<!--				<option v-for="o in sortKeys" :key="o" :value="o">{{ o }}</option>-->
+<!--			</select>-->
 
-			<input
-				type="text"
-				v-model="needle"
-			>
-		</section>
+<!--			<select-->
+<!--				v-model="sortOrder"-->
+<!--				class="w-32"-->
+<!--			>-->
+<!--				<option value="0">ASC</option>-->
+<!--				<option value="1">DESC</option>-->
+<!--			</select>-->
+
+<!--			<input-->
+<!--				type="text"-->
+<!--				v-model="needle"-->
+<!--			>-->
+<!--		</section>-->
 
 		<div class="h-4"/>
 
@@ -50,17 +55,22 @@ import ProjectSrv from "@/modules/project/services/ProjectSrv";
 // components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import TicketRow from "@/modules/project/components/TicketRow.vue";
+import TheSortFilterBar from "@/modules/core/components/TheSortFilterBar.vue";
 
 export default {
 
 	name: "ProjectView",
-	components: { TicketRow, DefaultLayout },
+	components: { TheSortFilterBar, TicketRow, DefaultLayout },
 
 	data() {
 		return {
-			sortKey: "phase",
-			sortOrder: 0,
-			needle: "",
+
+			sortByCol: "one",
+			sortAsc: true,
+
+			filterByCol: null,
+			filterNeedle: "",
+			showFilterByCol: false,
 
 			// NOT REACTIVE
 			sortKeys: ["phase", "status", "title", "topic", "comment", "description" ],
@@ -70,9 +80,18 @@ export default {
 
 	computed: {
 		tickets() {
-			return ProjectSrv.getTickets(this.sortKey, this.sortOrder, this.needle) ?? []
+			return ProjectSrv.getTickets(this.sortByCol, this.sortAsc, this.filterNeedle, this.filterByCol) ?? []
 		}
 	},
+
+
+	methods: {
+		// react to changes in sort or filter
+		onSortFilterChange(e) {
+			const { key, value } = e;
+			this[key] = value;
+		},
+	}
 
 }
 </script>

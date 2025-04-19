@@ -98,10 +98,6 @@ export default {
 			filterByCol: null,
 			filterNeedle: "",
 			showFilterByCol: false,
-
-			mock: {
-				cols: ["one", "two", "three", "description"]
-			}
 		}
 	},
 
