@@ -32,22 +32,23 @@ export const ICON_DICT = {
 	/*
 	COMMON CONCEPTS
 	 */
-	home: "IconHome",
-	stack: "IconStack2",
+	add: "IconPlus",
+	bars: "IconMenu2",
+	copy: "IconCopy",
 	data: "IconDatabase",
+	edit: "IconEdit",
+	home: "IconHome",
+	link: "IconExternalLink",
+	loader: "IconLoader2",
+	refresh: "IconRefresh",
+	reset: "IconRotate",
+	search: "IconSearch",
+	stack: "IconStack2",
+	stop_watch: "IconStopwatch",
 	tag: "IconTag",
 	tag_filled: "IconTagFilled",
 	trash: "IconTrash",
-	edit: "IconEdit",
-	copy: "IconCopy",
-	refresh: "IconRefresh",
-	reset: "IconRotate",
-	loader: "IconLoader2",
-	add: "IconPlus",
-	bars: "IconMenu2",
 	xmark: "IconX",
-	link: "IconExternalLink",
-	stop_watch: "IconStopwatch",
 }
 
 export const ICON_SIZE = {

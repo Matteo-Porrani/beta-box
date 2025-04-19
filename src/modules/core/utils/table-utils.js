@@ -46,3 +46,22 @@ export function filterTableByNeedle(array, needle, specificKey = null) {
 		}
 	});
 }
+
+
+export function sortRows(rows, byKey, order) {
+	const sortedRows = rows.sort((a, b) => {
+		const valA = a[byKey];
+		const valB = b[byKey];
+		
+		// If both values are numbers, compare numerically
+		if (!isNaN(valA) && !isNaN(valB)) {
+			return Number(valA) - Number(valB);
+		}
+		
+		// Otherwise, compare as strings
+		return String(valA).localeCompare(String(valB));
+	});
+	
+	if (order > 0) sortedRows.reverse();
+	return sortedRows;
+}

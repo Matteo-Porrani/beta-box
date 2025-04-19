@@ -28,6 +28,12 @@ Emits:
 <template>
 	<div class="entity-table-root">
 
+
+		<TheSortFilterBar/>
+
+		<div class="h-4"></div>
+
+
 		<div class="grid grid-cols-2 gap-2 border border-stone-500 rounded p-1">
 
 			<!-- SORT -->
@@ -56,14 +62,18 @@ Emits:
 					<BxIcon icon="xmark"/>
 				</button>
 				<p>Filter</p>
-				<select v-model="filterBy">
+
+				<input type="text" v-model="filterMatch">
+
+				<BxSwitch v-model="showFilterByCol"/>
+
+				<select v-if="showFilterByCol" v-model="filterBy">
 					<option
 						v-for="c in cols"
 						:key="c"
 						:value="c"
 					>{{ c }}</option>
 				</select>
-				<input type="text" v-model="filterMatch">
 			</div>
 
 		</div>
@@ -86,9 +96,12 @@ Emits:
 import { mapState, mapGetters } from "vuex";
 // utils
 import { nrm } from "@/modules/core/utils/core-utils";
+import { sortRows, filterTableByNeedle} from "@/modules/core/utils/table-utils";
 // components
 import BxTable from "@/components/UI/BxTable/BxTable.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
+import TheSortFilterBar from "@/modules/core/components/TheSortFilterBar.vue";
+import BxSwitch from "@/components/UI/BxForm/fields/BxSwitch.vue";
 
 
 export default {
@@ -96,6 +109,8 @@ export default {
 	name: "EntityTable",
 
 	components: {
+		BxSwitch,
+		TheSortFilterBar,
 		BxIcon,
 		BxTable
 	},
@@ -115,8 +130,10 @@ export default {
 		return {
 			sortBy: "id",
 			sortOrder: 0,
-			filterBy: "id",
-			filterMatch: null,
+
+			showFilterByCol: false,
+			filterBy: null,
+			filterMatch: "",
 
 			actions: [
 				{ name: "edit", icon: "edit" },
@@ -148,11 +165,11 @@ export default {
 			let rows = this.entities[this.tableName].map(r => nrm(r));
 
 			// apply sorting based on table configuration
-			rows = this.applySorting(rows);
+			// rows = this.applySorting(rows);
 
-			rows = this.applyCustomSorting(rows, this.sortBy, this.sortOrder);
+			rows = sortRows(rows, this.sortBy, this.sortOrder);
 
-			rows = this.applyFilter(rows, this.filterBy, this.filterMatch);
+			rows = filterTableByNeedle(rows, this.filterMatch, this.filterBy);
 
 			// show labels instead of values for lists
 			rows = this.getListLabels(rows);
