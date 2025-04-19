@@ -136,7 +136,7 @@ export default {
 
 			return Object.keys(specificSort).includes(this.tableName)
 				? specificSort[this.tableName]
-				: {};
+				: null;
 		},
 
 	},

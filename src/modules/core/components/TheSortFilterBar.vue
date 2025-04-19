@@ -84,9 +84,8 @@ export default {
 	emits: ["sortFilterChange"],
 
 	data() {
-
 		return {
-			sortByCol: "one",
+			sortByCol: "id",
 			sortAsc: true,
 
 			filterByCol: null,
@@ -96,20 +95,36 @@ export default {
 	},
 
 	beforeMount() {
-		if (this.columnOptions && Array.isArray(this.columnOptions) && this.columnOptions.length > 0) {
-			this.sortByCol = this.columnOptions[0];
-		}
-
-		if (this.initValues) {
-			for (const [k, v] of Object.entries(this.initValues)) {
-				// console.log("init", k, v)
-				if (k === "filterByCol") this.showFilterByCol = true;
-				nextTick(() => this[k] = v)
-			}
-		}
+		this.initSequence();
 	},
 
 	methods: {
+
+		// ============================================= INIT
+
+		initSequence() {
+			this._setDefaultSortColumn();
+			this._initSortFilterValues();
+		},
+
+		_setDefaultSortColumn() {
+			if (this.columnOptions && Array.isArray(this.columnOptions) && this.columnOptions.length > 0) {
+				this.sortByCol = this.columnOptions[0];
+			}
+		},
+
+		_initSortFilterValues() {
+			if (this.initValues) {
+				for (const [k, v] of Object.entries(this.initValues)) {
+					console.log("init", k, v)
+					if (k === "filterByCol") this.showFilterByCol = true;
+					nextTick(() => this[k] = v)
+				}
+			}
+		},
+
+		// ============================================= UTILITY
+
 		resetFilter() {
 			this.filterNeedle = "";
 		},
@@ -120,6 +135,14 @@ export default {
 	},
 
 	watch: {
+
+		initValues: {
+			deep: true,
+			handler() {
+				this.initSequence();
+			}
+		},
+
 		showFilterByCol(show) {
 			this.filterByCol = show
 				? this.columnOptions[0]

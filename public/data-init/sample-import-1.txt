@@ -1,0 +1,18 @@
+{
+
+    "ticket": [
+        {
+            "id": 31,
+            "title" : "IMPO-7731",
+            "description": "an imported ticket 1",
+            "phase": "A"
+        },
+        {
+            "id": 32,
+            "title" : "IMPO-7732",
+            "description": "an imported ticket 2",
+            "phase": "B"
+        }
+    ]
+
+}
