@@ -9,29 +9,7 @@
 			@sort-filter-change="onSortFilterChange"
 		/>
 
-<!--		<section class="flex gap-6">-->
-<!--			<select-->
-<!--				v-model="sortKey"-->
-<!--				class="w-64"-->
-<!--			>-->
-<!--				<option v-for="o in sortKeys" :key="o" :value="o">{{ o }}</option>-->
-<!--			</select>-->
-
-<!--			<select-->
-<!--				v-model="sortOrder"-->
-<!--				class="w-32"-->
-<!--			>-->
-<!--				<option value="0">ASC</option>-->
-<!--				<option value="1">DESC</option>-->
-<!--			</select>-->
-
-<!--			<input-->
-<!--				type="text"-->
-<!--				v-model="needle"-->
-<!--			>-->
-<!--		</section>-->
-
-		<div class="h-4"/>
+		<div class="h-2"/>
 
 		<!-- TABLE -->
 		<TicketRow
@@ -51,7 +29,6 @@
 <script>
 // services
 import ProjectSrv from "@/modules/project/services/ProjectSrv";
-
 // components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import TicketRow from "@/modules/project/components/TicketRow.vue";
@@ -60,11 +37,14 @@ import TheSortFilterBar from "@/modules/core/components/TheSortFilterBar.vue";
 export default {
 
 	name: "ProjectView",
-	components: { TheSortFilterBar, TicketRow, DefaultLayout },
+	components: {
+		DefaultLayout,
+		TheSortFilterBar,
+		TicketRow,
+	},
 
 	data() {
 		return {
-
 			sortByCol: "one",
 			sortAsc: true,
 
@@ -79,8 +59,15 @@ export default {
 	},
 
 	computed: {
+
+		// sorted & filtered tickets
 		tickets() {
-			return ProjectSrv.getTickets(this.sortByCol, this.sortAsc, this.filterNeedle, this.filterByCol) ?? []
+			return ProjectSrv.getTickets(
+				this.sortByCol,
+				this.sortAsc,
+				this.filterNeedle,
+				this.filterByCol
+			) ?? []
 		}
 	},
 

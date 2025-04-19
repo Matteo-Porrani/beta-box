@@ -1,6 +1,6 @@
 <template>
 	<article
-		class="grid gap-2 border border-stone-500 text-stone-300 rounded p-1"
+		class="grid gap-2 border border-stone-500 text-stone-300 text-sm rounded p-1 h-10 items-center"
 		:class="{ 'bg-stone-500' : ticket.isHeader }"
 	>
 
@@ -19,7 +19,9 @@
 					:shade="ticket.status.color?.shade ?? '500'"
 				/>
 			</div>
-			<div class="font-bold border border-stone-500 rounded">{{ ticket.title }}</div>
+			<div class="font-bold bg-stone-300 rounded grid items-center">
+				<p class="text-stone-800">{{ ticket.title }}</p>
+			</div>
 			<div>{{ ticket.topic?.name ?? "-" }}</div>
 			<div>{{ ticket.description }}</div>
 			<div>{{ ticket.comment }}</div>

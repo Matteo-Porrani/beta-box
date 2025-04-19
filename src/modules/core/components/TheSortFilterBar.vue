@@ -1,7 +1,5 @@
 <template>
-
 	<div class="grid grid-cols-2 gap-2 border border-stone-500 rounded p-1">
-
 		<!-- SORT -->
 		<div class="flex items-center gap-4">
 			Sort
@@ -51,14 +49,11 @@
 					:value="c"
 				>{{ c }}</option>
 			</select>
-
 		</div>
 
 	</div>
-
-
-
 </template>
+
 
 <script>
 // Vue related
@@ -117,7 +112,6 @@ export default {
 
 	methods: {
 		resetFilter() {
-			this.filterByCol = "";
 			this.filterNeedle = "";
 		},
 
