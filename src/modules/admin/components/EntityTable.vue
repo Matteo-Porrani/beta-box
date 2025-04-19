@@ -28,61 +28,13 @@ Emits:
 <template>
 	<div class="entity-table-root">
 
-
 		<TheSortFilterBar
-			:column-options="['id', 'title', 'description', 'phase', 'status']"
-			:init-values="mockInitValues"
+			:column-options="cols"
+			:init-values="sortFilterInitValues"
 			@sort-filter-change="onSortFilterChange"
 		/>
 
-		<div class="h-4"></div>
-
-
-		<div class="grid grid-cols-2 gap-2 border border-stone-500 rounded p-1">
-
-			<!-- SORT -->
-			<div class="flex items-center gap-4">
-				Sort
-				<select v-model="sortBy">
-					<option
-						v-for="c in cols"
-						:key="c"
-						:value="c"
-					>{{ c }}</option>
-				</select>
-
-				<select v-model="sortOrder">
-					<option :value="0">ASC</option>
-					<option :value="1">DESC</option>
-				</select>
-			</div>
-
-			<!-- FILTER -->
-			<div class="flex items-center gap-4">
-				<button
-					class="bg-stone-700 hover:bg-stone-600 rounded py-1 px-4"
-					@click="resetFilter"
-				>
-					<BxIcon icon="xmark"/>
-				</button>
-				<p>Filter</p>
-
-				<input type="text" v-model="filterMatch">
-
-				<BxSwitch v-model="showFilterByCol"/>
-
-				<select v-if="showFilterByCol" v-model="filterBy">
-					<option
-						v-for="c in cols"
-						:key="c"
-						:value="c"
-					>{{ c }}</option>
-				</select>
-			</div>
-
-		</div>
-
-		<div class="h-2"/>
+		<div class="h-2"></div>
 
 		<BxTable
 			:cols="formDescription.map(c => c.field)"
@@ -103,9 +55,7 @@ import { nrm } from "@/modules/core/utils/core-utils";
 import { sortRows, filterTableByNeedle} from "@/modules/core/utils/table-utils";
 // components
 import BxTable from "@/components/UI/BxTable/BxTable.vue";
-import BxIcon from "@/components/UI/BxIcon.vue";
 import TheSortFilterBar from "@/modules/core/components/TheSortFilterBar.vue";
-import BxSwitch from "@/components/UI/BxForm/fields/BxSwitch.vue";
 
 
 export default {
@@ -113,9 +63,7 @@ export default {
 	name: "EntityTable",
 
 	components: {
-		BxSwitch,
 		TheSortFilterBar,
-		BxIcon,
 		BxTable
 	},
 
@@ -132,12 +80,12 @@ export default {
 
 	data() {
 		return {
-			sortBy: "id",
-			sortOrder: 0,
+			sortByCol: "id",
+			sortAsc: true,
 
 			showFilterByCol: false,
-			filterBy: null,
-			filterMatch: "",
+			filterByCol: null,
+			filterNeedle: "",
 
 			actions: [
 				{ name: "edit", icon: "edit" },
@@ -145,12 +93,6 @@ export default {
 				{ name: "delete", icon: "trash" },
 			],
 
-			mockInitValues: {
-				sortByCol: "title",
-				sortAsc: false,
-				filterByCol: "phase",
-				filterNeedle: "B",
-			}
 		}
 	},
 
@@ -159,9 +101,7 @@ export default {
 			entities: $s => $s.entity.entities,
 		}),
 
-		...mapGetters("entity", [
-			"getLabelFromListValue"
-		]),
+		...mapGetters("entity", ["getLabelFromListValue"]),
 
 		cols() {
 			return this.formDescription
@@ -175,12 +115,9 @@ export default {
 			// VERY IMPORTANT !!! normalize each 'r' object
 			let rows = this.entities[this.tableName].map(r => nrm(r));
 
-			// apply sorting based on table configuration
-			// rows = this.applySorting(rows);
-
-			rows = sortRows(rows, this.sortBy, this.sortOrder);
-
-			rows = filterTableByNeedle(rows, this.filterMatch, this.filterBy);
+			// sort & filter
+			rows = sortRows(rows, this.sortByCol, this.sortAsc);
+			rows = filterTableByNeedle(rows, this.filterNeedle, this.filterByCol);
 
 			// show labels instead of values for lists
 			rows = this.getListLabels(rows);
@@ -188,35 +125,28 @@ export default {
 			return rows;
 		},
 
-		/**
-		 * Defines sorting configuration for different table types
-		 * @returns {Object|undefined} Configuration object containing:
-		 *   - orderBy: field to sort records by (e.g., 'order')
-		 *   - groupBy: field to group records by (e.g., 'list', 'entity')
-		 */
-		sortConfig() {
-			const config = {
-				// Sort 'list_options' first by order, then group by list name
-				'list_option': { orderBy: 'order', groupBy: 'list' },
-				// Sort 'field_definitions' first by order, then group by entity name
-				'field_definition': { orderBy: 'order', groupBy: 'entity' }
-			};
-			return config[this.tableName];
-		},
-	},
+		sortFilterInitValues() {
+			const specificSort = {
+				list_option: { sortByCol: "list" },
+				field_definition: { sortByCol: "entity" },
+				ticket: { sortByCol: "title" },
+			}
 
-	mounted() {
-		console.log("MOUNTED -- EntityTable")
+			return Object.keys(specificSort).includes(this.tableName)
+				? specificSort[this.tableName]
+				: {};
+		},
+
 	},
 
 	methods: {
 
-		// =============================================
-		// EVENT HANDLERS
-		// =============================================
+		// ============================================= EVENT HANDLERS
 
+		// react to changes in sort or filter
 		onSortFilterChange(e) {
-			console.log("//// onSortFilterChange", e)
+			const { key, value } = e;
+			this[key] = value;
 		},
 
 		onRowAction(payload) {
@@ -228,87 +158,25 @@ export default {
 			this.$emit(`${action}Item`, id);
 		},
 
-		// =============================================
-		// UTILITY
-		// =============================================
+		// ============================================= UTILITY
 
 		getListLabels(rows) {
 			return rows.map(r => {
 				for (const k of Object.keys(r)) {
 					const match = this.formDescription.find(f => f.field === k);
 					if (match && match.type === "L") {
-						r[k] = this.getLabelFromListValue(match.list, r[k]);
+						const code = r[k];
+						const label = this.getLabelFromListValue(match.list, r[k]);
+
+						r[k] = `[${code}] ${label}`;
 					}
 				}
 				return r;
 			});
 		},
 
-		/**
-		 * Applies multi-level sorting to rows based on configuration
-		 * @param {Array} rows - Array of row objects to sort
-		 * @returns {Array} Sorted array of rows
-		 * 
-		 * Example:
-		 * For list_option table:
-		 * 1. First sorts by 'order' field numerically
-		 * 2. Then sorts by 'list' field alphabetically
-		 */
-		applySorting(rows) {
-			const config = this.sortConfig;
-			// Return original rows if no sorting config exists for this table
-			if (!config) return rows;
-
-			return rows
-				// Primary sort: numeric sort by orderBy field (e.g., 'order')
-				.sort((a, b) => a[config.orderBy] - b[config.orderBy])
-				// Secondary sort: alphabetical sort by groupBy field (e.g., 'list' or 'entity')
-				.sort((a, b) => a[config.groupBy].localeCompare(b[config.groupBy]));
-		},
-
-		applyCustomSorting(rows, byKey, order) {
-			const sortedRows = rows.sort((a, b) => {
-				const valA = a[byKey];
-				const valB = b[byKey];
-				
-				// If both values are numbers, compare numerically
-				if (!isNaN(valA) && !isNaN(valB)) {
-					return Number(valA) - Number(valB);
-				}
-				
-				// Otherwise, compare as strings
-				return String(valA).localeCompare(String(valB));
-			});
-			
-			if (order > 0) sortedRows.reverse();
-			return sortedRows;
-		},
-
-		// =============================================
-		// FILTERING
-		// =============================================
-
-		applyFilter(rows, byKey, match) {
-			if (!match) return rows;
-			return rows.filter(r => {
-				return String(r[byKey]).toLowerCase()
-					.includes(match.toLowerCase());
-			})
-		},
-
-		resetFilter() {
-			this.filterBy = "id";
-			this.filterMatch = null;
-		}
-
 	}
 
 }
 </script>
 
-<style scoped>
-input,
-select {
-	@apply bg-stone-700 rounded text-stone-200 p-1
-}
-</style>

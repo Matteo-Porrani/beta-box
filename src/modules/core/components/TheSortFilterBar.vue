@@ -1,10 +1,6 @@
 <template>
 
-	<div class="border rounded p-1">
-		<pre>filterByCol: {{ filterByCol }}</pre>
-	</div>
-
-	<div class="grid grid-cols-2 gap-2 border border-lime-500 rounded p-1">
+	<div class="grid grid-cols-2 gap-2 border border-stone-500 rounded p-1">
 
 		<!-- SORT -->
 		<div class="flex items-center gap-4">
@@ -126,6 +122,7 @@ export default {
 	methods: {
 		resetFilter() {
 			this.filterByCol = "";
+			this.filterNeedle = "";
 		},
 
 		toggleOrder() {
@@ -135,11 +132,9 @@ export default {
 
 	watch: {
 		showFilterByCol(show) {
-			if (!show) this.filterByCol = null;
-
-			if (show) {
-				this.filterByCol = this.columnOptions[0]
-			}
+			this.filterByCol = show
+				? this.columnOptions[0]
+				: null;
 		},
 
 		sortByCol(newVal) {
@@ -155,9 +150,8 @@ export default {
 		},
 
 		filterNeedle(newVal) {
-			this.$emit("sortFilterChange", { key: "filterByCol", value: newVal })
+			this.$emit("sortFilterChange", { key: "filterNeedle", value: newVal })
 		},
-
 
 	}
 }

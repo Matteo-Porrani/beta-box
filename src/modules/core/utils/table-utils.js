@@ -34,6 +34,8 @@ export function filterTableByNeedle(array, needle, specificKey = null) {
 	const lowerNeedle = String(needle).toLowerCase();
 	
 	return array.filter(obj => {
+		// console.log(JSON.stringify(obj))
+		
 		if (specificKey) {
 			// If specificKey is provided, only search within that key
 			const value = obj[specificKey];
@@ -48,7 +50,7 @@ export function filterTableByNeedle(array, needle, specificKey = null) {
 }
 
 
-export function sortRows(rows, byKey, order) {
+export function sortRows(rows, byKey, sortAsc) {
 	const sortedRows = rows.sort((a, b) => {
 		const valA = a[byKey];
 		const valB = b[byKey];
@@ -62,6 +64,6 @@ export function sortRows(rows, byKey, order) {
 		return String(valA).localeCompare(String(valB));
 	});
 	
-	if (order > 0) sortedRows.reverse();
+	if (!sortAsc) sortedRows.reverse();
 	return sortedRows;
 }
