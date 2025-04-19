@@ -20,6 +20,13 @@
 			<h2 class="text-lg font-bold">{{ entity }}</h2>
 		</template>
 		<template #body>
+
+			<div class="text-center">
+				<input type="text" v-model="needle">
+			</div>
+
+			<div class="h-2"/>
+
 			<div class="space-y-1">
 
 				<!-- HEADER ROW -->
@@ -91,10 +98,11 @@
 
 <script>
 // utils
-import { isFalsy } from "@/modules/core/utils/core-utils";
+import { isFalsy, nrm } from "@/modules/core/utils/core-utils";
 // components
 import BxModal from "@/components/UI/BxModal.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
+import { filterTableByNeedle } from "@/modules/core/utils/table-utils";
 
 export default {
 	name: "EntityPicker",
@@ -116,6 +124,7 @@ export default {
 
 	data() {
 		return {
+			needle: "",
 			values: {},
 		}
 	},
@@ -126,7 +135,7 @@ export default {
 		},
 
 		rows() {
-			return this.fieldDesc.options;
+			return filterTableByNeedle(nrm(this.fieldDesc.options), this.needle)
 		},
 
 		parsedValue() {
@@ -138,16 +147,10 @@ export default {
 		},
 
 		gridColsClass() {
-			console.log("------", this.cols.length)
-
 			let t = "";
 			for (let i = 1; i <= (this.cols.length - 1); i++) {
 				t += "_1fr";
 			}
-
-			console.log(">>>>>>", `grid-cols-[80px_100px${t}]`)
-
-			// return "grid-cols-[80px_100px_1fr_1fr]"
 			return `grid-cols-[80px_100px${t}]`;
 		},
 
