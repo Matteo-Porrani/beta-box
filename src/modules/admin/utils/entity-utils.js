@@ -4,7 +4,6 @@ export function prepareItem(srcObject) {
 	const o = {};
 	
 	for (const key of Object.keys(srcObject)) {
-		console.log(key, srcObject[key])
 		if (key === "id" && isNullOrUndefined(srcObject[key])) {
 			continue;
 		}

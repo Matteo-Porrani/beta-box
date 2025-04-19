@@ -178,7 +178,6 @@ export default {
 		},
 
 		setValue(value) {
-			console.log("EP value", value)
 			if (isFalsy(value)) return;
 			for (const key of value.split(":")) {
 				this.values[key] = true;

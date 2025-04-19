@@ -11,8 +11,6 @@
 					<slot name="body">default body</slot>
 				</div>
 
-				<div class="h-10"></div>
-
 				<div class="bx-modal-footer">
 					<slot name="footer">
 
@@ -63,8 +61,12 @@ function close() {
 }
 
 .modal-container {
-	@apply bg-stone-900 border border-stone-500;
-	width: 45vw;
+	@apply bg-stone-900 border border-stone-500 w-96;
+	display: grid;
+	gap: 1rem;
+	grid-template-rows: auto 1fr auto;
+	width: 50vw;
+	min-height: 50vh;
 	margin: auto;
 	padding: 20px 30px;
 	border-radius: 8px;
