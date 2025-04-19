@@ -160,20 +160,29 @@ export default {
 
 		// ============================================= UTILITY
 
-		getListLabels(rows) {
-			return rows.map(r => {
-				for (const k of Object.keys(r)) {
-					const match = this.formDescription.find(f => f.field === k);
-					if (match && match.type === "L") {
-						const code = r[k];
-						const label = this.getLabelFromListValue(match.list, r[k]);
-
-						r[k] = `[${code}] ${label}`;
-					}
-				}
-				return r;
-			});
+		_getListDictionary(entityDesc) {
+			return entityDesc.filter(f => f.type === "L")
+				.reduce((a, f) => {
+					a[f.field] = f.list
+					return a;
+				}, {});
 		},
+
+		getListLabels(rows) {
+			const listDictionary = this._getListDictionary(this.formDescription);
+			return Object.keys(listDictionary).length > 0
+				? rows.map(row => this._getLabelsForRow(row, listDictionary))
+				: rows;
+		},
+
+		_getLabelsForRow(row, listDictionary) {
+			for (const k of Object.keys(listDictionary)) {
+				const code = row[k];
+				const label = this.getLabelFromListValue(listDictionary[k], row[k]);
+				row[k] = `[${code}] ${label}`;
+			}
+			return row;
+		}
 
 	}
 
