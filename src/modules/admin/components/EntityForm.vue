@@ -35,9 +35,9 @@ EntityForm must pass :
 -->
 
 <template>
-	<div data-test="admin-form-root">
+	<div data-test="entity-form-root">
 		<!-- THE FORM -->
-		<div class="w-1/2">
+		<div class="max-w-[60vw]">
 			<BxForm
 				ref="bxForm"
 				:description="formDescription"
@@ -46,7 +46,7 @@ EntityForm must pass :
 		</div>
 		<div class="h-4"></div>
 		<!-- THE BUTTONS -->
-		<div class="flex justify-between w-1/2 border border-stone-500 rounded p-1">
+		<div class="flex justify-between border border-stone-500 rounded p-1">
 			<button
 				class="
 					w-32 bg-stone-800 border border-stone-500 text-stone-500 hover:bg-stone-900

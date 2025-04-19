@@ -75,13 +75,11 @@ function close() {
 }
 
 .bx-modal-header {
-	margin-top: 0;
 	text-align: center;
 }
 
 .bx-modal-body {
-	margin: 20px 0;
-	max-height: 65vh;
+	max-height: 75vh;
 	overflow-y: auto;
 }
 

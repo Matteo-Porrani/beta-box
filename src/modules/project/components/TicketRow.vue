@@ -19,9 +19,14 @@
 					:shade="ticket.status.color?.shade ?? '500'"
 				/>
 			</div>
-			<div class="bg-stone-300 rounded grid items-center">
-				<p class="text-stone-800">{{ ticket.title }}</p>
-			</div>
+
+			<button
+				class="bg-stone-300 hover:bg-stone-400 text-stone-800 rounded grid items-center"
+				@click="$emit('editTicket', ticket.id)"
+			>
+				{{ ticket.title }}
+			</button>
+
 			<div>{{ ticket.topic?.name ?? "-" }}</div>
 			<div>{{ ticket.description }}</div>
 			<div>{{ ticket.comment }}</div>

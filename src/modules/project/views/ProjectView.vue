@@ -1,4 +1,21 @@
 <template>
+
+	<BxModal ref="modal_ref">
+		<template #header>TTT</template>
+		<template #body>
+			<EntityForm
+				ref="entity_form_ref"
+				table-name="ticket"
+				:form-description="entityDescription"
+				@item-saved="closeModal"
+				@cancel="closeModal"
+			/>
+		</template>
+		<template #footer>
+			<span></span>
+		</template>
+	</BxModal>
+
 	<DefaultLayout>
 		<h1 class="text-lg font-bold">Project</h1>
 
@@ -33,6 +50,7 @@
 				v-for="t in tickets"
 				:key="t.id"
 				:ticket="t"
+				@edit-ticket="onEditTicket"
 			/>
 		</section>
 	</DefaultLayout>
@@ -40,18 +58,28 @@
 
 
 <script>
+// Vue related
+import { nextTick } from "vue";
 // services
 import ProjectSrv from "@/modules/project/services/ProjectSrv";
 import TableSrv from "@/modules/core/services/TableSrv";
+import EntitySrv from "@/modules/core/services/EntitySrv";
+// utils
+import { nrm } from "@/modules/core/utils/core-utils";
 // components
+import BxModal from "@/components/UI/BxModal.vue";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import TicketRow from "@/modules/project/components/TicketRow.vue";
 import TheSortFilterBar from "@/modules/core/components/TheSortFilterBar.vue";
+import EntityForm from "@/modules/admin/components/EntityForm.vue";
+
 
 export default {
 
 	name: "ProjectView",
 	components: {
+		EntityForm,
+		BxModal,
 		DefaultLayout,
 		TheSortFilterBar,
 		TicketRow,
@@ -83,6 +111,7 @@ export default {
 				"active"
 			],
 
+			entityDescription: EntitySrv.getEntityDescription("Ticket"),
 		}
 	},
 
@@ -105,23 +134,31 @@ export default {
 		}
 	},
 
-
 	methods: {
 		// react to changes in sort or filter
 		onSortFilterChange(e) {
 			const { key, value } = e;
 			this[key] = value;
 		},
+
+		onEditTicket(id) {
+			// retrieve NON-HYDRATED objects
+			const srcObject = ProjectSrv.getSrcTickets().find(t => t.id === id)
+			const clone = nrm(srcObject);
+			this.openModal();
+			nextTick(() => this.$refs.entity_form_ref.onEditItem(clone));
+		},
+
+		openModal() {
+			this.$refs.modal_ref.open();
+		},
+
+		closeModal() {
+			this.$refs.modal_ref.close();
+		}
 	}
 
 }
 </script>
 
-
-<style scoped>
-input,
-select {
-	@apply bg-stone-700 rounded text-stone-200 p-1
-}
-</style>
 

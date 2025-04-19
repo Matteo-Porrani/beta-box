@@ -20,6 +20,11 @@ class ProjectSrv {
 	
 	// =============================================
 	
+	getSrcTickets() {
+		return nrm(EntitySrv.getItems("ticket"));
+	}
+	
+	
 	getTickets(sortByCol, sortAsc, needle, filterByCol, { showActive, showInactive }) {
 		const desc = this.#getTicketEntityDescription();
 		const tickets = nrm(EntitySrv.getItems("ticket"));
