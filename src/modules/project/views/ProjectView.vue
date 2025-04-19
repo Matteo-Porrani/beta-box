@@ -111,7 +111,7 @@ export default {
 				"active"
 			],
 
-			entityDescription: EntitySrv.getEntityDescription("Ticket"),
+			entityDescription: null,
 		}
 	},
 
@@ -132,6 +132,10 @@ export default {
 
 			return t;
 		}
+	},
+
+	created() {
+		this.entityDescription = EntitySrv.getEntityDescription("ticket");
 	},
 
 	methods: {
