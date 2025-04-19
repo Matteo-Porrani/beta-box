@@ -1,6 +1,6 @@
 <template>
 	<article
-		class="grid gap-2 border border-stone-500 text-stone-300 text-sm rounded p-1 h-10 items-center"
+		class="grid gap-2 border border-stone-500 text-stone-300 text-sm rounded p-1 h-8 items-center"
 		:class="{ 'bg-stone-500' : ticket.isHeader }"
 	>
 
@@ -27,6 +27,7 @@
 			<div>{{ ticket.comment }}</div>
 			<div>{{ sprints }}</div>
 			<div>{{ ticket.phase }}</div>
+			<div>{{ ticket.active }}</div>
 		</template>
 
 	</article>
@@ -47,7 +48,7 @@ export default {
 
 	data() {
 		return {
-			headerLabels: ["id", "status", "title", "topic",  "description", "comment", "sprint", "phase"]
+			headerLabels: ["id", "status", "title", "topic",  "description", "comment", "sprint", "phase", "active"]
 		}
 	},
 
@@ -65,7 +66,7 @@ export default {
 
 <style scoped>
 article {
-	grid-template-columns: 70px 120px 10% 10% 1fr 10% 8% 8%;
+	grid-template-columns: 70px 120px 10% 10% 1fr 10% 8% 8% 4%;
 }
 
 article > div {

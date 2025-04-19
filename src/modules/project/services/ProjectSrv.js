@@ -20,41 +20,25 @@ class ProjectSrv {
 	
 	// =============================================
 	
-	getTickets(sortByCol, sortAsc, needle, filterByCol) {
+	getTickets(sortByCol, sortAsc, needle, filterByCol, { showActive, showInactive }) {
 		const desc = this.#getTicketEntityDescription();
-		
 		const tickets = nrm(EntitySrv.getItems("ticket"));
 		
-		const hydratedTickets = tickets.reduce((a, t) => {
+		let hydratedTickets = tickets.reduce((a, t) => {
 			a.push(HydrationSrv.hydrateObject(t, desc))
 			return a;
 		}, [])
 		
 		sortRows(hydratedTickets, sortByCol, sortAsc);
 		
+		// filter on "active" key
+		if (showActive && !showInactive) hydratedTickets = hydratedTickets.filter(t => t.active);
+		if (!showActive && showInactive) hydratedTickets = hydratedTickets.filter(t => !t.active);
+		
 		return needle
 			? SearchSrv.filterObjectsByNeedle(hydratedTickets, needle, filterByCol)
 			: hydratedTickets;
 	}
-	
-	// _sortBy(rows, byKey, order) {
-	// 	rows.sort((a, b) => {
-	// 		const valA = a[byKey];
-	// 		const valB = b[byKey];
-	//
-	// 		// If both values are numbers, compare numerically
-	// 		if (!isNaN(valA) && !isNaN(valB)) {
-	// 			return Number(valA) - Number(valB);
-	// 		}
-	//
-	// 		// Otherwise, compare as strings
-	// 		return typeof valA === "object"
-	// 			? String(valA?.id).localeCompare(String(valB?.id))
-	// 			: String(valA).localeCompare(String(valB))
-	// 	});
-	//
-	// 	if (Number(order) > 0) rows.reverse();
-	// }
 	
 	#getTicketEntityDescription() {
 		return EntitySrv.getEntityDescription("ticket");

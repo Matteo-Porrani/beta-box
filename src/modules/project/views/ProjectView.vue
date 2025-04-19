@@ -11,6 +11,19 @@
 
 		<div class="h-2"/>
 
+		<div class="border border-stone-500 rounded p-1 flex justify-end gap-2">
+			<p class="flex items-center gap-2 w-32 text-center">
+				<input type="checkbox" v-model="activeConf.showActive">
+				Active
+			</p>
+			<p class="flex items-center gap-2 w-32 text-center">
+				<input type="checkbox" v-model="activeConf.showInactive">
+				Inactive
+			</p>
+		</div>
+
+		<div class="h-2"/>
+
 		<!-- TABLE -->
 		<TicketRow
 			:ticket="{ isHeader: true }"
@@ -29,6 +42,7 @@
 <script>
 // services
 import ProjectSrv from "@/modules/project/services/ProjectSrv";
+import TableSrv from "@/modules/core/services/TableSrv";
 // components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import TicketRow from "@/modules/project/components/TicketRow.vue";
@@ -52,8 +66,22 @@ export default {
 			filterNeedle: "",
 			showFilterByCol: false,
 
+			activeConf: {
+				showActive: true,
+				showInactive: false,
+			},
+
 			// NOT REACTIVE
-			sortKeys: ["phase", "status", "title", "topic", "comment", "description" ],
+			sortKeys: [
+				"phase",
+				"status",
+				"topic",
+				"title",
+				"comment",
+				"description",
+				"sprint",
+				"active"
+			],
 
 		}
 	},
@@ -62,12 +90,18 @@ export default {
 
 		// sorted & filtered tickets
 		tickets() {
-			return ProjectSrv.getTickets(
+			let t = ProjectSrv.getTickets(
 				this.sortByCol,
 				this.sortAsc,
 				this.filterNeedle,
-				this.filterByCol
+				this.filterByCol,
+				this.activeConf
 			) ?? []
+
+			// retrieve list labels
+			t = TableSrv.getListLabels(t, "Ticket");
+
+			return t;
 		}
 	},
 

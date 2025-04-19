@@ -1,8 +1,7 @@
 <template>
-	<div class="grid grid-cols-2 gap-2 border border-stone-500 rounded p-1">
+	<div class="flex gap-24 border border-stone-500 rounded p-1">
 		<!-- SORT -->
-		<div class="flex items-center gap-4">
-			Sort
+		<div class="flex items-center gap-2">
 			<select v-model="sortByCol" class="w-48">
 				<option
 					v-for="c in columnOptions"
@@ -23,7 +22,7 @@
 		</div>
 
 		<!-- FILTER -->
-		<div class="flex items-center gap-4">
+		<div class="flex items-center gap-2">
 			<button
 				class="bg-stone-700 hover:bg-stone-600 rounded py-1 px-2"
 				@click="resetFilter"
@@ -31,9 +30,9 @@
 				<BxIcon icon="xmark"/>
 			</button>
 
-			<div class="relative w-64">
+			<div class="relative w-72">
 				<input type="text" v-model="filterNeedle" class="w-full">
-				<BxIcon icon="search" class="absolute text-stone-300 right-1 top-1"/>
+				<BxIcon icon="search" class="absolute text-stone-500 right-1 top-1"/>
 			</div>
 
 			<BxSwitch v-model="showFilterByCol"/>
