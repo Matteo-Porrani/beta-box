@@ -29,7 +29,11 @@ Emits:
 	<div class="entity-table-root">
 
 
-		<TheSortFilterBar/>
+		<TheSortFilterBar
+			:column-options="['id', 'title', 'description', 'phase', 'status']"
+			:init-values="mockInitValues"
+			@sort-filter-change="onSortFilterChange"
+		/>
 
 		<div class="h-4"></div>
 
@@ -140,6 +144,13 @@ export default {
 				{ name: "duplicate", icon: "copy" },
 				{ name: "delete", icon: "trash" },
 			],
+
+			mockInitValues: {
+				sortByCol: "title",
+				sortAsc: false,
+				filterByCol: "phase",
+				filterNeedle: "B",
+			}
 		}
 	},
 
@@ -203,6 +214,10 @@ export default {
 		// =============================================
 		// EVENT HANDLERS
 		// =============================================
+
+		onSortFilterChange(e) {
+			console.log("//// onSortFilterChange", e)
+		},
 
 		onRowAction(payload) {
 			const { action, data } = payload;

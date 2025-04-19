@@ -1,13 +1,17 @@
 <template>
 
+	<div class="border rounded p-1">
+		<pre>filterByCol: {{ filterByCol }}</pre>
+	</div>
+
 	<div class="grid grid-cols-2 gap-2 border border-lime-500 rounded p-1">
 
 		<!-- SORT -->
 		<div class="flex items-center gap-4">
 			Sort
-			<select v-model="sortBy" class="w-48">
+			<select v-model="sortByCol" class="w-48">
 				<option
-					v-for="c in mock.cols"
+					v-for="c in columnOptions"
 					:key="c"
 					:value="c"
 				>{{ c }}</option>
@@ -34,7 +38,7 @@
 			</button>
 
 			<div class="relative w-64">
-				<input type="text" v-model="filterMatch" class="w-full">
+				<input type="text" v-model="filterNeedle" class="w-full">
 				<BxIcon icon="search" class="absolute text-stone-300 right-1 top-1"/>
 			</div>
 
@@ -42,11 +46,11 @@
 
 			<select
 				v-if="showFilterByCol"
-				v-model="filterBy"
+				v-model="filterByCol"
 				class="w-48"
 			>
 				<option
-					v-for="c in mock.cols"
+					v-for="c in columnOptions"
 					:key="c"
 					:value="c"
 				>{{ c }}</option>
@@ -61,6 +65,9 @@
 </template>
 
 <script>
+// Vue related
+import { nextTick } from "vue";
+//
 import BxIcon from "@/components/UI/BxIcon.vue";
 import BxSwitch from "@/components/UI/BxForm/fields/BxSwitch.vue";
 
@@ -68,28 +75,90 @@ export default {
 	name: "TheSortFilterBar",
 	components: { BxSwitch, BxIcon },
 
+	props: {
+
+		// @example ["one", "two", "three", "description"]
+		columnOptions: {
+			type: Array,
+			default: () => []
+		},
+
+		// @example { sortByCol: "title", sortAsc: false, filterByCol: null, filterNeedle: "" }
+		initValues: {
+			type: Object,
+			default: null,
+		}
+
+	},
+
+	emits: ["sortFilterChange"],
+
 	data() {
 
 		return {
-			sortBy: "one",
+			sortByCol: "one",
 			sortAsc: true,
-			filterBy: "one",
-			filterMatch: "",
+
+			filterByCol: null,
+			filterNeedle: "",
 			showFilterByCol: false,
+
 			mock: {
 				cols: ["one", "two", "three", "description"]
 			}
 		}
 	},
 
+	beforeMount() {
+		if (this.columnOptions && Array.isArray(this.columnOptions) && this.columnOptions.length > 0) {
+			this.sortByCol = this.columnOptions[0];
+		}
+
+		if (this.initValues) {
+			for (const [k, v] of Object.entries(this.initValues)) {
+				// console.log("init", k, v)
+				if (k === "filterByCol") this.showFilterByCol = true;
+				nextTick(() => this[k] = v)
+			}
+		}
+	},
+
 	methods: {
 		resetFilter() {
-			this.filterBy = "";
+			this.filterByCol = "";
 		},
 
 		toggleOrder() {
 			this.sortAsc = !this.sortAsc;
 		}
+	},
+
+	watch: {
+		showFilterByCol(show) {
+			if (!show) this.filterByCol = null;
+
+			if (show) {
+				this.filterByCol = this.columnOptions[0]
+			}
+		},
+
+		sortByCol(newVal) {
+			this.$emit("sortFilterChange", { key: "sortByCol", value: newVal })
+		},
+
+		sortAsc(newVal) {
+			this.$emit("sortFilterChange", { key: "sortAsc", value: newVal })
+		},
+
+		filterByCol(newVal) {
+			this.$emit("sortFilterChange", { key: "filterByCol", value: newVal })
+		},
+
+		filterNeedle(newVal) {
+			this.$emit("sortFilterChange", { key: "filterByCol", value: newVal })
+		},
+
+
 	}
 }
 </script>
