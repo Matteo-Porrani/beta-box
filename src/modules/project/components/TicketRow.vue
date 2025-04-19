@@ -55,10 +55,6 @@ export default {
 				? this.ticket.sprint.map(s => s.name).join(" / ")
 				:  "-";
 		},
-
-		status() {
-			return this.ticket.status ?? null;
-		}
 	}
 
 }
