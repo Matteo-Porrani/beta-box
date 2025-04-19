@@ -1,15 +1,20 @@
 <template>
 	<DefaultLayout>
 		<template #default>
+			<section
+				v-if="ticket"
+				data-test="ticket-detail-view-root"
+				class="h-[92vh] grid grid-rows-[auto_1fr_auto] gap-2"
+			>
 
-			<h1 class="text-3xl">TicketDetailView</h1>
-			<h1 class="text-3xl">{{ ticketId }}</h1>
+				<TicketDetailHeader :ticket="ticket"/>
 
-			<section v-if="ticket">
-				<pre>{{ ticket }}</pre>
+
+				<div class="body border border-blue-400"></div>
+
+				<TicketDetailFooter :ticket="ticket"/>
+
 			</section>
-
-
 		</template>
 	</DefaultLayout>
 </template>
@@ -19,10 +24,12 @@
 
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import ProjectSrv from "@/modules/project/services/ProjectSrv";
+import TicketDetailHeader from "@/modules/project/components/detail/TicketDetailHeader.vue";
+import TicketDetailFooter from "@/modules/project/components/detail/TicketDetailFooter.vue";
 
 export default {
 	name: "TicketDetailView",
-	components: { DefaultLayout },
+	components: { TicketDetailFooter, TicketDetailHeader, DefaultLayout },
 
 	data() {
 		return {
