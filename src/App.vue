@@ -5,6 +5,7 @@ https://dexie.org/docs/API-Reference
 https://tabler.io/icons
 https://tabler.io/docs/icons/libraries/vue
 https://gradienty.codes/tailwind-colors
+https://www.streamlinehq.com/?tab=free
 
 https://dummyjson.com/docs
 
