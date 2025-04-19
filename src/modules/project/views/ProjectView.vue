@@ -156,6 +156,12 @@ export default {
 
 		onOpenDetail(id) {
 			console.log("/// onOpenDetail", id)
+			this.$router.push({
+				name: "ticket_detail",
+				params: {
+					id: id
+				}
+			})
 		},
 
 		openModal() {

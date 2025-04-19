@@ -45,6 +45,31 @@ class ProjectSrv {
 			: hydratedTickets;
 	}
 	
+	getTicketById(id) {
+		const tickets = this.getTickets("id", true, "", null, { showActive: true, showInactive: true});
+		const t = tickets.find(t => t.id === Number(id));
+		return {
+			...t,
+			activities: this.#getActivitiesByTicketId(id)
+		}
+	}
+	
+	#getActivitiesByTicketId(id) {
+		const activities = EntitySrv.getItems("activity");
+		return activities.map(a => {
+			return {
+				day: this.#getDayDateById(Number(a.day)),
+				ticket: Number(a.tickets),
+				duration: a.duration
+			}
+		}).filter(a => a.ticket === Number(id))
+	}
+	
+	#getDayDateById(id) {
+		const days = EntitySrv.getItems("day");
+		return days.find(d => d.id === Number(id)).date
+	}
+	
 	#getTicketEntityDescription() {
 		return EntitySrv.getEntityDescription("ticket");
 	}
