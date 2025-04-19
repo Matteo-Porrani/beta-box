@@ -17,12 +17,15 @@
 		ref="modal_ref"
 	>
 		<template #header>
-			<h2 class="text-2xl font-bold">{{ entity }}</h2>
+			<h2 class="text-lg font-bold">{{ entity }}</h2>
 		</template>
 		<template #body>
-			<div class="space-y-2">
-				<div
-					class="flex items-center gap-2 bg-stone-800 font-bold rounded p-1"
+			<div class="space-y-1">
+
+				<!-- HEADER ROW -->
+				<section
+					class="grid items-center bg-stone-800 font-bold rounded p-1"
+					:class="gridColsClass"
 				>
 					<div data-field="id"/>
 					<div
@@ -30,12 +33,14 @@
 						:key="c"
 						:data-field="c"
 					>{{ c }}</div>
-				</div>
+				</section>
 
-				<div
+				<!-- NORMAL ROWS -->
+				<section
 					v-for="r in rows"
 					:key="r.id"
-					class="flex items-center gap-4 border border-stone-500 rounded p-1"
+					class="grid items-center border border-stone-500 rounded p-1"
+					:class="gridColsClass"
 				>
 					<div data-field="id" class="grid">
 						<input
@@ -55,7 +60,7 @@
 					>
 						{{ r[c] }}
 					</p>
-				</div>
+				</section>
 			</div>
 		</template>
 		<template #footer>
@@ -133,7 +138,17 @@ export default {
 		},
 
 		gridColsClass() {
-			return `grid-cols-${this.cols.length + 1}`;
+			console.log("------", this.cols.length)
+
+			let t = "";
+			for (let i = 1; i <= (this.cols.length - 1); i++) {
+				t += "_1fr";
+			}
+
+			console.log(">>>>>>", `grid-cols-[80px_100px${t}]`)
+
+			// return "grid-cols-[80px_100px_1fr_1fr]"
+			return `grid-cols-[80px_100px${t}]`;
 		},
 
 	},
@@ -206,7 +221,7 @@ export default {
 <style scoped>
 input,
 select {
-	@apply bg-stone-700 rounded text-stone-200 p-1 text-xl
+	@apply bg-stone-700 rounded text-stone-200 p-1 text-lg
 }
 
 input[readonly] {
@@ -217,11 +232,9 @@ input[readonly] {
 	width: 60px;
 }
 /*
-grid-cols-2
-grid-cols-3
-grid-cols-4
-grid-cols-5
-grid-cols-6
+grid-cols-[80px_100px_1fr]
+grid-cols-[80px_100px_1fr_1fr]
+grid-cols-[80px_100px_1fr_1fr_1fr]
 */
 </style>
 
