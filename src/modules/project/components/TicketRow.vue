@@ -19,7 +19,7 @@
 					:shade="ticket.status.color?.shade ?? '500'"
 				/>
 			</div>
-			<div class="font-bold bg-stone-300 rounded grid items-center">
+			<div class="bg-stone-300 rounded grid items-center">
 				<p class="text-stone-800">{{ ticket.title }}</p>
 			</div>
 			<div>{{ ticket.topic?.name ?? "-" }}</div>
