@@ -11,8 +11,6 @@
 		<template v-else>
 			<div>{{ ticket.id }}</div>
 			<div>
-				<p v-if="ticket.isHeader">{{ ticket.status }}</p>
-
 				<BxBadge
 					v-if="ticket.status"
 					:title="ticket.status.id"
@@ -53,8 +51,6 @@ export default {
 
 	computed: {
 		sprints() {
-			if (this.ticket.sprint === "sprint") return "sprint";
-
 			return (this.ticket.sprint && Array.isArray(this.ticket.sprint))
 				? this.ticket.sprint.map(s => s.name).join(" / ")
 				:  "-";
@@ -75,7 +71,6 @@ article {
 }
 
 article > div {
-	//border: 1px solid #ccc;
 	text-wrap: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
