@@ -3,6 +3,7 @@ const DefaultModule = () => import("../DefaultModule.vue"); // the wrapper modul
 const ProjectView = () => import("./views/ProjectView.vue");
 const TicketDetailView = () => import("./views/TicketDetailView.vue");
 const TicketDetailActivity = () => import("./views/children/TicketDetailActivity.vue");
+const TicketDetailNotes = () => import("./views/children/TicketDetailNotes.vue");
 
 const moduleRoute = {
 	path: "/project",
@@ -27,7 +28,7 @@ const moduleRoute = {
 				{
 					name: "ticket_detail_notes",
 					path: "notes",
-					component: TicketDetailActivity,
+					component: TicketDetailNotes,
 				},
 			]
 		}

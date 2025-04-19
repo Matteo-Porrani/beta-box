@@ -1,6 +1,6 @@
 <template>
 	<article
-		class="grid gap-2 border border-stone-500 text-stone-300 text-sm rounded p-1 h-8 items-center"
+		class="grid gap-1 border border-stone-500 text-stone-300 text-sm rounded p-1 h-8 items-center"
 		:class="{ 'bg-stone-500' : ticket.isHeader }"
 	>
 
@@ -9,14 +9,7 @@
 		</template>
 
 		<template v-else>
-			<div class="grid place-content-center">
-				<button
-					class="hover:text-lime-500"
-					@click="$emit('openDetail', ticket.id)"
-				>
-					<BxIcon icon="card_id"/>
-				</button>
-			</div>
+
 			<div>{{ ticket.id }}</div>
 			<div>
 				<BxBadge
@@ -26,6 +19,15 @@
 					:color="ticket.status.color?.name ?? 'stone'"
 					:shade="ticket.status.color?.shade ?? '500'"
 				/>
+			</div>
+
+			<div class="grid place-content-center">
+				<button
+					class="hover:text-lime-500"
+					@click="$emit('openDetail', ticket.id)"
+				>
+					<BxIcon icon="card_id"/>
+				</button>
 			</div>
 
 			<button
@@ -64,7 +66,7 @@ export default {
 
 	data() {
 		return {
-			headerLabels: ["", "id", "status", "title", "topic",  "description", "comment", "sprint", "phase", "active"]
+			headerLabels: ["id", "status", "", "title", "topic", "description", "comment", "sprint", "phase", "active"]
 		}
 	},
 
@@ -82,7 +84,7 @@ export default {
 
 <style scoped>
 article {
-	grid-template-columns: 40px 70px 120px 10% 10% 1fr 10% 8% 8% 4%;
+	grid-template-columns: 70px 120px 40px 10% 10% 1fr 10% 8% 8% 4%;
 }
 
 article > div {

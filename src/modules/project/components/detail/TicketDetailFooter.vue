@@ -1,5 +1,5 @@
 <template>
-	<div class="border-t border-stone-500 pt-4">
+	<div class="">
 
 		<div class="grid grid-cols-2 items-center">
 			<div class="flex gap-2 items-center">

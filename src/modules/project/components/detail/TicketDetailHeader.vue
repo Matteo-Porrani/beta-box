@@ -1,21 +1,16 @@
 <template>
-	<div class="">
-
-		<div class="w-fit">
-			<router-link
-				to="/project"
-			>
-				<BxIcon
-					icon="arrow_left"
-					class="hover:text-lime-500"
-				/>
-			</router-link>
-		</div>
-
-		<div class="h-2"/>
-
-		<div class="grid grid-cols-5 items-center">
-			<h1 class="text-2xl font-bold">{{ ticket.title }}</h1>
+	<section>
+		<!-- TOP -->
+		<div class="grid grid-cols-6 gap-4 items-center">
+			<h1 class="col-span-2 flex gap-2 items-center text-2xl font-bold">
+				<router-link
+					class="w-8 grid place-content-center hover:bg-stone-600 border-stone-500 border rounded"
+					to="/project"
+				>
+					<BxIcon icon="arrow_left"/>
+				</router-link>
+				{{ ticket.title }}
+			</h1>
 
 			<div class="flex gap-2 items-center">
 				<DetailIcon icon="team"/>
@@ -30,7 +25,7 @@
 
 
 			<div class="flex gap-2 items-center">
-				<DetailIcon icon="dashboard"/>
+<!--				<DetailIcon icon="dashboard"/>-->
 				<PhaseStepper :curr-phase="ticket.phase"/>
 			</div>
 
@@ -49,22 +44,22 @@
 
 		<div class="h-5"/>
 
-		<div class="grid grid-cols-6 gap-10 h-16 text-xl">
+		<!-- BOTTOM -->
+		<div class="grid grid-cols-6 gap-6 h-16 text-xl">
 			<div class="col-span-4 bg-stone-700 rounded p-1">
 				<p>{{ ticket.description }}</p>
 			</div>
-
 			<div class="col-span-2 bg-stone-700 rounded p-1">
 				<p>{{ ticket.comment }}</p>
 			</div>
-
 		</div>
-	</div>
+
+		<div class="spacer h-16"></div>
+	</section>
 </template>
 
 
 <script>
-
 import BxBadge from "@/components/UI/BxBadge.vue";
 import BxIcon from "@/components/UI/BxIcon.vue";
 import DetailIcon from "@/modules/project/components/detail/DetailIcon.vue";

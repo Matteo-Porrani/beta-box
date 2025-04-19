@@ -9,19 +9,27 @@
 
 				<TicketDetailHeader :ticket="ticket"/>
 
-				<div class="body pt-16">
-					<nav class="flex gap-4 text-xl">
+				<div class="body grid grid-rows-[auto_1fr]">
+					<nav class="flex gap-8 text-xl mb-2">
 						<router-link
-							to="/activity"
-						>Activity</router-link>
-<!--						<router-link-->
-<!--							to="/notes"-->
-<!--						>Notes</router-link>-->
+							:to="{ name: 'ticket_detail_activity' }"
+							:class="currLinkClass('activity')"
+						>
+							Activity
+						</router-link>
+
+						<router-link
+							:to="{ name: 'ticket_detail_notes' }"
+							:class="currLinkClass('notes')"
+						>
+							Notes
+						</router-link>
 					</nav>
 
-					<div class="h-4"/>
+					<div class=" rounded border border-stone-500 p-2">
+						<router-view/>
+					</div>
 
-					<router-view/>
 				</div>
 
 				<TicketDetailFooter :ticket="ticket"/>
@@ -39,6 +47,7 @@ import ProjectSrv from "@/modules/project/services/ProjectSrv";
 import TicketDetailHeader from "@/modules/project/components/detail/TicketDetailHeader.vue";
 import TicketDetailFooter from "@/modules/project/components/detail/TicketDetailFooter.vue";
 import { nrm } from "@/modules/core/utils/core-utils";
+import activity from "@/modules/activity";
 
 export default {
 	name: "TicketDetailView",
@@ -57,9 +66,25 @@ export default {
 	},
 
 	computed: {
+		activity() {
+			return activity
+		},
 		ticketId() {
 			return this.$route.params.id
 		},
+
+		currChildren() {
+			if (this.$route.path.includes("/activity")) return "activity";
+			if (this.$route.path.includes("/notes")) return "notes";
+			return "";
+		},
+
+		currLinkClass() {
+			return (keyword) => {
+				return this.$route.path.includes(keyword) ? "text-lime-500" : "text-stone-500"
+			}
+		}
+
 	},
 
 	beforeMount() {
