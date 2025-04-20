@@ -26,7 +26,8 @@ class TableSrv {
 			const code = row[k];
 			// const label = this.getLabelFromListValue(listDictionary[k], row[k]);
 			const label = store.getters["entity/getLabelFromListValue"](listDictionary[k], row[k])
-			row[k] = `[${code}] ${label}`;
+			// row[k] = `[${code}] ${label}`;
+			row[k] = label;
 		}
 		return row;
 	}

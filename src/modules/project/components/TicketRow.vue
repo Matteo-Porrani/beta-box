@@ -9,8 +9,10 @@
 		</template>
 
 		<template v-else>
+<!--			<div>{{ ticket.id }}</div>-->
 
-			<div>{{ ticket.id }}</div>
+			<div>{{ ticket.phase }}</div>
+
 			<div>
 				<BxBadge
 					v-if="ticket.status"
@@ -41,7 +43,7 @@
 			<div>{{ ticket.description }}</div>
 			<div>{{ ticket.comment }}</div>
 			<div>{{ sprints }}</div>
-			<div>{{ ticket.phase }}</div>
+
 			<div>{{ ticket.active }}</div>
 		</template>
 
@@ -66,7 +68,11 @@ export default {
 
 	data() {
 		return {
-			headerLabels: ["id", "status", "", "title", "topic", "description", "comment", "sprint", "phase", "active"]
+			headerLabels: [
+				// "id",
+				"phase",
+				"status",
+				"", "title", "topic", "description", "comment", "sprint", "active"]
 		}
 	},
 
@@ -84,7 +90,8 @@ export default {
 
 <style scoped>
 article {
-	grid-template-columns: 70px 120px 40px 10% 10% 1fr 10% 8% 8% 4%;
+	//grid-template-columns: 70px 120px 40px 10% 10% 1fr 10% 8% 8% 4%;
+	grid-template-columns: 4% 120px 40px 10% 10% 1fr 10% 8% 4%;
 }
 
 article > div {

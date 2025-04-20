@@ -178,11 +178,8 @@ class ActivitySrv {
 	}
 	
 	_isCurrentDay(dayDate) {
-		console.log("dayDate", dayDate)
-		
 		const inputDate = moment(dayDate.replace('@', ':'), 'YYYY-MM-DD:HH:mm');
 		return inputDate.isSame(moment(), 'day');
-		// return false;
 	}
 	
 	// =============================================
