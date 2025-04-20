@@ -45,6 +45,11 @@ export function snakeToPascal(str) {
 	return str.replace(/(^|_)(\w)/g, (_, prefix, letter) => letter.toUpperCase());
 }
 
+// uppercase first letter
+export function ucFirst(str) {
+	return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 // =============================================
 // OTHER
 // =============================================

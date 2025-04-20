@@ -21,24 +21,18 @@
 				<div class="body grid grid-rows-[auto_1fr]">
 					<nav class="flex gap-8 text-xl mb-2">
 						<router-link
-							:to="{ name: 'ticket_detail_activity' }"
-							:class="currLinkClass('activity')"
+							v-for="t in tabs"
+							:key="t"
+							:to="{ name: `ticket_detail_${t}` }"
+							:class="currLinkClass(t)"
 						>
-							Activity
-						</router-link>
-
-						<router-link
-							:to="{ name: 'ticket_detail_notes' }"
-							:class="currLinkClass('notes')"
-						>
-							Notes
+							{{ ucFirst(t) }}
 						</router-link>
 					</nav>
 
-					<div class=" rounded border border-stone-500 p-2">
+					<div class="rounded border border-stone-500 p-2">
 						<router-view/>
 					</div>
-
 				</div>
 
 				<TicketDetailFooter :ticket="ticket"/>
@@ -50,14 +44,18 @@
 
 
 <script>
+// Vue related
 import { computed } from "vue";
-import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+// services
 import ProjectSrv from "@/modules/project/services/ProjectSrv";
+// utils
+import { nrm, ucFirst } from "@/modules/core/utils/core-utils";
+// components
+import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import TicketDetailHeader from "@/modules/project/components/detail/TicketDetailHeader.vue";
 import TicketDetailFooter from "@/modules/project/components/detail/TicketDetailFooter.vue";
-import { nrm } from "@/modules/core/utils/core-utils";
-import activity from "@/modules/activity";
 import TicketModalEditor from "@/modules/project/components/TicketModalEditor.vue";
+
 
 export default {
 	name: "TicketDetailView",
@@ -66,6 +64,7 @@ export default {
 	data() {
 		return {
 			ticket: null,
+			tabs: ["activity", "notes"],
 		}
 	},
 
@@ -76,9 +75,6 @@ export default {
 	},
 
 	computed: {
-		activity() {
-			return activity
-		},
 		ticketId() {
 			return this.$route.params.id
 		},
@@ -88,7 +84,6 @@ export default {
 				return this.$route.path.includes(keyword) ? "text-lime-500" : "text-stone-500"
 			}
 		}
-
 	},
 
 	beforeMount() {
@@ -96,6 +91,7 @@ export default {
 	},
 
 	methods: {
+		ucFirst,
 
 		// ============================================= INIT
 
