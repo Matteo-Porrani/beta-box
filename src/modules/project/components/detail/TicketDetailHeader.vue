@@ -58,7 +58,17 @@
 			</div>
 		</div>
 
+		<!-- URL -->
+		<div class="h-8">
+			<a
+				:href="ticket.url"
+				class="font-mono text-sm hover:text-lime-500 hover:underline"
+				target="_blank"
+			>{{ ticket.url }}</a>
+		</div>
+
 		<div class="spacer h-16"></div>
+
 	</section>
 </template>
 
