@@ -1,20 +1,7 @@
 <template>
-
-	<BxModal ref="modal_ref">
-		<template #header>TTT</template>
-		<template #body>
-			<EntityForm
-				ref="entity_form_ref"
-				table-name="ticket"
-				:form-description="entityDescription"
-				@item-saved="closeModal"
-				@cancel="closeModal"
-			/>
-		</template>
-		<template #footer>
-			<span></span>
-		</template>
-	</BxModal>
+	<TicketModalEditor
+		ref="ticketEditor_ref"
+	/>
 
 	<DefaultLayout>
 		<h1 class="text-lg font-bold">Project</h1>
@@ -59,29 +46,22 @@
 
 
 <script>
-// Vue related
-import { nextTick } from "vue";
 // services
 import ProjectSrv from "@/modules/project/services/ProjectSrv";
 import TableSrv from "@/modules/core/services/TableSrv";
-import EntitySrv from "@/modules/core/services/EntitySrv";
-// utils
-import { nrm } from "@/modules/core/utils/core-utils";
 // components
-import BxModal from "@/components/UI/BxModal.vue";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
-import TicketRow from "@/modules/project/components/TicketRow.vue";
+import TicketModalEditor from "@/modules/project/components/TicketModalEditor.vue";
 import TheSortFilterBar from "@/modules/core/components/TheSortFilterBar.vue";
-import EntityForm from "@/modules/admin/components/EntityForm.vue";
+import TicketRow from "@/modules/project/components/TicketRow.vue";
 
 
 export default {
 
 	name: "ProjectView",
 	components: {
-		EntityForm,
-		BxModal,
 		DefaultLayout,
+		TicketModalEditor,
 		TheSortFilterBar,
 		TicketRow,
 	},
@@ -111,8 +91,6 @@ export default {
 				"sprint",
 				"active"
 			],
-
-			entityDescription: null,
 		}
 	},
 
@@ -135,10 +113,6 @@ export default {
 		}
 	},
 
-	created() {
-		this.entityDescription = EntitySrv.getEntityDescription("ticket");
-	},
-
 	methods: {
 		// react to changes in sort or filter
 		onSortFilterChange(e) {
@@ -147,17 +121,17 @@ export default {
 		},
 
 		onEditTicket(id) {
-			// retrieve NON-HYDRATED objects
-			const srcObject = ProjectSrv.getSrcTickets().find(t => t.id === id)
-			const clone = nrm(srcObject);
-			this.openModal();
-			nextTick(() => this.$refs.entity_form_ref.onEditItem(clone));
+			this.$refs.ticketEditor_ref.openEditor(id);
 		},
 
+		/**
+		 * Open detail of a ticket in full page display
+		 * @param id
+		 */
 		onOpenDetail(id) {
 			/*
 			instead of navigating to /project/detail/:id
-			we navigated directly to /project/detail/:id/activity (which is a children route)
+			we navigate directly to /project/detail/:id/activity (which is a children route)
 			 */
 			this.$router.push({
 				name: "ticket_detail_activity",
@@ -167,13 +141,6 @@ export default {
 			})
 		},
 
-		openModal() {
-			this.$refs.modal_ref.open();
-		},
-
-		closeModal() {
-			this.$refs.modal_ref.close();
-		}
 	}
 
 }
