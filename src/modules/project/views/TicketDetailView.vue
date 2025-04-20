@@ -1,4 +1,10 @@
 <template>
+
+	<TicketModalEditor
+		ref="ticketEditor_ref"
+		@editor-closed="onEditorClosed"
+	/>
+
 	<DefaultLayout>
 		<template #default>
 			<section
@@ -7,7 +13,10 @@
 				class="h-[92vh] grid grid-rows-[auto_1fr_auto] gap-2"
 			>
 
-				<TicketDetailHeader :ticket="ticket"/>
+				<TicketDetailHeader
+					:ticket="ticket"
+					@edit-ticket="onEditTicket"
+				/>
 
 				<div class="body grid grid-rows-[auto_1fr]">
 					<nav class="flex gap-8 text-xl mb-2">
@@ -48,10 +57,11 @@ import TicketDetailHeader from "@/modules/project/components/detail/TicketDetail
 import TicketDetailFooter from "@/modules/project/components/detail/TicketDetailFooter.vue";
 import { nrm } from "@/modules/core/utils/core-utils";
 import activity from "@/modules/activity";
+import TicketModalEditor from "@/modules/project/components/TicketModalEditor.vue";
 
 export default {
 	name: "TicketDetailView",
-	components: { TicketDetailFooter, TicketDetailHeader, DefaultLayout },
+	components: { TicketModalEditor, TicketDetailFooter, TicketDetailHeader, DefaultLayout },
 
 	data() {
 		return {
@@ -73,12 +83,6 @@ export default {
 			return this.$route.params.id
 		},
 
-		currChildren() {
-			if (this.$route.path.includes("/activity")) return "activity";
-			if (this.$route.path.includes("/notes")) return "notes";
-			return "";
-		},
-
 		currLinkClass() {
 			return (keyword) => {
 				return this.$route.path.includes(keyword) ? "text-lime-500" : "text-stone-500"
@@ -88,7 +92,26 @@ export default {
 	},
 
 	beforeMount() {
-		this.ticket = ProjectSrv.getTicketById(this.ticketId);
+		this.getTicketData();
+	},
+
+	methods: {
+
+		// ============================================= INIT
+
+		getTicketData() {
+			this.ticket = ProjectSrv.getTicketById(this.ticketId);
+		},
+
+		// ============================================= EDITOR
+
+		onEditTicket() {
+			this.$refs.ticketEditor_ref.openEditor(this.ticketId);
+		},
+
+		onEditorClosed() {
+			this.getTicketData();
+		}
 	}
 }
 </script>

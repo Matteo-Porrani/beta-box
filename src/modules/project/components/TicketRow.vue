@@ -91,7 +91,7 @@ export default {
 <style scoped>
 article {
 	//grid-template-columns: 70px 120px 40px 10% 10% 1fr 10% 8% 8% 4%;
-	grid-template-columns: 4% 120px 40px 10% 10% 1fr 10% 8% 4%;
+	grid-template-columns: 4% 10% 40px 10% 10% 1fr 10% 8% 4%;
 }
 
 article > div {

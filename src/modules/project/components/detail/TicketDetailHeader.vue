@@ -10,6 +10,10 @@
 					<BxIcon icon="arrow_left"/>
 				</router-link>
 				{{ ticket.title }}
+
+				<button @click="$emit('editTicket')">
+					<BxIcon icon="edit"/>
+				</button>
 			</h1>
 
 			<div class="flex gap-2 items-center">
@@ -72,6 +76,8 @@ export default {
 	props: {
 		ticket: Object
 	},
+
+	emits: ["editTicket"],
 }
 </script>
 

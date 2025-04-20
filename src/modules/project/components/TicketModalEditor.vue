@@ -1,6 +1,8 @@
 <template>
 	<BxModal ref="modal_ref">
-		<template #header>Editor</template>
+		<template #header>
+			<h2 class="text-2xl font-bold">Ticket</h2>
+		</template>
 		<template #body>
 			<EntityForm
 				ref="entity_form_ref"
@@ -29,6 +31,7 @@ export default {
 	name: "TicketModalEditor",
 	components: { EntityForm, BxModal },
 
+	emits: ["editorClosed"],
 	expose: ["openEditor"],
 
 	data() {
@@ -45,7 +48,7 @@ export default {
 
 		openEditor(id) {
 			// retrieve NON-HYDRATED objects
-			const srcObject = ProjectSrv.getSrcTickets().find(t => t.id === id)
+			const srcObject = ProjectSrv.getSrcTickets().find(t => Number(t.id) === Number(id))
 			const clone = nrm(srcObject);
 			this.openModal();
 			nextTick(() => this.$refs.entity_form_ref.onEditItem(clone));
@@ -57,6 +60,7 @@ export default {
 
 		closeModal() {
 			this.$refs.modal_ref.close();
+			this.$emit("editorClosed")
 		}
 	}
 
