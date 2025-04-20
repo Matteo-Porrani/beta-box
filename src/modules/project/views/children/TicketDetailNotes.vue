@@ -2,27 +2,29 @@
 <template>
 	<section class="">
 
-		<div class="space-y-4">
+		<template v-if="!showForm">
+			<div class="space-y-4">
+				<NoteItem
+					v-for="n in notes"
+					:key="n.id"
+					:note-item="n"
+					@edit-note="onEditNote"
+					@delete-note="onDeleteNote"
+				/>
+			</div>
 
-			<NoteItem
-				v-for="n in notes"
-				:key="n.id"
-				:note-item="n"
-				@edit-note="onEditNote"
-				@delete-note="onDeleteNote"
-			/>
-		</div>
+			<div class="h-2"/>
 
-		<div class="h-5"></div>
+			<button
+				class="flex items-center gap-1 hover:text-lime-600"
+				@click="onEditNote(-1)"
+			>
+				<BxIcon icon="add"/>
+				Add
+			</button>
 
-		<button
-			v-if="!showForm"
-			class="flex items-center gap-1 hover:text-lime-600 ms-auto me-4"
-			@click="onEditNote(-1)"
-		>
-			<BxIcon icon="add"/>
-			Add
-		</button>
+			<div class="h-10"/>
+		</template>
 
 		<NoteForm
 			v-else

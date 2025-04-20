@@ -145,7 +145,7 @@ export default {
 			we navigate directly to /project/detail/:id/activity (which is a children route)
 			 */
 			this.$router.push({
-				name: "ticket_detail_activity",
+				name: "ticket_detail_notes",
 				params: {
 					id: id
 				}

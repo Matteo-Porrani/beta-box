@@ -30,7 +30,7 @@
 						</router-link>
 					</nav>
 
-					<div class="rounded border border-stone-500 p-2">
+					<div class="grid rounded border border-stone-500 p-2 overflow-y-auto">
 						<router-view/>
 					</div>
 				</div>
@@ -95,8 +95,7 @@ export default {
 	},
 
 	watch: {
-		coreKey(newVal) {
-			console.log("W", newVal)
+		coreKey() {
 			this.getTicketData();
 		}
 	},
