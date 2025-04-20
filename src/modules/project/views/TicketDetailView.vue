@@ -19,7 +19,7 @@
 				/>
 
 				<div class="body grid grid-rows-[auto_1fr] overflow-y-auto">
-					<nav class="flex gap-8 text-xl mb-2">
+					<nav class="flex gap-4 mb-2">
 						<router-link
 							v-for="t in tabs"
 							:key="t"

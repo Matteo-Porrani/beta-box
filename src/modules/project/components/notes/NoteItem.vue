@@ -10,7 +10,7 @@
 			</button>
 
 			<button
-				class="hover:text-lime-500 ms-auto"
+				class="hover:text-red-500 ms-auto"
 				@click="deleteNote"
 			>
 				<BxIcon icon="trash" size="small"/>

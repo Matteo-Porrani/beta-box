@@ -79,7 +79,7 @@ function close() {
 }
 
 .bx-modal-body {
-	max-height: 75vh;
+	max-height: 85vh;
 	overflow-y: auto;
 }
 

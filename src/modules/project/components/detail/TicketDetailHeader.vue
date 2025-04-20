@@ -9,10 +9,12 @@
 				>
 					<BxIcon icon="arrow_left"/>
 				</router-link>
-				{{ ticket.title }}
 
-				<button @click="$emit('editTicket')">
-					<BxIcon icon="edit"/>
+				<button
+					class="hover:text-lime-500"
+					@click="$emit('editTicket')"
+				>
+					{{ ticket.title }}
 				</button>
 			</h1>
 
