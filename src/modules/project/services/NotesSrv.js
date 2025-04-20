@@ -35,6 +35,8 @@ class NotesSrv {
 			tableName: "note",
 			item: prepareItem(data)
 		})
+		
+		store.commit("core/INCREMENT_KEY")
 	}
 	
 	async addItem(data) {

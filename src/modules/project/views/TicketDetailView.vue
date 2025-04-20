@@ -46,6 +46,7 @@
 <script>
 // Vue related
 import { computed } from "vue";
+import { mapState } from "vuex";
 // services
 import ProjectSrv from "@/modules/project/services/ProjectSrv";
 // utils
@@ -55,6 +56,7 @@ import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import TicketDetailHeader from "@/modules/project/components/detail/TicketDetailHeader.vue";
 import TicketDetailFooter from "@/modules/project/components/detail/TicketDetailFooter.vue";
 import TicketModalEditor from "@/modules/project/components/TicketModalEditor.vue";
+
 
 
 export default {
@@ -76,6 +78,11 @@ export default {
 	},
 
 	computed: {
+
+		...mapState({
+			coreKey: $s => $s.core.coreKey,
+		}),
+
 		ticketId() {
 			return this.$route.params.id
 		},
@@ -84,6 +91,13 @@ export default {
 			return (keyword) => {
 				return this.$route.path.includes(keyword) ? "text-lime-500" : "text-stone-500"
 			}
+		}
+	},
+
+	watch: {
+		coreKey(newVal) {
+			console.log("W", newVal)
+			this.getTicketData();
 		}
 	},
 

@@ -9,6 +9,7 @@ import store from './store/index.js'
 
 // =============================================
 // MODULES
+import coreModule from "./modules/core"
 import adminModule from "./modules/admin"
 import dataManagerModule from "./modules/data-manager" // this will import ./modules/data-manager/index.js
 import activityModule from "./modules/activity"
@@ -35,6 +36,7 @@ app.config.globalProperties.moment = moment;
 
 // Register modules
 registerModules({
+	core: coreModule,
 	admin: adminModule,
 	dataManager: dataManagerModule,
 	project: projectModule,
