@@ -1,18 +1,10 @@
 
 <template>
-	<section
-		:key="localKey"
-		class=""
-	>
-
-		<pre>{{ localKey }}</pre>
-
-		<div class="h-2"/>
-
+	<section class="">
 
 		<div class="space-y-1">
 			<div
-				v-for="n in reactiveNotes"
+				v-for="n in notes"
 				:key="n.id"
 				class="flex items-center gap-4 border border-stone-500 rounded p-1"
 			>
@@ -33,7 +25,7 @@
 		<button
 			v-if="!showForm"
 			class="flex items-center gap-1 hover:text-lime-600 ms-auto me-4"
-			@click="openNoteForm"
+			@click="openNoteForm(-1)"
 		>
 			<BxIcon icon="add"/>
 			Add
@@ -64,43 +56,28 @@ export default {
 
 	data() {
 		return {
-			localKey: 1,
 			showForm: false,
 
-			formNoteId: null,
+			formNoteId: -1,
 		}
 	},
-
-	computed: {
-		reactiveNotes() {
-			return this.notes;
-		}
-	},
-
 
 	methods: {
 		openNoteForm(id = null) {
-			console.log("/// openNoteForm")
-
 			this.formNoteId = id;
-
 			this.showForm = true;
 		},
 
 		onCloseForm() {
-			console.log(33)
-			this.formNoteId = null;
+			this.formNoteId = -1;
 			this.showForm = false;
-			this.localKey++;
 		},
 
 		async onSaveNote(data) {
-			console.log("/// onSaveNote", data)
 			await NotesSrv.saveNote(data);
 			this.onCloseForm();
 		}
 	}
-
 
 }
 </script>
