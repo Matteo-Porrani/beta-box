@@ -3,7 +3,7 @@ import Dexie from 'dexie';
 
 export const db = new Dexie('betaBoxDatabase');
 
-db.version(11).stores({
+db.version(12).stores({
 	field_definition: '++id, entity, list, rel_entity',
 	list_option: '++id, list, code, label',
 	task: '++id, desc, dueAt',
@@ -16,6 +16,7 @@ db.version(11).stores({
 	topic: '++id, name',
 	sprint: '++id, name',
 	ticket: '++id, title',
+	note: '++id, title',
 	status: '++id, name',
 });
 
