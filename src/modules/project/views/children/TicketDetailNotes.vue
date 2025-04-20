@@ -2,22 +2,13 @@
 <template>
 	<section class="">
 
-		<div class="space-y-1">
-			<div
+		<div class="space-y-4">
+
+			<NoteItem
 				v-for="n in notes"
 				:key="n.id"
-				class="flex items-center gap-4 border border-stone-500 rounded p-1"
-			>
-
-				<button
-					class="hover:text-lime-500"
-					@click="openNoteForm(n.id)"
-				>
-					<BxIcon icon="edit"/>
-				</button>
-
-				<p>{{ n.title }}</p>
-			</div>
+				:note-item="n"
+			/>
 		</div>
 
 		<div class="h-5"></div>
@@ -47,10 +38,11 @@
 import BxIcon from "@/components/UI/BxIcon.vue";
 import NoteForm from "@/modules/project/components/notes/NoteForm.vue";
 import NotesSrv from "@/modules/project/services/NotesSrv";
+import NoteItem from "@/modules/project/components/notes/NoteItem.vue";
 
 export default {
 	name: "TicketDetailNotes",
-	components: { NoteForm, BxIcon },
+	components: { NoteItem, NoteForm, BxIcon },
 
 	inject: ["notes"],
 
