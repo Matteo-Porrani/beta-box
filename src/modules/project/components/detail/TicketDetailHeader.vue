@@ -67,7 +67,7 @@
 			>{{ ticket.url }}</a>
 		</div>
 
-		<div class="spacer h-16"></div>
+		<div class="spacer h-8"></div>
 
 	</section>
 </template>

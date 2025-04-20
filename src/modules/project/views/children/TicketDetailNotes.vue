@@ -8,6 +8,8 @@
 				v-for="n in notes"
 				:key="n.id"
 				:note-item="n"
+				@edit-note="onEditNote"
+				@delete-note="onDeleteNote"
 			/>
 		</div>
 
@@ -16,7 +18,7 @@
 		<button
 			v-if="!showForm"
 			class="flex items-center gap-1 hover:text-lime-600 ms-auto me-4"
-			@click="openNoteForm(-1)"
+			@click="onEditNote(-1)"
 		>
 			<BxIcon icon="add"/>
 			Add
@@ -55,7 +57,7 @@ export default {
 	},
 
 	methods: {
-		openNoteForm(id = null) {
+		onEditNote(id = null) {
 			this.formNoteId = id;
 			this.showForm = true;
 		},
@@ -68,6 +70,11 @@ export default {
 		async onSaveNote(data) {
 			await NotesSrv.saveNote(data);
 			this.onCloseForm();
+		},
+
+		async onDeleteNote(id) {
+			console.log("/// DELETE", id)
+			await NotesSrv.deleteNote(id);
 		}
 	}
 

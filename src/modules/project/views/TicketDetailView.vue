@@ -18,7 +18,7 @@
 					@edit-ticket="onEditTicket"
 				/>
 
-				<div class="body grid grid-rows-[auto_1fr]">
+				<div class="body grid grid-rows-[auto_1fr] overflow-y-auto">
 					<nav class="flex gap-8 text-xl mb-2">
 						<router-link
 							v-for="t in tabs"
@@ -66,7 +66,7 @@ export default {
 	data() {
 		return {
 			ticket: null,
-			tabs: ["activity", "notes"],
+			tabs: [ "notes", "activity" ],
 		}
 	},
 

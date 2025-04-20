@@ -36,7 +36,7 @@ class NotesSrv {
 			item: prepareItem(data)
 		})
 		
-		store.commit("core/INCREMENT_KEY")
+		store.commit("core/INCREMENT_KEY");
 	}
 	
 	async addItem(data) {
@@ -49,6 +49,12 @@ class NotesSrv {
 		await store.dispatch("entity/updateItem", data)
 	}
 	
+	
+	async deleteNote(id) {
+		console.log("SRV - deleteNote", id)
+		await store.dispatch("entity/deleteItem", { tableName: "note", id: id })
+		store.commit("core/INCREMENT_KEY");
+	}
 }
 
 
