@@ -70,7 +70,8 @@ export default {
 
 	provide() {
 		return {
-			activity: computed(() => nrm(this.ticket?.activity))
+			activity: computed(() => nrm(this.ticket?.activity)),
+			notes: computed(() => nrm(this.ticket?.notes)),
 		}
 	},
 

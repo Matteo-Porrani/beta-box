@@ -50,13 +50,15 @@ class ProjectSrv {
 		const tickets = this.getTickets("id", true, "", null, { showActive: true, showInactive: true});
 		const t = tickets.find(t => t.id === Number(id));
 		const { activities, totalDuration } = this.#getActivitiesByTicketId(id);
+		const notes = this.#getNotesByTicketId(id);
 		
 		return {
 			...t,
 			activity: {
 				total: totalDuration,
 				items: activities,
-			}
+			},
+			notes,
 		}
 	}
 	
@@ -82,6 +84,13 @@ class ProjectSrv {
 			activities,
 			totalDuration: formatDurationFromMin(totalDuration)
 		}
+	}
+	
+	#getNotesByTicketId(id) {
+		let notes = EntitySrv.getItems("note")
+			.filter(a => Number(a.ticket) === Number(id));
+		console.log("notes", notes)
+		return notes;
 	}
 	
 	#getDayDateById(id) {

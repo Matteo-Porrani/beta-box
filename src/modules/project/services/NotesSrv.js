@@ -1,4 +1,6 @@
-import { isInteger } from "@/modules/core/utils/core-utils";
+import store from "@/store";
+
+import { isInteger, nrm } from "@/modules/core/utils/core-utils";
 import { prepareItem } from "@/modules/admin/utils/entity-utils";
 
 class NotesSrv {
@@ -11,6 +13,16 @@ class NotesSrv {
 		}
 		return NotesSrv.#instance;
 	}
+	
+	// =============================================
+
+	getNoteById(id) {
+		const n = store.getters["entity/getItemsFromTable"]("note")
+			.find(n => Number(n.id) === Number(id))
+		return nrm(n);
+	}
+
+	// =============================================
 
 	async saveNote(data) {
 		console.log("SRV - saveNote", data)
@@ -24,6 +36,17 @@ class NotesSrv {
 			item: prepareItem(data)
 		})
 	}
+	
+	async addItem(data) {
+		console.log("ADD", data)
+		await store.dispatch("entity/addItem", data)
+	}
+	
+	async updateItem(data) {
+		console.log("UPDATE", data)
+		await store.dispatch("entity/updateItem", data)
+	}
+	
 }
 
 
