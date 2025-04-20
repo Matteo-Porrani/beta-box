@@ -1,3 +1,5 @@
+import { isObjectNotNull } from "@/modules/core/utils/core-utils";
+
 /**
  * Filters an array of objects based on a search term (needle).
  * 
@@ -34,8 +36,6 @@ export function filterTableByNeedle(array, needle, specificKey = null) {
 	const lowerNeedle = String(needle).toLowerCase();
 	
 	return array.filter(obj => {
-		// console.log(JSON.stringify(obj))
-		
 		if (specificKey) {
 			// If specificKey is provided, only search within that key
 			const value = obj[specificKey];
@@ -51,19 +51,29 @@ export function filterTableByNeedle(array, needle, specificKey = null) {
 
 
 export function sortRows(rows, byKey, sortAsc) {
-	const sortedRows = rows.sort((a, b) => {
-		const valA = a[byKey];
-		const valB = b[byKey];
+	rows.sort((a, b) => {
+		let valA = a[byKey];
+		let valB = b[byKey];
+		
+		// if both values are objects, retrieve a primitive value for comparison
+		if (isObjectNotNull(valA) && isObjectNotNull(valB)) {
+			valA = _getPrimitiveSortValue(valA);
+			valB = _getPrimitiveSortValue(valB);
+		}
 		
 		// If both values are numbers, compare numerically
-		if (!isNaN(valA) && !isNaN(valB)) {
-			return Number(valA) - Number(valB);
-		}
+		if (!isNaN(valA) && !isNaN(valB)) return Number(valA) - Number(valB);
 		
 		// Otherwise, compare as strings
 		return String(valA).localeCompare(String(valB));
 	});
 	
-	if (!sortAsc) sortedRows.reverse();
-	return sortedRows;
+	if (!sortAsc) rows.reverse();
+	return rows;
+}
+
+function _getPrimitiveSortValue(objValue) {
+	if (Object.hasOwn(objValue, "name")) return objValue.name;
+	if (Object.hasOwn(objValue, "title")) return objValue.title;
+	return objValue.id;
 }

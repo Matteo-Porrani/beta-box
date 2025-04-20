@@ -35,15 +35,16 @@ EntityForm must pass :
 -->
 
 <template>
-	<div data-test="entity-form-root">
-		<!-- THE FORM -->
-		<div class="max-w-[60vw]">
-			<BxForm
-				ref="bxForm"
-				:description="formDescription"
-				@field-value-changed="onFieldValueChanged"
-			/>
-		</div>
+	<section
+		data-test="entity-form-root"
+		class="max-w-[60vw]"
+	>
+		<BxForm
+			ref="bxForm"
+			:description="formDescription"
+			@field-value-changed="onFieldValueChanged"
+		/>
+
 		<div class="h-4"></div>
 		<!-- THE BUTTONS -->
 		<div class="flex justify-between border border-stone-500 rounded p-1">
@@ -66,7 +67,7 @@ EntityForm must pass :
 				{{ formValues.id ? 'Update' : 'Add' }}
 			</button>
 		</div>
-	</div>
+	</section>
 </template>
 
 

@@ -31,6 +31,11 @@ export function isFalsy(value) {
 	return !value;
 }
 
+export function isObjectNotNull(value) {
+	if (isNullOrUndefined(value)) return false;
+	return typeof value === "object";
+}
+
 // =============================================
 // STRING CASE CONVERSION
 // =============================================
