@@ -86,6 +86,7 @@ export default {
 				"status",
 				"topic",
 				"title",
+				"team",
 				"comment",
 				"description",
 				"sprint",
