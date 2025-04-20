@@ -89,7 +89,9 @@ export default {
 
 		currLinkClass() {
 			return (keyword) => {
-				return this.$route.path.includes(keyword) ? "text-lime-500" : "text-stone-500"
+				return this.$route.path.includes(keyword)
+					? "text-lime-500"
+					: "text-stone-500"
 			}
 		}
 	},

@@ -1,6 +1,5 @@
 <template>
-	<div class="">
-
+	<div>
 		<input
 			v-model="title"
 			type="text"
@@ -16,7 +15,6 @@
 			<button @click="closeForm">Cancel</button>
 			<button @click="saveNote">OK</button>
 		</div>
-
 	</div>
 </template>
 
@@ -85,5 +83,4 @@ select {
 button {
 	@apply bg-stone-700 hover:bg-stone-600 w-24 py-1 rounded
 }
-
 </style>

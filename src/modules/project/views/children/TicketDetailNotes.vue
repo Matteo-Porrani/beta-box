@@ -1,6 +1,6 @@
 
 <template>
-	<section class="">
+	<section>
 
 		<template v-if="!showForm">
 			<div class="space-y-4">
@@ -53,7 +53,6 @@ export default {
 	data() {
 		return {
 			showForm: false,
-
 			formNoteId: -1,
 		}
 	},
@@ -69,13 +68,14 @@ export default {
 			this.showForm = false;
 		},
 
+		// =============================================
+
 		async onSaveNote(data) {
 			await NotesSrv.saveNote(data);
 			this.onCloseForm();
 		},
 
 		async onDeleteNote(id) {
-			console.log("/// DELETE", id)
 			await NotesSrv.deleteNote(id);
 		}
 	}
