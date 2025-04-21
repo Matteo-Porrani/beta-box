@@ -47,9 +47,8 @@ export default {
 	methods: {
 
 		openEditor(id) {
-			// retrieve NON-HYDRATED objects
-			const srcObject = ProjectSrv.getSrcTickets().find(t => Number(t.id) === Number(id))
-			const clone = nrm(srcObject);
+			// retrieve NON-HYDRATED source object
+			const clone = ProjectSrv.getSrcTicketCloneById(id);
 			this.openModal();
 			nextTick(() => this.$refs.entity_form_ref.onEditItem(clone));
 		},

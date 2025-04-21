@@ -1,5 +1,6 @@
 // services
 import EntitySrv from "@/modules/core/services/EntitySrv";
+import TableSrv from "@/modules/core/services/TableSrv";
 import SearchSrv from "@/modules/core/services/SearchSrv";
 import HydrationSrv from "@/modules/core/services/HydrationSrv";
 // utils
@@ -21,34 +22,36 @@ class ProjectSrv {
 	
 	// =============================================
 	
-	getSrcTickets() {
-		return nrm(EntitySrv.getItems("ticket"));
-	}
-	
-	
 	getTickets(sortByCol, sortAsc, needle, filterByCol, { showActive, showInactive }) {
 		const desc = this.#getTicketEntityDescription();
-		const tickets = nrm(EntitySrv.getItems("ticket"));
 		
-		let hydratedTickets = tickets.reduce((a, t) => {
-			a.push(HydrationSrv.hydrateObject(t, desc))
-			return a;
-		}, [])
+		// hydratedTickets
+		let ht = this.#getTicketItems().map(t => {
+			return HydrationSrv.hydrateObject(t, desc)
+		});
 		
-		sortRows(hydratedTickets, sortByCol, sortAsc);
+		// retrieve liste labels
+		ht = TableSrv.getListLabels(ht, "Ticket");
+		// filter on active / inactive
+		ht = this.#applyActiveInactiveFilter(ht, showActive, showInactive)
+		// sort
+		sortRows(ht, sortByCol, sortAsc);
 		
-		// filter on "active" key
-		if (showActive && !showInactive) hydratedTickets = hydratedTickets.filter(t => t.active);
-		if (!showActive && showInactive) hydratedTickets = hydratedTickets.filter(t => !t.active);
-		
+		// filter on custom needle
 		return needle
-			? SearchSrv.filterObjectsByNeedle(hydratedTickets, needle, filterByCol)
-			: hydratedTickets;
+			? SearchSrv.filterObjectsByNeedle(ht, needle, filterByCol)
+			: ht;
+	}
+	
+	getSrcTicketCloneById(id) {
+		const t = this.#getTicketItems().find(t => Number(t.id) === Number(id))
+		return nrm(t);
 	}
 	
 	getTicketById(id) {
 		const tickets = this.getTickets("id", true, "", null, { showActive: true, showInactive: true});
-		const t = tickets.find(t => t.id === Number(id));
+		const t = tickets.find(t => Number(t.id) === Number(id));
+
 		const { activities, totalDuration } = this.#getActivitiesByTicketId(id);
 		const notes = this.#getNotesByTicketId(id);
 		
@@ -60,6 +63,19 @@ class ProjectSrv {
 			},
 			notes,
 		}
+	}
+	
+	#applyActiveInactiveFilter(hydratedTickets, showA, showI) {
+		if (showA && !showI) hydratedTickets = hydratedTickets.filter(t => t.active);
+		if (!showA && showI) hydratedTickets = hydratedTickets.filter(t => !t.active);
+		return hydratedTickets;
+	}
+	
+	// ============================================= NOTES, ACTIVITY, DAY
+	
+	#getNotesByTicketId(id) {
+		return EntitySrv.getItems("note")
+			.filter(a => Number(a.ticket) === Number(id));
 	}
 	
 	#getActivitiesByTicketId(id) {
@@ -86,20 +102,24 @@ class ProjectSrv {
 		}
 	}
 	
-	#getNotesByTicketId(id) {
-		let notes = EntitySrv.getItems("note")
-			.filter(a => Number(a.ticket) === Number(id));
-		console.log("notes", notes)
-		return notes;
+	#getDayDateById(id) {
+		return this.#getDayItems()
+			.find(d => d.id === Number(id)).date
 	}
 	
-	#getDayDateById(id) {
-		const days = EntitySrv.getItems("day");
-		return days.find(d => d.id === Number(id)).date
-	}
+	// ============================================= DESCRIPTION
 	
 	#getTicketEntityDescription() {
 		return EntitySrv.getEntityDescription("ticket");
+	}
+	
+	// ============================================= SOURCE ITEMS
+	#getTicketItems() {
+		return nrm(EntitySrv.getItems("ticket"));
+	}
+	
+	#getDayItems() {
+		return nrm(EntitySrv.getItems("day"));
 	}
 }
 

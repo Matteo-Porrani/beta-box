@@ -122,6 +122,7 @@ export default {
 			rows = filterTableByNeedle(rows, this.filterNeedle, this.filterByCol);
 
 			// show labels instead of values for lists
+			console.log(33)
 			rows = TableSrv.getListLabels(rows, this.tableName);
 
 			return rows;

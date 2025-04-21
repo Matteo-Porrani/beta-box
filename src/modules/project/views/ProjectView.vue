@@ -19,11 +19,11 @@
 
 			<div class="flex gap-2">
 				<p class="flex items-center gap-2 w-32 text-center">
-					<input type="checkbox" v-model="activeConf.showActive">
+					<input type="checkbox" v-model="activeFilter.showActive">
 					Active
 				</p>
 				<p class="flex items-center gap-2 w-32 text-center">
-					<input type="checkbox" v-model="activeConf.showInactive">
+					<input type="checkbox" v-model="activeFilter.showInactive">
 					Inactive
 				</p>
 			</div>
@@ -76,6 +76,10 @@ export default {
 
 	data() {
 		return {
+			// table display
+			compactTable: false,
+
+			// sort & filter
 			sortByCol: "one",
 			sortAsc: true,
 
@@ -83,12 +87,10 @@ export default {
 			filterNeedle: "",
 			showFilterByCol: false,
 
-			activeConf: {
+			activeFilter: {
 				showActive: true,
 				showInactive: false,
 			},
-
-			compactTable: false,
 
 			// NOT REACTIVE
 			sortKeys: [
@@ -106,21 +108,15 @@ export default {
 	},
 
 	computed: {
-
-		// sorted & filtered tickets
+		// hydrated, sorted & filtered tickets
 		tickets() {
-			let t = ProjectSrv.getTickets(
+			return ProjectSrv.getTickets(
 				this.sortByCol,
 				this.sortAsc,
 				this.filterNeedle,
 				this.filterByCol,
-				this.activeConf
+				this.activeFilter
 			) ?? []
-
-			// retrieve list labels
-			t = TableSrv.getListLabels(t, "Ticket");
-
-			return t;
 		}
 	},
 
@@ -142,13 +138,11 @@ export default {
 		onOpenDetail(id) {
 			/*
 			instead of navigating to /project/detail/:id
-			we navigate directly to /project/detail/:id/activity (which is a children route)
+			we navigate directly to /project/detail/:id/notes (which is a children route)
 			 */
 			this.$router.push({
 				name: "ticket_detail_notes",
-				params: {
-					id: id
-				}
+				params: { id: id }
 			})
 		},
 
