@@ -7,7 +7,16 @@
 			:data-field="c"
 			:class="textColorClass(row[c])"
 		>
-			<div class="cell-content" v-html="valueRenderer(row[c])"></div>
+
+			<button
+				v-if="c === 'id'"
+				class="block w-full text-start cell-content hover:text-stone-300"
+				@click="onAction('edit')"
+			>
+				{{ row[c] }}
+			</button>
+
+			<div v-else class="cell-content" v-html="valueRenderer(row[c])"></div>
 		</component>
 		<component
 			:is="isHeader ? 'th' : 'td'"

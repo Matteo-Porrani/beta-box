@@ -90,7 +90,7 @@ export default {
 			filterNeedle: "",
 
 			actions: [
-				{ name: "edit", icon: "edit" },
+				// { name: "edit", icon: "edit" },
 				{ name: "duplicate", icon: "copy" },
 				{ name: "delete", icon: "trash" },
 			],
