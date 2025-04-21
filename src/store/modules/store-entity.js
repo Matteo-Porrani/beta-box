@@ -154,7 +154,6 @@ export default {
 		 * @returns {Promise<*>}
 		 */
 		async addItem({ dispatch }, { tableName, item }) {
-			console.log(JSON.stringify(item))
 			return await dispatch("execDatabaseAction", async () => {
 				const id = await dataSrv.add(tableName, item);
 				// reload
@@ -171,7 +170,6 @@ export default {
 		 * @returns {Promise<*>}
 		 */
 		async updateItem({ dispatch }, { tableName, item }) {
-			console.log(JSON.stringify(item))
 			return await dispatch("execDatabaseAction", async () => {
 				await dataSrv.update(tableName, item);
 				// reload
