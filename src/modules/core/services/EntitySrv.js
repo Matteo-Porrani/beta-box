@@ -1,5 +1,6 @@
 import store from "@/store";
 import { pascalToSnake } from "@/modules/core/utils/core-utils";
+import { sortRows } from "@/modules/core/utils/table-utils";
 
 class EntitySrv {
 	
@@ -14,7 +15,46 @@ class EntitySrv {
 	}
 	
 	getItems(tableName) {
+
+		
 		return store.getters["entity/getItemsFromTable"](tableName);
+	}
+	
+	logEntityFieldDefs() {
+		const fds = store.getters["entity/getItemsFromTable"]("field_definition")
+		
+		const rows = []
+		
+		for (const r of fds) {
+			const o = {};
+			[
+				"id",
+				"entity",
+				"order",
+				"field",
+				"type",
+				"pk",
+				"list",
+				"rel_entity",
+				"multiple",
+				"min",
+				"max",
+				"readonly",
+				"picker_col",
+				"filter",
+				"info",
+				"comment",
+				"required",
+			].forEach(k => {
+				o[k] = "-";
+				o[k] = r[k] ?? "-"
+			})
+			rows.push(o)
+		}
+		
+		sortRows(rows, "entity", true)
+		
+		console.log("rows", rows)
 	}
 	
 	getEntityTypes() {

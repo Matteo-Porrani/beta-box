@@ -116,7 +116,6 @@ export default {
 		_initSortFilterValues() {
 			if (this.initValues) {
 				for (const [k, v] of Object.entries(this.initValues)) {
-					console.log("init", k, v)
 					if (k === "filterByCol") this.showFilterByCol = true;
 					nextTick(() => this[k] = v)
 				}

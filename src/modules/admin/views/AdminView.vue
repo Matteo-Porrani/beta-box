@@ -74,6 +74,7 @@ import BxIcon from "@/components/UI/BxIcon.vue";
 
 import EntityTable from "@/modules/admin/components/EntityTable.vue";
 import EntityForm from "@/modules/admin/components/EntityForm.vue";
+import EntitySrv from "@/modules/core/services/EntitySrv";
 
 
 export default {
@@ -147,6 +148,10 @@ export default {
 		}
 
 		this.tableName = "ticket";
+
+		// debug
+		// EntitySrv.logEntityFieldDefs()
+
 		this.contentLoaded = true;
 	},
 
