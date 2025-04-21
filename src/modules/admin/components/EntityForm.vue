@@ -47,7 +47,7 @@ EntityForm must pass :
 
 		<div class="h-4"></div>
 		<!-- THE BUTTONS -->
-		<div class="flex justify-between border border-stone-500 rounded p-1">
+		<div class="flex justify-between">
 			<button
 				class="
 					w-32 bg-stone-800 border border-stone-500 text-stone-500 hover:bg-stone-900

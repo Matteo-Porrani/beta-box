@@ -1,7 +1,7 @@
 <template>
 	<div
 		data-test="bx-form-root"
-		class="max-h-[75vh] flex flex-col flex-wrap gap-2 border border-stone-500 rounded p-1"
+		class="max-h-[75vh] flex flex-col flex-wrap gap-2"
 	>
 		<BxFormField
 			v-for="f in description"
