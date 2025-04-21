@@ -1,10 +1,17 @@
 /**
- * HydrationSrv is a singleton responsible for hydrating reference IDs
- * in objects into full nested entity objects (e.g., from a Task with a `status` ID
- * to a Task with a nested `status` object).
+ * HydrationSrv is a singleton service responsible for transforming flat objects with reference IDs
+ * into fully nested entity objects.
+ * For example, it can convert a Ticket with a `status` ID
+ * into a Ticket with a complete nested `status` object.
  *
- * It detects which keys need to be hydrated by checking if they match known
- * entity names (table names), retrieved dynamically via EntitySrv.
+ * The service works by:
+ * 1. Detecting which keys need hydration by matching against known entity names
+ * 2. Handling both owned and non-owned relationships
+ * 3. Supporting both single (one-to-one) and multiple (one-to-many) relationships
+ * 4. Recursively hydrating nested entities to any depth
+ *
+ * Entity relationships are defined in the 'field_definition' table
+ * and retrieved dynamically via EntitySrv.
  */
 
 import EntitySrv from "@/modules/core/services/EntitySrv";
@@ -14,12 +21,19 @@ import { pascalToSnake } from "@/modules/core/utils/core-utils";
 class HydrationSrv {
 	static #instance = null;
 	
-	/** @type {string[] | null} Cache of known entity types (in lowercase) */
+	/** @type {string[] | null} Cache of known entity types (in snake case) */
 	#entityTypesCache = null;
+	
+	/** @type {Object.<string, boolean> | null} Maps field names to their multiplicity (true for one-to-many, false for one-to-one) */
 	#multiplicityMap = null;
+	
+	/** @type {string | null} Name of the root entity being hydrated */
 	#rootEntityName = null;
 
-	
+	/**
+	 * Returns the singleton instance of HydrationSrv
+	 * @returns {HydrationSrv} The singleton instance
+	 */
 	static getInstance() {
 		if (!HydrationSrv.#instance) {
 			HydrationSrv.#instance = new HydrationSrv();
@@ -30,20 +44,21 @@ class HydrationSrv {
 	// =============================================
 	
 	/**
-	 * Hydrates an object by replacing foreign key IDs with nested entity objects,
-	 * This method recursively hydrates entities at multiple levels.
+	 * Hydrates an object by replacing foreign key IDs with nested entity objects.
+	 * This method recursively hydrates entities at multiple levels, handling both
+	 * owned and non-owned relationships.
 	 *
-	 * @param {Object} obj - The flat object to hydrate (e.g., a Task with status ID).
-	 * @param {Object[]} desc -
-	 * @param {Boolean} root -
-	 * @returns {Object} The fully hydrated object with nested entity data.
+	 * @param {Object} obj - The flat object to hydrate (e.g., a Task with status ID)
+	 * @param {Object[]} desc - Array of field definitions describing entity relationships
+	 * @param {Boolean} root - Whether this is the root level of hydration
+	 * @returns {Object} The fully hydrated object with nested entity data
 	 */
 	hydrateObject(obj, desc, root = true) {
 		if (Array.isArray(desc)) this.#initMultiplicityMap(desc);
 		
 		let result = { ...obj };
 		
-		// this handles relations owned by the object
+		// Handle relations owned by the object (direct foreign keys)
 		for (const [key, value] of Object.entries(obj)) {
 			if (!this.#getEntityTypes().includes(key.toLowerCase())) continue;
 			
@@ -52,14 +67,21 @@ class HydrationSrv {
 					: this.#hydrateSingle(result, key, value);
 		}
 		
-		// ONLY for root level : handle NON-OWNED relations
+		// Handle non-owned relations (reverse relationships) at root level only
 		if (root) {
-			result = this.#hydrateNonOwnedRelations(result, desc[0].entity); // desc[0].entity => "Ticket"
+			result = this.#hydrateNonOwnedRelations(result, desc[0].entity);
 		}
 		
 		return result;
 	}
 
+	/**
+	 * Hydrates a single (one-to-one) relationship
+	 * @param {Object} result - The object being hydrated
+	 * @param {string} key - The field name containing the foreign key
+	 * @param {string|number} value - The foreign key value
+	 * @returns {Object} The object with the hydrated relationship
+	 */
 	#hydrateSingle(result, key, value) {
 		const entityList = this.#getEntityItems(key);
 		if (!Array.isArray(entityList)) return;
@@ -72,6 +94,13 @@ class HydrationSrv {
 		return result;
 	}
 	
+	/**
+	 * Hydrates a multiple (one-to-many) relationship
+	 * @param {Object} result - The object being hydrated
+	 * @param {string} key - The field name containing the foreign keys
+	 * @param {string} value - Colon-separated list of foreign key values
+	 * @returns {Object} The object with the hydrated relationships
+	 */
 	#hydrateMultiple(result, key, value) {
 		const ids = value.split(":");
 
@@ -83,7 +112,7 @@ class HydrationSrv {
 		for (const id of ids) {
 			const entity = entityList.find(item => item.id === Number(id));
 			if (entity) {
-				// Recursively hydrate the nested entity
+				// Recursively hydrate each nested entity
 				result[key].push(this.hydrateObject(entity, null, false));
 			}
 		}
@@ -92,12 +121,18 @@ class HydrationSrv {
 	}
 	
 	/**
-	 * Takes a description array (desc), filters it for entries with type "E",
-	 * and creates an object that maps field names to their "multiple" property.
-	 * This is essentially creating a lookup table that indicates
-	 * which fields can have multiple values (like a one-to-many relationship)
-	 * versus single values (one-to-one relationship).
-	 * @param desc
+	 * Initializes the multiplicity map from field definitions
+	 * Creates a lookup table indicating which fields can have multiple values
+	 * (one-to-many relationships) versus single values (one-to-one relationships)
+	 * 
+	 * @param {Object[]} desc - Array of field definitions
+	 * @example
+	 * // Resulting multiplicity map:
+	 * {
+	 *     "topic": false,  // one-to-one relationship
+	 *     "status": false, // one-to-one relationship
+	 *     "sprint": true   // one-to-many relationship
+	 * }
 	 */
 	#initMultiplicityMap(desc) {
 		this.#rootEntityName = desc[0].entity;
@@ -106,27 +141,20 @@ class HydrationSrv {
 			a[f.field] = f.multiple
 			return a;
 		}, {});
-
-		// @example
-		// {
-		//     "topic": false,
-		//     "status": false,
-		//     "sprint": true
-		// }
 	}
 	
 	// =============================================
 	
+	/**
+	 * Hydrates all non-owned relationships for an entity
+	 * These are reverse relationships where other entities reference this one
+	 * 
+	 * @param {Object} obj - The object being hydrated
+	 * @param {string} entityName - Name of the entity being hydrated
+	 * @returns {Object} The object with hydrated non-owned relationships
+	 */
 	#hydrateNonOwnedRelations(obj, entityName) {
-		// get all non-owned relations for current entity (eg : Ticket => Note, Activity)
-		const relations = this.#getRelations(entityName)
-		
-		/* @example
-		[
-			{ entity: "Note", field: "ticket", multiple: false },
-			{ entity: "Activity", field: "tickets", multiple: true },
-		]
-		*/
+		const relations = this.#getNonOwnedRelations(entityName)
 		
 		let result = { ...obj }
 		
@@ -137,15 +165,32 @@ class HydrationSrv {
 		return result;
 	}
 	
+	/**
+	 * Hydrates a single non-owned relationship
+	 * @param {Object} obj - The object being hydrated
+	 * @param {Object} rel - The relationship definition
+	 * @param {string} rel.entity - The related entity name
+	 * @param {string} rel.field - The field name in the related entity
+	 * @param {boolean} rel.multiple - Whether it's a one-to-many relationship
+	 * @returns {Object} The object with the hydrated relationship
+	 */
 	#hydrateNonOwnedRelation(obj, { entity, field, multiple }) {
 		const result = { ...obj }
-		const propName = pascalToSnake(entity);
-		result[propName] = this.#getRelatedItems(obj.id, propName, field, multiple)
+		const key = pascalToSnake(entity);
+		result[key] = this.#getRelatedItems(obj.id, key, field, multiple)
 		return result;
 	}
 	
+	/**
+	 * Retrieves related items for a non-owned relationship
+	 * @param {number} targetId - ID of the entity being hydrated
+	 * @param {string} ownerTableName - Name of the related entity table
+	 * @param {string} field - Field name in the related entity
+	 * @param {boolean} multiple - Whether it's a one-to-many relationship
+	 * @returns {Object[]} Array of related entities
+	 */
 	#getRelatedItems(targetId, ownerTableName, field, multiple) {
-		const items = EntitySrv.getItems(ownerTableName) // snake_case
+		const items = EntitySrv.getItems(ownerTableName)
 		
 		return items.filter(i => {
 			return multiple
@@ -154,38 +199,50 @@ class HydrationSrv {
 		})
 	}
 	
-	#getRelations(tgtEntityName) {
+	/**
+	 * Retrieves all relationships where other entities reference the target entity
+	 * @param {string} tgtEntityName - Name of the target entity
+	 * @returns {Object[]} Array of relationship definitions
+	 * @example
+	 * // For a Ticket entity:
+	 * [
+	 *     { entity: "Note", field: "ticket", multiple: false },
+	 *     { entity: "Activity", field: "tickets", multiple: true }
+	 * ]
+	 */
+	#getNonOwnedRelations(tgtEntityName) {
 		const items = EntitySrv.getItems("field_definition");
 		return items
 			.filter(i => i.type === "E" && i.rel_entity === tgtEntityName)
-			.map(i => ({ entity: i.entity, field: i.field, multiple: i.multiple }))
+			.map(i => ({
+				entity: i.entity,
+				field: i.field,
+				multiple: i.multiple
+			}))
 	}
 	
 	// =============================================
 	
 	/**
 	 * Retrieves and caches the list of known entity types
-	 *
-	 * @returns {string[]} Array of entity type names in lowercase.
+	 * @returns {string[]} Array of entity type names in lowercase
 	 */
 	#getEntityTypes() {
 		if (!this.#entityTypesCache) {
-			this.#entityTypesCache = EntitySrv.getEntityTypes(); // e.g., ['task', 'status', 'color']
+			this.#entityTypesCache = EntitySrv.getEntityTypes();
 		}
 		return this.#entityTypesCache;
 	}
 	
 	/**
-	 * Retrieves the list of entities (table data) for a given entity type.
-	 *
-	 * @param {string} tableName - Entity type name (e.g., 'status', 'color').
-	 * @returns {Object[]} Array of flat entity objects.
+	 * Retrieves all items for a given entity type
+	 * @param {string} tableName - Entity type name (e.g., 'status', 'color')
+	 * @returns {Object[]} Array of flat entity objects
 	 */
 	#getEntityItems(tableName) {
 		return EntitySrv.getItems(tableName);
 	}
 }
-
 
 export default HydrationSrv.getInstance();
 
