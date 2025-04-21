@@ -27,7 +27,6 @@
 					Inactive
 				</p>
 			</div>
-
 		</div>
 
 		<div class="h-8"/>
