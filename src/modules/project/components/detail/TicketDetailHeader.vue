@@ -4,13 +4,13 @@
 		<div class="grid grid-cols-6 items-center">
 			<h1 class="col-span-2 flex gap-2 items-center text-2xl font-bold">
 				<router-link
-					class="w-8 grid place-content-center hover:bg-stone-600 rounded"
+					class="w-8 grid place-content-center hover:text-lime-600 rounded"
 					to="/project"
 				>
-					<BxIcon icon="arrow_left"/>
+					<BxIcon icon="angle_left" size="large"/>
 				</router-link>
 				<button
-					class="hover:text-lime-500"
+					class="hover:text-lime-600"
 					@click="$emit('editTicket')"
 				>
 					{{ ticket.title }}
