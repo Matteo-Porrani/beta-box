@@ -1,41 +1,31 @@
 <template>
-	<div class="">
-
-		<div class="grid grid-cols-2 items-center">
-			<div class="flex gap-2 items-center">
-<!--				<DetailIcon icon="calendar_cycle"/>-->
-				<DetailIcon icon="sprint"/>
-				<p class="text-xl font-bold">{{ sprints }}</p>
-			</div>
-
-			<div class="flex justify-end">
-				<BxBadge
-					v-if="ticket.status"
-					:label="activeBadge.name"
-					:color="activeBadge.color"
-					:shade="activeBadge.shade"
-				/>
-			</div>
-
+	<section
+		data-test="ticket-detail-footer-root"
+		class="grid grid-cols-2 items-center"
+	>
+		<div class="flex gap-2 items-center">
+			<DetailIcon icon="sprint"/>
+			<p class="text-xl font-bold">{{ sprints }}</p>
 		</div>
 
-	</div>
+		<div class="flex justify-end gap-2">
+			<p>{{ activeBadge.name }}</p>
+			<span
+				class="size-6 rounded-full"
+				:class="`bg-${activeBadge.color}-${activeBadge.shade}`"
+			/>
+		</div>
+	</section>
 </template>
 
 
 <script>
-
-import BxBadge from "@/components/UI/BxBadge.vue";
-import BxIcon from "@/components/UI/BxIcon.vue";
 import DetailIcon from "@/modules/project/components/detail/DetailIcon.vue";
 
 export default {
 	name: "TicketDetailFooter",
 	components: {
 		DetailIcon,
-		// BxIcon,
-		// BxIcon,
-		BxBadge
 	},
 
 	props: {

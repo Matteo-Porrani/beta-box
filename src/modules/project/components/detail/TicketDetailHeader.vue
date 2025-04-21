@@ -1,15 +1,14 @@
 <template>
 	<section>
-		<!-- TOP -->
-		<div class="grid grid-cols-6 gap-4 items-center">
+		<!-- ROW 1 -->
+		<div class="grid grid-cols-6 items-center">
 			<h1 class="col-span-2 flex gap-2 items-center text-2xl font-bold">
 				<router-link
-					class="w-8 grid place-content-center hover:bg-stone-600 border-stone-500 border rounded"
+					class="w-8 grid place-content-center hover:bg-stone-600 rounded"
 					to="/project"
 				>
 					<BxIcon icon="arrow_left"/>
 				</router-link>
-
 				<button
 					class="hover:text-lime-500"
 					@click="$emit('editTicket')"
@@ -18,20 +17,15 @@
 				</button>
 			</h1>
 
-			<div class="flex gap-2 items-center">
-				<DetailIcon icon="team"/>
-				<p>{{ ticket.team }}</p>
+			<div class="col-span-2 text-nowrap overflow-x-hidden overflow-ellipsis">
+				<a
+					:href="ticket.url"
+					class="font-mono text-xs hover:text-lime-500 hover:underline"
+					target="_blank"
+				>{{ ticket.url }}</a>
 			</div>
 
 			<div class="flex gap-2 items-center">
-<!--				<DetailIcon icon="cards"/>-->
-				<DetailIcon icon="planet"/>
-				<p>{{ ticket.topic ? ticket.topic.name : "-" }}</p>
-			</div>
-
-
-			<div class="flex gap-2 items-center">
-<!--				<DetailIcon icon="dashboard"/>-->
 				<PhaseStepper :curr-phase="ticket.phase"/>
 			</div>
 
@@ -45,31 +39,39 @@
 					class="text-xl w-full"
 				/>
 			</div>
-
 		</div>
 
-		<div class="h-5"/>
+		<div class="spacer h-2"/>
 
-		<!-- BOTTOM -->
-		<div class="grid grid-cols-6 gap-6 h-16 text-xl">
-			<div class="col-span-4 bg-stone-700 rounded p-1">
-				<p>{{ ticket.description }}</p>
+		<!-- ROW 2 -->
+		<div class="grid grid-cols-6 border border-stone-500 rounded p-1">
+			<div class="flex gap-2 items-center">
+				<DetailIcon icon="folders"/>
+				<p>{{ ticket.topic ? ticket.topic.name : "-" }}</p>
 			</div>
+			<div class="flex gap-2 items-center">
+				<DetailIcon icon="team"/>
+				<p>{{ ticket.team }}</p>
+			</div>
+			<div class="flex gap-2 items-center">
+				<DetailIcon icon="stop_watch"/>
+				<p>{{ ticket.activity.total }}</p>
+			</div>
+
+			<div></div>
+
 			<div class="col-span-2 bg-stone-700 rounded p-1">
 				<p>{{ ticket.comment }}</p>
 			</div>
+
 		</div>
 
-		<!-- URL -->
-		<div class="h-8">
-			<a
-				:href="ticket.url"
-				class="font-mono text-sm hover:text-lime-500 hover:underline"
-				target="_blank"
-			>{{ ticket.url }}</a>
-		</div>
+		<div class="spacer h-2"/>
 
-		<div class="spacer h-8"></div>
+		<!-- ROW 3 -->
+		<div class="h-16 text-xl col-span-4 bg-lime-900 rounded p-1">
+			<p>{{ ticket.description }}</p>
+		</div>
 
 	</section>
 </template>

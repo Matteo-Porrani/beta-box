@@ -9,6 +9,7 @@ export const ICON_DICT = {
 	star: "IconStar",
 	box: "IconBox",
 	bolt: "IconBolt",
+	hexagons: "IconHexagons",
 	
 	/*
 	ARROWS
@@ -41,10 +42,12 @@ export const ICON_DICT = {
 	data: "IconDatabase",
 	dashboard: "IconLayoutDashboard",
 	edit: "IconEdit",
+	folders: "IconFolders",
 	team: "IconFriends",
 	home: "IconHome",
 	link: "IconExternalLink",
 	loader: "IconLoader2",
+	modules: "IconHexagons",
 	planet: "IconPlanet",
 	refresh: "IconRefresh",
 	reset: "IconRotate",

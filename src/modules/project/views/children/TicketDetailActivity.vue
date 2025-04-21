@@ -1,12 +1,10 @@
 
 <template>
 	<section>
-		<p class="flex gap-2 items-center text-xl font-bold">
-			<DetailIcon icon="stop_watch"/>
-			{{ activity.total }}
-		</p>
-
-		<div class="h-8"/>
+<!--		<p class="flex gap-2 items-center text-xl font-bold">-->
+<!--			<DetailIcon icon="stop_watch"/>-->
+<!--			{{ activity.total }}-->
+<!--		</p>-->
 
 		<ActivityTimeItem
 			v-for="item in activity.items"
@@ -19,11 +17,14 @@
 
 <script>
 import ActivityTimeItem from "@/modules/project/components/detail/ActivityTimeItem.vue";
-import DetailIcon from "@/modules/project/components/detail/DetailIcon.vue";
+// import DetailIcon from "@/modules/project/components/detail/DetailIcon.vue";
 
 export default {
 	name: "TicketDetailActivity",
-	components: { DetailIcon, ActivityTimeItem },
+	components: {
+		// DetailIcon,
+		ActivityTimeItem
+	},
 
 	inject: ["activity"],
 }
