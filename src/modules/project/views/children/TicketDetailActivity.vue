@@ -7,7 +7,7 @@
 <!--		</p>-->
 
 		<ActivityTimeItem
-			v-for="item in activity.items"
+			v-for="item in activityItems"
 			:key="item.day"
 			:item="item"
 		/>
@@ -26,7 +26,7 @@ export default {
 		ActivityTimeItem
 	},
 
-	inject: ["activity"],
+	inject: ["activity", "activityItems"], // array of Activity items
 }
 </script>
 

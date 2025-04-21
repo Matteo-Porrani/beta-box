@@ -55,7 +55,7 @@
 			</div>
 			<div class="flex gap-2 items-center">
 				<DetailIcon icon="stop_watch"/>
-				<p>{{ ticket.activity.total }}</p>
+				<p>{{ ticket.parsedActivity.total }}</p>
 			</div>
 
 			<div></div>

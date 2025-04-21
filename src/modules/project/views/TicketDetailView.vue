@@ -61,7 +61,12 @@ import TicketModalEditor from "@/modules/project/components/TicketModalEditor.vu
 
 export default {
 	name: "TicketDetailView",
-	components: { TicketModalEditor, TicketDetailFooter, TicketDetailHeader, DefaultLayout },
+	components: {
+		DefaultLayout,
+		TicketModalEditor,
+		TicketDetailFooter,
+		TicketDetailHeader,
+	},
 
 	data() {
 		return {
@@ -72,8 +77,9 @@ export default {
 
 	provide() {
 		return {
-			activity: computed(() => nrm(this.ticket?.activity)),
-			notes: computed(() => nrm(this.ticket?.notes)),
+			activity: computed(() => this.ticket?.activity ? nrm(this.ticket?.activity) : []),
+			activityItems: computed(() => this.ticket?.parsedActivity ? nrm(this.ticket?.parsedActivity.items) : []),
+			notes: computed(() => this.ticket?.note ? nrm(this.ticket?.note) : []), // 'note' prop is provided as 'notes'
 		}
 	},
 

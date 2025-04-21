@@ -52,16 +52,17 @@ class ProjectSrv {
 		const tickets = this.getTickets("id", true, "", null, { showActive: true, showInactive: true});
 		const t = tickets.find(t => Number(t.id) === Number(id));
 
+		// Activities are NON-OWNED relations.
+		// Since there is some computing, we cannot rely on automatic hydration,
+		// and we create a specific 'parsedActivity' prop
 		const { activities, totalDuration } = this.#getActivitiesByTicketId(id);
-		const notes = this.#getNotesByTicketId(id);
 		
 		return {
 			...t,
-			activity: {
+			parsedActivity: {
 				total: totalDuration,
 				items: activities,
 			},
-			notes,
 		}
 	}
 	
@@ -71,12 +72,7 @@ class ProjectSrv {
 		return hydratedTickets;
 	}
 	
-	// ============================================= NOTES, ACTIVITY, DAY
-	
-	#getNotesByTicketId(id) {
-		return EntitySrv.getItems("note")
-			.filter(a => Number(a.ticket) === Number(id));
-	}
+	// ============================================= ACTIVITY, DAY
 	
 	#getActivitiesByTicketId(id) {
 		let activities = EntitySrv.getItems("activity")
