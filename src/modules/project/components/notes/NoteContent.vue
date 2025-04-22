@@ -65,7 +65,12 @@ onMounted(async () => await parseContent());
 
 watch(
 	[() => $p.content, () => $p.lang],
-  async () => await parseContent(),
+  async () => {
+		setTimeout(() => {
+			parsedSnippet.value = "";
+		}, 100)
+		await parseContent()
+	},
   { deep: true }
 )
 </script>
