@@ -2,6 +2,15 @@
 	<article class="">
 
 		<div class="flex gap-2 items-center text-sm font-bold text-stone-400 mb-1">
+
+			<button
+				class="transition-all"
+				:class="toggleIconClass"
+				@click="open = !open"
+			>
+				<BxIcon icon="angle_left"/>
+			</button>
+
 			<button
 				class="hover:text-lime-500"
 				@click="editNote"
@@ -17,8 +26,14 @@
 			</button>
 		</div>
 
-<!--		<pre class="border border-stone-500 rounded p-1">{{ noteItem.content  }}</pre>-->
-		<pre class="bg-stone-400 text-stone-900 rounded py-1 px-2">{{ noteItem.content  }}</pre>
+		<!--	CONTENT	-->
+		<div
+			v-if="open"
+			class="ps-8"
+		>
+			<pre class="bg-stone-400 text-stone-900 rounded py-1 px-2">{{ noteItem.content  }}</pre>
+		</div>
+
 	</article>
 </template>
 
@@ -36,6 +51,18 @@ export default {
 
 	emits: ["editNote", "deleteNote"],
 
+	data() {
+		return {
+			open: true,
+		}
+	},
+
+	computed: {
+		toggleIconClass() {
+			return this.open ? "rotate-90" : "-rotate-90";
+		}
+	},
+
 	methods: {
 		editNote() {
 			this.$emit("editNote", this.noteItem.id);
@@ -48,3 +75,12 @@ export default {
 }
 </script>
 
+
+<style>
+/*
+rotate-90
+rotate-180
+rotate-270
+-rotate-90
+ */
+</style>
