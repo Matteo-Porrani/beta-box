@@ -1,7 +1,6 @@
 
 <template>
 	<section>
-
 		<template v-if="!showForm">
 			<div class="space-y-4">
 				<NoteItem
@@ -16,11 +15,14 @@
 			<div class="h-2"/>
 
 			<button
-				class="flex items-center gap-1 hover:text-lime-600"
+				class="
+					py-1 px-2 flex items-center justify-center gap-1 text-xs font-medium
+					text-stone-400 bg-stone-800 hover:bg-stone-700 border border-stone-700
+					rounded transition-colors
+				"
 				@click="onEditNote(-1)"
 			>
 				<BxIcon icon="add"/>
-				Add
 			</button>
 
 			<div class="h-10"/>
