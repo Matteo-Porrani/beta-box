@@ -81,7 +81,7 @@ export default {
 	data() {
 		return {
 			open: true,
-			bigFont: true,
+			bigFont: false,
 			jsSyntax: false,
 		}
 	},

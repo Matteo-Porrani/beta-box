@@ -10,7 +10,7 @@
 			<section
 				v-if="ticket"
 				data-test="ticket-detail-view-root"
-				class="h-[92vh] grid grid-rows-[auto_1fr_auto] gap-2"
+				class="h-[94vh] grid grid-rows-[auto_1fr_auto] gap-2"
 			>
 
 				<TicketDetailHeader
@@ -18,7 +18,7 @@
 					@edit-ticket="onEditTicket"
 				/>
 
-				<div class="body grid grid-rows-[auto_1fr] overflow-y-auto">
+				<div class="body grid grid-rows-[auto_1fr] overflow-y-auto mt-6">
 					<nav class="flex gap-4 mb-2">
 						<router-link
 							v-for="t in tabs"

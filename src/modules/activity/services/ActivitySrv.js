@@ -95,7 +95,7 @@ class ActivitySrv {
 		return ids
 			.map(id => {
 				const match = tickets.find(t => t.id.toString() === id)
-				return { title: match.title, desc: match.description };
+				return { id: id, title: match.title, desc: match.description };
 			})
 			.filter(title => title !== undefined);
 		

@@ -92,5 +92,6 @@ watch(
 pre {
   background: #d6d3d1 !important;
   font-size: v-bind(fontSize);
+	line-height: 1.6;
 }
 </style>

@@ -11,7 +11,9 @@
 				class="block flex items-center gap-1 w-4"
 				@click="onEditActivity"
 			>
-				<div class="absolute origin-left -rotate-90 top-24 left-2 text-end w-24 text-sm font-semibold text-stone-800">{{ typeLabel }}</div>
+				<div class="absolute origin-left -rotate-90 top-24 left-2 text-end w-24 text-sm font-semibold text-stone-800">
+					{{ typeLabel }}
+				</div>
 			</button>
 
 		</div>
@@ -20,14 +22,15 @@
 
 			<div class="card-header flex justify-between">
 				<div v-if="activity.ticketInfo?.length" class="flex flex-wrap gap-1 mb-1">
-					<span
+					<button
 						v-for="ticket in activity.ticketInfo"
 						:key="ticket.title"
 						:title="ticket.desc"
 						class="text-sm font-bold text-stone-300 px-2 py-0.5 rounded border border-stone-500"
+						@click="navToTicket(ticket.id)"
 					>
 						{{ ticket.title }}
-					</span>
+					</button>
 				</div>
 				<div v-else></div>
 
@@ -100,7 +103,14 @@ export default {
 	methods: {
 		onEditActivity() {
 			this.$emit("editActivity", nrm(this.activity));
-		}
+		},
+
+		navToTicket(id) {
+			this.$router.push({
+				name: "ticket_detail_notes",
+				params: { id: id }
+			})
+		},
 	},
 
 }
