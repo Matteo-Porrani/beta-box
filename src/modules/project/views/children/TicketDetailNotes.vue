@@ -2,7 +2,7 @@
 <template>
 	<section>
 
-		<div class="bg-stone-700 flex gap-4 text-sm rounded py-1 px-2">
+		<div class="bg-stone-700 flex gap-2 text-sm rounded py-1 px-2">
 			<button
 				class="hover:text-violet-400"
 				@click="_setValueOnAll({ key: 'open', value: true })"

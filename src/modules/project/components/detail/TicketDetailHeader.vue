@@ -17,12 +17,22 @@
 				</button>
 			</h1>
 
-			<div class="col-span-2 text-nowrap overflow-x-hidden overflow-ellipsis">
-				<a
-					:href="ticket.url"
-					class="font-mono text-xs hover:text-lime-500 hover:underline"
-					target="_blank"
-				>{{ ticket.url }}</a>
+			<div class="col-span-2 flex gap-2">
+				<button
+					@click="onCopy"
+					class="text-stone-500 hover:text-lime-500"
+				>
+					<BxIcon icon="copy"/>
+				</button>
+
+				<div class="text-nowrap overflow-x-hidden overflow-ellipsis pe-4">
+					<a
+						:href="ticket.url"
+						class="font-mono text-xs hover:text-lime-500 hover:underline"
+						target="_blank"
+					>{{ ticket.url }}</a>
+				</div>
+
 			</div>
 
 			<div class="flex gap-2 items-center">
@@ -92,6 +102,19 @@ export default {
 	},
 
 	emits: ["editTicket"],
+
+	methods: {
+		async onCopy() {
+			try {
+				await navigator.clipboard.writeText(this.ticket.url);
+				// copyBtn.value.classList.toggle("confirm-copy")
+				// setTimeout(() => copyBtn.value.classList.toggle("confirm-copy"), 500)
+			} catch(err) {
+				console.error(err);
+			}
+		}
+
+	}
 }
 </script>
 

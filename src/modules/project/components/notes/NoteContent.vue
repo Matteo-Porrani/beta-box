@@ -1,18 +1,18 @@
 <template>
-	<div class="relative bg-stone-300 rounded-md overflow-auto p-2">
-		<div class="absolute end-2 top-2">
+	<div class="relative bg-stone-300 rounded-md overflow-auto p-2 min-h-10">
+		<div class="absolute end-2 top-1">
 			<button
 				ref="copyBtn"
 				class="
           rounded-md
           hover:bg-stone-200
-          size-10
+          size-8
           grid place-content-center
           relative
         "
 				@click="onCopy"
 			>
-				<BxIcon icon="copy" class="text-stone-500"/>
+				<BxIcon icon="copy" class="text-stone-500" size="small"/>
 			</button>
 		</div>
 
@@ -78,7 +78,7 @@ watch(
   position: absolute;
   content: 'copied';
   top: 50%;
-  left: -90%;
+  left: -120%;
   transform: translate(-50%, -50%);
   color: #57534e; /* stone-600 */
   padding: 4px;
