@@ -3,17 +3,14 @@
 	<section>
 
 		<div class="bg-stone-700 flex gap-2 text-sm rounded py-1 px-2">
+
 			<button
-				class="hover:text-violet-400"
-				@click="_setValueOnAll({ key: 'open', value: true })"
+				v-for="b in [['expand', true], ['collapse', false]]"
+				:key="b[0]"
+				class="hover:text-lime-500"
+				@click="_setValueOnAll({ key: 'open', value: b[1] })"
 			>
-				<BxIcon icon="expand"/>
-			</button>
-			<button
-				class="hover:text-violet-400"
-				@click="_setValueOnAll({ key: 'open', value: false })"
-			>
-				<BxIcon icon="collapse"/>
+				<BxIcon :icon="b[0]"/>
 			</button>
 		</div>
 
@@ -35,11 +32,7 @@
 			<div class="h-2"/>
 
 			<button
-				class="
-					py-1 px-2 flex items-center justify-center gap-1 text-xs font-medium
-					text-stone-400 bg-stone-800 hover:bg-stone-700 border border-stone-700
-					rounded transition-colors
-				"
+				class="text-stone-500 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded transition-all p-1"
 				@click="onEditNote(-1)"
 			>
 				<BxIcon icon="add"/>
@@ -109,7 +102,10 @@ export default {
 		},
 
 		onEditNote(id = null) {
-			this._initNoteDisplay(id > 0 ? id : new Date().getTime())
+			// FIXME -- handling of new notes to be reviewed
+			if (id < 0) {
+				this._initNoteDisplay(new Date().getTime())
+			}
 			this.formNoteId = id;
 			this.showForm = true;
 		},
