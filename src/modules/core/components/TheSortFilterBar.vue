@@ -126,6 +126,7 @@ export default {
 
 		resetFilter() {
 			this.filterNeedle = "";
+			this.showFilterByCol = false;
 		},
 
 		toggleOrder() {

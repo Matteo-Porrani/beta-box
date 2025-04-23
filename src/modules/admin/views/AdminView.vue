@@ -1,5 +1,5 @@
 <template>
-	<DefaultLayout view-title="Admin">
+	<DefaultLayout>
 		<div
 			v-if="contentLoaded"
 			class="admin-view-root"
