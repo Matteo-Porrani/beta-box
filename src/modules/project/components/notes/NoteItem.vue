@@ -8,7 +8,7 @@
 				:class="toggleIconClass"
 				@click="open = !open"
 			>
-				<BxIcon icon="angle_left"/>
+				<BxIcon icon="angle_right"/>
 			</button>
 
 			<button
@@ -88,7 +88,7 @@ export default {
 
 	computed: {
 		toggleIconClass() {
-			return this.open ? "rotate-90" : "-rotate-90";
+			return this.open ? "rotate-90" : "";
 		},
 
 		contentLang() {

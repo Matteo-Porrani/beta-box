@@ -34,7 +34,7 @@ class DataSrv {
 // =============================================
 	
 	async load(tableName) {
-		console.log(`%c${"load/" + tableName}`, "background: turquoise; color: black; padding: 2px;")
+		// console.log(`%c${"load/" + tableName}`, "background: turquoise; color: black; padding: 2px;")
 		const items = await this.api[tableName].orderBy('id').toArray();
 		this.showNotif("SUCCESS", `Table "${tableName}" loaded`);
 		return items;

@@ -1,6 +1,14 @@
 
 <template>
 	<section>
+
+		<div class="bg-stone-700 flex gap-4 text-sm rounded py-1 px-2">
+			<button class="hover:text-violet-400">Open all</button>
+			<button class="hover:text-violet-400">Close all</button>
+		</div>
+
+		<div class="h-2"/>
+
 		<template v-if="!showForm">
 			<div class="space-y-4">
 				<NoteItem
@@ -40,10 +48,10 @@
 
 
 <script>
+import NotesSrv from "@/modules/project/services/NotesSrv";
 
 import BxIcon from "@/components/UI/BxIcon.vue";
 import NoteForm from "@/modules/project/components/notes/NoteForm.vue";
-import NotesSrv from "@/modules/project/services/NotesSrv";
 import NoteItem from "@/modules/project/components/notes/NoteItem.vue";
 
 export default {
