@@ -25,6 +25,9 @@ export const ICON_DICT = {
 	arrow_up: "IconArrowUp",
 	arrow_down: "IconArrowDown",
 	
+	expand: "IconLayoutNavbarExpand",
+	collapse: "IconLayoutNavbarCollapse",
+	
 	/*
 	NOTIF
 	 */

@@ -1,12 +1,11 @@
 <template>
 	<article>
-
-		<div class="flex gap-2 items-center text-sm font-bold text-stone-400 mb-1">
+		<div class="flex gap-2 items-center text-sm font-bold text-stone-40 mb-1 h-8">
 
 			<button
 				class="transition-all"
 				:class="toggleIconClass"
-				@click="open = !open"
+				@click="toggleOpen"
 			>
 				<BxIcon icon="angle_right"/>
 			</button>
@@ -25,12 +24,12 @@
 				<template v-if="open">
 					<div class="flex gap-2 items-center">
 						<span class="text-xs">A</span>
-						<BxSwitch v-model="bigFont"/>
+						<BxSwitch v-model="size"/>
 						<span class="text-lg">A</span>
 					</div>
 
 					<div class="flex gap-2 items-center ms-8">
-						<BxSwitch v-model="jsSyntax"/>
+						<BxSwitch v-model="lang"/>
 						<span>JS</span>
 					</div>
 				</template>
@@ -58,7 +57,6 @@
 				:font-size="fontSize"
 			/>
 		</div>
-
 	</article>
 </template>
 
@@ -73,16 +71,17 @@ export default {
 	components: { BxSwitch, NoteContent, BxIcon },
 
 	props: {
-		noteItem: Object
+		noteItem: Object,
+		display: Object
 	},
 
-	emits: ["editNote", "deleteNote"],
+	emits: ["editNote", "deleteNote", "displayChange"],
 
 	data() {
 		return {
 			open: true,
-			bigFont: false,
-			jsSyntax: false,
+			size: false,
+			lang: false,
 		}
 	},
 
@@ -92,15 +91,46 @@ export default {
 		},
 
 		contentLang() {
-			return this.jsSyntax ? "javascript" : "text";
+			return this.lang ? "javascript" : "text";
 		},
 
 		fontSize() {
-			return this.bigFont ? "16px" : "11px";
+			return this.size ? "16px" : "11px";
 		}
 	},
 
+	watch: {
+		size(val) {
+			this.$emit("displayChange", { id: this.noteItem.id, key: "size", value: val })
+		},
+		lang(val) {
+			this.$emit("displayChange", { id: this.noteItem.id, key: "lang", value: val })
+		},
+
+		display: {
+			deep: true,
+			handler(val) {
+				const { open, size, lang } = val;
+				this.open = open;
+				this.size = size;
+				this.lang = lang;
+			}
+		}
+	},
+
+	beforeMount() {
+		if (this.display && Object.hasOwn(this.display, "open")) this.open = this.display.open;
+		if (this.display && Object.hasOwn(this.display, "lang")) this.lang = this.display.lang;
+		if (this.display && Object.hasOwn(this.display, "size")) this.size = this.display.size;
+	},
+
 	methods: {
+
+		toggleOpen() {
+			this.open = !this.open;
+			this.$emit("displayChange", { id: this.noteItem.id, key: "open", value: this.open })
+		},
+
 		editNote() {
 			this.$emit("editNote", this.noteItem.id);
 		},
