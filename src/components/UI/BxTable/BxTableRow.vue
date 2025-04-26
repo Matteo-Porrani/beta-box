@@ -91,8 +91,8 @@ export default {
 			return function (value) {
 				if (![true, false].includes(value)) return "";
 				return value === true
-					? "text-lime-600"
-					: "text-rose-700"
+					? "text-sky-500"
+					: "text-pink-700"
 			}
 		},
 
@@ -135,7 +135,7 @@ td {
 
 th,
 td[data-field="id"] {
-	@apply text-lime-600 bg-stone-700 font-bold text-start
+	@apply text-sky-500 bg-stone-700 font-bold text-start
 }
 
 th[data-field="id"],

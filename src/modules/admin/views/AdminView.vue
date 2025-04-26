@@ -24,13 +24,19 @@
 
 			<!-- LIST -->
 			<div v-show="viewMode === '$L'">
-				<button
-					class="flex items-center gap-1 hover:text-lime-600"
-					@click="setMode('$F')"
-				>
-					<BxIcon icon="add"/>
-					Add
-				</button>
+<!--				<button-->
+<!--					class="flex items-center gap-1 hover:text-lime-600"-->
+<!--					@click="setMode('$F')"-->
+<!--				>-->
+<!--					<BxIcon icon="add"/>-->
+<!--					Add-->
+<!--				</button>-->
+
+
+				<BxIconButton
+					icon="add"
+					label="Add"
+				/>
 
 				<div class="h-4"/>
 
@@ -70,18 +76,17 @@ import { nrm } from "@/modules/core/utils/core-utils";
 import { ENTITY_TEMP_DESC } from "@/modules/admin/const/const-admin";
 // components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
-import BxIcon from "@/components/UI/BxIcon.vue";
 
 import EntityTable from "@/modules/admin/components/EntityTable.vue";
 import EntityForm from "@/modules/admin/components/EntityForm.vue";
-import EntitySrv from "@/modules/core/services/EntitySrv";
+import BxIconButton from "@/modules/ui/components/BxIconButton.vue";
 
 
 export default {
 	name: 'AdminView',
 
 	components: {
-		BxIcon,
+		BxIconButton,
 		DefaultLayout,
 		EntityTable,
 		EntityForm,

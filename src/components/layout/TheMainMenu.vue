@@ -56,6 +56,6 @@ export default {
 
 <style scoped>
 .router-link-active {
-	@apply text-lime-600 border-s-2 border-lime-600 ps-1
+	@apply text-sky-500 border-s-2 border-sky-500 ps-1
 }
 </style>

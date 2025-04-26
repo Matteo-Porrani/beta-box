@@ -12,7 +12,7 @@
 				class="flex items-center gap-1 text-2xl font-bold"
 			>
 				<span class="inline-block h-2 w-2 rounded bg-yellow-400"></span>
-				<span class="inline-block h-4 w-2 rounded bg-lime-600"></span>
+				<span class="inline-block h-4 w-2 rounded bg-sky-500"></span>
 				Beta-Box
 			</h1>
 			<span class="text-xs font-mono">{{ appVersion }}</span>
