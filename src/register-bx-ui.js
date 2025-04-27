@@ -18,7 +18,6 @@ import BxTable from "@/modules/ui/components/BxTable/BxTable.vue";
 import BxTableRow from "@/modules/ui/components/BxTable/BxTableRow.vue";
 
 export function registerBxUi(app) {
-	
 	app.component("BxIcon", BxIcon);
 	app.component("BxBadge", BxBadge);
 	
@@ -37,8 +36,6 @@ export function registerBxUi(app) {
 	
 	app.component("BxTable", BxTable);
 	app.component("BxTableRow", BxTableRow);
-	
-	return app;
 }
 
 

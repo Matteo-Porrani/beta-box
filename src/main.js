@@ -30,9 +30,9 @@ extendMoment(moment);
 moment.locale("fr");
 
 // Create the app instance
-let app = createApp(App)
+const app = createApp(App)
 
-app = registerBxUi(app);
+registerBxUi(app);
 console.log("app.components", app._context.components)
 
 
