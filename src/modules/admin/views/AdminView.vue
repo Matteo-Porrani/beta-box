@@ -36,6 +36,7 @@
 				<BxIconButton
 					icon="add"
 					label="Add"
+					@click="setMode('$F')"
 				/>
 
 				<div class="h-4"/>
