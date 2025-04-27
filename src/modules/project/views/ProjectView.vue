@@ -53,7 +53,6 @@
 <script>
 // services
 import ProjectSrv from "@/modules/project/services/ProjectSrv";
-import TableSrv from "@/modules/core/services/TableSrv";
 // components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import TicketModalEditor from "@/modules/project/components/TicketModalEditor.vue";
@@ -79,12 +78,12 @@ export default {
 			compactTable: false,
 
 			// sort & filter
-			sortByCol: "one",
+			sortByCol: "phase",
 			sortAsc: true,
 
+			showFilterByCol: false,
 			filterByCol: null,
 			filterNeedle: "",
-			showFilterByCol: false,
 
 			activeFilter: {
 				showActive: true,

@@ -5,10 +5,6 @@
 			class="max-h-[85vh] overflow-y-auto"
 		>
 
-			<div>
-				<h1 class="font-bold text-lg">Activity</h1>
-			</div>
-
 			<WeekSelector
 				@week-selected="onWeekSelected"
 			/>
