@@ -48,24 +48,16 @@ EntityForm must pass :
 		<div class="h-4"></div>
 		<!-- THE BUTTONS -->
 		<div class="flex justify-between">
-			<button
-				class="
-					w-32 bg-stone-800 border border-stone-500 text-stone-500 hover:bg-stone-900
-					disabled:hover:cursor-not-allowed rounded py-2 px-6
-				"
+			<BxButton
+				type="soft"
+				label="Cancel"
 				@click="onCancel"
-			>
-				Cancel
-			</button>
-			<button
-				class="
-					w-32 bg-lime-600 border border-lime-600 hover:bg-lime-500
-					disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800
-				"
+			/>
+
+			<BxButton
+				:label="formValues.id ? 'Update' : 'Add'"
 				@click="onSave"
-			>
-				{{ formValues.id ? 'Update' : 'Add' }}
-			</button>
+			/>
 		</div>
 	</section>
 </template>

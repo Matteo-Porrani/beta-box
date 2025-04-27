@@ -17,22 +17,20 @@
 				<article
 					v-for="i in images"
 					:key="i.id"
-					class="grid grid-cols-4 border rounded mb-1"
+					class="grid grid-cols-6 items-center border rounded mb-1 p-1"
 				>
-					<div class="size-12 border rounded">
-						<img :src="i.dataUrl" alt="thumbnail" />
+					<div class="w-24 h-12 rounded overflow-hidden">
+						<img :src="i.dataUrl" alt="thumbnail" class="object-cover" />
 					</div>
 
-					<div>
-						<p>{{ i.id }}</p>
-						<p>{{ i.name }} </p>
-					</div>
+					<p>{{ i.id }}</p>
 
-					<div></div>
+					<p class="font-mono">{{ i.name }}</p>
 
 					<div class="actions flex justify-end gap-4">
 						<BxIconButton icon="focus" text/>
 						<BxIconButton
+							type="danger"
 							icon="trash"
 							text
 							@click="deleteItem(i.id)"
