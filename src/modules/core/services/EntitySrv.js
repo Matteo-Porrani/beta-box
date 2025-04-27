@@ -15,8 +15,6 @@ class EntitySrv {
 	}
 	
 	getItems(tableName) {
-
-		
 		return store.getters["entity/getItemsFromTable"](tableName);
 	}
 	

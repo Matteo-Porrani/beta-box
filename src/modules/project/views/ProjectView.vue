@@ -116,6 +116,17 @@ export default {
 		}
 	},
 
+	beforeRouteEnter(to, from, next) {
+		// Check if project data is loaded
+		if (!ProjectSrv.projectDataLoaded()) {
+			// If project data is not loaded, redirect to admin root route
+			next({ name: "admin_root" })
+		} else {
+			// If project data is loaded, allow navigation to proceed normally
+			next()
+		}
+	},
+
 	methods: {
 		// react to changes in sort or filter
 		onSortFilterChange(e) {

@@ -21,6 +21,11 @@ class ProjectSrv {
 	}
 	
 	// =============================================
+	projectDataLoaded() {
+		return EntitySrv.getItems("ticket").length > 0;
+	}
+	
+	// =============================================
 	
 	getTickets(sortByCol, sortAsc, needle, filterByCol, { showActive, showInactive }) {
 		const desc = this.#getTicketEntityDescription();
