@@ -25,8 +25,6 @@ class NotesSrv {
 	// =============================================
 
 	async saveNote(data) {
-		console.log("SRV - saveNote", data)
-		
 		const action = isInteger(data.id)
 			? "updateItem"
 			: "addItem"

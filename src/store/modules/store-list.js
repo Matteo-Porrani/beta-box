@@ -11,9 +11,7 @@ export default {
 	
 	getters: {
 		getList: (state) => {
-			
 			return (listCode) => {
-				console.log("/// getList", listCode)
 				return state.lists[listCode] ?? [];
 			}
 		}

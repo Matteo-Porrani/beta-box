@@ -1,7 +1,6 @@
 
 <template>
 	<section>
-
 		<div class="bg-stone-700 flex gap-2 text-sm rounded py-1 px-2">
 
 			<button
@@ -31,12 +30,12 @@
 
 			<div class="h-2"/>
 
-			<button
-				class="text-stone-500 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded transition-all p-1"
+			<BxIconButton
+				type="soft"
+				icon="add"
+				class="min-w-4"
 				@click="onEditNote(-1)"
-			>
-				<BxIcon icon="add"/>
-			</button>
+			/>
 
 			<div class="h-10"/>
 		</template>
@@ -47,7 +46,6 @@
 			@save-note="onSaveNote"
 			@close-form="onCloseForm"
 		/>
-
 	</section>
 </template>
 

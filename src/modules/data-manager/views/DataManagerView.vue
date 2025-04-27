@@ -166,7 +166,7 @@ export default {
 		async importTables() {
 			for (const tableName of Object.keys(this.uploadedData)) {
 				for (const row of this.uploadedData[tableName]) {
-					console.log(">>> table", tableName, ">>> row", row.id, row)
+					// console.log(">>> table", tableName, ">>> row", row.id, row)
 					const clone = nrm(row);
 					await dataSrv.add(tableName, clone);
 

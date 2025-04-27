@@ -4,17 +4,17 @@
 		<div class="grid grid-cols-6 items-center">
 			<h1 class="col-span-2 flex gap-2 items-center text-2xl font-bold">
 				<router-link
-					class="w-8 grid place-content-center hover:text-lime-600 rounded"
+					class="w-8 grid place-content-center hover:text-sky-500 rounded"
 					to="/project"
 				>
 					<BxIcon icon="angle_left" size="large"/>
 				</router-link>
-				<button
-					class="hover:text-lime-600"
+
+				<BxButton
+					text
+					:label="ticket.title"
 					@click="$emit('editTicket')"
-				>
-					{{ ticket.title }}
-				</button>
+				/>
 			</h1>
 
 			<div class="col-span-2 flex gap-2">
@@ -79,7 +79,7 @@
 		<div class="spacer h-2"/>
 
 		<!-- ROW 3 -->
-		<div class="h-16 text-xl col-span-4 bg-lime-900 rounded p-1">
+		<div class="h-12 text-xl col-span-4">
 			<p>{{ ticket.description }}</p>
 		</div>
 

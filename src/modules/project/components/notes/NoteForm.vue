@@ -12,8 +12,17 @@
 		></textarea>
 
 		<div class="flex justify-between">
-			<button @click="closeForm">Cancel</button>
-			<button @click="saveNote">OK</button>
+
+			<BxButton
+				label="Cancel"
+				type="soft"
+				@click="closeForm"
+			/>
+			<BxButton
+				label="OK"
+				@click="saveNote"
+			/>
+
 		</div>
 	</div>
 </template>
@@ -78,9 +87,5 @@ input,
 textarea,
 select {
 	@apply block bg-stone-700 rounded text-stone-200 p-1
-}
-
-button {
-	@apply bg-stone-700 hover:bg-stone-600 w-24 py-1 rounded
 }
 </style>

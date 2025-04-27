@@ -2,6 +2,7 @@
 	<article>
 		<div class="flex gap-2 items-center text-sm font-bold text-stone-40 mb-1 h-8">
 
+			<!-- open/close button -->
 			<button
 				class="transition-all"
 				:class="toggleIconClass"
@@ -10,13 +11,11 @@
 				<BxIcon icon="angle_right"/>
 			</button>
 
-			<button
-				class="hover:text-lime-500"
+			<BxButton
+				text
+				:label="noteItem.title"
 				@click="editNote"
-			>
-				{{ noteItem.title }}
-			</button>
-
+			/>
 
 			<!-- CONTROLS -->
 			<div class="ms-auto flex gap-2 items-center">
@@ -34,13 +33,15 @@
 					</div>
 				</template>
 
-				<button
-					class="hover:text-red-500 ms-8"
-					@click="deleteNote"
-				>
-					<BxIcon icon="trash" size="small"/>
-				</button>
+				<div class="w-10"/>
 
+				<BxIconButton
+					text
+					icon="trash"
+					type="danger"
+					size="small"
+					@click="deleteNote"
+				/>
 			</div>
 
 		</div>

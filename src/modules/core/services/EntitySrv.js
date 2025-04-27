@@ -53,8 +53,6 @@ class EntitySrv {
 		}
 		
 		sortRows(rows, "entity", true)
-		
-		console.log("rows", rows)
 	}
 	
 	getEntityTypes() {

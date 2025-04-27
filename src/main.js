@@ -33,7 +33,7 @@ moment.locale("fr");
 const app = createApp(App)
 
 registerBxUi(app);
-console.log("app.components", app._context.components)
+// console.log("app.components", app._context.components)
 
 
 // Add global properties

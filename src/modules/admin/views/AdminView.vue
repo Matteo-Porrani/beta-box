@@ -24,15 +24,6 @@
 
 			<!-- LIST -->
 			<div v-show="viewMode === '$L'">
-<!--				<button-->
-<!--					class="flex items-center gap-1 hover:text-lime-600"-->
-<!--					@click="setMode('$F')"-->
-<!--				>-->
-<!--					<BxIcon icon="add"/>-->
-<!--					Add-->
-<!--				</button>-->
-
-
 				<BxIconButton
 					icon="add"
 					label="Add"
