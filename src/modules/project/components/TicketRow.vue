@@ -21,12 +21,10 @@
 			</div>
 
 			<div class="grid place-content-center">
-				<button
-					class="hover:text-lime-500"
-					@click="$emit('openDetail', ticket.id)"
-				>
-					<BxIcon icon="card_id"/>
-				</button>
+				<BxIconButton
+					text
+					icon="card_id"
+				/>
 			</div>
 
 			<button
@@ -54,12 +52,16 @@
 
 <script>
 import BxBadge from "@/components/UI/BxBadge.vue";
-import BxIcon from "@/components/UI/BxIcon.vue";
+import BxIconButton from "@/modules/ui/components/BxIconButton.vue";
 
 export default {
 
 	name: "TicketRow",
-	components: { BxIcon, BxBadge },
+	components: {
+		BxIconButton,
+		// BxIcon,
+		BxBadge
+	},
 
 	props: {
 		ticket: Object,
