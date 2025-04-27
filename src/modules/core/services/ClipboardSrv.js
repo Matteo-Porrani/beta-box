@@ -27,7 +27,7 @@ class ClipboardSrv {
 	 * @returns {Promise<string>} A promise that resolves to the base64 string of the image
 	 * @throws {Error} If no image is found in the clipboard or if there's an error reading the clipboard
 	 */
-	async pasteClipboardContent() {
+	async pasteClipboardContent(fileName) {
 		try {
 			const clipboardItems = await navigator.clipboard.read();
 			
@@ -36,7 +36,7 @@ class ClipboardSrv {
 					const blob = await item.getType('image/png');
 					const base64String = await this._convertContentToBase64(blob);
 					
-					await this._storeImage(base64String);
+					await this._storeImage(fileName, base64String);
 					return base64String;
 				}
 			}
@@ -53,14 +53,20 @@ class ClipboardSrv {
 	/**
 	 * Stores an image in the data service
 	 * @private
+	 * @param {string} fileName
 	 * @param {string} base64String - The base64 encoded image data
 	 * @returns {Promise<void>}
 	 */
-	async _storeImage(base64String) {
+	async _storeImage(fileName, base64String) {
+		
+		if (!fileName) {
+			fileName = this._getFileName()
+		}
+		
 		await dataSrv.add(
 			"content",
 			{
-				name: this._getFileName(),
+				name: fileName,
 				data: base64String
 			}
 		)

@@ -1,4 +1,44 @@
 <template>
+
+	<BxModal
+		ref="modal_ref"
+	>
+		<template #header>
+			<h2 class="font-bold text-3xl">Create file</h2>
+		</template>
+		<template #body>
+
+			<label for="">File name</label>
+
+			<div class="h-1"/>
+
+			<input
+				type="text"
+				v-model="newFileName"
+				class="block w-full"
+				ref="filename_input_ref"
+			>
+		</template>
+
+		<template #footer>
+			<div class="w-full flex justify-between">
+				<!-- THE BUTTONS -->
+				<BxButton
+					type="soft"
+					label="Cancel"
+					@click="onCancel"
+				/>
+
+				<BxButton
+					label="Save"
+					@click="onSave"
+				/>
+			</div>
+		</template>
+
+	</BxModal>
+
+
 	<DefaultLayout>
 		<div v-if="contentLoaded">
 
@@ -49,6 +89,7 @@
 import ClipboardSrv from "@/modules/core/services/ClipboardSrv";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import ContentSrv from "@/modules/core/services/ContentSrv";
+import { nextTick } from "vue";
 
 
 export default {
@@ -63,6 +104,7 @@ export default {
 			contentLoaded: false,
 			localKey: 1,
 			images: null,
+			newFileName: "",
 		}
 	},
 
@@ -84,9 +126,26 @@ export default {
 		},
 
 		async pasteContent() {
-			await ClipboardSrv.pasteClipboardContent();
+			this.$refs.modal_ref.open();
+
+			nextTick(() => {
+				this.$refs.filename_input_ref.focus()
+			})
+		},
+
+		// =============================================
+
+		async onSave() {
+			await ClipboardSrv.pasteClipboardContent(this.newFileName);
+			this.$refs.modal_ref.close();
 			this.localKey++;
 		},
+
+		onCancel() {
+			this.$refs.modal_ref.close();
+		},
+
+		// =============================================
 
 		async deleteItem(id) {
 			await ContentSrv.deleteItem(id);
@@ -99,5 +158,7 @@ export default {
 
 
 <style scoped>
-
+input {
+	@apply bg-stone-700 rounded text-stone-200 p-1 text-xl
+}
 </style>
