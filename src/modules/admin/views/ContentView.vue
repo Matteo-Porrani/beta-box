@@ -4,12 +4,18 @@
 
 			<div class="text-2xl">ContentView</div>
 
+			<BxButton
+				label="Paste"
+				@click="pasteContent"
+			/>
+
 		</div>
 	</DefaultLayout>
 </template>
 
 
 <script>
+import ClipboardSrv from "@/modules/core/services/ClipboardSrv";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 
 
@@ -27,14 +33,9 @@ export default {
 		}
 	},
 
-	computed: {
+	computed: {},
 
-
-	},
-
-	watch: {
-
-	},
+	watch: {},
 
 	async mounted() {
 
@@ -43,6 +44,13 @@ export default {
 	},
 
 	methods: {
+
+		async pasteContent() {
+			console.log("//// pasteContent")
+
+			await ClipboardSrv.pasteClipboardContent();
+
+		}
 	}
 };
 </script>

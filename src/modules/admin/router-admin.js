@@ -10,13 +10,13 @@ const moduleRoute = {
 	children: [
 		{
 			name: "admin_root",
-			path: "",
+			path: "", // #/admin
 			component: AdminView,
 		},
 		
 		{
 			name: "content",
-			path: "/content",
+			path: "content", // #/admin/content
 			component: ContentView,
 		},
 		
