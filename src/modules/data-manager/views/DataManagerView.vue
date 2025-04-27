@@ -6,21 +6,28 @@
 		>
 
 			<div class="backup border border-stone-500 rounded p-4">
-				<button
+
+				<BxIconButton
+					icon="data_export"
+					label="Data Backup"
 					@click="exportData"
-					class="bg-lime-600 hover:bg-lime-500 text-stone-800 rounded py-1 px-2"
-				>Backup</button>
+				/>
 
 				<div class="h-4"></div>
 			</div>
 
 			<div class="import border border-stone-500 rounded p-4">
-				<button
+
+				<BxIconButton
+					type="accent"
+					icon="sparkles"
+					label="Init Data"
 					@click="initData"
-					class="bg-yellow-400 hover:bg-yellow-300 text-stone-800 rounded py-1 px-2"
-				>Initialize Data</button>
+				/>
 
 				<div class="h-4"></div>
+
+				<h2 class="mt-8 mb-2">Import</h2>
 
 				<input
 					type="file"

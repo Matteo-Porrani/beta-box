@@ -10,6 +10,7 @@ export const ICON_DICT = {
 	box: "IconBox",
 	bolt: "IconBolt",
 	hexagons: "IconHexagons",
+	sparkles: "IconSparkles",
 	
 	/*
 	ARROWS
@@ -46,6 +47,8 @@ export const ICON_DICT = {
 	cards: "IconCards",
 	calendar_cycle: "IconCalendarRepeat",
 	data: "IconDatabase",
+	data_import: "IconDatabaseImport",
+	data_export: "IconDatabaseExport",
 	dashboard: "IconLayoutDashboard",
 	edit: "IconEdit",
 	folders: "IconFolders",
