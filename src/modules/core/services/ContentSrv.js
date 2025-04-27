@@ -38,7 +38,8 @@ class ContentSrv {
 		
 		// Convert base64 data to data URLs for each item
 		for (const i of items) {
-			i.dataUrl = `data:image/png;base64,${i.data}`
+			i.dataUrl = `data:image/png;base64,${i.data}`;
+			i.size = `${(this._calculateBase64Size(i.data)).toFixed(2)} Kb`;
 		}
 		
 		return items;
@@ -64,6 +65,24 @@ class ContentSrv {
 	 */
 	_getItems() {
 		return EntitySrv.getItems("content");
+	}
+	
+	/**
+	 * Calculates the size of a base64 encoded image in bytes
+	 * @param {string} base64String - The base64 encoded image string
+	 * @returns {number} The size of the image in bytes
+	 */
+	_calculateBase64Size(base64String) {
+		// Remove the data URL prefix if present
+		const base64Data = base64String.includes('base64,') 
+			? base64String.split('base64,')[1] 
+			: base64String;
+			
+		// Calculate padding
+		const padding = (base64Data.match(/=/g) || []).length;
+		
+		// Calculate size
+		return ((base64Data.length * 3/4) - padding) / 1024; // KB
 	}
 	
 	// =============================================

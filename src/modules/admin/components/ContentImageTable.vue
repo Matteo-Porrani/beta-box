@@ -19,7 +19,7 @@
 
 			<p class="col-span-2 font-mono">{{ i.name }}</p>
 
-			<div></div>
+			<p class="">{{ i.size }}</p>
 
 			<div class="actions flex justify-end gap-4">
 				<BxIconButton
