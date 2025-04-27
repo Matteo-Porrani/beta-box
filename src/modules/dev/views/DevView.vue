@@ -241,20 +241,20 @@
 
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import { mapState } from "vuex";
-import BxIcon from "@/components/UI/BxIcon.vue";
-import BxModal from "@/components/UI/BxModal.vue";
-import ActivityCard from "@/modules/activity/components/ActivityCard.vue";
-import BxButton from "@/modules/ui/components/BxButton.vue";
+// import BxIcon from "@/components/UI/BxIcon.vue";
+// import BxModal from "@/components/UI/BxModal.vue";
+// import ActivityCard from "@/modules/activity/components/ActivityCard.vue";
+// import BxButton from "@/modules/ui/components/BxButton.vue";
 
 
 export default {
 	name: 'DevView',
 
 	components: {
-		BxButton,
-		// ActivityCard,
-		// BxModal,
-		BxIcon,
+		// BxButton,
+		// // ActivityCard,
+		// // BxModal,
+		// BxIcon,
 		DefaultLayout,
 	},
 

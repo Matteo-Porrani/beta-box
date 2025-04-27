@@ -28,8 +28,6 @@
 import { ref, defineProps, onMounted, watch } from 'vue'
 import { codeToHtml } from "shiki";
 
-import BxIcon from "@/components/UI/BxIcon.vue";
-
 const $p = defineProps({
 	content: String,
 	lang: String,

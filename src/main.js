@@ -30,7 +30,11 @@ extendMoment(moment);
 moment.locale("fr");
 
 // Create the app instance
-const app = createApp(App)
+let app = createApp(App)
+
+app = registerBxUi(app);
+console.log("app.components", app._context.components)
+
 
 // Add global properties
 app.config.globalProperties.moment = moment;
@@ -50,8 +54,6 @@ registerModules({
 app.use(store)
 app.use(router)
 
-registerBxUi(app);
-console.log("app.components", app._context.components)
 
 // Mount the app
 app.mount('#app')

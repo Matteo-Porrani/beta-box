@@ -58,14 +58,12 @@ import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 import TicketModalEditor from "@/modules/project/components/TicketModalEditor.vue";
 import TheSortFilterBar from "@/modules/core/components/TheSortFilterBar.vue";
 import TicketRow from "@/modules/project/components/TicketRow.vue";
-import BxSwitch from "@/components/UI/BxForm/fields/BxSwitch.vue";
 
 
 export default {
 
 	name: "ProjectView",
 	components: {
-		BxSwitch,
 		DefaultLayout,
 		TicketModalEditor,
 		TheSortFilterBar,

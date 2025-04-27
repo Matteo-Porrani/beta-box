@@ -23,14 +23,9 @@
 
 
 <script>
-import BxTableRow from "@/components/UI/BxTable/BxTableRow.vue";
 
 export default {
 	name: "BxTable",
-
-	components: {
-		BxTableRow,
-	},
 
 	props: {
 		cols: Array,

@@ -1,4 +1,3 @@
-
 <template>
 	<div
 		class="rounded w-fit min-w-20 text-center text-stone-800 px-2"

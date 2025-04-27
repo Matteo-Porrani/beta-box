@@ -99,18 +99,10 @@
 <script>
 // utils
 import { isFalsy, nrm } from "@/modules/core/utils/core-utils";
-// components
-import BxModal from "@/components/UI/BxModal.vue";
-import BxIcon from "@/components/UI/BxIcon.vue";
 import { filterTableByNeedle } from "@/modules/core/utils/table-utils";
 
 export default {
-	name: "EntityPicker",
-
-	components: {
-		BxIcon,
-		BxModal
-	},
+	name: "BxEntityPicker",
 
 	props: {
 		fieldDesc: Object,

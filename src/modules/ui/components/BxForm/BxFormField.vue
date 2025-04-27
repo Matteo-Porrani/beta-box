@@ -68,7 +68,7 @@
 		</template>
 
 		<template v-if="fieldDesc.type === 'E'">
-			<EntityPicker
+			<BxEntityPicker
 				ref="entity_picker_ref"
 				:field-desc="fieldDesc"
 				:entity="fieldDesc.rel_entity"
@@ -86,17 +86,9 @@
 import { defineComponent } from 'vue'
 // utils
 import { isFalsy, nrm } from "@/modules/core/utils/core-utils";
-// components
-import BxSwitch from './fields/BxSwitch.vue';
-import EntityPicker from "@/components/UI/BxForm/fields/EntityPicker.vue";
 
 export default defineComponent({
 	name: "BxFormField",
-
-	components: {
-		EntityPicker,
-		BxSwitch
-	},
 
 	props: {
 		fieldDesc: {

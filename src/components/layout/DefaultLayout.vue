@@ -80,16 +80,17 @@
 
 
 <script>
+// Vue related
+import { mapState } from "vuex";
 // components
 import TheMainMenu from "@/components/layout/TheMainMenu.vue";
-import BxIcon from "@/components/UI/BxIcon.vue";
-import { mapState } from "vuex";
-import BxNotif from "@/components/UI/BxNotif.vue";
 
 export default {
 	name: "DefaultLayout",
 
-	components: { BxNotif, BxIcon, TheMainMenu },
+	components: {
+		TheMainMenu
+	},
 
 	props: {
 		viewTitle: {

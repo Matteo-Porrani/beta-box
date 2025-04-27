@@ -62,13 +62,13 @@
 
 
 <script>
-import BxIcon from "@/components/UI/BxIcon.vue";
-import BxSwitch from "@/components/UI/BxForm/fields/BxSwitch.vue";
 import NoteContent from "@/modules/project/components/notes/NoteContent.vue";
 
 export default {
 	name: "NoteItem",
-	components: { BxSwitch, NoteContent, BxIcon },
+	components: {
+		NoteContent,
+	},
 
 	props: {
 		noteItem: Object,

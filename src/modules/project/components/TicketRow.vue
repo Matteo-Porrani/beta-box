@@ -24,6 +24,7 @@
 				<BxIconButton
 					text
 					icon="card_id"
+					@click="$emit('openDetail', ticket.id)"
 				/>
 			</div>
 
@@ -51,17 +52,9 @@
 
 
 <script>
-import BxBadge from "@/components/UI/BxBadge.vue";
-import BxIconButton from "@/modules/ui/components/BxIconButton.vue";
-
 export default {
 
 	name: "TicketRow",
-	components: {
-		BxIconButton,
-		// BxIcon,
-		BxBadge
-	},
 
 	props: {
 		ticket: Object,
@@ -69,11 +62,6 @@ export default {
 	},
 
 	emits: ["openDetail", "editTicket"],
-
-	data() {
-		return {
-		}
-	},
 
 	computed: {
 		headerLabels() {

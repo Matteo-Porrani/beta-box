@@ -46,13 +46,11 @@
 </template>
 
 <script>
-import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {
 	name: "DayCard",
 
 	components: {
-		BxIcon
 	},
 
 	props: {

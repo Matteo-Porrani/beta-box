@@ -43,12 +43,9 @@
 
 <script>
 import { nrm } from "@/modules/core/utils/core-utils";
-import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {
 	name: "BxTableRow",
-
-	components: { BxIcon },
 
 	props: {
 		cols: { type: Array, required: true },

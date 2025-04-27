@@ -20,16 +20,16 @@
 
 
 <script>
-import EntitySrv from "@/modules/core/services/EntitySrv";
-import BxModal from "@/components/UI/BxModal.vue";
-import EntityForm from "@/modules/admin/components/EntityForm.vue";
-import ProjectSrv from "@/modules/project/services/ProjectSrv";
-import { nrm } from "@/modules/core/utils/core-utils";
 import { nextTick } from "vue";
+import EntitySrv from "@/modules/core/services/EntitySrv";
+import ProjectSrv from "@/modules/project/services/ProjectSrv";
+import EntityForm from "@/modules/admin/components/EntityForm.vue";
 
 export default {
 	name: "TicketModalEditor",
-	components: { EntityForm, BxModal },
+	components: {
+		EntityForm,
+	},
 
 	emits: ["editorClosed"],
 	expose: ["openEditor"],

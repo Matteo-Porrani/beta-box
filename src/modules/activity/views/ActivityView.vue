@@ -84,9 +84,9 @@ import { activitySrv } from "@/modules/activity/services/ActivitySrv";
 import { isInteger, parseDurationInMin } from "@/modules/core/utils/core-utils";
 import { prepareItem } from "@/modules/admin/utils/entity-utils";
 // components
-import BxModal from "@/components/UI/BxModal.vue";
-import BxForm from "@/components/UI/BxForm/BxForm.vue";
-import BxIcon from "@/components/UI/BxIcon.vue";
+// import BxModal from "@/components/UI/BxModal.vue";
+// import BxForm from "@/components/UI/BxForm/BxForm.vue";
+// import BxIcon from "@/components/UI/BxIcon.vue";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 // module components
 import ActivityGrid from "@/modules/activity/components/ActivityGrid.vue";
@@ -97,9 +97,9 @@ export default {
 
 	components: {
 		DefaultLayout,
-		BxIcon,
-		BxModal,
-		BxForm,
+		// BxIcon,
+		// BxModal,
+		// BxForm,
 		ActivityGrid,
 		WeekSelector,
 	},

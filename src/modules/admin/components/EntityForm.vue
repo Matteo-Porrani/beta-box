@@ -78,7 +78,6 @@ import { mapActions, mapMutations, mapState } from "vuex";
 import { isInteger } from "@/modules/core/utils/core-utils";
 import { prepareItem } from "@/modules/admin/utils/entity-utils";
 // components
-import BxForm from "@/components/UI/BxForm/BxForm.vue";
 
 
 export default {
@@ -86,7 +85,6 @@ export default {
 	name: "EntityForm",
 
 	components: {
-		BxForm
 	},
 
 	props: {

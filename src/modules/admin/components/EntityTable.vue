@@ -56,7 +56,6 @@ import TableSrv from "@/modules/core/services/TableSrv";
 import { nrm } from "@/modules/core/utils/core-utils";
 import { sortRows, filterTableByNeedle} from "@/modules/core/utils/table-utils";
 // components
-import BxTable from "@/components/UI/BxTable/BxTable.vue";
 import TheSortFilterBar from "@/modules/core/components/TheSortFilterBar.vue";
 
 
@@ -66,7 +65,6 @@ export default {
 
 	components: {
 		TheSortFilterBar,
-		BxTable
 	},
 
 	props: {

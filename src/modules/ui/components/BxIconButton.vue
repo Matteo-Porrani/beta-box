@@ -16,15 +16,8 @@
 
 
 <script>
-import BxButton from "@/modules/ui/components/BxButton.vue";
-import BxIcon from "@/components/UI/BxIcon.vue";
 export default {
 	name: "BxIconButton",
-
-	components: {
-		BxIcon,
-		BxButton
-	},
 
 	props: {
 		right: Boolean,
@@ -40,5 +33,3 @@ export default {
 }
 </script>
 
-
-<style scoped></style>

@@ -25,12 +25,9 @@
 
 
 <script>
-import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {
-
 	name: "BxOptionSelector",
-	components: { BxIcon },
 
 	props: {
 		selectOptions: {

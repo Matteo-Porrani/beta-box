@@ -88,14 +88,15 @@
 
 
 <script>
-import BxBadge from "@/components/UI/BxBadge.vue";
-import BxIcon from "@/components/UI/BxIcon.vue";
 import DetailIcon from "@/modules/project/components/detail/DetailIcon.vue";
 import PhaseStepper from "@/modules/project/components/detail/PhaseStepper.vue";
 
 export default {
 	name: "TicketDetailHeader",
-	components: { PhaseStepper, DetailIcon, BxIcon, BxBadge },
+	components: {
+		PhaseStepper,
+		DetailIcon,
+	},
 
 	props: {
 		ticket: Object

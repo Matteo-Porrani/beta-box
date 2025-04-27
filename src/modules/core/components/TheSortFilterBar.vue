@@ -58,12 +58,10 @@
 // Vue related
 import { nextTick } from "vue";
 //
-import BxIcon from "@/components/UI/BxIcon.vue";
-import BxSwitch from "@/components/UI/BxForm/fields/BxSwitch.vue";
 
 export default {
 	name: "TheSortFilterBar",
-	components: { BxSwitch, BxIcon },
+	components: { },
 
 	props: {
 

@@ -16,12 +16,9 @@
 
 <script>
 import { defineComponent } from 'vue'
-import BxFormField from "@/components/UI/BxForm/BxFormField.vue";
 
 export default defineComponent({
 	name: "BxForm",
-
-	components: { BxFormField },
 
 	props: {
 		description: {

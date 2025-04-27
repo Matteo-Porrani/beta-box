@@ -6,11 +6,11 @@
 
 
 <script>
-import BxIcon from "@/components/UI/BxIcon.vue";
+// import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {
 	name: "DetailIcon",
-	components: { BxIcon },
+	// components: { BxIcon },
 
 	props: {
 		icon: String,

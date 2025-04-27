@@ -13,8 +13,8 @@
 
 <script setup>
 import { computed, defineProps } from 'vue'
-import BxIcon from "@/components/UI/BxIcon.vue";
 import { AppNotification } from "@/types/AppNotification";
+
 const $p = defineProps({
 	notif: AppNotification
 })

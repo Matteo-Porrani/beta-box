@@ -61,14 +61,11 @@
 <script>
 import { activitySrv } from "@/modules/activity/services/ActivitySrv";
 import { nrm } from "@/modules/core/utils/core-utils";
-import BxIcon from "@/components/UI/BxIcon.vue";
 
 export default {
 	name: "ActivityCard",
 
-	components: {
-		BxIcon
-	},
+	components: {},
 
 	props: {
 		activity: {

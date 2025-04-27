@@ -53,15 +53,18 @@
 
 
 <script>
+// service
 import NotesSrv from "@/modules/project/services/NotesSrv";
-
-import BxIcon from "@/components/UI/BxIcon.vue";
+// components
 import NoteForm from "@/modules/project/components/notes/NoteForm.vue";
 import NoteItem from "@/modules/project/components/notes/NoteItem.vue";
 
 export default {
 	name: "TicketDetailNotes",
-	components: { NoteItem, NoteForm, BxIcon },
+	components: {
+		NoteItem,
+		NoteForm,
+	},
 
 	inject: ["notes"],
 

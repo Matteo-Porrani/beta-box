@@ -1,24 +1,44 @@
+import BxIcon from "@/modules/ui/components/BxIcon.vue";
+import BxBadge from "@/modules/ui/components/BxBadge.vue";
 
-const GLOBALS = [
-	"BxButton",
-	"BxIconButton",
-]
+import BxButton from "@/modules/ui/components/BxButton.vue";
+import BxIconButton from "@/modules/ui/components/BxIconButton.vue";
 
-const COMPONENTS = {}
+import BxModal from "@/modules/ui/components/BxModal.vue";
+import BxNotif from "@/modules/ui/components/BxNotif.vue";
 
-for (const c of GLOBALS) {
-	console.log("c", c)
-	COMPONENTS[c] = await import(`@/modules/ui/components/${c}.vue`)
-}
+import BxOptionSelector from "@/modules/ui/components/BxOptionSelector.vue";
 
-console.log("COMPONENTS", COMPONENTS)
+import BxForm from "@/modules/ui/components/BxForm/BxForm.vue";
+import BxFormField from "@/modules/ui/components/BxForm/BxFormField.vue";
+import BxSwitch from "@/modules/ui/components/BxForm/fields/BxSwitch.vue";
+import BxEntityPicker from "@/modules/ui/components/BxForm/fields/BxEntityPicker.vue";
+
+import BxTable from "@/modules/ui/components/BxTable/BxTable.vue";
+import BxTableRow from "@/modules/ui/components/BxTable/BxTableRow.vue";
 
 export function registerBxUi(app) {
 	
-	for (const key of Object.keys(COMPONENTS)) {
-		app.component(key, COMPONENTS[key]);
-		console.log(key, "...registered")
-	}
+	app.component("BxIcon", BxIcon);
+	app.component("BxBadge", BxBadge);
+	
+	app.component("BxButton", BxButton);
+	app.component("BxIconButton", BxIconButton);
+	
+	app.component("BxModal", BxModal);
+	app.component("BxNotif", BxNotif);
+	
+	app.component("BxOptionSelector", BxOptionSelector);
+	
+	app.component("BxForm", BxForm);
+	app.component("BxFormField", BxFormField);
+	app.component("BxSwitch", BxSwitch);
+	app.component("BxEntityPicker", BxEntityPicker);
+	
+	app.component("BxTable", BxTable);
+	app.component("BxTableRow", BxTableRow);
+	
+	return app;
 }
 
 

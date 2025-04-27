@@ -77,17 +77,14 @@ import { nrm } from "@/modules/core/utils/core-utils";
 import { ENTITY_TEMP_DESC } from "@/modules/admin/const/const-admin";
 // components
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
-
 import EntityTable from "@/modules/admin/components/EntityTable.vue";
 import EntityForm from "@/modules/admin/components/EntityForm.vue";
-import BxIconButton from "@/modules/ui/components/BxIconButton.vue";
 
 
 export default {
 	name: 'AdminView',
 
 	components: {
-		BxIconButton,
 		DefaultLayout,
 		EntityTable,
 		EntityForm,

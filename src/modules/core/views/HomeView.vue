@@ -38,12 +38,16 @@
 <script>
 import { mapState } from "vuex";
 import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import BxBadge from "@/modules/ui/components/BxBadge.vue";
+// import BxIcon from "@/modules/ui/components/BxIcon.vue";
 
 
 export default {
 	name: 'HomeView',
 
 	components: {
+		// BxBadge,
+		// BxIcon,
 		DefaultLayout,
 	},
 
@@ -83,5 +87,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
 

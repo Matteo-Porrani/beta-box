@@ -33,11 +33,10 @@
 
 <script>
 import { weekSrv } from "@/modules/activity/services/WeekSrv";
-import BxOptionSelector from "@/components/UI/BxOptionSelector.vue";
 
 export default {
 	name: "WeekSelector",
-	components: { BxOptionSelector },
+	components: {  },
 
 	data() {
 		return {
