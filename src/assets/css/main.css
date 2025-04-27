@@ -21,7 +21,7 @@ body {
 
 /* Custom checkbox styling */
 input[type="checkbox"] {
-    @apply appearance-none size-6 bg-stone-700 border border-stone-500 rounded checked:bg-lime-600 checked:border-lime-600;
+    @apply appearance-none size-6 bg-stone-700 border border-stone-500 rounded checked:bg-sky-500 checked:border-sky-500;
 }
 
 input[type="checkbox"]:checked {
