@@ -1,10 +1,18 @@
 import { dataSrv } from "@/modules/core/services/DataSrv";
 
-
+/**
+ * Service for handling clipboard operations, particularly focused on image handling.
+ * Implements the Singleton pattern to ensure only one instance exists.
+ */
 class ClipboardSrv {
 	
+	/** @private */
 	static #instance;
 	
+	/**
+	 * Gets the singleton instance of ClipboardSrv
+	 * @returns {ClipboardSrv} The singleton instance
+	 */
 	static getInstance() {
 		if (!ClipboardSrv.#instance) {
 			ClipboardSrv.#instance = new ClipboardSrv();
@@ -15,11 +23,9 @@ class ClipboardSrv {
 	// =============================================
 	
 	/**
-	 * The public method, that is called from ContentView.vue
-	 *
-	 * This method
-	 * 1. Takes the clipboard content and passes it to  _convertContentToBase64(blob)
-	 * 2. Logs the base64 string
+	 * Reads the clipboard content and processes any images found.
+	 * @returns {Promise<string>} A promise that resolves to the base64 string of the image
+	 * @throws {Error} If no image is found in the clipboard or if there's an error reading the clipboard
 	 */
 	async pasteClipboardContent() {
 		try {
@@ -30,10 +36,7 @@ class ClipboardSrv {
 					const blob = await item.getType('image/png');
 					const base64String = await this._convertContentToBase64(blob);
 					
-					console.log('///////// Base64 string:', base64String);
-					
 					await this._storeImage(base64String);
-					
 					return base64String;
 				}
 			}
@@ -45,50 +48,34 @@ class ClipboardSrv {
 		}
 	}
 	
-	
-	
 	// =============================================
 	
+	/**
+	 * Stores an image in the data service
+	 * @private
+	 * @param {string} base64String - The base64 encoded image data
+	 * @returns {Promise<void>}
+	 */
 	async _storeImage(base64String) {
-		
-		console.log("🟢 storeImage")
-		
-		const contentItem = {
-			name: this._getFileName(),
-			data: base64String
-		}
-		
-		await dataSrv.add("content", contentItem)
+		await dataSrv.add(
+			"content",
+			{
+				name: this._getFileName(),
+				data: base64String
+			}
+		)
 	}
 	
-	
 	// =============================================
 	
-	/*
-	I've implemented the method with the following features:
-	- Returns a Promise since FileReader operations are asynchronous
-	- Uses FileReader to convert the Blob to a base64 string
-	- Splits the result to get only the base64 data (removing the data URL prefix)
-	Handles both success and error cases
-	
-	A few important notes:
-	The method assumes this.clipboardItem is a Blob containing the image data
-	The base64 string will be the raw base64 data without the data URL prefix (e.g., "data:image/png;base64,")
-	The method is asynchronous and should be used with await or .then()
+	/**
+	 * Converts a Blob to a base64 string
+	 * @private
+	 * @param {Blob} blob - The Blob object containing the image data
+	 * @returns {Promise<string>} A promise that resolves to the base64 string
+	 * @throws {Error} If the conversion fails
 	 */
 	async _convertContentToBase64(blob) {
-		/*
-		 - Extract the image data from the clipboard item
-
-     When reading from the clipboard using navigator.clipboard.read(),
-     the image data will be available as a 'ClipboardItem'.
-
-     For images, specifically:
-     The clipboard item will have a MIME type of image/png (for screenshots) or other image formats like image/jpeg
-     The actual image data will be available as a Blob object.
-     
-     Convert Blob to a base64 and log the base64 string
-		 */
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
 			reader.onload = () => {
@@ -102,8 +89,12 @@ class ClipboardSrv {
 	
 	// =============================================
 	
+	/**
+	 * Generates a unique filename for the image based on the current date and timestamp
+	 * @private
+	 * @returns {string} A filename in the format "image_DD_MM_YYYY_timestamp"
+	 */
 	_getFileName() {
-		// creates a string in format "image_(day)_(month)_(year)" from current datetime
 		const now = new Date();
 		const ts = now.getTime();
 		const day = String(now.getDate()).padStart(2, '0');
@@ -113,10 +104,8 @@ class ClipboardSrv {
 		return `image_${day}_${month}_${year}_${ts}`;
 	}
 	
-	
 	// =============================================
 }
-
 
 export default ClipboardSrv.getInstance();
 

@@ -2,20 +2,18 @@
 	<DefaultLayout>
 		<div v-if="contentLoaded">
 
-			<div class="text-2xl">ContentView</div>
+			<div class="text-2xl">Images</div>
+
+			<div class="h-4"/>
 
 			<BxButton
 				label="Paste"
 				@click="pasteContent"
 			/>
 
-			<div class="h-8"/>
-
+			<div class="h-4"/>
 
 			<template v-if="images">
-
-				<p>{{ localKey }}</p>
-
 				<article
 					v-for="i in images"
 					:key="i.id"
@@ -28,6 +26,17 @@
 					<div>
 						<p>{{ i.id }}</p>
 						<p>{{ i.name }} </p>
+					</div>
+
+					<div></div>
+
+					<div class="actions flex justify-end gap-4">
+						<BxIconButton icon="focus" text/>
+						<BxIconButton
+							icon="trash"
+							text
+							@click="deleteItem(i.id)"
+						/>
 					</div>
 
 				</article>
@@ -59,13 +68,8 @@ export default {
 		}
 	},
 
-	computed: {
-
-	},
-
 	watch: {
 		async localKey() {
-			console.log("W...")
 			await this.initScreen();
 		}
 	},
@@ -86,6 +90,10 @@ export default {
 			this.localKey++;
 		},
 
+		async deleteItem(id) {
+			await ContentSrv.deleteItem(id);
+			this.localKey++;
+		}
 
 	}
 };

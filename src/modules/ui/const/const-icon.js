@@ -52,6 +52,7 @@ export const ICON_DICT = {
 	dashboard: "IconLayoutDashboard",
 	edit: "IconEdit",
 	folders: "IconFolders",
+	focus: "IconFocusCentered",
 	team: "IconFriends",
 	home: "IconHome",
 	link: "IconExternalLink",
@@ -67,6 +68,7 @@ export const ICON_DICT = {
 	tag: "IconTag",
 	tag_filled: "IconTagFilled",
 	trash: "IconTrash",
+	view: "IconEye",
 	xmark: "IconX",
 }
 
