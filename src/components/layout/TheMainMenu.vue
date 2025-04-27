@@ -45,6 +45,7 @@ export default {
 			],
 			confLinks: [
 				["Admin", "/admin"],
+				["Content", "/content"],
 				["Data Manager", "/data-manager"],
 				// ["Dev", "/dev"],
 			]
