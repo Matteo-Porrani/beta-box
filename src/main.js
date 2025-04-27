@@ -2,6 +2,7 @@ import "@/assets/css/main.css"
 
 import { createApp } from 'vue'
 import { registerModules } from "./register-modules";
+import { registerBxUi } from "@/register-bx-ui";
 
 import App from './App.vue'
 import router from './router'
@@ -47,10 +48,10 @@ registerModules({
 
 // Install plugins
 app.use(store)
-
-
-
 app.use(router)
+
+registerBxUi(app);
+console.log("app.components", app._context.components)
 
 // Mount the app
 app.mount('#app')
