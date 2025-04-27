@@ -1,5 +1,34 @@
 <template>
 
+	<!-- FULLSCREEN PREVIEW -->
+	<section
+		v-if="showPreview"
+		ref="modal_preview_ref"
+		class="absolute inset-12 z-50"
+	>
+
+		<div
+			v-if="preview.dataUrl"
+			class="relative rounded overflow-hidden border h-[100%] place-content-center bg-stone-800"
+		>
+			<BxIconButton
+				text
+				icon="xmark"
+				class="size-12 text-3xl text-stone-400 absolute right-0 top-4"
+				@click="showPreview = false"
+			/>
+			<p class="absolute right-4 bottom-4 bg-stone-800 rounded p-1">{{ preview.fileName }}</p>
+
+			<img
+				:src="preview.dataUrl"
+				alt="preview"
+				class="h-full object-contain mx-auto"
+			/>
+
+		</div>
+	</section>
+
+	<!-- CREATE MODAL -->
 	<BxModal
 		ref="modal_ref"
 	>
@@ -38,7 +67,7 @@
 
 	</BxModal>
 
-
+	<!-- MAIN CONTENT -->
 	<DefaultLayout>
 		<div v-if="contentLoaded">
 
@@ -53,22 +82,29 @@
 
 			<div class="h-4"/>
 
-			<template v-if="images">
+			<section
+				v-if="images"
+				class="max-h-[80vh] overflow-y-auto"
+			>
 				<article
 					v-for="i in images"
 					:key="i.id"
-					class="grid grid-cols-6 items-center border rounded mb-1 p-1"
+					class="grid grid-cols-6 items-center border border-stone-500 rounded mb-1 p-1"
 				>
-					<div class="w-24 h-12 rounded overflow-hidden">
+					<button
+						class="block w-24 h-12 rounded overflow-hidden"
+						@click="openPreview(i.id)"
+					>
 						<img :src="i.dataUrl" alt="thumbnail" class="object-cover" />
-					</div>
+					</button>
 
 					<p>{{ i.id }}</p>
 
-					<p class="font-mono">{{ i.name }}</p>
+					<p class="col-span-2 font-mono">{{ i.name }}</p>
+
+					<div></div>
 
 					<div class="actions flex justify-end gap-4">
-						<BxIconButton icon="focus" text/>
 						<BxIconButton
 							type="danger"
 							icon="trash"
@@ -78,7 +114,7 @@
 					</div>
 
 				</article>
-			</template>
+			</section>
 
 		</div>
 	</DefaultLayout>
@@ -105,6 +141,12 @@ export default {
 			localKey: 1,
 			images: null,
 			newFileName: "",
+
+			showPreview: false,
+			preview: {
+				fileName: null,
+				dataUrl: null
+			}
 		}
 	},
 
@@ -138,6 +180,7 @@ export default {
 		async onSave() {
 			await ClipboardSrv.pasteClipboardContent(this.newFileName);
 			this.$refs.modal_ref.close();
+			this.newFileName = null;
 			this.localKey++;
 		},
 
@@ -145,6 +188,15 @@ export default {
 			this.$refs.modal_ref.close();
 		},
 
+		// =============================================
+		openPreview(id) {
+			const image = this.images.find(im => Number(im.id) === Number(id))
+
+			this.preview.fileName = image.name;
+			this.preview.dataUrl = image.dataUrl;
+
+			this.showPreview = true;
+		},
 		// =============================================
 
 		async deleteItem(id) {
