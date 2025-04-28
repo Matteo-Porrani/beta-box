@@ -120,6 +120,7 @@ export default {
 
 		getTicketData() {
 			this.ticket = ProjectSrv.getTicketById(this.ticketId);
+			console.log("this.ticket", this.ticket)
 		},
 
 		// ============================================= EDITOR

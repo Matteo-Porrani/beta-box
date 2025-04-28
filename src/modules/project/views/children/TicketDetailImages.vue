@@ -1,5 +1,26 @@
 <template>
 
+	<BxModal
+		ref="modal_ref"
+	>
+		<template #body>
+			<BxEntityPicker
+				ref="ent_picker_ref"
+				:field-desc="fieldDesc"
+				entity="Content"
+				:multiple="fieldDesc.multiple"
+				@update:model-value="onValueUpdate"
+			/>
+		</template>
+
+		<template #footer>
+			<BxButton
+				label="Save"
+				@click="saveChanges"
+			/>
+		</template>
+	</BxModal>
+
 	<TheFullscreenPreview
 		v-if="showPreview"
 		:image="previewImage"
@@ -26,7 +47,7 @@
 				icon="add"
 				text
 				size="large"
-				@click="$emit('addImage')"
+				@click="openEntityPicker"
 			/>
 		</article>
 
@@ -41,15 +62,15 @@ This screen section
 	- images are shown as grid with names as legend
 
 As user
-- I can add an image from the files list ("content" table)
-- I can delete an image
+- I can add / remove links to images from the files list ("content" table)
 - I can open an image in fullscreen preview
-
  */
 
-
-
+import { nextTick } from "vue";
 import ContentSrv from "@/modules/core/services/ContentSrv";
+import { dataSrv } from "@/modules/core/services/DataSrv";
+import EntitySrv from "@/modules/core/services/EntitySrv";
+// components
 import TheFullscreenPreview from "@/components/layout/TheFullscreenPreview.vue";
 
 export default {
@@ -65,6 +86,9 @@ export default {
 		return {
 			showPreview: false,
 			previewImage: null,
+
+			fieldDesc: null,
+			selection: null,
 		}
 	},
 
@@ -81,6 +105,57 @@ export default {
 			if (imageToOpen) {
 				this.previewImage = imageToOpen;
 				this.showPreview = true;
+			}
+		},
+
+		async openEntityPicker() {
+			const ids = this._getLinkedIds();
+			this.fieldDesc = await this._getFieldDesc();
+			this.$refs.modal_ref.open();
+			nextTick(() => this.$refs.ent_picker_ref.setValue(ids.join(":")));
+		},
+
+		// =============================================
+
+		onValueUpdate(selectedIds) {
+			this.selection = selectedIds
+		},
+
+		async saveChanges() {
+			const srcTicket = EntitySrv.getItems("ticket").find(t => Number(t.id) === Number(this.$route.params.id))
+			if (!srcTicket) return;
+
+			const updatedTicket = {
+				...srcTicket,
+				content: String(this.selection)
+			};
+
+			// UPDATE
+			await dataSrv.update("ticket", updatedTicket)
+			this.$refs.modal_ref.close();
+		},
+		// =============================================
+
+		_getLinkedIds() {
+			return this.images.map(i => i.id);
+		},
+
+		async _getFieldDesc() {
+			return {
+				"entity": "Ticket",
+				"pk": false,
+				"readonly": false,
+				"picker_col": false,
+				"required": false,
+				"type": "E",
+				"multiple": true,
+				"field": "content",
+				"rel_entity": "Content",
+				"max": "",
+				"options": await ContentSrv.getContentItems(),
+				"entityPickerCols": [ "id", "name" ],
+				"order": 1,
+				"id": 1
 			}
 		}
 
