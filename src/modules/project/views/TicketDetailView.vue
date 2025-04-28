@@ -120,6 +120,7 @@ export default {
 
 		getTicketData() {
 			this.ticket = ProjectSrv.getTicketById(this.ticketId);
+			console.log("KEY", this.coreKey)
 			console.log("this.ticket", this.ticket)
 		},
 

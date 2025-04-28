@@ -53,6 +53,7 @@ export const ICON_DICT = {
 	edit: "IconEdit",
 	folders: "IconFolders",
 	focus: "IconFocusCentered",
+	grid: "IconLayoutGrid",
 	team: "IconFriends",
 	home: "IconHome",
 	link: "IconExternalLink",

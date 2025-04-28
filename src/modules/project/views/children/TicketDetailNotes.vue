@@ -6,7 +6,7 @@
 			<button
 				v-for="b in [['expand', true], ['collapse', false]]"
 				:key="b[0]"
-				class="hover:text-lime-500"
+				class="hover:text-sky-500"
 				@click="_setValueOnAll({ key: 'open', value: b[1] })"
 			>
 				<BxIcon :icon="b[0]"/>

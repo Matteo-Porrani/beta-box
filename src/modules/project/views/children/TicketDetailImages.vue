@@ -44,7 +44,7 @@
 			class="grid place-content-center bg-stone-700 rounded overflow-hidden"
 		>
 			<BxIconButton
-				icon="add"
+				icon="grid"
 				text
 				size="large"
 				@click="openEntityPicker"
@@ -72,6 +72,7 @@ import { dataSrv } from "@/modules/core/services/DataSrv";
 import EntitySrv from "@/modules/core/services/EntitySrv";
 // components
 import TheFullscreenPreview from "@/components/layout/TheFullscreenPreview.vue";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
 	name: "TicketDetailImages",
@@ -99,6 +100,9 @@ export default {
 	},
 
 	methods: {
+
+		...mapActions("entity", ["loadItems"]),
+		...mapMutations("core", ["INCREMENT_KEY"]),
 
 		openPreview(id) {
 			const imageToOpen = this.images.find(img => Number(img.id) === Number(id));
@@ -131,7 +135,11 @@ export default {
 			};
 
 			// UPDATE
-			await dataSrv.update("ticket", updatedTicket)
+			await dataSrv.update("ticket", updatedTicket);
+			await dataSrv.load("ticket");
+			await this.loadItems("ticket");
+
+			this.INCREMENT_KEY();
 			this.$refs.modal_ref.close();
 		},
 		// =============================================
@@ -159,7 +167,7 @@ export default {
 			}
 		}
 
-	}
+	},
 
 }
 </script>
