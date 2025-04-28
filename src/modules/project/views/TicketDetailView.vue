@@ -71,7 +71,7 @@ export default {
 	data() {
 		return {
 			ticket: null,
-			tabs: [ "notes", "activity" ],
+			tabs: [ "notes", "images", "activity" ],
 		}
 	},
 
@@ -80,6 +80,7 @@ export default {
 			activity: computed(() => this.ticket?.activity ? nrm(this.ticket?.activity) : []),
 			activityItems: computed(() => this.ticket?.parsedActivity ? nrm(this.ticket?.parsedActivity.items) : []),
 			notes: computed(() => this.ticket?.note ? nrm(this.ticket?.note) : []), // 'note' prop is provided as 'notes'
+			images: computed(() => this.ticket?.content ? nrm(this.ticket?.content) : []), // 'note' prop is provided as 'notes'
 		}
 	},
 

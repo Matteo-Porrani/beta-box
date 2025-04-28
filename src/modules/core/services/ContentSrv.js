@@ -38,11 +38,15 @@ class ContentSrv {
 		
 		// Convert base64 data to data URLs for each item
 		for (const i of items) {
-			i.dataUrl = `data:image/png;base64,${i.data}`;
-			i.size = `${(this._calculateBase64Size(i.data)).toFixed(2)} Kb`;
+			this.addDataUrlValue(i);
 		}
 		
 		return items;
+	}
+	
+	addDataUrlValue(item) {
+		item.dataUrl = `data:image/png;base64,${item.data}`;
+		item.size = `${(this._calculateBase64Size(item.data)).toFixed(2)} Kb`;
 	}
 	
 	/**
