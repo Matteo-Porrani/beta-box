@@ -11,11 +11,12 @@
 				<BxIcon icon="angle_right"/>
 			</button>
 
-			<BxButton
-				text
-				:label="noteItem.title"
+			<!-- title button -->
+			<button
 				@click="editNote"
-			/>
+			>
+				{{ noteItem.title }}
+			</button>
 
 			<!-- CONTROLS -->
 			<div class="ms-auto flex gap-2 items-center">
