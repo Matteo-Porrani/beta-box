@@ -1,4 +1,7 @@
 <template>
+
+	<div id="previewWrapper" class="absolute inset-0"></div>
+
 	<section
 		data-test="default-layout-root"
 		class="relative grid grid-cols-8 gap-4"
