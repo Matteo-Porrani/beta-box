@@ -163,7 +163,7 @@ export default {
 		/*
 
 		getListLabels(rows, entityName) {
-			const listDictionary = EntitySrv.getEntityListDictionary(entityName);
+			const listDictionary = EntitySrv.getListFieldsDictionary(entityName);
 			return Object.keys(listDictionary).length > 0
 				? rows.map(row => this._getLabelsForRow(row, listDictionary))
 				: rows;

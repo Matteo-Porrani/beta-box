@@ -68,7 +68,7 @@ As user
 
 import { nextTick } from "vue";
 import ContentSrv from "@/modules/core/services/ContentSrv";
-import { dataSrv } from "@/modules/core/services/DataSrv";
+// import { dataSrv } from "@/modules/core/services/DataSrv";
 import EntitySrv from "@/modules/core/services/EntitySrv";
 // components
 import TheFullscreenPreview from "@/modules/core/components/layout/TheFullscreenPreview.vue";
@@ -101,7 +101,7 @@ export default {
 
 	methods: {
 
-		...mapActions("entity", ["loadTables"]),
+		...mapActions("entity", ["loadTables", "updateItem"]),
 		...mapMutations("core", ["INCREMENT_KEY"]),
 
 		openPreview(id) {
@@ -126,7 +126,7 @@ export default {
 		},
 
 		async saveChanges() {
-			const srcTicket = EntitySrv.getItems("ticket").find(t => Number(t.id) === Number(this.$route.params.id))
+			const srcTicket = EntitySrv.getItemById("ticket", this.$route.params.id);
 			if (!srcTicket) return;
 
 			const updatedTicket = {
@@ -134,10 +134,10 @@ export default {
 				content: String(this.selection)
 			};
 
-			// UPDATE
-			// FIXME -- dataSrv MUST NOT BE CALLED FROM COMPONENTS !!!
-			await dataSrv.update("ticket", updatedTicket);
-			await dataSrv.load("ticket");
+			await this.updateItem({
+				tableName: "ticket",
+				item: updatedTicket,
+			})
 			await this.loadTables(["ticket"]);
 
 			this.INCREMENT_KEY();
