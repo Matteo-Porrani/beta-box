@@ -208,14 +208,14 @@ export default {
 		},
 
 		async onSave() {
-			const action = isInteger(this.formValues.id)
+			const action = isInteger(this.formValues.id) // call action in store-entity
 				? "updateItem"
 				: "addItem"
 
 			await this[action]({
 				tableName: "activity",
 				item: prepareItem(this.formValues)
-			})
+			});
 
 			this.onReset();
 			this.$refs.modal_ref.close();
