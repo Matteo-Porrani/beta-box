@@ -4,7 +4,6 @@
 			v-if="loadDone"
 			class="max-h-[85vh] overflow-y-auto"
 		>
-
 			<WeekSelector
 				@week-selected="onWeekSelected"
 			/>
@@ -15,63 +14,56 @@
 				@add-activity="onAddActivity"
 				@edit-activity="onEditActivity"
 			/>
-
 		</div>
 	</DefaultLayout>
 
-	<!--	MODAL		-->
+	<!--	ACTIVITY FORM		-->
 	<BxModal
 		ref="modal_ref"
 	>
 		<template #header>
 			<h2 class="font-bold text-3xl">Activity</h2>
 		</template>
-		<template #body>
-			<button
-				class="
-					flex items-center gap-2
-					w-32 bg-rose-600 border border-rose-600 hover:bg-rose-500
-					disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800
-					ms-auto mb-4
-				"
-				@click="onDeleteActivity"
-			>
-				<BxIcon icon="trash"/>
-				Delete
-			</button>
 
+		<template #body>
+
+			<BxIconButton
+				type="danger"
+				icon="trash"
+				label="Delete"
+				class="ms-auto"
+				@click="onDeleteActivity"
+			/>
+
+			<div class="h-2"/>
 
 			<BxForm
 				ref="bxForm"
 				:description="activityFormDesc"
 				@field-value-changed="onFieldValueChanged"
 			/>
+
 		</template>
+
 		<template #footer>
 			<!-- THE BUTTONS -->
 			<div class="w-full flex justify-between">
-				<button
-					class="
-					w-32 border border-stone-500 text-stone-500 hover:bg-stone-800
-					disabled:hover:cursor-not-allowed rounded py-2 px-6
-				"
+
+				<BxButton
+					type="soft"
+					label="Cancel"
 					@click="onCancel"
-				>
-					Cancel
-				</button>
-				<button
-					class="
-					w-32 bg-lime-600 border border-lime-600 hover:bg-lime-500
-					disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800
-				"
+				/>
+
+				<BxButton
+					label="Save"
 					@click="onSave"
-				>
-					Save
-				</button>
+				/>
+
 			</div>
 		</template>
-
 	</BxModal>
+
 </template>
 
 <script>
@@ -84,22 +76,17 @@ import { activitySrv } from "@/modules/activity/services/ActivitySrv";
 import { isInteger, parseDurationInMin } from "@/modules/core/utils/core-utils";
 import { prepareItem } from "@/modules/admin/utils/entity-utils";
 // components
-// import BxModal from "@/components/UI/BxModal.vue";
-// import BxForm from "@/components/UI/BxForm/BxForm.vue";
-// import BxIcon from "@/components/UI/BxIcon.vue";
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 // module components
 import ActivityGrid from "@/modules/activity/components/ActivityGrid.vue";
 import WeekSelector from "@/modules/activity/components/WeekSelector.vue";
+
 
 export default {
 	name: "ActivityView",
 
 	components: {
 		DefaultLayout,
-		// BxIcon,
-		// BxModal,
-		// BxForm,
 		ActivityGrid,
 		WeekSelector,
 	},
@@ -156,18 +143,14 @@ export default {
 			"deleteItem",
 		]),
 
-		// =============================================
-		// WEEK NAVIGATION
-		// =============================================
+		// ============================================= WEEK NAVIGATION
 
 		onWeekSelected(weekId) {
 			this.selectedWeekId = weekId;
 			activitySrv.getActivitiesByWeekId(this.selectedWeekId);
 		},
 
-		// =============================================
-		// FORM HANDLING
-		// =============================================
+		// ============================================= FORM HANDLING
 
 		onFieldValueChanged(changeData) {
 			this.SET_FIELD(changeData);
@@ -178,9 +161,7 @@ export default {
 			setTimeout(() => this.RESET_FORM(), 300);
 		},
 
-		// =============================================
-		// CRUD ACTIONS
-		// =============================================
+		// ============================================= CRUD ACTIONS
 
 		onAddActivity(dayId) {
 			// set some default values
@@ -202,12 +183,12 @@ export default {
 
 		onEditActivity(activityData) {
 			activityData.duration = parseDurationInMin(activityData.duration);
-
 			this.openModal();
 			nextTick(() => this.$refs.bxForm.initForm(activityData))
 		},
 
 		async onSave() {
+			// this.formValues is a computed
 			const action = isInteger(this.formValues.id) // call action in store-entity
 				? "updateItem"
 				: "addItem"
@@ -227,9 +208,7 @@ export default {
 			this.$refs.modal_ref.close();
 		},
 
-		// =============================================
-		// MODAL HANDLING
-		// =============================================
+		// ============================================= MODAL HANDLING
 
 		openModal() {
 			this.$refs.modal_ref.open();
