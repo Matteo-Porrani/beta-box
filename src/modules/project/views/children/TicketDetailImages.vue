@@ -101,7 +101,7 @@ export default {
 
 	methods: {
 
-		...mapActions("entity", ["loadItems"]),
+		...mapActions("entity", ["loadTables"]),
 		...mapMutations("core", ["INCREMENT_KEY"]),
 
 		openPreview(id) {
@@ -135,9 +135,10 @@ export default {
 			};
 
 			// UPDATE
+			// FIXME -- dataSrv MUST NOT BE CALLED FROM COMPONENTS !!!
 			await dataSrv.update("ticket", updatedTicket);
 			await dataSrv.load("ticket");
-			await this.loadItems("ticket");
+			await this.loadTables(["ticket"]);
 
 			this.INCREMENT_KEY();
 			this.$refs.modal_ref.close();

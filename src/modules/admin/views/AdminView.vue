@@ -106,7 +106,6 @@ export default {
 		]),
 
 		entitiesList() {
-			// if (Object.keys(this.entities).length === 0) return [];
 			return this.getListOptions('$entities') ?? [];
 		},
 
@@ -134,31 +133,35 @@ export default {
 	},
 
 	async mounted() {
-		// list_option table must be loaded first
-		await this.loadItems("list_option");
-
-		for (const e of this.entitiesList.filter(ent => ent.value !== "list_option")) {
-			await this.loadItems(e.value);
-		}
-
-		this.tableName = "ticket";
-
-		// debug
-		// EntitySrv.logEntityFieldDefs()
-
-		this.contentLoaded = true;
+		await this.initScreen();
 	},
 
 	methods: {
 
 		...mapActions("entity", [
-			"loadItems",
+			"loadTables",
 			"deleteItem",
 		]),
 
-		// =============================================
-		// EVENT HANDLERS
-		// =============================================
+		// ============================================= INIT
+		async initScreen() {
+			// list_option table must be loaded first
+			await this.loadTables(["list_option"]);
+
+			// otherTables holds names of all tables other than 'list_option'
+			const otherTables = this.entitiesList
+				.filter(ent => ent.value !== "list_option")
+				.map(t => t.value);
+
+			await this.loadTables(otherTables)
+
+			// this will display 'ticket' as default table in the grid
+			this.tableName = "ticket";
+
+			this.contentLoaded = true;
+		},
+
+		// ============================================= EVENT HANDLERS
 
 		async onDeleteItem(id) {
 			await this.deleteItem({ // call to store-entity action
@@ -190,9 +193,7 @@ export default {
 			nextTick(() => this.$refs.entity_form_ref.onEditItem(clone));
 		},
 
-		// =============================================
-		// COMPONENT DISPLAY
-		// =============================================
+		// ============================================= COMPONENT DISPLAY
 
 		setMode(mode) {
 			this.viewMode = mode;
