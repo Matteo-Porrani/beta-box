@@ -97,7 +97,7 @@
 import { nextTick } from "vue";
 import ContentSrv from "@/modules/core/services/ContentSrv";
 import ClipboardSrv from "@/modules/core/services/ClipboardSrv";
-import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import ContentImageTable from "@/modules/admin/components/ContentImageTable.vue";
 
 

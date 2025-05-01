@@ -52,7 +52,7 @@ import ProjectSrv from "@/modules/project/services/ProjectSrv";
 // utils
 import { nrm, ucFirst } from "@/modules/core/utils/core-utils";
 // components
-import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import TicketDetailHeader from "@/modules/project/components/detail/TicketDetailHeader.vue";
 import TicketDetailFooter from "@/modules/project/components/detail/TicketDetailFooter.vue";
 import TicketModalEditor from "@/modules/project/components/TicketModalEditor.vue";

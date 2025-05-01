@@ -67,7 +67,7 @@ import { nrm } from "@/modules/core/utils/core-utils";
 // const
 import { ENTITY_TEMP_DESC } from "@/modules/admin/const/const-admin";
 // components
-import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import EntityTable from "@/modules/admin/components/EntityTable.vue";
 import EntityForm from "@/modules/admin/components/EntityForm.vue";
 

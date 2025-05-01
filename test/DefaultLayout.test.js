@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { shallowMount } from "@vue/test-utils";
-import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 
 
 function factory({ $p }) {

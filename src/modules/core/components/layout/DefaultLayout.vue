@@ -86,7 +86,7 @@
 // Vue related
 import { mapState } from "vuex";
 // components
-import TheMainMenu from "@/components/layout/TheMainMenu.vue";
+import TheMainMenu from "@/modules/core/components/layout/TheMainMenu.vue";
 
 export default {
 	name: "DefaultLayout",

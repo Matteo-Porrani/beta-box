@@ -54,7 +54,7 @@
 // services
 import ProjectSrv from "@/modules/project/services/ProjectSrv";
 // components
-import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import TicketModalEditor from "@/modules/project/components/TicketModalEditor.vue";
 import TheSortFilterBar from "@/modules/core/components/TheSortFilterBar.vue";
 import TicketRow from "@/modules/project/components/TicketRow.vue";

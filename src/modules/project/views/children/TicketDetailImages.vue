@@ -71,7 +71,7 @@ import ContentSrv from "@/modules/core/services/ContentSrv";
 import { dataSrv } from "@/modules/core/services/DataSrv";
 import EntitySrv from "@/modules/core/services/EntitySrv";
 // components
-import TheFullscreenPreview from "@/components/layout/TheFullscreenPreview.vue";
+import TheFullscreenPreview from "@/modules/core/components/layout/TheFullscreenPreview.vue";
 import { mapActions, mapMutations } from "vuex";
 
 export default {

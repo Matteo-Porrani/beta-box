@@ -74,7 +74,7 @@ import { mapState } from "vuex";
 import { exportSrv } from "@/modules/data-manager/services/ExportSrv";
 import { dataSrv } from "@/modules/core/services/DataSrv";
 // components
-import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import { nrm } from "@/modules/core/utils/core-utils";
 
 

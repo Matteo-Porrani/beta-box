@@ -37,7 +37,7 @@
 
 <script>
 import { mapState } from "vuex";
-import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import BxBadge from "@/modules/ui/components/BxBadge.vue";
 // import BxIcon from "@/modules/ui/components/BxIcon.vue";
 

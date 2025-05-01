@@ -239,7 +239,7 @@
 
 <script>
 
-import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import { mapState } from "vuex";
 // import BxIcon from "@/components/UI/BxIcon.vue";
 // import BxModal from "@/components/UI/BxModal.vue";

@@ -31,7 +31,7 @@
 
 <script>
 
-import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import { mapMutations, mapState } from "vuex";
 
 export default {

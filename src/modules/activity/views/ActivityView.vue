@@ -87,7 +87,7 @@ import { prepareItem } from "@/modules/admin/utils/entity-utils";
 // import BxModal from "@/components/UI/BxModal.vue";
 // import BxForm from "@/components/UI/BxForm/BxForm.vue";
 // import BxIcon from "@/components/UI/BxIcon.vue";
-import DefaultLayout from "@/components/layout/DefaultLayout.vue";
+import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 // module components
 import ActivityGrid from "@/modules/activity/components/ActivityGrid.vue";
 import WeekSelector from "@/modules/activity/components/WeekSelector.vue";
