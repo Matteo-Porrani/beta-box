@@ -31,7 +31,9 @@
 					</nav>
 
 					<div class="grid rounded border border-stone-500 p-2 overflow-y-auto">
-						<router-view/>
+						<router-view
+							@content-update="onContentUpdate"
+						/>
 					</div>
 				</div>
 
@@ -46,8 +48,9 @@
 <script>
 // Vue related
 import { computed } from "vue";
-import { mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 // services
+import EntitySrv from "@/modules/core/services/EntitySrv";
 import ProjectSrv from "@/modules/project/services/ProjectSrv";
 // utils
 import { nrm, ucFirst } from "@/modules/core/utils/core-utils";
@@ -117,12 +120,39 @@ export default {
 	methods: {
 		ucFirst,
 
+		...mapActions("entity", ["loadTables", "updateItem"]),
+		...mapMutations("core", ["INCREMENT_KEY"]),
+
 		// ============================================= INIT
 
 		getTicketData() {
+			// console.log("KEY", this.coreKey)
 			this.ticket = ProjectSrv.getTicketById(this.ticketId);
-			console.log("KEY", this.coreKey)
-			console.log("this.ticket", this.ticket)
+		},
+
+		// ============================================= EDITOR
+
+		/**
+		 * Event listener to react to changes in images selection
+		 * @param content
+		 */
+		async onContentUpdate(content) {
+			// 1. retrieve raw ticket
+			const srcTicket = EntitySrv.getItemById("ticket", this.$route.params.id);
+
+			if (!srcTicket) return;
+
+			// 2. call for update (store-entity)
+			await this.updateItem({
+				tableName: "ticket",
+				item: { ...srcTicket, content },
+			})
+
+			// 3. reload
+			await this.loadTables(["ticket"]);
+
+			// 4. trigger re-execution of this.getTicketData()
+			this.INCREMENT_KEY();
 		},
 
 		// ============================================= EDITOR

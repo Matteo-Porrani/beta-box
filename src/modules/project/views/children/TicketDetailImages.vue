@@ -8,14 +8,6 @@
 		</template>
 
 		<template #body>
-			<BxEntityPicker
-				ref="ent_picker_ref"
-				:field-desc="fieldDesc"
-				entity="Content"
-				:multiple="fieldDesc.multiple"
-				@update:model-value="onValueUpdate"
-			/>
-
 			<ContentImageTable
 				:images="availableImages"
 				@checkbox-change="onCheckboxChange"
@@ -23,20 +15,17 @@
 		</template>
 
 		<template #footer>
-
 			<div class="flex justify-between w-full">
 				<BxButton
 					type="soft"
 					label="Cancel"
 					@click="onCancel"
 				/>
-
 				<BxButton
 					label="Save"
 					@click="saveChanges"
 				/>
 			</div>
-
 		</template>
 	</BxModal>
 
@@ -46,7 +35,6 @@
 		@close-preview="showPreview = false"
 	/>
 
-	<p>{{ currSelection }}</p>
 	<!-- IMAGES GRID -->
 	<section class="grid grid-cols-8 grid-rows-8 gap-2">
 
@@ -80,7 +68,7 @@
 				icon="grid"
 				text
 				size="large"
-				@click="openEntityPicker"
+				@click="openSelectionModal"
 			/>
 		</article>
 
@@ -100,14 +88,9 @@ As user
  */
 
 
-// Vue related
-import { nextTick } from "vue";
-import { mapActions, mapMutations } from "vuex";
 // services
 import ContentSrv from "@/modules/core/services/ContentSrv";
 import EntitySrv from "@/modules/core/services/EntitySrv";
-// const
-import { CONTENT_FIELD_DESC } from "@/modules/project/const/const-ticket";
 // components
 import TheFullscreenPreview from "@/modules/core/components/layout/TheFullscreenPreview.vue";
 import ContentImageTable from "@/modules/admin/components/ContentImageTable.vue";
@@ -123,30 +106,22 @@ export default {
 
 	inject: ["images"],
 
-	emits: ["imageSelectionToggle"],
+	emits: ["contentUpdate"],
 
 	data() {
 		return {
 			showPreview: false,
 			previewImage: null,
-
-			fieldDesc: null,
 			selection: null,
-
-			currSelection: null,
-
 		}
 	},
 
 	computed: {
 
-		// =============================================
-
 		availableImages() {
 			const allImages = EntitySrv.getItems("content")
 			const selectedIds = this.images.map(i =>  Number(i.id));
-			const notSelectedImages = allImages.filter(image => !selectedIds.includes(Number(image.id)));
-			return notSelectedImages;
+			return allImages.filter(image => !selectedIds.includes(Number(image.id)));
 		},
 
 	},
@@ -158,13 +133,12 @@ export default {
 	},
 
 	mounted() {
-		this.currSelection = this.images.map(img => Number(img.id));
+		this.selection = this.images.map(img => Number(img.id));
 	},
 
 	methods: {
 
-		...mapActions("entity", ["loadTables", "updateItem"]),
-		...mapMutations("core", ["INCREMENT_KEY"]),
+		// ============================================= OPEN PREVIEW & MODAL
 
 		openPreview(id) {
 			const imageToOpen = this.images.find(img => Number(img.id) === Number(id));
@@ -174,78 +148,36 @@ export default {
 			}
 		},
 
-		async openEntityPicker() {
-			const ids = this._getLinkedIds();
-			this.fieldDesc = await this._getFieldDesc();
+		async openSelectionModal() {
 			this.$refs.modal_ref.open();
-			nextTick(() => this.$refs.ent_picker_ref.setValue(ids.join(":")));
 		},
 
 		// =============================================
 
+		// React to change in selection
 		onCheckboxChange(id) {
-			// console.log("selection on image", id, "toggled")
-			if (this.currSelection.includes(Number(id))) {
-				this.currSelection = this.currSelection.filter(imageId => Number(imageId) !== Number(id));
+			if (this.selection.includes(Number(id))) {
+				this.selection = this.selection.filter(imageId => Number(imageId) !== Number(id));
 			} else {
-				this.currSelection.push(Number(id))
+				this.selection.push(Number(id))
 			}
 		},
 
 		onRemoveImage(id) {
-			console.log("onRemoveImage", id)
 			this.onCheckboxChange(id);
 			this.saveChanges();
-		},
-
-		onValueUpdate(selectedIds) {
-			this.selection = selectedIds
-		},
-
-
-
-		// ============================================= CURRENT VALUES
-
-		_getLinkedIds() {
-			return this.images.map(i => i.id);
 		},
 
 		// ============================================= SAVE CHANGES
 
 		async saveChanges() {
-			const srcTicket = EntitySrv.getItemById("ticket", this.$route.params.id);
-
-			if (!srcTicket) return;
-
-			const updatedTicket = {
-				...srcTicket,
-				// content: String(this.selection)
-				content: this.currSelection.join(":")
-			};
-
-			console.log("updatedTicket", JSON.stringify(updatedTicket))
-
-			await this.updateItem({
-				tableName: "ticket",
-				item: updatedTicket,
-			})
-			await this.loadTables(["ticket"]);
-
-			this.INCREMENT_KEY();
+			this.$emit("contentUpdate", this.selection.join(":"))
 			this.$refs.modal_ref.close();
 		},
 
 		onCancel() {
 			this.$refs.modal_ref.close();
 		},
-		// =============================================
-
-
-
-		async _getFieldDesc() {
-			const options = await ContentSrv.getContentItems();
-			return CONTENT_FIELD_DESC(options);
-		}
 
 	},
 
