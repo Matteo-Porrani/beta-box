@@ -3,6 +3,10 @@
 	<BxModal
 		ref="modal_ref"
 	>
+		<template #header>
+			<span></span>
+		</template>
+
 		<template #body>
 			<BxEntityPicker
 				ref="ent_picker_ref"
@@ -11,13 +15,28 @@
 				:multiple="fieldDesc.multiple"
 				@update:model-value="onValueUpdate"
 			/>
+
+			<ContentImageTable
+				:images="availableImages"
+				@checkbox-change="onCheckboxChange"
+			/>
 		</template>
 
 		<template #footer>
-			<BxButton
-				label="Save"
-				@click="saveChanges"
-			/>
+
+			<div class="flex justify-between w-full">
+				<BxButton
+					type="soft"
+					label="Cancel"
+					@click="onCancel"
+				/>
+
+				<BxButton
+					label="Save"
+					@click="saveChanges"
+				/>
+			</div>
+
 		</template>
 	</BxModal>
 
@@ -27,17 +46,31 @@
 		@close-preview="showPreview = false"
 	/>
 
+	<p>{{ currSelection }}</p>
+	<!-- IMAGES GRID -->
 	<section class="grid grid-cols-8 grid-rows-8 gap-2">
 
 		<article
 			v-for="img in images"
 			:key="img.id"
 			class="bg-stone-700 rounded overflow-hidden"
-			@click="openPreview(img.id)"
 		>
-			<img :src="img.dataUrl" alt="thumbnail" class="w-full h-[80%] object-cover" />
+			<img
+				:src="img.dataUrl" alt="thumbnail"
+				class="w-full h-24 object-cover cursor-pointer"
+				@click="openPreview(img.id)"
+			/>
 
-			<p class="text-xs font-mono p-1">{{ img.name }}</p>
+			<div class="grid grid-cols-6 gap-2">
+				<BxIconButton
+					text
+					size="small"
+					type="danger"
+					icon="trash"
+					@click="onRemoveImage(img.id)"
+				/>
+				<p class="text-[10px] text-nowrap overflow-x-hidden overflow-ellipsis col-span-5 font-mono p-1">{{ img.name }}</p>
+			</div>
 		</article>
 
 		<article
@@ -66,22 +99,31 @@ As user
 - I can open an image in fullscreen preview
  */
 
+
+// Vue related
 import { nextTick } from "vue";
+import { mapActions, mapMutations } from "vuex";
+// services
 import ContentSrv from "@/modules/core/services/ContentSrv";
-// import { dataSrv } from "@/modules/core/services/DataSrv";
 import EntitySrv from "@/modules/core/services/EntitySrv";
+// const
+import { CONTENT_FIELD_DESC } from "@/modules/project/const/const-ticket";
 // components
 import TheFullscreenPreview from "@/modules/core/components/layout/TheFullscreenPreview.vue";
-import { mapActions, mapMutations } from "vuex";
+import ContentImageTable from "@/modules/admin/components/ContentImageTable.vue";
+
 
 export default {
 	name: "TicketDetailImages",
 
 	components: {
+		ContentImageTable,
 		TheFullscreenPreview
 	},
 
 	inject: ["images"],
+
+	emits: ["imageSelectionToggle"],
 
 	data() {
 		return {
@@ -90,13 +132,33 @@ export default {
 
 			fieldDesc: null,
 			selection: null,
+
+			currSelection: null,
+
 		}
+	},
+
+	computed: {
+
+		// =============================================
+
+		availableImages() {
+			const allImages = EntitySrv.getItems("content")
+			const selectedIds = this.images.map(i =>  Number(i.id));
+			const notSelectedImages = allImages.filter(image => !selectedIds.includes(Number(image.id)));
+			return notSelectedImages;
+		},
+
 	},
 
 	beforeMount() {
 		for (const img of this.images) {
 			ContentSrv.addDataUrlValue(img);
 		}
+	},
+
+	mounted() {
+		this.currSelection = this.images.map(img => Number(img.id));
 	},
 
 	methods: {
@@ -121,18 +183,47 @@ export default {
 
 		// =============================================
 
+		onCheckboxChange(id) {
+			// console.log("selection on image", id, "toggled")
+			if (this.currSelection.includes(Number(id))) {
+				this.currSelection = this.currSelection.filter(imageId => Number(imageId) !== Number(id));
+			} else {
+				this.currSelection.push(Number(id))
+			}
+		},
+
+		onRemoveImage(id) {
+			console.log("onRemoveImage", id)
+			this.onCheckboxChange(id);
+			this.saveChanges();
+		},
+
 		onValueUpdate(selectedIds) {
 			this.selection = selectedIds
 		},
 
+
+
+		// ============================================= CURRENT VALUES
+
+		_getLinkedIds() {
+			return this.images.map(i => i.id);
+		},
+
+		// ============================================= SAVE CHANGES
+
 		async saveChanges() {
 			const srcTicket = EntitySrv.getItemById("ticket", this.$route.params.id);
+
 			if (!srcTicket) return;
 
 			const updatedTicket = {
 				...srcTicket,
-				content: String(this.selection)
+				// content: String(this.selection)
+				content: this.currSelection.join(":")
 			};
+
+			console.log("updatedTicket", JSON.stringify(updatedTicket))
 
 			await this.updateItem({
 				tableName: "ticket",
@@ -143,29 +234,17 @@ export default {
 			this.INCREMENT_KEY();
 			this.$refs.modal_ref.close();
 		},
+
+		onCancel() {
+			this.$refs.modal_ref.close();
+		},
 		// =============================================
 
-		_getLinkedIds() {
-			return this.images.map(i => i.id);
-		},
+
 
 		async _getFieldDesc() {
-			return {
-				"entity": "Ticket",
-				"pk": false,
-				"readonly": false,
-				"picker_col": false,
-				"required": false,
-				"type": "E",
-				"multiple": true,
-				"field": "content",
-				"rel_entity": "Content",
-				"max": "",
-				"options": await ContentSrv.getContentItems(),
-				"entityPickerCols": [ "id", "name" ],
-				"order": 1,
-				"id": 1
-			}
+			const options = await ContentSrv.getContentItems();
+			return CONTENT_FIELD_DESC(options);
 		}
 
 	},

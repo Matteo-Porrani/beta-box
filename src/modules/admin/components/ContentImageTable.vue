@@ -1,3 +1,11 @@
+<!--
+
+this table must be used to select images to add to a ticket
+in order to add with custom order
+
+-->
+
+
 <template>
 	<section
 		v-if="images"
@@ -6,8 +14,16 @@
 		<article
 			v-for="i in images"
 			:key="i.id"
-			class="grid grid-cols-6 items-center border border-stone-500 rounded mb-1 p-1"
+			class="grid grid-cols-8 items-center border border-stone-500 rounded mb-1 p-1"
 		>
+
+			<div class="text-center">
+				<input
+					type="checkbox"
+					@change="onCheckboxChange(i.id)"
+				>
+			</div>
+
 			<button
 				class="block w-24 h-12 rounded overflow-hidden"
 				@click="openPreview(i.id)"
@@ -23,6 +39,7 @@
 
 			<div class="actions flex justify-end gap-4">
 				<BxIconButton
+					v-if="showDelete"
 					type="danger"
 					icon="trash"
 					text
@@ -41,9 +58,13 @@ export default {
 
 	props: {
 		images: Array,
+		showDelete: {
+			type: Boolean,
+			default: false,
+		}
 	},
 
-	emits: ["deleteItem", "thumbnailClicked"],
+	emits: ["deleteItem", "thumbnailClicked", "checkboxChange"],
 
 	data() {
 		return {
@@ -58,6 +79,11 @@ export default {
 
 		deleteItem(id) {
 			this.$emit("deleteItem", id);
+		},
+
+		onCheckboxChange(id) {
+			console.log("toggle", id)
+			this.$emit("checkboxChange", id)
 		}
 	},
 

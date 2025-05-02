@@ -84,6 +84,7 @@
 
 			<ContentImageTable
 				:images="images"
+				show-delete
 				@thumbnail-clicked="openPreview"
 				@delete-item="deleteItem"
 			/>
