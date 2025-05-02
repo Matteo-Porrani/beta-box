@@ -14,16 +14,20 @@ in order to add with custom order
 		<article
 			v-for="i in images"
 			:key="i.id"
-			class="grid grid-cols-8 items-center border border-stone-500 rounded mb-1 p-1"
+			class="grid grid-cols-12 items-center border border-stone-500 rounded mb-1 p-1"
 		>
 
-			<div class="text-center">
+			<!-- (1) -->
+			<div class="flex gap-2 justify-center">
 				<input
+					v-if="showCheckbox"
 					type="checkbox"
 					@change="onCheckboxChange(i.id)"
 				>
+				<p>{{ i.id }}</p>
 			</div>
 
+			<!-- (2) -->
 			<button
 				class="block w-24 h-12 rounded overflow-hidden"
 				@click="openPreview(i.id)"
@@ -31,22 +35,22 @@ in order to add with custom order
 				<img :src="i.dataUrl" alt="thumbnail" class="object-cover" />
 			</button>
 
-			<p>{{ i.id }}</p>
+			<!-- (3) SPAN-8 -->
+			<p class="font-mono col-span-8">{{ i.name }}</p>
 
-			<p class="col-span-2 font-mono">{{ i.name }}</p>
+			<!-- (4) -->
+			<p>{{ i.size }}</p>
 
-			<p class="">{{ i.size }}</p>
-
-			<div class="actions flex justify-end gap-4">
+			<!-- (5) -->
+			<div class="flex justify-end px-2">
 				<BxIconButton
 					v-if="showDelete"
+					size="small"
 					type="danger"
 					icon="trash"
-					text
 					@click="deleteItem(i.id)"
 				/>
 			</div>
-
 		</article>
 	</section>
 </template>
@@ -58,10 +62,14 @@ export default {
 
 	props: {
 		images: Array,
+		showCheckbox: {
+			type: Boolean,
+			default: false,
+		},
 		showDelete: {
 			type: Boolean,
 			default: false,
-		}
+		},
 	},
 
 	emits: ["deleteItem", "thumbnailClicked", "checkboxChange"],
@@ -82,7 +90,6 @@ export default {
 		},
 
 		onCheckboxChange(id) {
-			console.log("toggle", id)
 			this.$emit("checkboxChange", id)
 		}
 	},

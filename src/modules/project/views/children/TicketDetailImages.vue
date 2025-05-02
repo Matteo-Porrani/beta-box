@@ -9,6 +9,7 @@
 
 		<template #body>
 			<ContentImageTable
+				show-checkbox
 				:images="availableImages"
 				@checkbox-change="onCheckboxChange"
 			/>
