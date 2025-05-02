@@ -1,7 +1,13 @@
 <template>
 	<Transition name="bx-modal">
-		<div v-if="show" class="modal-mask">
-			<div class="modal-container">
+		<div
+			v-if="show"
+			class="modal-mask"
+		>
+			<div
+				class="modal-container"
+				:class="widthClass"
+			>
 
 				<div class="bx-modal-header">
 					<slot name="header">default header</slot>
@@ -30,9 +36,21 @@
 
 
 <script setup>
-import { ref, defineExpose } from "vue";
+import { ref, computed, defineExpose, defineProps } from "vue";
+
+const $p = defineProps({
+	width: {
+		type: String,
+		default: "regular"
+	}
+})
 
 const show = ref(false);
+const widthClass = computed(() => {
+	if ($p.width === 'large') return 'modal-w-70';
+	if ($p.width === 'xlarge') return 'modal-w-85';
+	return 'modal-w-50'; // regular
+});
 
 defineExpose({ open, close });
 
@@ -60,12 +78,27 @@ function close() {
 	transition: opacity 0.2s ease;
 }
 
+/* regular */
+.modal-w-50 {
+	width: 50vw;
+}
+
+/* large */
+.modal-w-70 {
+	width: 50vw;
+}
+
+/* xlarge */
+.modal-w-85 {
+	width: 85vw;
+}
+
 .modal-container {
-	@apply bg-stone-900 border border-stone-500 w-96;
+	@apply bg-stone-900 border border-stone-500;
 	display: grid;
 	gap: 1rem;
 	grid-template-rows: auto 1fr auto;
-	width: 50vw;
+
 	min-height: 50vh;
 	margin: auto;
 	padding: 20px 30px;

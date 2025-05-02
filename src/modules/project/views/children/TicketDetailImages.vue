@@ -1,6 +1,7 @@
 <template>
 
 	<BxModal
+		width="xlarge"
 		ref="modal_ref"
 	>
 		<template #header>
