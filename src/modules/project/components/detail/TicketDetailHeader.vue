@@ -50,7 +50,12 @@
 		<div class="grid grid-cols-6 border border-stone-500 rounded p-1">
 
 			<div class="col-span-4 pe-4">
-				<p class="text-xl text-nowrap text-ellipsis overflow-x-hidden">{{ ticket.description }}</p>
+				<p
+					:title="ticket.description"
+					class="text-xl text-nowrap text-ellipsis overflow-x-hidden"
+				>
+					{{ ticket.description }}
+				</p>
 			</div>
 
 			<div class="flex gap-2 col-span-2">
