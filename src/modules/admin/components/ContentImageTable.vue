@@ -97,7 +97,6 @@ export default {
 		},
 
 		downloadItem(id) {
-			console.log("/// downloadItem", id)
 			this.$emit("downloadItem", id);
 		},
 
