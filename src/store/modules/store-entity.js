@@ -170,9 +170,6 @@ export default {
 		 * @returns {Promise<*>}
 		 */
 		async updateItem({ dispatch }, { tableName, item }) {
-			
-			console.log("+++ updateItem", item)
-			
 			return await dispatch("execDatabaseAction", async () => {
 				await dataSrv.update(tableName, item);
 				// reload
