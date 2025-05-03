@@ -23,7 +23,7 @@
 						<router-link
 							v-for="t in tabs"
 							:key="t"
-							:to="{ name: `ticket_detail_${t}` }"
+							:to="{ name: `ticket_detail_${t}`, query: $route.query }"
 							:class="currLinkClass(t)"
 						>
 							{{ ucFirst(t) }}

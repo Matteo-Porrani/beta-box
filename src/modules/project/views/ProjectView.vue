@@ -7,17 +7,19 @@
 
 		<nav class="flex gap-4 mb-4">
 			<router-link
-				class="text-stone-500 w-24 text-center py-1 rounded"
-				:to="{ name: 'project_board' }"
-			>
-				Board
-			</router-link>
-			<router-link
-				class="text-stone-500 w-24 text-center py-1 rounded"
+				class="text-stone-500 w-24 text-center rounded"
 				:to="{ name: 'project_phase' }"
 			>
 				Phase
 			</router-link>
+
+			<router-link
+				class="text-stone-500 w-24 text-center rounded"
+				:to="{ name: 'project_board' }"
+			>
+				Board
+			</router-link>
+
 		</nav>
 
 		<router-view
