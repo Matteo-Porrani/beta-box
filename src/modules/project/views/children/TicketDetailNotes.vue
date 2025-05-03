@@ -1,6 +1,6 @@
 
 <template>
-	<section>
+	<section class="grid grid-rows-[auto_1fr] overflow-y-hidden">
 		<!-- TOOLBAR -->
 		<div class="bg-stone-700 flex gap-2 text-sm rounded py-1 px-2">
 
@@ -29,40 +29,42 @@
 
 		</div>
 
-		<div class="h-2"/>
+		<!-- SCROLLABLE SECTION -->
+		<div class="overflow-y-auto mt-1">
+			<template v-if="!showForm">
+				<div class="space-y-2">
+					<NoteItem
+						v-for="n in notes"
+						:key="n.id"
+						:note-item="n"
+						:font-size="fontSize"
+						:display="notesDisplay[n.id]"
+						@edit-note="onEditNote"
+						@delete-note="onDeleteNote"
+						@display-change="onDisplayChange"
+					/>
+				</div>
 
-		<template v-if="!showForm">
-			<div class="space-y-2">
-				<NoteItem
-					v-for="n in notes"
-					:key="n.id"
-					:note-item="n"
-					:font-size="fontSize"
-					:display="notesDisplay[n.id]"
-					@edit-note="onEditNote"
-					@delete-note="onDeleteNote"
-					@display-change="onDisplayChange"
+				<div class="h-2"/>
+
+				<BxIconButton
+					type="soft"
+					icon="add"
+					class="ms-8"
+					@click="onEditNote(-1)"
 				/>
-			</div>
 
-			<div class="h-2"/>
+				<div class="h-10"/>
+			</template>
 
-			<BxIconButton
-				type="soft"
-				icon="add"
-				class="min-w-4"
-				@click="onEditNote(-1)"
+			<NoteForm
+				v-else
+				:noteId="formNoteId"
+				@save-note="onSaveNote"
+				@close-form="onCloseForm"
 			/>
+		</div>
 
-			<div class="h-10"/>
-		</template>
-
-		<NoteForm
-			v-else
-			:noteId="formNoteId"
-			@save-note="onSaveNote"
-			@close-form="onCloseForm"
-		/>
 	</section>
 </template>
 

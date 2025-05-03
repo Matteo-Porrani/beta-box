@@ -19,7 +19,7 @@
 				/>
 
 				<div class="body grid grid-rows-[auto_1fr] overflow-y-auto mt-6">
-					<nav class="flex gap-4 mb-2">
+					<nav class="flex gap-4 mb-1">
 						<router-link
 							v-for="t in tabs"
 							:key="t"
@@ -30,7 +30,7 @@
 						</router-link>
 					</nav>
 
-					<div class="grid rounded border border-stone-500 p-2 overflow-y-auto">
+					<div class="grid rounded border border-stone-500 p-1 overflow-y-auto">
 						<router-view
 							@content-update="onContentUpdate"
 						/>
