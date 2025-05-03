@@ -29,7 +29,7 @@
 			</div>
 		</div>
 
-		<div class="h-8"/>
+		<p class="mt-2">{{ tickets.length }} tickets</p>
 
 		<!-- TABLE -->
 		<TicketRow

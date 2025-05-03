@@ -34,7 +34,7 @@ Emits:
 			@sort-filter-change="onSortFilterChange"
 		/>
 
-		<div class="h-2"></div>
+		<p class="my-1">{{ rows.length }} items</p>
 
 		<BxTable
 			:cols="formDescription.map(c => c.field)"
