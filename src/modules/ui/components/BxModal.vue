@@ -19,16 +19,14 @@
 
 				<div class="bx-modal-footer">
 					<slot name="footer">
-
-						<button
-							class="w-36 bg-lime-600 hover:bg-lime-500 rounded py-2 px-6 text-stone-800"
+						<BxButton
+							text
+							label="Close"
 							@click="show = false"
-						>
-							Close
-						</button>
-
+						/>
 					</slot>
 				</div>
+
 			</div>
 		</div>
 	</Transition>
