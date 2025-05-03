@@ -6,7 +6,7 @@
 
 		<div class="space-y-2 bx-scrollbar">
 			<StackCard
-				v-for="t in sortedTickets"
+				v-for="t in stack"
 				:key="t.id"
 				:ticket="t"
 				@edit-ticket="onEditTicket"
@@ -19,31 +19,17 @@
 
 
 <script setup>
-import { defineProps, defineEmits, computed } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 import StackCard from "@/modules/project/components/notes/StackCard.vue";
 
 
-const $p = defineProps({
+defineProps({
 	phase: String,
 	stack: Array,
 })
 
 const $emit = defineEmits(["editTicket", "openDetail"])
 
-const sortedTickets = computed(() => {
-	if (!$p.stack) return [];
-
-	const rawTickets = $p.stack.map(t => {
-		t.status_name = (t.status) ? t.status.name : "";
-		return t;
-	})
-
-	const topTickets = rawTickets.filter(t => t.status_name);
-	topTickets.sort((a, b) => a.status_name.localeCompare(b.status_name))
-	const bottomTickets = rawTickets.filter(t => t.status_name === "");
-
-	return [...topTickets, ...bottomTickets];
-})
 
 function onEditTicket(id) {
 	$emit('editTicket', id)

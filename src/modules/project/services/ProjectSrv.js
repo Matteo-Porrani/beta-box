@@ -48,7 +48,11 @@ class ProjectSrv {
 			: ht;
 	}
 	
+	// ============================================= TICKETS BY PHASE
+	
 	getTicketsByPhase() {
+		const phases = ["A", "B", "C", "D", "E"];
+		
 		const tickets = this.getTickets(
 			"title",
 			true,
@@ -57,14 +61,34 @@ class ProjectSrv {
 			{ showActive: true, showInactive: true }
 		)
 		
-		return {
-			A: tickets.filter(t => t.phase === "A"),
-			B: tickets.filter(t => t.phase === "B"),
-			C: tickets.filter(t => t.phase === "C"),
-			D: tickets.filter(t => t.phase === "D"),
-		}
-		
+		return phases.reduce((acc, p) => {
+			acc[p] = this.#getTicketsFilteredByPhase(tickets, p);
+			return acc;
+		}, {})
 	}
+	
+	#getTicketsFilteredByPhase(tickets, phase) {
+		const phaseTickets = tickets.filter(t => t.phase === phase)
+		return this.#sortByStatusLabel(phaseTickets);
+	}
+	
+	#sortByStatusLabel(tickets) {
+		const rawTickets = tickets.map(t => {
+			t.status_name = (t.status) ? t.status.name : "";
+			return t;
+		})
+		
+		// tickets with a status are placed at the top,
+		// then sorted ob status label ASC
+		const topTickets = rawTickets.filter(t => t.status_name);
+		topTickets.sort((a, b) => a.status_name.localeCompare(b.status_name))
+		// tickets without a status are placed at the bottom
+		const bottomTickets = rawTickets.filter(t => t.status_name === "");
+		
+		return [...topTickets, ...bottomTickets];
+	}
+	
+	// =============================================
 	
 	getSrcTicketCloneById(id) {
 		const t = this.#getTicketItems().find(t => Number(t.id) === Number(id))
