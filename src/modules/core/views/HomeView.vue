@@ -22,13 +22,11 @@
 				v-else
 				class="flex flex-col items-center"
 			>
-				<!-- src="@/assets/images/green-robot-1.png" -->
 				<img
 					src="@/assets/images/smiling-robot.svg"
 					alt="Friendly Robot"
 					class="size-56 rounded-full object-cover border border-stone-500"
 				/>
-
 				<h1 class="text-4xl font-bold mt-6">Welcome to BetaBox !</h1>
 			</div>
 		</div>
@@ -38,16 +36,12 @@
 <script>
 import { mapState } from "vuex";
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
-import BxBadge from "@/modules/ui/components/BxBadge.vue";
-// import BxIcon from "@/modules/ui/components/BxIcon.vue";
 
 
 export default {
 	name: 'HomeView',
 
 	components: {
-		// BxBadge,
-		// BxIcon,
 		DefaultLayout,
 	},
 
