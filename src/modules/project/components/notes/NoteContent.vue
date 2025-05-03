@@ -3,13 +3,7 @@
 		<div class="absolute end-2 top-1">
 			<button
 				ref="copyBtn"
-				class="
-          rounded-md
-          hover:bg-stone-200
-          size-8
-          grid place-content-center
-          relative
-        "
+				class="relative grid place-content-center rounded-md hover:bg-stone-200 size-8"
 				@click="onCopy"
 			>
 				<BxIcon icon="copy" class="text-stone-500" size="small"/>
@@ -17,9 +11,8 @@
 		</div>
 
 		<div v-if="parsedSnippet">
-			<span v-html="parsedSnippet"></span>
+			<span v-html="parsedSnippet"/>
 		</div>
-
 	</div>
 </template>
 

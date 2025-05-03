@@ -1,6 +1,7 @@
 
 <template>
 	<section>
+		<!-- TOOLBAR -->
 		<div class="bg-stone-700 flex gap-2 text-sm rounded py-1 px-2">
 
 			<button
@@ -11,6 +12,21 @@
 			>
 				<BxIcon :icon="b[0]"/>
 			</button>
+
+			<div class="w-8"/>
+
+			<div class="flex gap-2 items-center">
+				<span class="text-xs">A</span>
+				<input
+					v-model="fontSize"
+					type="range"
+					min="1"
+					max="4"
+					class="accent-sky-500"
+				/>
+				<span class="text-xl">A</span>
+			</div>
+
 		</div>
 
 		<div class="h-2"/>
@@ -21,6 +37,7 @@
 					v-for="n in notes"
 					:key="n.id"
 					:note-item="n"
+					:font-size="fontSize"
 					:display="notesDisplay[n.id]"
 					@edit-note="onEditNote"
 					@delete-note="onDeleteNote"
@@ -70,6 +87,7 @@ export default {
 		return {
 			showForm: false,
 			formNoteId: -1,
+			fontSize: 2,
 			notesDisplay: {}
 		}
 	},

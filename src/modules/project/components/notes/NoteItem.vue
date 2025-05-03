@@ -1,5 +1,6 @@
 <template>
 	<article>
+
 		<div class="flex gap-2 items-center text-sm font-bold text-stone-40 mb-1 h-8">
 
 			<!-- open/close button -->
@@ -22,11 +23,6 @@
 			<div class="ms-auto flex gap-2 items-center">
 
 				<template v-if="open">
-					<div class="flex gap-2 items-center">
-						<span class="text-xs">A</span>
-						<BxSwitch v-model="size"/>
-						<span class="text-lg">A</span>
-					</div>
 
 					<div class="flex gap-2 items-center ms-8">
 						<BxSwitch v-model="lang"/>
@@ -56,7 +52,7 @@
 				v-if="noteItem.content"
 				:content="noteItem.content"
 				:lang="contentLang"
-				:font-size="fontSize"
+				:font-size="parsedFontSize"
 			/>
 		</div>
 	</article>
@@ -74,7 +70,8 @@ export default {
 
 	props: {
 		noteItem: Object,
-		display: Object
+		display: Object,
+		fontSize: [String, Number], // 1, 2, 3
 	},
 
 	emits: ["editNote", "deleteNote", "displayChange"],
@@ -96,15 +93,19 @@ export default {
 			return this.lang ? "javascript" : "text";
 		},
 
-		fontSize() {
-			return this.size ? "16px" : "11px";
+		parsedFontSize() {
+			const fsMap = {
+				1: "11px",
+				2: "14px",
+				3: "18px",
+				4: "24px",
+			}
+
+			return fsMap[this.fontSize];
 		}
 	},
 
 	watch: {
-		size(val) {
-			this.$emit("displayChange", { id: this.noteItem.id, key: "size", value: val })
-		},
 		lang(val) {
 			this.$emit("displayChange", { id: this.noteItem.id, key: "lang", value: val })
 		},
@@ -112,9 +113,8 @@ export default {
 		display: {
 			deep: true,
 			handler(val) {
-				const { open, size, lang } = val;
+				const { open, lang } = val;
 				this.open = open;
-				this.size = size;
 				this.lang = lang;
 			}
 		}
@@ -123,7 +123,6 @@ export default {
 	beforeMount() {
 		if (this.display && Object.hasOwn(this.display, "open")) this.open = this.display.open;
 		if (this.display && Object.hasOwn(this.display, "lang")) this.lang = this.display.lang;
-		if (this.display && Object.hasOwn(this.display, "size")) this.size = this.display.size;
 	},
 
 	methods: {
