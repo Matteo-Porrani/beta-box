@@ -84,9 +84,9 @@ export default {
 
 		_initNoteDisplay(id) {
 			this.notesDisplay[id] = {
-				open: false,
+				open: true,
 				lang: false, // true means JS
-				size: false,
+				size: true,
 			}
 		},
 
