@@ -63,7 +63,7 @@ import TicketModalEditor from "@/modules/project/components/TicketModalEditor.vu
 
 
 export default {
-	name: "TicketDetailView",
+	name: "TicketView",
 	components: {
 		DefaultLayout,
 		TicketModalEditor,
