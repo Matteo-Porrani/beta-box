@@ -96,25 +96,26 @@ class ContentSrv {
 	}
 	
 	#addLinkedProp(items) {
-		console.log("### #getLinkedProp")
-		const contents = this.#getTicketItems().map(t => t.content);
-		console.log("contents", contents)
+		const contents = this.#getTicketItems()
+			.map(t => t.content)
+			.filter(Boolean); // will remove falsy values from the array
 		
+		const linkedIds = this.#getLinkedIds(contents);
+		
+		for (const image of items) {
+			image.linked = linkedIds.includes(image.id);
+		}
+	}
+	
+	#getLinkedIds(contents) {
 		const linkedIds = [];
 		for (const c of contents) {
-			if (!c) continue;
 			const ids = c.split(":");
 			for (const id of ids) {
 				if (!linkedIds.includes(id)) linkedIds.push(Number(id))
 			}
 		}
-		
-		console.log("linkedIds", linkedIds)
-		
-		for (const image of items) {
-			image.linked = linkedIds.includes(image.id);
-		}
-		
+		return linkedIds;
 	}
 	
 	// =============================================
