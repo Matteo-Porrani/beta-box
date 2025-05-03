@@ -5,17 +5,25 @@
 			class="grid grid-cols-2 gap-4 h-[70vh]"
 		>
 
+			<!-- EXPORT -->
 			<div class="backup border border-stone-500 rounded p-4">
-
 				<BxIconButton
 					icon="data_export"
-					label="Data Backup"
+					label="Full Data Backup"
 					@click="exportData"
 				/>
 
-				<div class="h-4"></div>
+				<div class="h-8"/>
+
+				<p class="text-stone-400">Export by table</p>
+				<ExportSelector
+					v-if="listOfTableNames"
+					:list="listOfTableNames"
+					@export-table="onExportTable"
+				/>
 			</div>
 
+			<!-- IMPORT -->
 			<div class="import border border-stone-500 rounded p-4">
 
 				<BxIconButton
@@ -73,20 +81,25 @@ import { mapState } from "vuex";
 // services
 import ExportSrv from "@/modules/data-manager/services/ExportSrv";
 import { dataSrv } from "@/modules/core/services/DataSrv";
+// utils
+import { nrm } from "@/modules/core/utils/core-utils";
+
 // components
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
-import { nrm } from "@/modules/core/utils/core-utils";
+import ExportSelector from "@/modules/data-manager/components/ExportSelector.vue";
 
 
 export default {
 	name: 'DataManagerView',
 
 	components: {
+		ExportSelector,
 		DefaultLayout,
 	},
 
 	data() {
 		return {
+			listOfTableNames: null,
 			uploadedData: null,
 		}
 	},
@@ -97,7 +110,20 @@ export default {
 		})
 	},
 
+	async mounted() {
+		await this.initScreen()
+	},
+
 	methods: {
+
+		async initScreen() {
+			const listOfTables = await dataSrv.getListOfTables()
+
+			if (Array.isArray(listOfTables) && listOfTables.length > 0) {
+				this.listOfTableNames = listOfTables.map(t => t.name).sort((a, b) => a.localeCompare(b))
+			}
+		},
+
 
 		// =============================================
 		// EXPORT
@@ -105,6 +131,10 @@ export default {
 
 		exportData() {
 			ExportSrv.downloadJson(this.entities);
+		},
+
+		onExportTable(table) {
+			ExportSrv.downloadJson(this.entities[table], table);
 		},
 
 		// =============================================
@@ -142,7 +172,7 @@ export default {
 
 		async _importJsonFromInitFile() {
 			try {
-				// Fetch and store initialization data from public folder
+				// Fetch and store initialization data from 'public' folder
 				return await fetch('/data-init/beta_box_init.txt').then(r => r.json());
 			} catch(e) {
 				console.error(e);

@@ -58,6 +58,10 @@ class EntitySrv {
 		return store.getters["entity/getItemsFromTable"](tableName);
 	}
 	
+	getItemsCount(tableName) {
+		return store.getters["entity/getItemsFromTable"](tableName).length;
+	}
+	
 	getItemById(tableName, id) {
 		const items = this.getItems(tableName);
 		return items.find(i => Number(i.id) === Number(id))

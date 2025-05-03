@@ -10,9 +10,9 @@ class ExportSrv {
 		return ExportSrv.instance;
 	}
 	
-	downloadJson(data) {
+	downloadJson(data, tableName = null) {
 		const str = JSON.stringify(data);
-		const filename = this.#parseFileName();
+		const filename = this.#parseFileName(tableName);
 		this.#downloadFileFromBlob(str, 'text/plain', filename);
 	}
 	
@@ -56,7 +56,7 @@ class ExportSrv {
 	
 	// ============================================= UTILITY
 	
-	#parseFileName() {
+	#parseFileName(tableName) {
 		let now = new Date();
 		let y = now.getFullYear();
 		let m = (now.getMonth() + 1).toString().padStart(2, '0'); // we add 1 because months are zero based
@@ -64,7 +64,10 @@ class ExportSrv {
 		let h = now.getHours().toString().padStart(2, '0');
 		let min = now.getMinutes().toString().padStart(2, '0');
 		
-		return `beta_box_BACKUP_${y}_${m}_${d}_${h}_${min}.txt`; // the file name
+		let filename = `beta_box_BACKUP_${y}_${m}_${d}_${h}_${min}`;
+		if (tableName) filename += `_${tableName}`;
+		
+		return filename + ".txt";
 	}
 	
 }

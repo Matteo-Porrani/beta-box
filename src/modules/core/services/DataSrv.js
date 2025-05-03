@@ -72,6 +72,11 @@ class DataSrv {
 	// UTILITIES
 	// =============================================
 	
+	async getListOfTables() {
+		const database = await this.api.open();
+		return database.tables;
+	}
+	
 	async count(tableName) {
 		console.log(`%c${"count"}`, "background: blue; color: black; padding: 2px;")
 		return await this.api[tableName].count();
