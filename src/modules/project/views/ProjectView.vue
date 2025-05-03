@@ -36,7 +36,7 @@
 			:ticket="{ isHeader: true }"
 			:compact="compactTable"
 		/>
-		<section class="ticket-table space-y-1 max-h-[72vh] overflow-y-auto mt-1">
+		<section class="ticket-table space-y-1 max-h-[72vh] overflow-y-auto py-1">
 			<TicketRow
 				v-for="t in tickets"
 				:key="t.id"
