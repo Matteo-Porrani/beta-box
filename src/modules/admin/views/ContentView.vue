@@ -1,39 +1,17 @@
 <template>
 
-	<!-- FULLSCREEN PREVIEW -->
-	<section
+	<TheFullscreenPreview
 		v-if="showPreview"
-		ref="modal_preview_ref"
-		class="absolute inset-12 z-50"
-	>
-
-		<div
-			v-if="preview.dataUrl"
-			class="relative rounded overflow-hidden border h-[100%] place-content-center bg-stone-800"
-		>
-			<BxIconButton
-				text
-				icon="xmark"
-				class="size-12 text-3xl text-stone-400 absolute right-0 top-4"
-				@click="showPreview = false"
-			/>
-			<p class="absolute right-4 bottom-4 bg-stone-800 rounded p-1">{{ preview.fileName }}</p>
-
-			<img
-				:src="preview.dataUrl"
-				alt="preview"
-				class="h-full object-contain mx-auto"
-			/>
-
-		</div>
-	</section>
+		:image="previewImage"
+		@close-preview="showPreview = false"
+	/>
 
 	<!-- CREATE MODAL -->
 	<BxModal
 		ref="modal_ref"
 	>
 		<template #header>
-			<h2 class="font-bold text-3xl">Create file</h2>
+			<h2 class="font-bold text-3xl">Create image file</h2>
 		</template>
 		<template #body>
 
@@ -100,12 +78,14 @@ import ContentSrv from "@/modules/core/services/ContentSrv";
 import ClipboardSrv from "@/modules/core/services/ClipboardSrv";
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import ContentImageTable from "@/modules/admin/components/ContentImageTable.vue";
+import TheFullscreenPreview from "@/modules/core/components/layout/TheFullscreenPreview.vue";
 
 
 export default {
 	name: 'ContentView',
 
 	components: {
+		TheFullscreenPreview,
 		ContentImageTable,
 		DefaultLayout,
 	},
@@ -118,7 +98,7 @@ export default {
 			newFileName: "",
 
 			showPreview: false,
-			preview: {
+			previewImage: {
 				fileName: null,
 				dataUrl: null
 			}
@@ -144,10 +124,7 @@ export default {
 
 		async pasteContent() {
 			this.$refs.modal_ref.open();
-
-			nextTick(() => {
-				this.$refs.filename_input_ref.focus()
-			})
+			nextTick(() => this.$refs.filename_input_ref.focus())
 		},
 
 		// =============================================
@@ -164,14 +141,12 @@ export default {
 		},
 
 		// =============================================
+
 		openPreview(id) {
-			const image = this.images.find(im => Number(im.id) === Number(id))
-
-			this.preview.fileName = image.name;
-			this.preview.dataUrl = image.dataUrl;
-
+			this.previewImage = this.images.find(im => Number(im.id) === Number(id));
 			this.showPreview = true;
 		},
+
 		// =============================================
 
 		async deleteItem(id) {
