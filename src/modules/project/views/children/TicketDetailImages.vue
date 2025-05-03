@@ -122,8 +122,8 @@ export default {
 
 		availableImages() {
 			const allImages = EntitySrv.getItems("content")
-			const selectedIds = this.images.map(i =>  Number(i.id));
-			return allImages.filter(image => !selectedIds.includes(Number(image.id)));
+			const linkedIds = this.images.map(i =>  Number(i.id));
+			return allImages.filter(image => !linkedIds.includes(Number(image.id)));
 		},
 
 	},
