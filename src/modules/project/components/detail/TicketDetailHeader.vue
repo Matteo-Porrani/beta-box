@@ -20,7 +20,7 @@
 			<div class="col-span-2 flex gap-2">
 				<button
 					@click="onCopy"
-					class="text-stone-500 hover:text-lime-500"
+					class="text-stone-500 hover:text-sky-500"
 				>
 					<BxIcon icon="copy"/>
 				</button>
@@ -28,7 +28,7 @@
 				<div class="text-nowrap overflow-x-hidden overflow-ellipsis pe-4">
 					<a
 						:href="ticket.url"
-						class="font-mono text-xs hover:text-lime-500 hover:underline"
+						class="font-mono text-xs hover:text-violet-400 hover:underline"
 						target="_blank"
 					>{{ ticket.url }}</a>
 				</div>

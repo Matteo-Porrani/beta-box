@@ -32,7 +32,7 @@
 					<BxIcon
 						:icon="a.icon"
 						size="small"
-						class="hover:text-lime-500"
+						class="hover:text-sky-500"
 					/>
 				</button>
 			</template>
