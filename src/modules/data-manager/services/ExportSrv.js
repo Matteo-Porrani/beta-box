@@ -13,14 +13,9 @@ class ExportSrv {
 	}
 	
 	downloadJson(data) {
-		// The JSON object to download
 		const str = JSON.stringify(data);
-		
-		// Create a blob object representing the data as a text file
 		const filename = this.#parseFileName();
-
-		const blob = new Blob([str], { type: 'text/plain' });
-		this.#downloadFileFromBlob(blob, filename);
+		this.#downloadFileFromBlob(str, 'text/plain', filename);
 	}
 	
 	downloadImage(base64data, filename) {
@@ -34,15 +29,15 @@ class ExportSrv {
 		for (let i = 0; i < binaryString.length; i++) {
 			bytes[i] = binaryString.charCodeAt(i);
 		}
-		
-		// Create a blob object representing the data as PNG image file
-		const blob = new Blob([bytes], { type: 'image/png' });
-		this.#downloadFileFromBlob(blob, filename);
+
+		this.#downloadFileFromBlob(bytes, 'image/png', filename);
 	}
 	
 	// ============================================= DOWNLOAD
 	
-	#downloadFileFromBlob(blob, filename) {
+	#downloadFileFromBlob(data, type, filename) {
+		// Create a blob object representing the data with the provided data type
+		const blob = new Blob([data], { type: type });
 		
 		// Create a link element
 		const link = document.createElement('a');
