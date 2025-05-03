@@ -20,7 +20,6 @@
 				</button>
 			</div>
 
-
 			<BxBadge
 				v-if="ticket.status"
 				size="small"
@@ -30,22 +29,39 @@
 			/>
 		</div>
 
+		<div class="h-4"/>
+
 		<p
+			:title="ticket.description"
 			class="text-xs bg-stone-600 h-10 rounded p-1"
-		>{{ ticket.description.slice(0, 80) }}</p>
+		>
+			{{ cmpDescription }}
+		</p>
+
+		<div class="h-2"/>
+
+		<div class="flex justify-between text-sm">
+			<p>{{ ticket.topic?.name }}</p>
+			<p>{{ ticket.team }}</p>
+		</div>
+
 	</article>
 </template>
 
 
 <script setup>
-import { defineEmits, defineProps } from 'vue'
+import { defineEmits, defineProps, computed } from 'vue'
 
-
-defineProps({
+const $p = defineProps({
 	ticket: Object
 })
 
-const $emit = defineEmits(["editTicket", "openDetail"])
+const cmpDescription = computed(() => {
+	return $p.ticket.description.length > 80
+		? $p.ticket.description.slice(0, 80) + "..."
+		: $p.ticket.description;
+})
 
+const $emit = defineEmits(["editTicket", "openDetail"])
 </script>
 

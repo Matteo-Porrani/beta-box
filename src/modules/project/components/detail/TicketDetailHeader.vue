@@ -11,13 +11,6 @@
 					<BxIcon icon="angle_left" size="large"/>
 				</button>
 
-<!--				<router-link-->
-<!--					class="w-8 grid place-content-center hover:text-sky-500 rounded"-->
-<!--					to="/project/board"-->
-<!--				>-->
-<!--					<BxIcon icon="angle_left" size="large"/>-->
-<!--				</router-link>-->
-
 				<BxButton
 					text
 					:label="ticket.title"
