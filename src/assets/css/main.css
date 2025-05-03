@@ -30,6 +30,13 @@ input[type="checkbox"]:checked {
 
 /* ------------------------------------------------------------------------ */
 
+.font-cc {
+    font-family: "Cascadia Code", monospace;
+    font-weight: 400;
+}
+
+/* ------------------------------------------------------------------------ */
+
 /* For Firefox */
 .bx-scrollbar {
     overflow-y: scroll; /* Always show scrollbar */

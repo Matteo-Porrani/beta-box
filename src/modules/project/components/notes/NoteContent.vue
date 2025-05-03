@@ -85,6 +85,11 @@ watch(
 pre {
   background: #d6d3d1 !important;
   font-size: v-bind(fontSize);
-	line-height: 1.6;
+	line-height: 1.4;
+}
+
+pre.shiki code {
+	font-family: "Cascadia Code", monospace !important;
+	font-weight: 400;
 }
 </style>
