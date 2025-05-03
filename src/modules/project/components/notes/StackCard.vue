@@ -57,7 +57,7 @@ const $p = defineProps({
 })
 
 const cmpDescription = computed(() => {
-	return $p.ticket.description.length > 80
+	return $p.ticket.description?.length > 80
 		? $p.ticket.description.slice(0, 80) + "..."
 		: $p.ticket.description;
 })

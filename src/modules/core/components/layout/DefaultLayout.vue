@@ -1,5 +1,5 @@
 <template>
-
+	<!-- fullscreen preview for images -->
 	<div id="previewWrapper" class="absolute inset-0"></div>
 
 	<section
