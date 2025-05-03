@@ -17,22 +17,15 @@
 				/>
 			</h1>
 
-			<div class="col-span-2 flex gap-2">
-				<button
-					@click="onCopy"
-					class="text-stone-500 hover:text-sky-500"
-				>
-					<BxIcon icon="copy"/>
-				</button>
-
-				<div class="text-nowrap overflow-x-hidden overflow-ellipsis pe-4">
-					<a
-						:href="ticket.url"
-						class="font-mono text-xs hover:text-violet-400 hover:underline"
-						target="_blank"
-					>{{ ticket.url }}</a>
+			<div class="col-span-2 grid grid-cols-2 gap-2">
+				<div class="flex gap-2 items-center">
+					<DetailIcon icon="folders"/>
+					<p>{{ ticket.topic ? ticket.topic.name : "-" }}</p>
 				</div>
-
+				<div class="flex gap-2 items-center">
+					<DetailIcon icon="team"/>
+					<p>{{ ticket.team }}</p>
+				</div>
 			</div>
 
 			<div class="flex gap-2 items-center">
@@ -51,38 +44,26 @@
 			</div>
 		</div>
 
-		<div class="spacer h-2"/>
+		<div class="spacer h-1"/>
 
 		<!-- ROW 2 -->
 		<div class="grid grid-cols-6 border border-stone-500 rounded p-1">
-			<div class="flex gap-2 items-center">
-				<DetailIcon icon="folders"/>
-				<p>{{ ticket.topic ? ticket.topic.name : "-" }}</p>
-			</div>
-			<div class="flex gap-2 items-center">
-				<DetailIcon icon="team"/>
-				<p>{{ ticket.team }}</p>
-			</div>
-			<div class="flex gap-2 items-center">
-				<DetailIcon icon="stop_watch"/>
-				<p>{{ ticket.parsedActivity.total }}</p>
+
+			<div class="col-span-4 pe-4">
+				<p class="text-xl text-nowrap text-ellipsis overflow-x-hidden">{{ ticket.description }}</p>
 			</div>
 
-			<div></div>
+			<div class="flex gap-2 col-span-2">
+				<p class="bg-stone-700 rounded p-1 w-full">{{ ticket.comment }}</p>
 
-			<div class="col-span-2 bg-stone-700 rounded p-1">
-				<p>{{ ticket.comment }}</p>
+				<div class="flex gap-2 items-center">
+					<DetailIcon icon="stop_watch"/>
+					<p>{{ ticket.parsedActivity.total }}</p>
+				</div>
+
 			</div>
 
 		</div>
-
-		<div class="spacer h-2"/>
-
-		<!-- ROW 3 -->
-		<div class="h-12 text-xl col-span-4">
-			<p>{{ ticket.description }}</p>
-		</div>
-
 	</section>
 </template>
 
