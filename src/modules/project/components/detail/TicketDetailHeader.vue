@@ -5,7 +5,7 @@
 			<h1 class="col-span-2 flex gap-2 items-center text-2xl font-bold">
 				<router-link
 					class="w-8 grid place-content-center hover:text-sky-500 rounded"
-					to="/project"
+					to="/project/board"
 				>
 					<BxIcon icon="angle_left" size="large"/>
 				</router-link>

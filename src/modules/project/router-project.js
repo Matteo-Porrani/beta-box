@@ -1,6 +1,7 @@
 const DefaultModule = () => import("../DefaultModule.vue"); // the wrapper module
 
 const ProjectView = () => import("./views/ProjectView.vue");
+const ProjectBoardView = () => import("./views/children/ProjectBoardView.vue");
 const TicketView = () => import("./views/TicketView.vue");
 const TicketDetailActivity = () => import("./views/children/TicketDetailActivity.vue");
 const TicketDetailNotes = () => import("./views/children/TicketDetailNotes.vue");
@@ -15,6 +16,21 @@ const moduleRoute = {
 			name: "project_root",
 			path: "",
 			component: ProjectView,
+			children: [
+				{
+					name: "project_board", // project/board
+					path: "board",
+					component: ProjectBoardView,
+				},
+				{
+					name: "project_phase", // project/phase
+					path: "phase"
+				},
+				// {
+				// 	name: "project_status", // project/status
+				// 	path: "status"
+				// },
+			]
 		},
 		{
 			name: "ticket_detail",
