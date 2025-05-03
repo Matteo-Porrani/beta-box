@@ -1,7 +1,7 @@
 <template>
 	<section
 		v-if="images"
-		class="max-h-[80vh] overflow-y-auto"
+		class="max-h-[80vh] bx-scrollbar"
 	>
 		<article
 			v-for="i in images"

@@ -2,7 +2,7 @@
 	<DefaultLayout>
 		<div
 			v-if="loadDone"
-			class="max-h-[85vh] overflow-y-auto"
+			class="max-h-[85vh] bx-scrollbar"
 		>
 			<WeekSelector
 				@week-selected="onWeekSelected"
@@ -26,7 +26,6 @@
 		</template>
 
 		<template #body>
-
 			<BxIconButton
 				type="danger"
 				icon="trash"
@@ -42,24 +41,20 @@
 				:description="activityFormDesc"
 				@field-value-changed="onFieldValueChanged"
 			/>
-
 		</template>
 
 		<template #footer>
 			<!-- THE BUTTONS -->
 			<div class="w-full flex justify-between">
-
 				<BxButton
 					type="soft"
 					label="Cancel"
 					@click="onCancel"
 				/>
-
 				<BxButton
 					label="Save"
 					@click="onSave"
 				/>
-
 			</div>
 		</template>
 	</BxModal>

@@ -30,7 +30,7 @@
 		</div>
 
 		<!-- SCROLLABLE SECTION -->
-		<div class="overflow-y-auto mt-1">
+		<div class="mt-1 bx-scrollbar">
 			<template v-if="!showForm">
 				<div class="space-y-2">
 					<NoteItem
