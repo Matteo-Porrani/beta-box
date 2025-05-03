@@ -128,7 +128,8 @@ export default {
 			 */
 			this.$router.push({
 				name: "ticket_detail_notes",
-				params: { id: id }
+				params: { id: id },
+				query: { from: "project_board" }
 			})
 		},
 

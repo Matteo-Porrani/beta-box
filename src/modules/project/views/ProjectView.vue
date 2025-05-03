@@ -4,6 +4,22 @@
 	/>
 
 	<DefaultLayout>
+
+		<nav class="flex gap-4 mb-4">
+			<router-link
+				class="text-stone-500 w-24 text-center py-1 rounded"
+				:to="{ name: 'project_board' }"
+			>
+				Board
+			</router-link>
+			<router-link
+				class="text-stone-500 w-24 text-center py-1 rounded"
+				:to="{ name: 'project_phase' }"
+			>
+				Phase
+			</router-link>
+		</nav>
+
 		<router-view
 			@edit-ticket="onEditTicket"
 		/>
@@ -55,3 +71,8 @@ export default {
 </script>
 
 
+<style scoped>
+.router-link-exact-active {
+	@apply text-sky-300 bg-sky-900
+}
+</style>

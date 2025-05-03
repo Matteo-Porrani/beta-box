@@ -48,6 +48,24 @@ class ProjectSrv {
 			: ht;
 	}
 	
+	getTicketsByPhase() {
+		const tickets = this.getTickets(
+			"title",
+			true,
+			null,
+			null,
+			{ showActive: true, showInactive: true }
+		)
+		
+		return {
+			A: tickets.filter(t => t.phase === "A"),
+			B: tickets.filter(t => t.phase === "B"),
+			C: tickets.filter(t => t.phase === "C"),
+			D: tickets.filter(t => t.phase === "D"),
+		}
+		
+	}
+	
 	getSrcTicketCloneById(id) {
 		const t = this.#getTicketItems().find(t => Number(t.id) === Number(id))
 		return nrm(t);

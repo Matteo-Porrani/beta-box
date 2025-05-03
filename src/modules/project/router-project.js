@@ -2,6 +2,7 @@ const DefaultModule = () => import("../DefaultModule.vue"); // the wrapper modul
 
 const ProjectView = () => import("./views/ProjectView.vue");
 const ProjectBoardView = () => import("./views/children/ProjectBoardView.vue");
+const ProjectPhaseView = () => import("./views/children/ProjectPhaseView.vue");
 const TicketView = () => import("./views/TicketView.vue");
 const TicketDetailActivity = () => import("./views/children/TicketDetailActivity.vue");
 const TicketDetailNotes = () => import("./views/children/TicketDetailNotes.vue");
@@ -24,7 +25,8 @@ const moduleRoute = {
 				},
 				{
 					name: "project_phase", // project/phase
-					path: "phase"
+					path: "phase",
+					component: ProjectPhaseView,
 				},
 				// {
 				// 	name: "project_status", // project/status

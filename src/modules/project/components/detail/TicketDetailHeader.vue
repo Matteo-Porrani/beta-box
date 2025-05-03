@@ -3,12 +3,20 @@
 		<!-- ROW 1 -->
 		<div class="grid grid-cols-6 items-center">
 			<h1 class="col-span-2 flex gap-2 items-center text-2xl font-bold">
-				<router-link
+
+				<button
 					class="w-8 grid place-content-center hover:text-sky-500 rounded"
-					to="/project/board"
+					@click="goBack"
 				>
 					<BxIcon icon="angle_left" size="large"/>
-				</router-link>
+				</button>
+
+<!--				<router-link-->
+<!--					class="w-8 grid place-content-center hover:text-sky-500 rounded"-->
+<!--					to="/project/board"-->
+<!--				>-->
+<!--					<BxIcon icon="angle_left" size="large"/>-->
+<!--				</router-link>-->
 
 				<BxButton
 					text
@@ -91,6 +99,14 @@ export default {
 	emits: ["editTicket"],
 
 	methods: {
+
+		goBack() {
+			this.$router.push({
+				name: this.$route.query?.from
+			})
+
+		},
+
 		async onCopy() {
 			try {
 				await navigator.clipboard.writeText(this.ticket.url);
