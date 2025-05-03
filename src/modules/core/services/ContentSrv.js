@@ -34,19 +34,21 @@ class ContentSrv {
 		// Load content items from store
 		await store.dispatch("entity/loadItems", "content")
 		
-		const items = this._getItems();
+		const items = this.#getContentItems();
 		
 		// Convert base64 data to data URLs for each item
 		for (const i of items) {
 			this.addDataUrlValue(i);
 		}
 		
+		this.#addLinkedProp(items);
+		
 		return items;
 	}
 	
 	addDataUrlValue(item) {
 		item.dataUrl = `data:image/png;base64,${item.data}`;
-		item.size = `${(this._calculateBase64Size(item.data)).toFixed(2)} Kb`;
+		item.size = `${(this.#calculateBase64Size(item.data)).toFixed(2)} Kb`;
 	}
 	
 	/**
@@ -67,8 +69,12 @@ class ContentSrv {
 	 * @param {string} tableName - The name of the table to get items from
 	 * @returns {Array<Object>} An array of content items
 	 */
-	_getItems() {
+	#getContentItems() {
 		return EntitySrv.getItems("content");
+	}
+	
+	#getTicketItems() {
+		return EntitySrv.getItems("ticket");
 	}
 	
 	/**
@@ -76,7 +82,7 @@ class ContentSrv {
 	 * @param {string} base64String - The base64 encoded image string
 	 * @returns {number} The size of the image in bytes
 	 */
-	_calculateBase64Size(base64String) {
+	#calculateBase64Size(base64String) {
 		// Remove the data URL prefix if present
 		const base64Data = base64String.includes('base64,') 
 			? base64String.split('base64,')[1] 
@@ -87,6 +93,28 @@ class ContentSrv {
 		
 		// Calculate size
 		return ((base64Data.length * 3/4) - padding) / 1024; // KB
+	}
+	
+	#addLinkedProp(items) {
+		console.log("### #getLinkedProp")
+		const contents = this.#getTicketItems().map(t => t.content);
+		console.log("contents", contents)
+		
+		const linkedIds = [];
+		for (const c of contents) {
+			if (!c) continue;
+			const ids = c.split(":");
+			for (const id of ids) {
+				if (!linkedIds.includes(id)) linkedIds.push(Number(id))
+			}
+		}
+		
+		console.log("linkedIds", linkedIds)
+		
+		for (const image of items) {
+			image.linked = linkedIds.includes(image.id);
+		}
+		
 	}
 	
 	// =============================================

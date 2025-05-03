@@ -1,11 +1,3 @@
-<!--
-
-this table must be used to select images to add to a ticket
-in order to add with custom order
-
--->
-
-
 <template>
 	<section
 		v-if="images"
@@ -29,14 +21,24 @@ in order to add with custom order
 
 			<!-- (2) -->
 			<button
-				class="block w-24 h-12 rounded overflow-hidden"
+				class="block w-20 h-10 rounded overflow-hidden"
 				@click="openPreview(i.id)"
 			>
 				<img :src="i.dataUrl" alt="thumbnail" class="object-cover" />
 			</button>
 
 			<!-- (3) SPAN-8 -->
-			<p class="font-mono col-span-8">{{ i.name }}</p>
+			<div class="col-span-8 flex items-center gap-2">
+				<p class="font-mono">{{ i.name }}</p>
+
+				<BxBadge
+					v-if="i.linked"
+					label="linked"
+					color="yellow"
+					shade="400"
+					size="small"
+				/>
+			</div>
 
 			<!-- (4) -->
 			<p>{{ i.size }}</p>
@@ -73,12 +75,6 @@ export default {
 	},
 
 	emits: ["deleteItem", "thumbnailClicked", "checkboxChange"],
-
-	data() {
-		return {
-
-		}
-	},
 
 	methods: {
 		openPreview(id) {
