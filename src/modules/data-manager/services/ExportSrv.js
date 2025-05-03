@@ -17,9 +17,11 @@ class ExportSrv {
 	}
 	
 	downloadImage(base64data, filename) {
-		// NOTE : base64data holds the data without the prefix 'data:image/png;base64,'
+		// NOTE : base64data holds the data WITHOUT the prefix 'data:image/png;base64,'
 		// dataUrl - 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA...'
 		// base64data - 'iVBORw0KGgoAAAANSUhEUgAAA...'
+		
+		filename = filename.replaceAll(".", "_"); // necessary to avoid confusion on file format
 		
 		// Convert base64 to binary
 		const binaryString = atob(base64data);
