@@ -1,6 +1,7 @@
 import store from "@/store";
 
 import EntitySrv from "@/modules/core/services/EntitySrv";
+import { exportSrv } from "@/modules/data-manager/services/ExportSrv";
 
 /**
  * Service for managing content items, particularly focused on handling image content.
@@ -61,6 +62,20 @@ class ContentSrv {
 		await store.dispatch("entity/deleteItem", { tableName: "content", id })
 	}
 	
+	async downloadItem(id) {
+		console.log("[ContentSrv] downloadItem", id)
+		const image = this.#getContentItemById(id)
+		
+		if (image) {
+			console.log(">>>>", image)
+			exportSrv.downloadImage(
+				image.data, // data without the prefix 'data:image/png;base64,'
+				image.name
+			)
+		}
+		
+	}
+	
 	// =============================================
 	
 	/**
@@ -71,6 +86,11 @@ class ContentSrv {
 	 */
 	#getContentItems() {
 		return EntitySrv.getItems("content");
+	}
+	
+	#getContentItemById(id) {
+		return EntitySrv.getItems("content")
+			.find(c => Number(c.id) === Number(id));
 	}
 	
 	#getTicketItems() {

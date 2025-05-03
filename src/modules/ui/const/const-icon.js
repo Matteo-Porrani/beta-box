@@ -50,6 +50,7 @@ export const ICON_DICT = {
 	data_import: "IconDatabaseImport",
 	data_export: "IconDatabaseExport",
 	dashboard: "IconLayoutDashboard",
+	download: "IconDownload",
 	edit: "IconEdit",
 	folders: "IconFolders",
 	focus: "IconFocusCentered",

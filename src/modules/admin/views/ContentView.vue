@@ -65,6 +65,7 @@
 				show-delete
 				@thumbnail-clicked="openPreview"
 				@delete-item="deleteItem"
+				@download-item="downloadItem"
 			/>
 
 		</div>
@@ -152,6 +153,10 @@ export default {
 		async deleteItem(id) {
 			await ContentSrv.deleteItem(id);
 			this.localKey++;
+		},
+
+		async downloadItem(id) {
+			await ContentSrv.downloadItem(id);
 		}
 
 	}

@@ -44,7 +44,13 @@
 			<p>{{ i.size }}</p>
 
 			<!-- (5) -->
-			<div class="flex justify-end px-2">
+			<div class="flex gap-2 justify-end px-2">
+				<BxIconButton
+					v-if="showDelete"
+					size="small"
+					icon="download"
+					@click="downloadItem(i.id)"
+				/>
 				<BxIconButton
 					v-if="showDelete"
 					size="small"
@@ -74,7 +80,12 @@ export default {
 		},
 	},
 
-	emits: ["deleteItem", "thumbnailClicked", "checkboxChange"],
+	emits: [
+		"deleteItem",
+		"downloadItem",
+		"thumbnailClicked",
+		"checkboxChange"
+	],
 
 	methods: {
 		openPreview(id) {
@@ -83,6 +94,11 @@ export default {
 
 		deleteItem(id) {
 			this.$emit("deleteItem", id);
+		},
+
+		downloadItem(id) {
+			console.log("/// downloadItem", id)
+			this.$emit("downloadItem", id);
 		},
 
 		onCheckboxChange(id) {
