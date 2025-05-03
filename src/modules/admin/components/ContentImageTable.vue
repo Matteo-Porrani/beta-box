@@ -45,19 +45,21 @@
 
 			<!-- (5) -->
 			<div class="flex gap-2 justify-end px-2">
-				<BxIconButton
-					v-if="showDelete"
-					size="small"
-					icon="download"
-					@click="downloadItem(i.id)"
-				/>
-				<BxIconButton
-					v-if="showDelete"
-					size="small"
-					type="danger"
-					icon="trash"
-					@click="deleteItem(i.id)"
-				/>
+
+				<template v-if="showActions">
+					<BxIconButton
+						size="small"
+						icon="download"
+						@click="downloadItem(i.id)"
+					/>
+					<BxIconButton
+						size="small"
+						type="danger"
+						icon="trash"
+						@click="deleteItem(i.id)"
+					/>
+				</template>
+
 			</div>
 		</article>
 	</section>
@@ -74,7 +76,7 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		showDelete: {
+		showActions: {
 			type: Boolean,
 			default: false,
 		},

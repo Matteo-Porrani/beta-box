@@ -62,7 +62,7 @@
 
 			<ContentImageTable
 				:images="images"
-				show-delete
+				show-actions
 				@thumbnail-clicked="openPreview"
 				@delete-item="deleteItem"
 				@download-item="downloadItem"
