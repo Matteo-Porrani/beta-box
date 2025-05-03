@@ -71,7 +71,7 @@
 // Vue related
 import { mapState } from "vuex";
 // services
-import { exportSrv } from "@/modules/data-manager/services/ExportSrv";
+import ExportSrv from "@/modules/data-manager/services/ExportSrv";
 import { dataSrv } from "@/modules/core/services/DataSrv";
 // components
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
@@ -104,7 +104,7 @@ export default {
 		// =============================================
 
 		exportData() {
-			exportSrv.downloadJson(this.entities);
+			ExportSrv.downloadJson(this.entities);
 		},
 
 		// =============================================

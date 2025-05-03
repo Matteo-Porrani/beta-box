@@ -1,7 +1,7 @@
 import store from "@/store";
 
 import EntitySrv from "@/modules/core/services/EntitySrv";
-import { exportSrv } from "@/modules/data-manager/services/ExportSrv";
+import ExportSrv from "@/modules/data-manager/services/ExportSrv";
 
 /**
  * Service for managing content items, particularly focused on handling image content.
@@ -63,12 +63,10 @@ class ContentSrv {
 	}
 	
 	async downloadItem(id) {
-		console.log("[ContentSrv] downloadItem", id)
 		const image = this.#getContentItemById(id)
 		
 		if (image) {
-			console.log(">>>>", image)
-			exportSrv.downloadImage(
+			ExportSrv.downloadImage(
 				image.data, // data without the prefix 'data:image/png;base64,'
 				image.name
 			)

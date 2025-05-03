@@ -2,8 +2,6 @@ class ExportSrv {
 	
 	static instance;
 	
-	// constructor() {}
-	
 	static getInstance() {
 		if (!ExportSrv.instance) {
 			ExportSrv.instance = new ExportSrv();
@@ -69,4 +67,4 @@ class ExportSrv {
 	
 }
 
-export const exportSrv = ExportSrv.getInstance();
+export default ExportSrv.getInstance();
