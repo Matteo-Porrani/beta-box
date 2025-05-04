@@ -148,10 +148,7 @@ export default {
 				item: { ...srcTicket, content },
 			})
 
-			// 3. reload
-			await this.loadTables(["ticket"]);
-
-			// 4. trigger re-execution of this.getTicketData()
+			// 3. trigger re-execution of this.getTicketData()
 			this.INCREMENT_KEY();
 		},
 
