@@ -126,7 +126,6 @@ export default {
 		// ============================================= INIT
 
 		getTicketData() {
-			// console.log("KEY", this.coreKey)
 			this.ticket = ProjectSrv.getTicketById(this.ticketId);
 		},
 
