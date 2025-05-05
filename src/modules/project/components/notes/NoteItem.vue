@@ -1,6 +1,6 @@
 <template>
 	<article>
-
+		<!--	HEADER	-->
 		<div class="flex gap-2 items-center text-sm font-bold text-stone-40 mb-1 h-8">
 
 			<!-- open/close button -->
@@ -13,17 +13,13 @@
 			</button>
 
 			<!-- title button -->
-			<button
-				@click="editNote"
-			>
+			<button @click="editNote">
 				{{ noteItem.title }}
 			</button>
 
 			<!-- CONTROLS -->
 			<div class="ms-auto flex gap-2 items-center">
-
 				<template v-if="open">
-
 					<div class="flex gap-2 items-center ms-8">
 						<BxSwitch v-model="lang"/>
 						<span>JS</span>
@@ -60,6 +56,7 @@
 
 
 <script>
+import { getFontSizeInPx } from "@/modules/project/const/const-project";
 import NoteContent from "@/modules/project/components/notes/NoteContent.vue";
 
 export default {
@@ -94,14 +91,7 @@ export default {
 		},
 
 		parsedFontSize() {
-			const fsMap = {
-				1: "11px",
-				2: "14px",
-				3: "18px",
-				4: "24px",
-			}
-
-			return fsMap[this.fontSize];
+			return getFontSizeInPx(this.fontSize);
 		}
 	},
 
@@ -121,8 +111,9 @@ export default {
 	},
 
 	beforeMount() {
-		if (this.display && Object.hasOwn(this.display, "open")) this.open = this.display.open;
-		if (this.display && Object.hasOwn(this.display, "lang")) this.lang = this.display.lang;
+		["open", "lang"].forEach(key => {
+			if (this.display && Object.hasOwn(this.display, key)) this[key] = this.display[key];
+		})
 	},
 
 	methods: {

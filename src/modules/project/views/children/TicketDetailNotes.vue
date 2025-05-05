@@ -60,6 +60,7 @@
 			<NoteForm
 				v-else
 				:noteId="formNoteId"
+				:font-size="fontSize"
 				@save-note="onSaveNote"
 				@close-form="onCloseForm"
 			/>

@@ -30,12 +30,14 @@
 
 <script>
 import NotesSrv from "@/modules/project/services/NotesSrv";
+import { getFontSizeInPx } from "@/modules/project/const/const-project";
 
 export default {
 	name: "NoteForm",
 
 	props: {
-		noteId: Number
+		noteId: Number,
+		fontSize: Number,
 	},
 
 	emits: ["closeForm", "saveNote"],
@@ -45,6 +47,12 @@ export default {
 			id: null,
 			title: "",
 			content: "",
+		}
+	},
+
+	computed: {
+		parsedFontSize() {
+			return getFontSizeInPx(this.fontSize);
 		}
 	},
 
@@ -87,5 +95,9 @@ input,
 textarea,
 select {
 	@apply block bg-stone-700 rounded text-stone-200 p-1
+}
+
+textarea {
+	font-size: v-bind(parsedFontSize);
 }
 </style>
