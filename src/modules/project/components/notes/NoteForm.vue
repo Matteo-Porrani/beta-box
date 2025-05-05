@@ -8,7 +8,7 @@
 
 		<textarea
 			v-model="content"
-			class="w-full h-[50vh] font-cc  resize-none mb-2"
+			class="w-full h-[58vh] font-cc  resize-none mb-2"
 		></textarea>
 
 		<div class="flex justify-between">
