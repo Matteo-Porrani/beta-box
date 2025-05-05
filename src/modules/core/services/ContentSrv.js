@@ -40,6 +40,7 @@ class ContentSrv {
 		// Convert base64 data to data URLs for each item
 		for (const i of items) {
 			this.addDataUrlValue(i);
+			this.addSize(i);
 		}
 		
 		this.#addLinkedProp(items);
@@ -49,8 +50,12 @@ class ContentSrv {
 	
 	addDataUrlValue(item) {
 		item.dataUrl = `data:image/png;base64,${item.data}`;
+	}
+	
+	addSize(item) {
 		item.size = `${(this.#calculateBase64Size(item.data)).toFixed(2)} Kb`;
 	}
+	
 	
 	/**
 	 * Deletes a content item by its ID
