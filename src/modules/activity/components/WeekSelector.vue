@@ -22,7 +22,14 @@
 <template>
 	<div class="grid grid-cols-3 mb-4">
 
-		<div></div>
+		<div class="flex justify-start items-center">
+			<BxIconButton
+				type="soft"
+				icon="calendar"
+				label="Calendar Manager"
+				@click="openManager('calendar')"
+			/>
+		</div>
 
 		<BxOptionSelector
 			v-if="selectOptions"
@@ -34,9 +41,9 @@
 		<div class="flex justify-end items-center">
 			<BxIconButton
 				type="soft"
-				icon="calendar"
-				label="Calendar Manager"
-				@click="openCalendarManager"
+				icon="sprint"
+				label="Sprint Manager"
+				@click="openManager('sprint')"
 			/>
 		</div>
 	</div>
@@ -69,8 +76,8 @@ export default {
 			this.$emit("weekSelected", weekId);
 		},
 
-		openCalendarManager() {
-			this.$router.push({ name: "activity_calendar_manager" })
+		openManager(key) {
+			this.$router.push({ name: `activity_${key}_manager` })
 		}
 	}
 }

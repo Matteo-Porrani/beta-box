@@ -2,6 +2,7 @@ const DefaultModule = () => import("../DefaultModule.vue"); // the wrapper modul
 
 const ActivityView = () => import("./views/ActivityView.vue");
 const CalendarManager = () => import("./views/CalendarManager.vue");
+const SprintManager = () => import("./views/SprintManager.vue");
 
 const moduleRoute = {
 	path: "/activity",
@@ -17,6 +18,11 @@ const moduleRoute = {
 			name: "activity_calendar_manager",
 			path: "calendar-manager",
 			component: CalendarManager,
+		},
+		{
+			name: "activity_sprint_manager",
+			path: "sprint-manager",
+			component: SprintManager,
 		},
 	]
 }

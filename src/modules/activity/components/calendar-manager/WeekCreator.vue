@@ -15,9 +15,6 @@
 			@value-changed="onValueChange"
 		/>
 
-		<pre>{{ values }}</pre>
-
-
 		<BxButton
 			v-if="formIsValid"
 			label="Generate week"

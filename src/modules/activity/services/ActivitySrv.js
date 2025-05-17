@@ -22,20 +22,18 @@ class ActivitySrv {
 	// =============================================
 
 	getActivitiesByWeekId(weekId) {
-		
-		console.log("/// getActivitiesByWeekId", weekId)
-		
-		const limits = weekSrv.getWeekLimitsById(weekId);
+		const { start, end } = weekSrv.getWeekLimitsById(weekId);
 		// { "start": "2025-04-21@00:00", "end": "2025-04-22@00:00" }
-		
-		const daysOnPeriod = this.#getDaysOnPeriod(limits);
-		/*
-		[
+		return this.getActivitiesByRange({ start, end });
+	}
+	
+	getActivitiesByRange({ start, end }) {
+		const daysOnPeriod = this.#getDaysOnPeriod({ start, end });
+		/* [
 				{ "date": "2025-04-21@00:00", "id": 11 }
 				{ "date": "2025-04-22@00:00", "id": 12 }
-		]
-		 */
-		
+		] */
+
 		return this.#hydrateDays(daysOnPeriod);
 	}
 	
@@ -48,8 +46,7 @@ class ActivitySrv {
 		// IMPORTANT !!! always sort by date
 		days.sort((a, b) => a.date.localeCompare(b.date));
 		
-		// range is an array of strings :
-		// ["2025-04-21@00:00", "2025-04-22@00:00", "2025-04-23@00:00" ... ]
+		// range is an array of strings : ["2025-04-21@00:00", "2025-04-22@00:00", "2025-04-23@00:00" ... ]
 		const range = DateHelperSrv.generateContinuousDates(start, end);
 		return days.filter(d => range.includes(d.date));
 	}
