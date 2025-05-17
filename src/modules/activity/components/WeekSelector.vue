@@ -48,7 +48,7 @@ export default {
 	mounted() {
 		this.selectOptions = weekSrv.getWeekOptions();
 		this.initValue = Array.isArray(this.selectOptions) && this.selectOptions.length > 0
-			? this.selectOptions.at(-1).id
+			? this.selectOptions.at(-1).id // this is a row id, not and index
 			: 1;
 	},
 
