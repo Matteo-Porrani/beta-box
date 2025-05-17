@@ -5,7 +5,7 @@ import SearchSrv from "@/modules/core/services/SearchSrv";
 import HydrationSrv from "@/modules/core/services/HydrationSrv";
 // utils
 import { formatDurationFromMin, nrm } from "@/modules/core/utils/core-utils";
-import { sortRows } from "@/modules/core/utils/table-utils";
+import { filterTableByNeedle, sortRows } from "@/modules/core/utils/table-utils";
 import { convertFromAppDateFormatToStdFormat, splitDurationIntoHourPercents } from "@/modules/core/utils/date-utils";
 
 class ProjectSrv {
@@ -50,7 +50,7 @@ class ProjectSrv {
 	
 	// ============================================= TICKETS BY PHASE
 	
-	getTicketsByPhase() {
+	getTicketsByPhase(filterNeedle) {
 		const phases = ["A", "B", "C", "D", "E"];
 		
 		const tickets = this.getTickets(
@@ -62,7 +62,8 @@ class ProjectSrv {
 		)
 		
 		return phases.reduce((acc, p) => {
-			acc[p] = this.#getTicketsFilteredByPhase(tickets, p);
+			const ticketsByPhase = this.#getTicketsFilteredByPhase(tickets, p);
+			acc[p] = filterTableByNeedle(ticketsByPhase, filterNeedle);
 			return acc;
 		}, {})
 	}
