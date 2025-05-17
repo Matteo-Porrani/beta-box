@@ -15,8 +15,7 @@
 
 				<div class="h-8"/>
 
-				<p class="text-stone-400">Export by table</p>
-				<ExportSelector
+				<ExportSelectorTable
 					v-if="listOfTableNames"
 					:list="listOfTableNames"
 					@export-table="onExportTable"
@@ -86,14 +85,14 @@ import { nrm } from "@/modules/core/utils/core-utils";
 
 // components
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
-import ExportSelector from "@/modules/data-manager/components/ExportSelector.vue";
+import ExportSelectorTable from "@/modules/data-manager/components/ExportSelectorTable.vue";
 
 
 export default {
 	name: 'DataManagerView',
 
 	components: {
-		ExportSelector,
+		ExportSelectorTable,
 		DefaultLayout,
 	},
 
@@ -216,6 +215,4 @@ export default {
 };
 </script>
 
-
-<style scoped></style>
 
