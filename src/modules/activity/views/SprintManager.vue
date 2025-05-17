@@ -93,23 +93,18 @@ function onOptionSelected(id) {
 
 
 function parseActivities(activities) {
-
-	const r = [];
-
-	for (const a of activities) {
-		if (a.ticketInfo) {
-
-			const info = a.ticketInfo.reduce((acc, el) => {
+	return activities.reduce((actAcc, act) => {
+		if (act.ticketInfo) {
+			// ticketInfo is an array & can contain multiple tickets
+			const info = act.ticketInfo.reduce((acc, el) => {
 				acc.push(el.title)
 				return acc;
 			}, [])
 
-			r.push(info.join(" + "))
+			actAcc.push(info.join(" + "))
+			return actAcc;
 		}
-	}
-
-	return r.join(" - ");
-
+	}, []).join(" - ");
 }
 
 
@@ -122,10 +117,8 @@ function downloadReview() {
 		]
 	})
 
-	console.log(tableRows)
-
 	PDFMakerSrv.downloadSprintReview(
-		selectedSprintId.value,
+		selectedSprint.value.name,
 		tableRows
 	)
 }
