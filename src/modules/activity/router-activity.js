@@ -15,7 +15,7 @@ const moduleRoute = {
 		},
 		{
 			name: "activity_calendar_manager",
-			path: "",
+			path: "calendar-manager",
 			component: CalendarManager,
 		},
 	]
