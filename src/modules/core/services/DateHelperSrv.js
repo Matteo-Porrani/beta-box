@@ -88,6 +88,49 @@ class DateHelperSrv {
 	dateIsBetween(date, startDate, endDate, acceptSameDate = false) {
 		return this.dateIsBefore(date, endDate, acceptSameDate) && this.dateIsAfter(date, startDate, acceptSameDate);
 	}
+
+	/**
+	 * Returns a formatted date string in the format "ddd DD MMM YYYY"
+	 * @param {string} date - Date string in format "YYYY-MM-DD@HH:MM"
+	 * @returns {string} Formatted date string
+	 */	
+	getFormattedDate(date) {
+		// must return a string in format Lun 19 Mai 2025
+		return moment(date).format('ddd DD MMM YYYY');
+	}
+	
+	/**
+	 * Generates an array of strings representing a series of continuous days.
+	 * Example :
+	 * start is "2025-04-29@00:00"
+	 * end is "2025-05-02@00:00"
+	 *
+	 * the method will return
+	 * ["2025-04-29@00:00", "2025-04-30@00:00", "2025-05-01@00:00", "2025-05-02@00:00"]
+	 *
+	 * @param {string} start - Date string in format "YYYY-MM-DD@HH:MM"
+	 * @param {string} end - Date string in format "YYYY-MM-DD@HH:MM"
+	 * @returns {string[]} Array of date strings in format "YYYY-MM-DD@HH:MM"
+	 */
+	generateContinuousDates(start, end) {
+		const startMoment = this.createMomentFromStringParis(start);
+		const endMoment = this.createMomentFromStringParis(end);
+		
+		const dates = [];
+		let currentMoment = startMoment.clone();
+		
+		// Loop until we reach the end date (inclusive)
+		while (currentMoment.isSameOrBefore(endMoment, 'day')) {
+			// Format the date back to our custom format
+			const dateStr = currentMoment.format('YYYY-MM-DD') + '@00:00';
+			dates.push(dateStr);
+			
+			// Move to next day
+			currentMoment.add(1, 'day');
+		}
+		
+		return dates;
+	}
 	
 }
 

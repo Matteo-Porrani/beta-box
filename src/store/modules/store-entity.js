@@ -158,7 +158,7 @@ export default {
 				const id = await dataSrv.add(tableName, item);
 				// reload
 				await dispatch("loadItems", tableName);
-				return new DatabaseActionResponse(true, `item ${id} added`);
+				return new DatabaseActionResponse(true, `item ${id} added`, id);
 			});
 		},
 		
@@ -174,7 +174,7 @@ export default {
 				await dataSrv.update(tableName, item);
 				// reload
 				await dispatch("loadItems", tableName);
-				return new DatabaseActionResponse(true, `item ${item.id} successfully updated`);
+				return new DatabaseActionResponse(true, `item ${item.id} successfully updated`, item.id);
 			});
 		},
 		

@@ -2,66 +2,75 @@
 	<DefaultLayout>
 		<template #default>
 
-			<h2>Calendar Manager</h2>
+			<h2 class="flex items-center gap-1">
+				<BxIconButton
+					text
+					icon="angle_left"
+					class="min-w-2"
+					@click="$router.push({ name: 'activity_root' })"
+				/>
+				<span>Calendar Manager</span>
+			</h2>
 
-			<pre>{{ weeks }}</pre>
+			<section class="h-[90vh] space-y-1 border border-stone-500 rounded p-1">
 
+				<template v-if="mode==='list'">
+					<h3 class="text-lg">Weeks</h3>
 
+					<BxButton
+						label="Add"
+						@click="switchToForm"
+					/>
+
+					<WeekDisplayItem
+						v-for="w in weeks"
+						:key="w.id"
+						:week="w"
+					/>
+				</template>
+
+				<template v-else>
+					<WeekCreator
+						@close="mode = 'list'"
+						@days-selected="onDaysSelected"
+					/>
+				</template>
+
+			</section>
 		</template>
 	</DefaultLayout>
 </template>
 
 
 <script setup>
-import { computed, onMounted } from "vue"
+import { ref, computed, onMounted } from "vue"
+import { useRouter } from "vue-router";
 import CalendarSrv from "@/modules/activity/services/CalendarSrv";
 
-import DateHelperSrv from "@/modules/core/services/DateHelperSrv";
 
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
+import WeekDisplayItem from "@/modules/activity/components/calendar-manager/WeekDisplayItem.vue";
+import WeekCreator from "@/modules/activity/components/calendar-manager/WeekCreator.vue";
 
-
+const $router = useRouter()
+const mode = ref("list");
 
 const weeks = computed(() => {
-	return CalendarSrv.getDays();
+	return CalendarSrv.getWeeks();
 })
 
+function switchToForm() {
+	mode.value = "form";
+}
 
-onMounted(() => {
+async function onDaysSelected(days) {
+	console.log("+++ onDaysSelected", days)
+	await CalendarSrv.generateWeek(days);
 
-	const a = "2025-06-20@09:30";
-	// 2025-06-20T09:30:00Z
-	// 2025-06-20T09:30:00+02:00
-
-	const utc = DateHelperSrv.createMomentFromStringUTC(a);
-	console.log(utc)
-
-	const par = DateHelperSrv.createMomentFromStringParis(a);
-	console.log(par)
-
-	const test1 = DateHelperSrv.dateIsBefore(
-		"2025-02-14@00:00",
-		"2025-05-31@00:00"
-	)
-	console.log(test1)
-
-	const test2 = DateHelperSrv.dateIsBefore(
-		"2025-05-31@00:00",
-		"2025-02-14@00:00"
-	)
-	console.log(test2)
-
-	const test3 = DateHelperSrv.dateIsBefore(
-		"2025-05-31@00:00",
-		"2025-05-31@00:00",
-		true
-	)
-	console.log(test3)
-
-})
-
-
-
+	// setTimeout(() => {
+	// 	$router.push({ name: "activity_root" })
+	// }, 1000)
+}
 
 </script>
 

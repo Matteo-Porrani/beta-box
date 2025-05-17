@@ -108,3 +108,59 @@ describe("dateIsBetween", () => {
 		expect(result).toBe(true);
 	});
 });
+
+
+
+
+describe("test for method generateContinuousDates", () => {
+	it("should generate dates for a single day", () => {
+		const result = DateHelperSrv.generateContinuousDates("2024-03-15@00:00", "2024-03-15@00:00");
+		expect(result).toEqual(["2024-03-15@00:00"]);
+	});
+
+	it("should generate dates for multiple days", () => {
+		const result = DateHelperSrv.generateContinuousDates("2024-03-15@00:00", "2024-03-17@00:00");
+		expect(result).toEqual([
+			"2024-03-15@00:00",
+			"2024-03-16@00:00",
+			"2024-03-17@00:00"
+		]);
+	});
+
+	it("should handle month boundaries", () => {
+		const result = DateHelperSrv.generateContinuousDates("2024-03-31@00:00", "2024-04-02@00:00");
+		expect(result).toEqual([
+			"2024-03-31@00:00",
+			"2024-04-01@00:00",
+			"2024-04-02@00:00"
+		]);
+	});
+
+	it("should handle year boundaries", () => {
+		const result = DateHelperSrv.generateContinuousDates("2024-12-31@00:00", "2025-01-02@00:00");
+		expect(result).toEqual([
+			"2024-12-31@00:00",
+			"2025-01-01@00:00",
+			"2025-01-02@00:00"
+		]);
+	});
+
+	it("should handle leap year", () => {
+		const result = DateHelperSrv.generateContinuousDates("2024-02-28@00:00", "2024-03-01@00:00");
+		expect(result).toEqual([
+			"2024-02-28@00:00",
+			"2024-02-29@00:00",
+			"2024-03-01@00:00"
+		]);
+	});
+
+	it("should ignore time part in input", () => {
+		const result = DateHelperSrv.generateContinuousDates("2024-03-15@14:30", "2024-03-16@23:59");
+		expect(result).toEqual([
+			"2024-03-15@00:00",
+			"2024-03-16@00:00"
+		]);
+	});
+});
+
+
