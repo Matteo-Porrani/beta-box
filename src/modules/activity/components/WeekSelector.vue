@@ -20,13 +20,24 @@
 */
 
 <template>
-	<div class="grid place-content-center mb-4">
+	<div class="grid grid-cols-3 mb-4">
+
+		<div></div>
+
 		<BxOptionSelector
 			v-if="selectOptions"
 			:select-options="selectOptions"
 			:init-value="initValue"
 			@option-selected="onOptionSelected"
 		/>
+
+		<div class="flex justify-end items-center">
+			<BxIconButton
+				type="soft"
+				icon="calendar"
+				label="Calendar Manager"
+			/>
+		</div>
 	</div>
 </template>
 

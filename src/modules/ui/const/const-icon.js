@@ -46,6 +46,7 @@ export const ICON_DICT = {
 	card_id: "IconId",
 	cards: "IconCards",
 	calendar_cycle: "IconCalendarRepeat",
+	calendar: "IconCalendarWeek",
 	data: "IconDatabase",
 	data_import: "IconDatabaseImport",
 	data_export: "IconDatabaseExport",
