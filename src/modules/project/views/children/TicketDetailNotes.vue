@@ -1,17 +1,18 @@
 
 <template>
 	<section class="grid grid-rows-[auto_1fr] overflow-y-hidden">
+
 		<!-- TOOLBAR -->
 		<div class="bg-stone-700 flex gap-2 text-sm rounded py-1 px-2">
 
-			<button
+			<BxIconButton
 				v-for="b in [['expand', true], ['collapse', false]]"
 				:key="b[0]"
-				class="hover:text-sky-500"
+				text
+				:icon="b[0]"
+				class="min-w-0"
 				@click="_setValueOnAll({ key: 'open', value: b[1] })"
-			>
-				<BxIcon :icon="b[0]"/>
-			</button>
+			/>
 
 			<div class="w-8"/>
 
@@ -32,7 +33,7 @@
 		<!-- SCROLLABLE SECTION -->
 		<div class="mt-1 bx-scrollbar">
 			<template v-if="!showForm">
-				<div class="space-y-2">
+				<div class="space-y-0">
 					<NoteItem
 						v-for="n in notes"
 						:key="n.id"
@@ -124,7 +125,7 @@ export default {
 		},
 
 		onEditNote(id = null) {
-			// FIXME -- handling of new notes to be reviewed
+			// FIXME -- handling of NEW NOTES to be reviewed
 			if (id < 0) {
 				this._initNoteDisplay(new Date().getTime())
 			}
