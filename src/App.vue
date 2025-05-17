@@ -12,7 +12,7 @@ https://dummyjson.com/docs
 -->
 
 <template>
-	<section class="app-root grid p-4">
+	<section class="app-root grid p-2">
 		<router-view/>
 	</section>
 </template>

@@ -64,6 +64,7 @@ export const ICON_DICT = {
 	modules: "IconHexagons",
 	planet: "IconPlanet",
 	refresh: "IconRefresh",
+	report: "IconReport",
 	reset: "IconRotate",
 	search: "IconSearch",
 	sprint: "IconRun",

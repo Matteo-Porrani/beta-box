@@ -12,7 +12,7 @@
 				>
 					<div class="w-16">
 						<div
-							class="bg-lime-500 h-2 rounded"
+							class="bg-yellow-500 h-2 rounded"
 							:style="`width: ${b}%`"
 						/>
 					</div>
@@ -31,12 +31,6 @@ export default {
 	props: {
 		item: Object
 	},
-
-	data() {
-		return {
-
-		}
-	}
-
 }
 </script>
+
