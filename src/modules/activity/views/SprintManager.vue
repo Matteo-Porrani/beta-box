@@ -2,7 +2,7 @@
 	<DefaultLayout>
 		<template #default>
 
-			<h2 class="flex items-center gap-1">
+			<h2 class="flex items-center gap-1 text-lg">
 				<BxIconButton
 					text
 					icon="angle_left"
@@ -11,6 +11,8 @@
 				/>
 				<span>Sprint Manager</span>
 			</h2>
+
+			<div class="h-2"/>
 
 			<section class="h-[90vh] border border-stone-500 rounded p-1">
 

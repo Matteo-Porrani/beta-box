@@ -1,5 +1,5 @@
 <template>
-	<table class="rounded overflow-hidden w-full">
+	<table class="rounded overflow-hidden w-full bx-scrollbar">
 		<tbody>
 		<BxTableRow
 			is-header
