@@ -12,6 +12,7 @@
 			<BxIcon icon="xmark"/>
 		</button>
 	</div>
+
 	<!-- MODAL -->
 	<BxModal
 		ref="modal_ref"
@@ -22,7 +23,11 @@
 		<template #body>
 
 			<div class="text-center">
-				<input type="text" v-model="needle">
+				<input
+					ref="search_input_ref"
+					type="text"
+					v-model="needle"
+				>
 			</div>
 
 			<div class="h-2"/>
@@ -88,6 +93,7 @@
 
 
 <script>
+import { nextTick } from "vue";
 // utils
 import { isFalsy, nrm } from "@/modules/core/utils/core-utils";
 import { filterTableByNeedle } from "@/modules/core/utils/table-utils";
@@ -145,9 +151,7 @@ export default {
 
 	methods: {
 
-		// =============================================
-		// INIT
-		// =============================================
+		// ============================================= INIT
 
 		initBinding() {
 			for (const r of this.rows) {
@@ -168,9 +172,7 @@ export default {
 			this.$emit("update:modelValue", this.parsedValue)
 		},
 
-		// =============================================
-		// VALUE HANDLING & SUBMIT
-		// =============================================
+		// ============================================= VALUE HANDLING &
 
 		onCheckboxChange(event) {
 			const lastSelectedId = event.target.dataset.id;
@@ -191,12 +193,11 @@ export default {
 			this.$refs.modal_ref.close();
 		},
 
-		// =============================================
-		// MISC
-		// =============================================
+		// ============================================= MISC
 
 		openModal() {
 			this.$refs.modal_ref.open();
+			nextTick(() => this.$refs.search_input_ref.focus())
 		},
 	}
 }
@@ -210,7 +211,7 @@ select {
 }
 
 input[readonly] {
-	@apply bg-stone-800 text-stone-200
+	@apply bg-stone-800 text-yellow-500 font-mono border border-stone-500
 }
 
 [data-field="id"] {
