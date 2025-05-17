@@ -36,11 +36,26 @@
 
 				<h2 class="mt-8 mb-2">Import</h2>
 
-				<input
-					type="file"
-					accept=".txt"
-					@change="prepareJsonData"
-				>
+				<!--
+				We hide the native file input (using `hidden`) because it's hard to style consistently across browsers.
+				Instead, we use a styled <label> with a `for` attribute pointing to the input's ID.
+				This allows us to create a custom-looking button that still triggers the file picker.
+				-->
+				<div class="flex items-center space-x-4">
+					<label
+						for="file-upload"
+						class="cursor-pointer bg-sky-500 text-stone-800 hover:bg-sky-700 rounded px-2 py-1"
+					>
+						Upload File
+					</label>
+					<input
+						id="file-upload"
+						type="file"
+						accept=".txt"
+						class="hidden"
+						@change="prepareJsonData"
+					/>
+				</div>
 
 				<div class="h-4"></div>
 
@@ -56,10 +71,11 @@
 						</p>
 					</div>
 
-					<button
+					<BxIconButton
+						icon="file_import"
+						label="Import tables"
 						@click="importTables"
-						class="bg-lime-600 hover:bg-lime-500 text-stone-800 rounded py-1 px-2"
-					>Import tables</button>
+					/>
 
 					<div class="h-4"></div>
 

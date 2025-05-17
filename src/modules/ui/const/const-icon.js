@@ -53,6 +53,7 @@ export const ICON_DICT = {
 	dashboard: "IconLayoutDashboard",
 	download: "IconDownload",
 	edit: "IconEdit",
+	file_import: "IconFileArrowLeft",
 	folders: "IconFolders",
 	focus: "IconFocusCentered",
 	grid: "IconLayoutGrid",
