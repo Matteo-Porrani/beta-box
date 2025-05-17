@@ -105,7 +105,8 @@ export default {
 		navToTicket(id) {
 			this.$router.push({
 				name: "ticket_detail_notes",
-				params: { id: id }
+				params: { id: id },
+				query: { from: "activity_root" }
 			})
 		},
 	},
