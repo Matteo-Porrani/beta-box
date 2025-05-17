@@ -1,7 +1,11 @@
 import store from '@/store';
 import moment from "moment/moment";
+
+import DateHelperSrv from "@/modules/core/services/DateHelperSrv";
 import { weekSrv } from "@/modules/activity/services/WeekSrv";
+
 import { nrm } from "@/modules/core/utils/core-utils";
+
 
 class ActivitySrv {
 	static instance;
@@ -18,10 +22,13 @@ class ActivitySrv {
 	// =============================================
 
 	getActivitiesByWeekId(weekId) {
+		
+		console.log("/// getActivitiesByWeekId", weekId)
+		
 		const limits = weekSrv.getWeekLimitsById(weekId);
 		// { "start": "2025-04-21@00:00", "end": "2025-04-22@00:00" }
 		
-		const daysOnPeriod = this._getDaysOnPeriod(limits);
+		const daysOnPeriod = this.#getDaysOnPeriod(limits);
 		/*
 		[
 				{ "date": "2025-04-21@00:00", "id": 11 }
@@ -29,53 +36,24 @@ class ActivitySrv {
 		]
 		 */
 		
-		return this._hydrateDays(daysOnPeriod);
+		return this.#hydrateDays(daysOnPeriod);
 	}
 	
 	// =============================================
 	// DATA RETRIEVAL
 	// =============================================
 
-	_getDaysOnPeriod({ start, end }) {
+	#getDaysOnPeriod({ start, end }) {
 		const days = store.getters["entity/getItemsFromTable"]("day");
 		// IMPORTANT !!! always sort by date
 		days.sort((a, b) => a.date.localeCompare(b.date));
 		
-		const match = [];
-		
-		for (const d of days) {
-			if (
-				this._dateIsAfterOrSameRef(start, d.date)
-				&& this._dateIsBeforeOrSameRef(end, d.date)
-			) {
-				match.push(nrm(d));
-			}
-		}
-		
-		return match
+		// range is an array of strings :
+		// ["2025-04-21@00:00", "2025-04-22@00:00", "2025-04-23@00:00" ... ]
+		const range = DateHelperSrv.generateContinuousDates(start, end);
+		return days.filter(d => range.includes(d.date));
 	}
-	
-	_dateIsBeforeOrSameRef(ref, date) {
-		if (!ref || !date) return false;
-		// "2024-04-12@00:00"
-		
-		const refDate = ref.split("@")[0];
-		const dateDate = date.split("@")[0];
-		// console.log(`${new Date(dateDate).getTime()} <= ${new Date(refDate).getTime()}`)
-		
-		return new Date(dateDate).getTime() <= new Date(refDate).getTime();
-	}
-	
-	_dateIsAfterOrSameRef(ref, date) {
-		if (!ref || !date) return false;
-		// "2024-04-12@00:00"
-		
-		const refDate = ref.split("@")[0];
-		const dateDate = date.split("@")[0];
-		// console.log(`${new Date(dateDate).getTime()} >= ${new Date(refDate).getTime()}`)
-		
-		return new Date(dateDate).getTime() >= new Date(refDate).getTime();
-	}
+
 	
 	_getTicketInfo(ticketIds) {
 		// 1. Handle empty case
@@ -103,7 +81,7 @@ class ActivitySrv {
 		// ["RDTW-1234", "6543", "444"]
 	}
 
-	_hydrateDays(days) {
+	#hydrateDays(days) {
 		// this is the format of the activities:
 		// [{"type":"$D","day":"1","description":"hello","tickets":"1","duration":120,"id":14},{"type":"$R","day":"1","description":"daily","url":"localhost:8080/activity","tickets":"","duration":30,"id":15}]
 
