@@ -14,41 +14,46 @@ class CalendarSrv {
 		return CalendarSrv.#instance;
 	}
 	
-	// ============================================= SECTION
+	// ============================================= WEEK & DAYS GENERATION
 	
+	/**
+	 * Generates a week of calendar data by creating individual days and linking them together
+	 * Creates a new day entry for each date in the range and links them in a week entry
+	 *
+	 * If start & end are the same date, it will create a week with a single day
+	 * 
+	 * @param {Object} params - Parameters object
+	 * @param {string} params.start - Start date in format "YYYY-MM-DD@HH:MM"
+	 * @param {string} params.end - End date in format "YYYY-MM-DD@HH:MM"
+	 * @returns {Promise<void>} Promise that resolves when the week and its days are created
+	 * @throws {Error} If end date is before start date
+	 */
 	async generateWeek({ start, end }) {
-		console.log("******** generateWeek ********", start, end)
+		
+		if (DateHelperSrv.dateIsBefore(end, start)) {
+			console.log("INVALID DATES");
+			return;
+		}
 		
 		const interval = DateHelperSrv.generateContinuousDates(start, end)
-		console.log("interval", interval)
 		
 		const newDays = [];
-		
 		for (const d of interval) {
-			console.log("...creating", d)
 			const newId = await this.#insertDay(d);
 			newDays.push(newId)
 		}
 		
-		console.log("...DAYS CREATION DONE")
-		console.log("newDays", newDays)
-		
 		await this.#insertWeek(newDays);
-
 	}
 	
-	
 	async #insertWeek(newDays) {
-		const newWeekId = await this.#insertItem({
+		await this.#insertItem({
 			tableName: "week",
 			item: {
 				days: newDays.join(":"),
 				// comment: `auto creation @ ${new Date().getTime()}`
 			}
 		})
-		
-		console.log("newDayId", newWeekId)
-		return newWeekId;
 	}
 	
 	async #insertDay(stringDate) {
@@ -57,25 +62,21 @@ class CalendarSrv {
 			item: { date: stringDate }
 		})
 		
-		console.log("res", res)
 		return res.itemId;
 	}
-	
 	
 	async #insertItem({ tableName, item }) {
 		return await store.dispatch("entity/addItem", { tableName, item })
 	}
 	
-	
-	
-	// =============================================
+	// ============================================= DATA RETRIEVAL
 	
 	getWeeks() {
 		const weeks = this.#getItems("week")
 		
 		weeks.forEach(w => {
 			const days = w.days.split(":");
-			w.daysFormatted = days.map(dId => this.getDayById(dId))
+			w.daysFormatted = days.map(dId => this.#getDayById(dId))
 		})
 		
 		return weeks;
@@ -85,7 +86,7 @@ class CalendarSrv {
 		return this.#getItems("day")
 	}
 	
-	getDayById(id) {
+	#getDayById(id) {
 		const day = EntitySrv.getItemById("day", id);
 		
 		return {
@@ -95,7 +96,7 @@ class CalendarSrv {
 	}
 	
 	
-	// ============================================= SECTION
+	// ============================================= GENERIC RETRIEVAL METHOD
 	#getItems(tableName) {
 		return EntitySrv.getItems(tableName)
 	}
