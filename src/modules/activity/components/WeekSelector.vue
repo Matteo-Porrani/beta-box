@@ -36,6 +36,7 @@
 				type="soft"
 				icon="calendar"
 				label="Calendar Manager"
+				@click="openCalendarManager"
 			/>
 		</div>
 	</div>
@@ -66,6 +67,10 @@ export default {
 	methods: {
 		onOptionSelected(weekId) {
 			this.$emit("weekSelected", weekId);
+		},
+
+		openCalendarManager() {
+			this.$router.push({ name: "activity_calendar_manager" })
 		}
 	}
 }
