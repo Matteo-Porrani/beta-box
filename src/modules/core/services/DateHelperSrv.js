@@ -28,10 +28,7 @@ class DateHelperSrv {
 		// Replace @ with T to make it a valid ISO-like format
 		const isoFormat = dateTimeStr.replace('@', 'T');
 		// Create moment object in UTC mode
-		const m = moment.utc(isoFormat);
-
-		console.log(m.format());
-		return m;
+		return moment.utc(isoFormat);
 	}
 
 	/**
@@ -44,10 +41,7 @@ class DateHelperSrv {
 		// Replace @ with T to make it a valid ISO-like format
 		const isoFormat = dateTimeStr.replace('@', 'T');
 		// Create moment object in Paris timezone with proper DST handling
-		const m = moment.tz(isoFormat, 'Europe/Paris');
-		
-		console.log(m.format());
-		return m;
+		return moment.tz(isoFormat, 'Europe/Paris');
 	}
 	
 	/**
