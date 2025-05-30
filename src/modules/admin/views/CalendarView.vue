@@ -10,13 +10,9 @@
 
 <template>
 	<DefaultLayout>
-
 		<template #default>
-
-
 			<!-- Debug display of current cursor date -->
 			<pre class="text-xl">cursorDate: {{ cursorDate }}</pre>
-
 
 			<!-- Month navigation header -->
 			<div class="grid grid-cols-3 place-items-center gap-8 p-4 w-1/2 mx-auto">
@@ -38,8 +34,6 @@
 				/>
 			</div>
 
-
-
 			<!-- Main calendar grid -->
 			<div class="calendar-grid border border-stone-500 rounded">
 
@@ -54,14 +48,12 @@
 					</article>
 				</div>
 
-
 				<!-- Calendar days grid -->
 				<div
 					v-for="r in rows"
 					:key="r[0]"
 					class="calendar-row grid grid-cols-7 gap-2 p-1"
 				>
-
 					<!-- Individual day cells -->
 					<article
 						v-for="d in r"
@@ -75,7 +67,6 @@
 			</div>
 
 		</template>
-
 	</DefaultLayout>
 </template>
 
