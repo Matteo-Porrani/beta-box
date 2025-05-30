@@ -46,7 +46,7 @@ export default {
 
 
 <style scoped>
-.router-link-active {
+.router-link-exact-active {
 	@apply text-sky-500 border-s-2 border-sky-500 ps-1
 }
 </style>

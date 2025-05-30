@@ -2,6 +2,7 @@ const DefaultModule = () => import("../DefaultModule.vue"); // the wrapper modul
 
 const AdminView = () => import("./views/AdminView.vue");
 const ContentView = () => import("./views/ContentView.vue")
+const CalendarView = () => import("./views/CalendarView.vue")
 
 const moduleRoute = {
 	path: "/admin",
@@ -18,6 +19,12 @@ const moduleRoute = {
 			name: "content",
 			path: "content", // #/admin/content
 			component: ContentView,
+		},
+		
+		{
+			name: "calendar",
+			path: "calendar", // #/admin/calendar
+			component: CalendarView,
 		},
 		
 	]
