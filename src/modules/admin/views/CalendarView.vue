@@ -3,7 +3,57 @@
 
 		<template #default>
 
-			<h1>Calendar View</h1>
+
+			<pre class="text-xl">cursorDate: {{ cursorDate }}</pre>
+
+
+			<div class="grid grid-cols-3 place-items-center gap-8 p-4 w-1/2 mx-auto">
+				<BxIconButton
+					icon="caret_left"
+					type="soft"
+					class="w-8"
+					@click="moveCursor(-1)"
+				/>
+				<h2 class="text-xl text-center">{{ monthLabel }}</h2>
+				<BxIconButton
+					icon="caret_right"
+					type="soft"
+					class="w-8"
+					@click="moveCursor(1)"
+				/>
+			</div>
+
+
+
+			<div class="calendar-grid border border-stone-500 rounded">
+
+				<div class="calendar-row grid grid-cols-7 gap-2 p-1">
+					<article
+						v-for="d in ['L', 'M', 'M', 'J', 'V', 'S', 'D']"
+						:key="d[0]"
+						class="text-center text-xl rounded p-1"
+					>
+						<p>{{ d }}</p>
+					</article>
+				</div>
+
+
+				<div
+					v-for="r in rows"
+					:key="r[0]"
+					class="calendar-row grid grid-cols-7 gap-2 p-1"
+				>
+
+					<article
+						v-for="d in r"
+						:key="d[0]"
+						class="text-center text-2xl rounded p-1 has-[.text-yellow-500]:border-2 has-[.text-yellow-500]:border-yellow-500 py-2"
+						:class="d.isPadding ? 'bg-stone-900' : 'bg-stone-600'"
+					>
+						<p :class="{'font-bold text-yellow-500' : d.isToday}">{{ d.date.split("-").at(2) }}</p>
+					</article>
+				</div>
+			</div>
 
 		</template>
 
@@ -12,10 +62,49 @@
 
 
 <script setup>
+import { ref, computed } from "vue";
 import moment from "moment/moment";
 import { DateTime } from "luxon";
+import CalendarMakerSrv from "@/modules/admin/services/CalendarMakerSrv";
 
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
+
+
+const cursorDate = ref(DateTime.now().startOf("month"));
+
+function moveCursor(dir) {
+	if (dir < 0) {
+		cursorDate.value = cursorDate.value.minus({ month: 1 })
+	} else {
+		cursorDate.value = cursorDate.value.plus({ month: 1 })
+	}
+}
+
+const calElements = computed(() => buildMonth());
+const monthLabel = computed(() => {
+	const { monthName, monthYear } = calElements.value;
+	return `${monthName} ${monthYear}`;
+});
+
+
+
+
+const rows = computed(() => {
+	const { days } = calElements.value;
+	const r = [];
+	const rowsCount = days.length / 7;
+
+	for (let i = 0; i < rowsCount; i++) {
+		r[i] = days.slice(i*7, (i*7)+7)
+	}
+
+	return r;
+});
+
+
+function buildMonth() {
+	return CalendarMakerSrv.parseCalendarTable(cursorDate.value.toISODate())
+}
 
 
 
