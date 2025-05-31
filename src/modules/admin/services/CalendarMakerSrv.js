@@ -1,3 +1,5 @@
+// noinspection JSAnnotator
+
 /**
  * CalendarMakerSrv - A service class for generating calendar data
  * This service uses the Luxon DateTime library for date manipulation
@@ -30,7 +32,7 @@ class CalendarMakerSrv {
 	 * @returns {Object} Object containing month info and array of days
 	 * @returns {string} returns.monthName - Full month name
 	 * @returns {string} returns.monthYear - Year as string
-	 * @returns {Array} returns.days - Array of day objects with date, padding, and today flags
+	 * @returns {Object}
 	 */
 	parseCalendarTable(originDate) {
 		const { cellsCount, tableA, monthName, monthNumber, monthYear } = this.getInfoFromOriginDate(originDate)
@@ -51,7 +53,12 @@ class CalendarMakerSrv {
 			})
 		}
 		
-		return { monthName, monthYear, days }
+		return {
+			monthName,
+			monthYear,
+			days,
+			rowsCount: days.length / 7
+		}
 	}
 	
 	/**

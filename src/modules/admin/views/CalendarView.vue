@@ -5,7 +5,7 @@
   - Month navigation with arrow buttons
   - Current date highlighting
   - Responsive grid layout
-  - French day abbreviations (L, M, M, J, V, S, D)
+  - Days abbreviations
 -->
 
 <template>
@@ -18,7 +18,7 @@
 			<div class="grid grid-cols-3 place-items-center gap-8 p-4 w-1/2 mx-auto">
 				<!-- Previous month button -->
 				<BxIconButton
-					icon="caret_left"
+					icon="angle_left"
 					type="soft"
 					class="w-8"
 					@click="moveCursor(-1)"
@@ -27,7 +27,7 @@
 				<h2 class="text-xl text-center">{{ monthLabel }}</h2>
 				<!-- Next month button -->
 				<BxIconButton
-					icon="caret_right"
+					icon="angle_right"
 					type="soft"
 					class="w-8"
 					@click="moveCursor(1)"
@@ -40,9 +40,9 @@
 				<!-- Days of week header -->
 				<div class="calendar-row grid grid-cols-7 gap-2 p-1">
 					<article
-						v-for="d in ['L', 'M', 'M', 'J', 'V', 'S', 'D']"
+						v-for="d in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']"
 						:key="d[0]"
-						class="text-center text-xl rounded p-1"
+						class="text-center text-xl font-bold text-stone-500 rounded p-1"
 					>
 						<p>{{ d }}</p>
 					</article>
@@ -72,16 +72,17 @@
 
 
 <script setup>
-// Import required dependencies
+// Vue related
 import { ref, computed } from "vue";
+// libs
 import moment from "moment/moment";
 import { DateTime } from "luxon";
+// services
 import CalendarMakerSrv from "@/modules/admin/services/CalendarMakerSrv";
-
+// components
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 
 
-// State management
 // Tracks the current month being viewed, initialized to current month
 const cursorDate = ref(DateTime.now().startOf("month"));
 
@@ -114,15 +115,14 @@ const monthLabel = computed(() => {
  * @returns {Array} Array of weekly rows, each containing 7 days
  */
 const rows = computed(() => {
-	const { days } = calElements.value;
-	const r = [];
-	const rowsCount = days.length / 7;
+	const { days, rowsCount } = calElements.value;
 
-	for (let i = 0; i < rowsCount; i++) {
-		r[i] = days.slice(i*7, (i*7)+7)
-	}
-
-	return r;
+	// Array.from({ length: rowsCount }, callback)
+	// the callback is used to generate the item
+	return Array.from(
+		{ length: rowsCount },
+		() => days.splice(0,7)
+	);
 });
 
 
@@ -135,6 +135,8 @@ function buildMonth() {
 }
 
 
+
+// ------------------------------------------------------------------------------------------
 
 // Utility functions for date testing and comparison
 // These functions are currently not used in the component but kept for reference
