@@ -20,6 +20,7 @@ EMITS
 			icon="angle_left"
 			type="soft"
 			class="w-8"
+			@click="$emit('moveCursor', { back: 1 })"
 		/>
 
 		<BxButton
@@ -37,6 +38,7 @@ EMITS
 			icon="angle_right"
 			type="soft"
 			class="w-8"
+			@click="$emit('moveCursor', {})"
 		/>
 	</div>
 </template>
@@ -52,7 +54,7 @@ const $p = defineProps({
 	}
 })
 
-const $emit = defineEmits(["selectionChange"])
+const $emit = defineEmits(["selectionChange", "moveCursor"])
 
 const labels = computed(() => {
 	return {

@@ -11,65 +11,60 @@
 <template>
 	<DefaultLayout>
 		<template #default>
-			<!-- Debug display of current cursor date -->
-			<pre class="text-xl">cursorDate: {{ cursorDate }}</pre>
-
-			<!-- Month navigation header -->
-			<div class="grid grid-cols-3 place-items-center gap-8 p-4 w-1/2 mx-auto">
-				<!-- Previous month button -->
-				<BxIconButton
-					icon="angle_left"
-					type="soft"
-					class="w-8"
-					@click="moveCursor({ back: 1 })"
-				/>
-				<!-- Current month and year display -->
-				<h2 class="text-xl text-center">{{ monthLabel }}</h2>
-				<!-- Next month button -->
-				<BxIconButton
-					icon="angle_right"
-					type="soft"
-					class="w-8"
-					@click="moveCursor({})"
-				/>
-			</div>
-
-			<!-- Main calendar grid -->
-			<div class="calendar-grid border border-stone-500 rounded">
-
-				<!-- Days of week header -->
-				<div class="calendar-row grid grid-cols-7 gap-2 p-1">
-					<article
-						v-for="d in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']"
-						:key="d[0]"
-						class="text-center text-xl font-bold text-stone-500 rounded p-1"
-					>
-						<p>{{ d }}</p>
-					</article>
-				</div>
-
-				<!-- Calendar days grid -->
-				<div
-					v-for="r in rows"
-					:key="r[0]"
-					class="calendar-row grid grid-cols-7 gap-2 p-1"
-				>
-					<!-- Individual day cells -->
-					<article
-						v-for="d in r"
-						:key="d[0]"
-						class="text-center text-2xl rounded p-1 has-[.text-yellow-500]:border-2 has-[.text-yellow-500]:border-yellow-500 py-2"
-						:class="d.isPadding ? 'bg-stone-900' : 'bg-stone-600'"
-					>
-						<p :class="{'font-bold text-yellow-500' : d.isToday}">{{ d.date.split("-").at(2) }}</p>
-					</article>
-				</div>
-			</div>
-
-
-			<div class="h-24"></div>
 
 			<BxCalendar/>
+
+<!--			&lt;!&ndash; Month navigation header &ndash;&gt;-->
+<!--			<div class="grid grid-cols-3 place-items-center gap-8 p-4 w-1/2 mx-auto">-->
+<!--				&lt;!&ndash; Previous month button &ndash;&gt;-->
+<!--				<BxIconButton-->
+<!--					icon="angle_left"-->
+<!--					type="soft"-->
+<!--					class="w-8"-->
+<!--					@click="moveCursor({ back: 1 })"-->
+<!--				/>-->
+<!--				&lt;!&ndash; Current month and year display &ndash;&gt;-->
+<!--				<h2 class="text-xl text-center">{{ monthLabel }}</h2>-->
+<!--				&lt;!&ndash; Next month button &ndash;&gt;-->
+<!--				<BxIconButton-->
+<!--					icon="angle_right"-->
+<!--					type="soft"-->
+<!--					class="w-8"-->
+<!--					@click="moveCursor({})"-->
+<!--				/>-->
+<!--			</div>-->
+
+<!--			&lt;!&ndash; Main calendar grid &ndash;&gt;-->
+<!--			<div class="calendar-grid border border-stone-500 rounded">-->
+
+<!--				&lt;!&ndash; Days of week header &ndash;&gt;-->
+<!--				<div class="calendar-row grid grid-cols-7 gap-2 p-1">-->
+<!--					<article-->
+<!--						v-for="d in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']"-->
+<!--						:key="d[0]"-->
+<!--						class="text-center text-xl font-bold text-stone-500 rounded p-1"-->
+<!--					>-->
+<!--						<p>{{ d }}</p>-->
+<!--					</article>-->
+<!--				</div>-->
+
+<!--				&lt;!&ndash; Calendar days grid &ndash;&gt;-->
+<!--				<div-->
+<!--					v-for="r in rows"-->
+<!--					:key="r[0]"-->
+<!--					class="calendar-row grid grid-cols-7 gap-2 p-1"-->
+<!--				>-->
+<!--					&lt;!&ndash; Individual day cells &ndash;&gt;-->
+<!--					<article-->
+<!--						v-for="d in r"-->
+<!--						:key="d[0]"-->
+<!--						class="text-center text-2xl rounded p-1 has-[.text-yellow-500]:border-2 has-[.text-yellow-500]:border-yellow-500 py-2"-->
+<!--						:class="d.isPadding ? 'bg-stone-900' : 'bg-stone-600'"-->
+<!--					>-->
+<!--						<p :class="{'font-bold text-yellow-500' : d.isToday}">{{ d.date.split("-").at(2) }}</p>-->
+<!--					</article>-->
+<!--				</div>-->
+<!--			</div>-->
 
 		</template>
 	</DefaultLayout>
