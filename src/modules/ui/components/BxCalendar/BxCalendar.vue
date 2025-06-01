@@ -14,6 +14,7 @@
 
 		<BxCalendarInnerSelector
 			v-if="innerSelection"
+			:cursor-date="cursorDate"
 			:innerMode="innerMode"
 			@discard-inner-selection="restoreDefault"
 		/>

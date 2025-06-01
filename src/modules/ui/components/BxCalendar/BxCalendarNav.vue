@@ -1,15 +1,18 @@
 <!--
 
 DISPLAY:
-	navigation arrows and month / year labels
+	- navigation arrows
+	- month / year buttons
 
 INTERACTION
-	click on navigation arrows moves to prev / next month
-	click on month / year opens inner selection
+	- click on navigation arrows moves to prev / next month
+	- click on month / year opens inner selection
+	- if inner selection is opened, all the buttons will be disabled
+	until inner selection is closed
 
 EMITS
-	"selectionChange", mode
-	"moveCursor", { back: boolean }
+	- "selectionChange", mode
+	- "moveCursor", { back: boolean }
 
 -->
 

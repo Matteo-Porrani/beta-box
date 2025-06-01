@@ -1,5 +1,5 @@
 <template>
-	<div class="calendar-grid border border-stone-500 rounded">
+	<div class="calendar-grid">
 
 		<!-- Days of week header -->
 		<div class="calendar-row grid grid-cols-7 gap-2 p-1">

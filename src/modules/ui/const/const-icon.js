@@ -17,9 +17,13 @@ export const ICON_DICT = {
 	 */
 	caret_left: "IconCaretLeft",
 	caret_right: "IconCaretRight",
+	caret_up: "IconCaretUp",
+	caret_down: "IconCaretDown",
 
 	angle_left: "IconChevronLeft",
 	angle_right: "IconChevronRight",
+	angle_up: "IconChevronUp",
+	angle_down: "IconChevronDown",
 
 	arrow_left: "IconArrowLeft",
 	arrow_right: "IconArrowRight",

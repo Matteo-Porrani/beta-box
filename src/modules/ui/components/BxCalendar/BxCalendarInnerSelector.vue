@@ -9,12 +9,12 @@ DISPLAY
 
 <template>
 	<div
-		class="relative bg-violet-800 grid grid-rows-[auto_auto_1fr_auto] gap-2"
+		class="relative grid grid-rows-[auto_auto_1fr_auto] gap-2"
 	>
 
-		<div class="absolute end-24 top-2">
-			{{ innerMode }}
-		</div>
+<!--		<div class="absolute end-24 top-2">-->
+<!--			{{ yearsRange }}-->
+<!--		</div>-->
 
 		<BxIconButton
 			text
@@ -23,25 +23,36 @@ DISPLAY
 			@click="$emit('discardInnerSelection')"
 		/>
 
-		<BxIconButton
-			icon="arrow_up"
-			class="block mx-auto"
-		/>
+		<div>
+			<BxIconButton
+				v-if="innerMode === '$Y'"
+				text
+				icon="angle_up"
+				class="block mx-auto"
+				@click="changeStep({ back : 1 })"
+			/>
+		</div>
 
-		<div class="grid grid-cols-4 grid-rows-3 gap-1 bg-violet-600">
+		<div class="grid grid-cols-4 grid-rows-3 gap-1">
 			<button
-				v-for="item in items"
-				:key="item"
-				class="bg-violet-700 rounded"
+				v-for="itemNb in items"
+				:key="itemNb"
+				class="bg-stone-700 rounded border-2"
+				:class="isCurrent(itemNb) ? 'border-yellow-500 text-yellow-500' : 'border-transparent' "
 			>
-				{{ item }}
+				{{ labels[innerMode][itemNb] }}
 			</button>
 		</div>
 
-		<BxIconButton
-			icon="arrow_down"
-			class="block mx-auto"
-		/>
+		<div>
+			<BxIconButton
+				v-if="innerMode === '$Y'"
+				text
+				icon="angle_down"
+				class="block mx-auto"
+				@click="changeStep({})"
+			/>
+		</div>
 
 	</div>
 </template>
@@ -55,7 +66,11 @@ import { MONTH_NAMES } from "@/modules/ui/const/const-calendar";
 
 const $emit = defineEmits(["discardInnerSelection"])
 
-defineProps({
+const $p = defineProps({
+	cursorDate: {
+		type: Object,
+		required: true,
+	},
 	innerMode: {
 		type: [null, String],
 		required: true,
@@ -64,13 +79,34 @@ defineProps({
 
 const items = Array.from({ length: 12 }, (_, i) => i + 1); // [1, 2, 3 ... 12]
 
+const yearsRange = computed(() => {
+	const startYear = Number($p.cursorDate.toFormat("yyyy")) + (step.value * 12);
 
+	return items.reduce((acc, itemNb, idx) => {
+		acc[itemNb] = startYear + idx
+		return acc;
+	}, {})
+});
 
-// const labels = computed(() => {
-// 	return {
-// 		$M: MONTH_NAMES,
-// 	}
-// })
+const labels = computed(() => {
+	return {
+		$M: MONTH_NAMES,
+		$Y: yearsRange.value
+	}
+})
+
+function isCurrent(val) {
+	return $p.innerMode === "$M"
+		? Number($p.cursorDate.toFormat("M")) === Number(val)
+		: Number($p.cursorDate.toFormat("yyyy")) === Number(labels.value.$Y[val])
+}
+
+const step = ref(0);
+
+function changeStep({ back = 0 }) {
+	step.value = back ? step.value - 1 : step.value + 1;
+}
+
 
 </script>
 
