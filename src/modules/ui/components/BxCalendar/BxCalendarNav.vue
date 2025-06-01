@@ -1,5 +1,21 @@
+<!--
+
+DISPLAY:
+	navigation arrows and month / year labels
+
+INTERACTION
+	click on navigation arrows moves to prev / next month
+	click on month / year opens inner selection
+
+EMITS
+	"selectionChange", mode
+	"moveCursor", { back: boolean }
+
+-->
+
+
 <template>
-	<div class="bg-orange-800 flex gap-2 justify-between">
+	<div class="flex gap-2 justify-between">
 		<BxIconButton
 			icon="angle_left"
 			type="soft"
@@ -8,13 +24,13 @@
 
 		<BxButton
 			text
-			label="Month"
-			@click="emitSelectionChange('$M')"
+			:label="labels.month"
+			@click="$emit('selectionChange', '$M')"
 		/>
 		<BxButton
 			text
-			label="Year"
-			@click="emitSelectionChange('$Y')"
+			:label="labels.year"
+			@click="$emit('selectionChange', '$Y')"
 		/>
 
 		<BxIconButton
@@ -27,12 +43,22 @@
 
 
 <script setup>
-import { ref, computed, defineEmits } from 'vue';
+import { ref, computed, defineProps, defineEmits } from 'vue';
+
+const $p = defineProps({
+	cursorDate: {
+		type: Object,
+		required: true,
+	}
+})
 
 const $emit = defineEmits(["selectionChange"])
 
-function emitSelectionChange(mode) {
-	$emit("selectionChange", mode)
-}
+const labels = computed(() => {
+	return {
+		month: $p.cursorDate.toFormat("MMMM"),
+		year: $p.cursorDate.toFormat("yyyy"),
+	}
+})
 
 </script>
