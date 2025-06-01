@@ -21,7 +21,7 @@
 					icon="angle_left"
 					type="soft"
 					class="w-8"
-					@click="moveCursor(-1)"
+					@click="moveCursor({ back: 1 })"
 				/>
 				<!-- Current month and year display -->
 				<h2 class="text-xl text-center">{{ monthLabel }}</h2>
@@ -30,7 +30,7 @@
 					icon="angle_right"
 					type="soft"
 					class="w-8"
-					@click="moveCursor(1)"
+					@click="moveCursor({})"
 				/>
 			</div>
 
@@ -87,15 +87,12 @@ import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 const cursorDate = ref(DateTime.now().startOf("month"));
 
 /**
- * Navigates between months
- * @param {number} dir - Direction to move (-1 for previous, 1 for next)
+ * Navigates the calendar cursor to the previous or next month
+ * @param {Object} options - Navigation options
+ * @param {number} [options.back=0] - If truthy, moves to previous month; otherwise moves to next month
  */
-function moveCursor(dir) {
-	if (dir < 0) {
-		cursorDate.value = cursorDate.value.minus({ month: 1 })
-	} else {
-		cursorDate.value = cursorDate.value.plus({ month: 1 })
-	}
+function moveCursor({ back = 0 }) {
+	cursorDate.value = cursorDate.value[back ? "minus" : "plus"]({ month: 1 })
 }
 
 // Computed properties for calendar data
@@ -106,9 +103,6 @@ const monthLabel = computed(() => {
 	const { monthName, monthYear } = calElements.value;
 	return `${monthName} ${monthYear}`;
 });
-
-
-
 
 /**
  * Organizes calendar days into weekly rows for display
@@ -124,7 +118,6 @@ const rows = computed(() => {
 		() => days.splice(0,7)
 	);
 });
-
 
 /**
  * Builds the calendar data for the current month
