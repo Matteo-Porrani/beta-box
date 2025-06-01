@@ -39,6 +39,7 @@ DISPLAY
 				:key="itemNb"
 				class="bg-stone-700 rounded border-2"
 				:class="isCurrent(itemNb) ? 'border-yellow-500 text-yellow-500' : 'border-transparent' "
+				@click="selectInnerItem(itemNb)"
 			>
 				{{ labels[innerMode][itemNb] }}
 			</button>
@@ -77,7 +78,7 @@ const $p = defineProps({
 	}
 })
 
-const $emit = defineEmits(["discardInnerSelection"])
+const $emit = defineEmits(["discardInnerSelection", "innerItemSelected"])
 
 // creates an array of 12 integers starting from 1 [1, 2, 3 ... 12]
 const items = Array.from({ length: 12 }, (_, i) => i + 1);
@@ -129,6 +130,17 @@ const step = ref(0);
 function changeStep({ back = 0 }) {
 	step.value = back ? step.value - 1 : step.value + 1;
 }
+
+// =============================================
+
+function selectInnerItem(id) {
+	const parsedValue = $p.innerMode === "$Y"
+		? labels.value[$p.innerMode][id]
+		: id;
+
+	$emit("innerItemSelected", { mode: $p.innerMode, value: parsedValue })
+}
+
 
 </script>
 

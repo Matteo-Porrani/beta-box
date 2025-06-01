@@ -17,6 +17,7 @@
 			:cursor-date="cursorDate"
 			:innerMode="innerMode"
 			@discard-inner-selection="restoreDefault"
+			@inner-item-selected="onInnerItemSelected"
 		/>
 
 		<BxCalendarBody
@@ -90,6 +91,20 @@ const rows = computed(() => {
  */
 function onCursorMove({ back = 0 }) {
 	cursorDate.value = cursorDate.value[back ? "minus" : "plus"]({ month: 1 })
+}
+
+
+function onInnerItemSelected({ mode, value }) {
+	const parts = {
+		year: cursorDate.value.year,
+		month: cursorDate.value.month,
+	}
+
+	cursorDate.value = mode === '$M'
+		? DateTime.fromObject({ day: 1, month: value, year: parts.year })
+		: DateTime.fromObject({ day: 1, month: parts.month, year: value });
+
+	restoreDefault();
 }
 
 </script>
