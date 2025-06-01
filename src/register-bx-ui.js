@@ -16,6 +16,7 @@ import BxEntityPicker from "@/modules/ui/components/BxForm/fields/BxEntityPicker
 
 import BxTable from "@/modules/ui/components/BxTable/BxTable.vue";
 import BxTableRow from "@/modules/ui/components/BxTable/BxTableRow.vue";
+import BxCalendar from "@/modules/ui/components/BxCalendar/BxCalendar.vue";
 
 export function registerBxUi(app) {
 	app.component("BxIcon", BxIcon);
@@ -36,6 +37,8 @@ export function registerBxUi(app) {
 	
 	app.component("BxTable", BxTable);
 	app.component("BxTableRow", BxTableRow);
+	
+	app.component("BxCalendar", BxCalendar);
 }
 
 

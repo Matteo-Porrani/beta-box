@@ -66,6 +66,11 @@
 				</div>
 			</div>
 
+
+			<div class="h-24"></div>
+
+			<BxCalendar/>
+
 		</template>
 	</DefaultLayout>
 </template>
