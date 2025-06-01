@@ -59,12 +59,12 @@ DISPLAY
 
 
 <script setup>
+// Vue related
 import { ref, computed, defineProps, defineEmits } from 'vue';
-
 // const
 import { MONTH_NAMES } from "@/modules/ui/const/const-calendar";
 
-const $emit = defineEmits(["discardInnerSelection"])
+
 
 const $p = defineProps({
 	cursorDate: {
@@ -77,24 +77,42 @@ const $p = defineProps({
 	}
 })
 
-const items = Array.from({ length: 12 }, (_, i) => i + 1); // [1, 2, 3 ... 12]
+const $emit = defineEmits(["discardInnerSelection"])
 
+// creates an array of 12 integers starting from 1 [1, 2, 3 ... 12]
+const items = Array.from({ length: 12 }, (_, i) => i + 1);
+
+/**
+ * Computes a range of years based on the current cursor date and step value
+ * @returns {Object} An object mapping indices to years, where each year is offset from the cursor date's year
+ * @example
+ * // If cursorDate is 2024 and step is 0:
+ * // Returns { 1: 2024, 2: 2025, 3: 2026, ... }
+ */
 const yearsRange = computed(() => {
 	const startYear = Number($p.cursorDate.toFormat("yyyy")) + (step.value * 12);
-
 	return items.reduce((acc, itemNb, idx) => {
 		acc[itemNb] = startYear + idx
 		return acc;
 	}, {})
 });
 
-const labels = computed(() => {
-	return {
-		$M: MONTH_NAMES,
-		$Y: yearsRange.value
-	}
-})
+/**
+ * Computes labels for months or years based on the current inner mode
+ * @returns {Object} An object containing month names or year values based on innerMode
+ * @property {Object} $M - Month names mapping (1-12 to month names)
+ * @property {Object} $Y - Year values mapping (1-12 to years, based on step)
+ */
+const labels = computed(() => ({
+	$M: MONTH_NAMES,
+	$Y: yearsRange.value
+}))
 
+/**
+ * Checks if a given value matches the current date component based on inner mode
+ * @param {number} val - The value to check (1-12 for months, or year value for years)
+ * @returns {boolean} True if the value matches the current date component
+ */
 function isCurrent(val) {
 	return $p.innerMode === "$M"
 		? Number($p.cursorDate.toFormat("M")) === Number(val)
@@ -103,10 +121,14 @@ function isCurrent(val) {
 
 const step = ref(0);
 
+/**
+ * Changes the step value for year navigation
+ * @param {Object} options - Navigation options
+ * @param {number} [options.back=0] - If truthy, decreases step; otherwise increases step
+ */
 function changeStep({ back = 0 }) {
 	step.value = back ? step.value - 1 : step.value + 1;
 }
-
 
 </script>
 
