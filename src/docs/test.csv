@@ -1,0 +1,25 @@
+Element|Name|Type|Description
+|BxCalendar.vue||
+ref|innerMode|null|Controls the inner selection mode of the calendar
+ref|cursorDate|DateTime|Current selected date, initialized to start of current month
+computed|calElements|Object|Parsed calendar table data using CalendarMakerSrv
+computed|rows|Array|Array of weekly rows, each containing 7 days for calendar display
+computed|h|String|Dynamic height calculation for the calendar container
+method|restoreDefault|Function|Resets the innerMode to null
+method|openInnerSelection|Function|Sets the innerMode to the provided mode
+method|onCursorMove|Function|Handles month navigation (previous/next)
+method|onInnerItemSelected|Function|Handles selection of inner items (month/year) and updates cursorDate
+constant|FIXED|Number|Base height value (100px) for calendar container
+constant|STEP|Number|Height increment (35px) per row in the calendar
+|BxCalendarInnerSelector.vue||
+props|cursorDate|Object|Required DateTime object representing the current selected date
+props|innerMode|String/null|Required prop that determines the selection mode ($M for month, $Y for year)
+emit|discardInnerSelection|Event|Emitted when inner selection should be discarded
+emit|innerItemSelected|Event|Emitted when an inner item is selected, with mode and value
+constant|items|Array|Array of 12 integers [1-12] representing months or year positions
+ref|step|Number|Tracks the current step for year navigation, initialized to 0
+computed|yearsRange|Object|Maps indices to years based on cursor date and step value
+computed|labels|Object|Contains month names or year values based on innerMode
+method|isCurrent|Function|Checks if a value matches the current date component
+method|changeStep|Function|Updates the step value for year navigation
+method|selectInnerItem|Function|Handles selection of inner items and emits the selection event

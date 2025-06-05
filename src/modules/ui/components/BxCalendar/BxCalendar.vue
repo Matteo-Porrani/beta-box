@@ -1,19 +1,19 @@
 <template>
 	<div>
 		<pre>cursorDate: {{ cursorDate }}</pre>
-		<pre>innerSelection: {{ innerSelection }}</pre>
-		<pre>innerMode: {{ innerMode }}</pre>
 	</div>
 
-	<div class="grid gap-1 grid-rows-[auto_1fr] w-[512px] h-96 rounded border border-stone-500 p-1">
+	<div
+		class="grid gap-1 grid-rows-[auto_1fr] w-[450px] variable-height rounded border border-stone-500 p-1"
+	>
 		<BxCalendarNav
 			:cursorDate="cursorDate"
-			@selection-change="onSelectionChange"
+			@selection-change="openInnerSelection"
 			@move-cursor="onCursorMove"
 		/>
 
 		<BxCalendarInnerSelector
-			v-if="innerSelection"
+			v-if="innerMode"
 			:cursor-date="cursorDate"
 			:innerMode="innerMode"
 			@discard-inner-selection="restoreDefault"
@@ -30,36 +30,29 @@
 
 
 <script setup>
+// Vue related
 import { ref, computed } from 'vue';
-
 // libs
 import { DateTime } from "luxon";
 // services
 import CalendarMakerSrv from "@/modules/admin/services/CalendarMakerSrv";
-
 // components
 import BxCalendarNav from "@/modules/ui/components/BxCalendar/BxCalendarNav.vue";
 import BxCalendarBody from "@/modules/ui/components/BxCalendar/BxCalendarBody.vue";
 import BxCalendarInnerSelector from "@/modules/ui/components/BxCalendar/BxCalendarInnerSelector.vue";
 
 
-const innerSelection = ref(false);
+
 const innerMode = ref(null);
 const cursorDate = ref(DateTime.now().startOf("month"));
 
 
 function restoreDefault() {
-	innerSelection.value = false;
 	innerMode.value = null;
 }
 
-function openInnerSelection({ mode = "$M" }) {
-	innerSelection.value = true;
+function openInnerSelection(mode) {
 	innerMode.value = mode;
-}
-
-function onSelectionChange(mode) {
-	openInnerSelection({ mode })
 }
 
 // =============================================
@@ -93,18 +86,25 @@ function onCursorMove({ back = 0 }) {
 	cursorDate.value = cursorDate.value[back ? "minus" : "plus"]({ month: 1 })
 }
 
-
 function onInnerItemSelected({ mode, value }) {
-	const parts = {
-		year: cursorDate.value.year,
-		month: cursorDate.value.month,
-	}
-
-	cursorDate.value = mode === '$M'
-		? DateTime.fromObject({ day: 1, month: value, year: parts.year })
-		: DateTime.fromObject({ day: 1, month: parts.month, year: value });
+	// move cursor
+	cursorDate.value = DateTime.fromObject({
+		day: 1,
+		month: mode === "$M" ? value : cursorDate.value.month,
+		year: mode === "$Y" ? value : cursorDate.value.year,
+	});
 
 	restoreDefault();
 }
 
+const FIXED = 100;
+const STEP = 35;
+const h = computed(() => `${FIXED + (rows.value.length * STEP)}px`)
 </script>
+
+
+<style scoped>
+.variable-height {
+	height: v-bind(h);
+}
+</style>

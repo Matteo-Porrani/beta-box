@@ -1,5 +1,5 @@
 <template>
-	<div class="calendar-grid">
+	<div class="calendar-grid text-sm">
 
 		<!-- Days of week header -->
 		<div class="calendar-row grid grid-cols-7 gap-2 p-1">
@@ -22,7 +22,7 @@
 			<article
 				v-for="d in r"
 				:key="d[0]"
-				class="text-center rounded p-1 has-[.text-yellow-500]:border-2 has-[.text-yellow-500]:border-yellow-500 py-2"
+				class="text-center rounded has-[.text-yellow-500]:border-2 has-[.text-yellow-500]:border-yellow-500 py-1"
 				:class="d.isPadding ? 'bg-stone-900' : 'bg-stone-600'"
 			>
 				<p :class="{'font-bold text-yellow-500' : d.isToday}">{{ d.date.split("-").at(2) }}</p>

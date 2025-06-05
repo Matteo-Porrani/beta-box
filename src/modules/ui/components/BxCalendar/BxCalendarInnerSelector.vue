@@ -9,19 +9,15 @@ DISPLAY
 
 <template>
 	<div
-		class="relative grid grid-rows-[auto_auto_1fr_auto] gap-2"
+		class="relative grid grid-rows-[1fr_4fr_1fr] gap-2"
 	>
 
-<!--		<div class="absolute end-24 top-2">-->
-<!--			{{ yearsRange }}-->
-<!--		</div>-->
-
-		<BxIconButton
-			text
-			icon="xmark"
-			class="block ms-auto"
-			@click="$emit('discardInnerSelection')"
-		/>
+<!--		<BxIconButton-->
+<!--			text-->
+<!--			icon="xmark"-->
+<!--			class="block ms-auto"-->
+<!--			@click="$emit('discardInnerSelection')"-->
+<!--		/>-->
 
 		<div>
 			<BxIconButton
@@ -138,9 +134,14 @@ function selectInnerItem(id) {
 		? labels.value[$p.innerMode][id]
 		: id;
 
-	$emit("innerItemSelected", { mode: $p.innerMode, value: parsedValue })
+	$emit(
+		"innerItemSelected",
+		{
+			mode: $p.innerMode,
+			value: parsedValue
+		}
+	)
 }
-
 
 </script>
 
