@@ -25,6 +25,18 @@
 				show-time
 			/>
 
+
+
+			<div class="h-12"></div>
+
+
+<!--			<p class="text-3xl">{{ timeValue }}</p>-->
+
+<!--			<BxTimePicker-->
+<!--				:range="18"-->
+<!--				v-model="timeValue"-->
+<!--			/>-->
+
 		</template>
 	</DefaultLayout>
 </template>
@@ -41,6 +53,7 @@ import CalendarMakerSrv from "@/modules/admin/services/CalendarMakerSrv";
 // components
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 
+const timeValue = ref("00:00")
 
 const dtValue = ref(null);
 const dtValue2 = ref(null);

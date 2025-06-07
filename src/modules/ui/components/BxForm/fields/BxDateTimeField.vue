@@ -1,6 +1,8 @@
 <template>
 	<div class="relative bx-date-time-field-root w-fit">
 
+		<pre>{{ computedDTValue }}</pre>
+
 		<div
 			id="dateTimeContainer"
 			ref="dateTimeContainer"
@@ -16,6 +18,7 @@
 			<button
 				v-if="showTime"
 				class="block w-24 text-stone-800 bg-stone-400 placeholder-stone-500 rounded p-1"
+				@click="toggleTimePickerVisible"
 			>
 				{{ dateTimeValue.time }}
 			</button>
@@ -38,6 +41,13 @@
 				:selected-date-time="computedDTValue"
 				@day-clicked="onDayClicked"
 			/>
+
+			<BxTimePicker
+				v-if="timePickerVisible"
+				v-model="dateTimeValue.time"
+				@close-time-picker="timePickerVisible = false"
+			/>
+
 		</div>
 
 	</div>
@@ -63,8 +73,16 @@ const $emit = defineEmits(["update:modelValue"]);
 
 
 const calVisible = ref(false);
+const timePickerVisible = ref(false);
+
 function toggleCalVisible() {
+	timePickerVisible.value = false;
 	calVisible.value = !calVisible.value;
+}
+
+function toggleTimePickerVisible() {
+	calVisible.value = false;
+	timePickerVisible.value = !timePickerVisible.value;
 }
 
 // used to set initial value
