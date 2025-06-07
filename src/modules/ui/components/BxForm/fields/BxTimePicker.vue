@@ -3,7 +3,7 @@
 		class="w-[450px] rounded border border-stone-500 bg-stone-800 p-1"
 	>
 
-		<pre>timeValue : {{ timeValue }}</pre>
+<!--		<pre>timeValue : {{ timeValue }}</pre>-->
 <!--		<pre>model : {{ model }}</pre>-->
 
 		<div class="flex items-center justify-between">
@@ -73,7 +73,7 @@ const $p = defineProps({
 	range: { type: Number, default: 24 },
 })
 
-const $emit = defineEmits(["closeTimePicker"])
+const $emit = defineEmits(["timePicked", "closeTimePicker"])
 
 const computedValue = computed(() => `${timeValue.$H}:${timeValue.$M}`)
 const timeValue = reactive({
@@ -103,6 +103,7 @@ function updateValue(key, v) {
 	v = adjustValue(v);
 	timeValue[key] = v;
 	model.value = computedValue.value;
+	$emit("timePicked")
 }
 
 

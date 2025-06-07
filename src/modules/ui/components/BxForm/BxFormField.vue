@@ -42,6 +42,13 @@
 			<BxDateTimeField v-model="value" />
 		</template>
 
+		<template v-if="fieldDesc.type === 'DT'">
+			<BxDateTimeField
+				v-model="value"
+				show-time
+			/>
+		</template>
+
 		<!--	--------------------------------------------------------	-->
 
 		<template v-if="fieldDesc.type === 'L'">

@@ -1,8 +1,6 @@
 <template>
 	<div class="relative bx-date-time-field-root w-fit">
 
-<!--		<pre>{{ computedDTValue }}</pre>-->
-
 		<div
 			id="dateTimeContainer"
 			ref="dateTimeContainer"
@@ -45,6 +43,7 @@
 			<BxTimePicker
 				v-if="timePickerVisible"
 				v-model="dateTimeValue.time"
+				@time-picked="onTimePicked"
 				@close-time-picker="timePickerVisible = false"
 			/>
 
@@ -105,14 +104,18 @@ const dateTimeValue = reactive({ date: null, time: "00:00"})
 // the displayed value
 const displayedDateValue = computed(() => dateTimeValue.date ? DateTime.fromISO(dateTimeValue.date).toLocaleString() : "-");
 
-/**
- * @param {String} date
- */
+// change in DATE
 function onDayClicked(date) {
 	dateTimeValue.date = date;
 	model.value = computedDTValue.value;
 	toggleCalVisible();
 }
+
+// change in TIME
+function onTimePicked() {
+	model.value = computedDTValue.value;
+}
+
 // =============================================
 
 function resetValue() {
