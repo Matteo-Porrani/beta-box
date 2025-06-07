@@ -3,8 +3,18 @@
 		v-if="images"
 		class="max-h-[80vh] bx-scrollbar"
 	>
+
+		<input
+			ref="filterInput_ref"
+			type="text"
+			v-model="needle"
+			class="bg-stone-700 rounded text-stone-200 p-2 w-96 text-lg"
+		>
+
+		<div class="h-4"/>
+
 		<article
-			v-for="i in images"
+			v-for="i in filteredList"
 			:key="i.id"
 			class="grid grid-cols-12 items-center border border-stone-500 rounded mb-1 p-1"
 		>
@@ -67,6 +77,8 @@
 
 
 <script>
+import { filterTableByNeedle } from "@/modules/core/utils/table-utils";
+
 export default {
 	name: "ContentImageTable",
 
@@ -88,6 +100,22 @@ export default {
 		"thumbnailClicked",
 		"checkboxChange"
 	],
+
+	data() {
+		return {
+			needle: "",
+		}
+	},
+
+	computed: {
+		filteredList() {
+			return filterTableByNeedle(this.images, this.needle, "name")
+		}
+	},
+
+	mounted() {
+		this.$refs.filterInput_ref.focus();
+	},
 
 	methods: {
 		openPreview(id) {
