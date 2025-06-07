@@ -2,37 +2,6 @@
 	<div
 		class="w-[450px] rounded border border-stone-500 bg-stone-800 p-1"
 	>
-
-<!--		<pre>timeValue : {{ timeValue }}</pre>-->
-<!--		<pre>model : {{ model }}</pre>-->
-
-		<div class="flex items-center justify-between">
-			<select
-				class="text-xs bg-stone-500 rounded w-12 p-1"
-				v-model="frequence"
-			>
-				<option
-					v-for="o in [5, 10, 15, 20]"
-					:key="o"
-					:value="o"
-				>
-					{{ o }}
-				</option>
-			</select>
-
-
-			<BxButton
-				label="OK"
-				size="small"
-				type="soft"
-				@click="$emit('closeTimePicker')"
-			/>
-		</div>
-
-
-
-		<div class="h-2"/>
-
 		<div class="hours-section grid grid-cols-6 gap-1 ">
 			<BxButton
 				v-for="opt in hourOpts"
@@ -60,6 +29,29 @@
 			/>
 		</div>
 
+		<div class="h-6"/>
+		<div class="flex items-center justify-between">
+			<select
+				class="w-16 text-xs bg-stone-500 rounded p-1"
+				v-model="frequence"
+			>
+				<option
+					v-for="o in [5, 10, 15, 20]"
+					:key="o"
+					:value="o"
+				>
+					{{ o }}
+				</option>
+			</select>
+
+			<BxButton
+				label="OK"
+				size="small"
+				type="soft"
+				class="w-24"
+				@click="$emit('closeTimePicker')"
+			/>
+		</div>
 	</div>
 </template>
 
