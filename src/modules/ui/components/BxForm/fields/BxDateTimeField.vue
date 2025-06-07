@@ -1,11 +1,15 @@
 <template>
-	<div class="bx-date-time-field-root w-fit">
+	<div class="relative bx-date-time-field-root w-fit">
 
 <!--		<div>-->
 <!--			<pre>computedDTValue: {{ computedDTValue }}</pre>-->
 <!--		</div>-->
 
-		<div class="flex gap-1">
+		<div
+			id="dateTimeContainer"
+			ref="dateTimeContainer"
+			class="flex gap-1"
+		>
 			<button
 				class="block w-48 text-xl text-stone-800 bg-stone-400 placeholder-stone-500 rounded p-1"
 				@click="toggleCalVisible"
@@ -20,13 +24,15 @@
 			</button>
 		</div>
 
-		<div class="h-2"/>
+		<div class="h-1"/>
 
-		<BxCalendar
-			v-if="calVisible"
-			:selected-date-time="computedDTValue"
-			@day-clicked="onDayClicked"
-		/>
+		<div class="cal-wrapper absolute">
+			<BxCalendar
+				v-if="calVisible"
+				:selected-date-time="computedDTValue"
+				@day-clicked="onDayClicked"
+			/>
+		</div>
 
 	</div>
 </template>
@@ -34,7 +40,7 @@
 
 <script setup>
 // Vue related
-import { ref, reactive, computed, defineProps, defineEmits, defineModel, watch } from 'vue';
+import { ref, reactive, computed, defineProps, defineEmits, defineModel, watch, onMounted } from 'vue';
 // libs
 import { DateTime } from "luxon";
 // services
@@ -81,4 +87,15 @@ function onDayClicked(date) {
 }
 // =============================================
 </script>
+
+
+
+<style scoped>
+#dateTimeContainer {
+	z-index: 1;
+}
+.cal-wrapper {
+	z-index: 9999;
+}
+</style>
 

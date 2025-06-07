@@ -4,7 +4,7 @@
 <!--	</div>-->
 
 	<div
-		class="grid gap-1 grid-rows-[auto_1fr] w-[450px] variable-height rounded border border-stone-500 p-1"
+		class="grid gap-1 grid-rows-[auto_1fr] w-[450px] variable-height rounded border border-stone-500 bg-stone-800 p-1"
 	>
 		<BxCalendarNav
 			:cursorDate="cursorDate"
