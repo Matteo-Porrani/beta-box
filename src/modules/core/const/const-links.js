@@ -10,7 +10,7 @@ export const ADMIN_LINKS = [
 	["Content", "/admin/content"],
 	["Data Manager", "/data-manager"],
 
-	["Calendar", "/admin/calendar"],
+	// ["Calendar", "/admin/calendar"],
 	// ["Dev", "/dev"],
 ]
 
