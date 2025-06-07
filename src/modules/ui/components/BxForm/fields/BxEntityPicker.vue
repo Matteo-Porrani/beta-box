@@ -1,16 +1,23 @@
 <template>
-	<div class="flex gap-2">
+	<div class="flex">
 		<input
 			type="text"
 			readonly
 			v-model="parsedValue"
 		>
-		<button @click="openModal">
-			<BxIcon icon="bars"/>
-		</button>
-		<button @click="reset" class="text-stone-500">
-			<BxIcon icon="xmark"/>
-		</button>
+		<BxIconButton
+			icon="bars"
+			text
+			no-min-width
+			@click="openModal"
+		/>
+		<BxIconButton
+			icon="xmark"
+			text
+			no-min-width
+			type="danger"
+			@click="reset"
+		/>
 	</div>
 
 	<!-- MODAL -->

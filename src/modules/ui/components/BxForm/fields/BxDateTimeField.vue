@@ -20,9 +20,14 @@
 				{{ dateTimeValue.time }}
 			</button>
 
-			<button @click="resetValue" class="text-stone-500 hover:text-pink-600">
-				<BxIcon icon="xmark"/>
-			</button>
+			<BxIconButton
+				icon="xmark"
+				text
+				no-min-width
+				type="danger"
+				@click="resetValue"
+			/>
+
 		</div>
 
 		<div class="h-1"/>
