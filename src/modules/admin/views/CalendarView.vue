@@ -14,68 +14,11 @@
 
 			<p class="text-2xl">Test field : {{ dtValue }}</p>
 
-
 			<div class="h-12"/>
 
-			<BxDateTimeValue
+			<BxDateTimeField
 				v-model="dtValue"
 			/>
-
-
-
-<!--			<BxCalendar/>-->
-
-<!--			&lt;!&ndash; Month navigation header &ndash;&gt;-->
-<!--			<div class="grid grid-cols-3 place-items-center gap-8 p-4 w-1/2 mx-auto">-->
-<!--				&lt;!&ndash; Previous month button &ndash;&gt;-->
-<!--				<BxIconButton-->
-<!--					icon="angle_left"-->
-<!--					type="soft"-->
-<!--					class="w-8"-->
-<!--					@click="moveCursor({ back: 1 })"-->
-<!--				/>-->
-<!--				&lt;!&ndash; Current month and year display &ndash;&gt;-->
-<!--				<h2 class="text-xl text-center">{{ monthLabel }}</h2>-->
-<!--				&lt;!&ndash; Next month button &ndash;&gt;-->
-<!--				<BxIconButton-->
-<!--					icon="angle_right"-->
-<!--					type="soft"-->
-<!--					class="w-8"-->
-<!--					@click="moveCursor({})"-->
-<!--				/>-->
-<!--			</div>-->
-
-<!--			&lt;!&ndash; Main calendar grid &ndash;&gt;-->
-<!--			<div class="calendar-grid border border-stone-500 rounded">-->
-
-<!--				&lt;!&ndash; Days of week header &ndash;&gt;-->
-<!--				<div class="calendar-row grid grid-cols-7 gap-2 p-1">-->
-<!--					<article-->
-<!--						v-for="d in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']"-->
-<!--						:key="d[0]"-->
-<!--						class="text-center text-xl font-bold text-stone-500 rounded p-1"-->
-<!--					>-->
-<!--						<p>{{ d }}</p>-->
-<!--					</article>-->
-<!--				</div>-->
-
-<!--				&lt;!&ndash; Calendar days grid &ndash;&gt;-->
-<!--				<div-->
-<!--					v-for="r in rows"-->
-<!--					:key="r[0]"-->
-<!--					class="calendar-row grid grid-cols-7 gap-2 p-1"-->
-<!--				>-->
-<!--					&lt;!&ndash; Individual day cells &ndash;&gt;-->
-<!--					<article-->
-<!--						v-for="d in r"-->
-<!--						:key="d[0]"-->
-<!--						class="text-center text-2xl rounded p-1 has-[.text-yellow-500]:border-2 has-[.text-yellow-500]:border-yellow-500 py-2"-->
-<!--						:class="d.isPadding ? 'bg-stone-900' : 'bg-stone-600'"-->
-<!--					>-->
-<!--						<p :class="{'font-bold text-yellow-500' : d.isToday}">{{ d.date.split("-").at(2) }}</p>-->
-<!--					</article>-->
-<!--				</div>-->
-<!--			</div>-->
 
 		</template>
 	</DefaultLayout>
@@ -92,7 +35,6 @@ import { DateTime } from "luxon";
 import CalendarMakerSrv from "@/modules/admin/services/CalendarMakerSrv";
 // components
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
-import BxDateTimeValue from "@/modules/ui/components/BxForm/fields/BxDateTimeField.vue";
 
 
 const dtValue = ref(null);
