@@ -39,21 +39,10 @@
 		</template>
 
 		<template v-if="fieldDesc.type === 'D'">
-			<div class="flex gap-1">
-				<input
-					v-model="dateTimeValue.date"
-					type="date"
-					class="block w-48 text-xl text-stone-800 bg-stone-400 rounded p-1"
-				>
-				<input
-					v-model="dateTimeValue.time"
-					type="time"
-					class="block w-48 text-xl text-stone-800 bg-stone-400 rounded p-1"
-				>
-			</div>
+			<BxDateTimeField v-model="value" />
 		</template>
 
-		<!--	##################################################################	-->
+		<!--	--------------------------------------------------------	-->
 
 		<template v-if="fieldDesc.type === 'L'">
 			<select v-model="value">
@@ -84,8 +73,6 @@
 <script>
 // Vue related
 import { defineComponent } from 'vue'
-// utils
-import { isFalsy, nrm } from "@/modules/core/utils/core-utils";
 
 export default defineComponent({
 	name: "BxFormField",
@@ -103,10 +90,6 @@ export default defineComponent({
 	data() {
 		return {
 			value: null,
-			dateTimeValue: {
-				date: null,
-				time: "00:00"
-			}
 		}
 	},
 
@@ -155,16 +138,9 @@ export default defineComponent({
 
 	methods: {
 		initField(initVal) {
-			let date, time;
 			switch (this.fieldDesc.type) {
 				case "B":
 					this.value = initVal ?? false;
-					break;
-				case "D":
-					[date, time] = !isFalsy(initVal)
-						? initVal.split("@")
-						: [null, "00:00"];
-					this.dateTimeValue = { date, time };
 					break;
 				case "E":
 					this.$refs.entity_picker_ref.setValue(initVal);

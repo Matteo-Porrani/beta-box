@@ -156,7 +156,8 @@ export default {
 			await this.loadTables(otherTables)
 
 			// this will display 'ticket' as default table in the grid
-			this.tableName = "ticket";
+			// this.tableName = "ticket";
+			this.tableName = "dummy";
 
 			this.contentLoaded = true;
 		},

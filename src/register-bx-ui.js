@@ -13,6 +13,7 @@ import BxForm from "@/modules/ui/components/BxForm/BxForm.vue";
 import BxFormField from "@/modules/ui/components/BxForm/BxFormField.vue";
 import BxSwitch from "@/modules/ui/components/BxForm/fields/BxSwitch.vue";
 import BxEntityPicker from "@/modules/ui/components/BxForm/fields/BxEntityPicker.vue";
+import BxDateTimeField from "@/modules/ui/components/BxForm/fields/BxDateTimeField.vue";
 
 import BxTable from "@/modules/ui/components/BxTable/BxTable.vue";
 import BxTableRow from "@/modules/ui/components/BxTable/BxTableRow.vue";
@@ -34,6 +35,7 @@ export function registerBxUi(app) {
 	app.component("BxFormField", BxFormField);
 	app.component("BxSwitch", BxSwitch);
 	app.component("BxEntityPicker", BxEntityPicker);
+	app.component("BxDateTimeField", BxDateTimeField);
 	
 	app.component("BxTable", BxTable);
 	app.component("BxTableRow", BxTableRow);
