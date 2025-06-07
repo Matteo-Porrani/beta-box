@@ -1,7 +1,7 @@
 <template>
-	<div>
-		<pre>cursorDate: {{ cursorDate }}</pre>
-	</div>
+<!--	<div>-->
+<!--		<pre>cursorDate: {{ cursorDate }}</pre>-->
+<!--	</div>-->
 
 	<div
 		class="grid gap-1 grid-rows-[auto_1fr] w-[450px] variable-height rounded border border-stone-500 p-1"
@@ -23,6 +23,8 @@
 		<BxCalendarBody
 			v-else
 			:rows="rows"
+			:selected-day="selectedDateTime.split('@')[0]"
+			@day-clicked="onDayClicked"
 		/>
 
 	</div>
@@ -31,7 +33,7 @@
 
 <script setup>
 // Vue related
-import { ref, computed } from 'vue';
+import { ref, reactive, computed, defineProps, defineEmits } from 'vue';
 // libs
 import { DateTime } from "luxon";
 // services
@@ -41,11 +43,21 @@ import BxCalendarNav from "@/modules/ui/components/BxCalendar/BxCalendarNav.vue"
 import BxCalendarBody from "@/modules/ui/components/BxCalendar/BxCalendarBody.vue";
 import BxCalendarInnerSelector from "@/modules/ui/components/BxCalendar/BxCalendarInnerSelector.vue";
 
+const $p = defineProps({
+	selectedDateTime: { type: [null, String], required: true } // '2025-06-18@00:00'
+})
+
+const $emit = defineEmits(["dayClicked"]);
 
 
 const innerMode = ref(null);
-const cursorDate = ref(DateTime.now().startOf("month"));
-
+const cursorDate = ref(null);
+initCursorDate();
+function initCursorDate() {
+	cursorDate.value = ($p.selectedDateTime !== '-@00:00')
+		? DateTime.fromISO($p.selectedDateTime.split("@")[0]).startOf("month")
+		: DateTime.now().startOf("month");
+}
 
 function restoreDefault() {
 	innerMode.value = null;
@@ -97,8 +109,16 @@ function onInnerItemSelected({ mode, value }) {
 	restoreDefault();
 }
 
+// =============================================
+
+function onDayClicked(date) {
+	$emit("dayClicked", date)
+}
+
+// =============================================
+
 const FIXED = 100;
-const STEP = 35;
+const STEP = 38;
 const h = computed(() => `${FIXED + (rows.value.length * STEP)}px`)
 </script>
 

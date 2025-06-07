@@ -12,7 +12,18 @@
 	<DefaultLayout>
 		<template #default>
 
-			<BxCalendar/>
+			<p class="text-2xl">Test field : {{ dtValue }}</p>
+
+
+			<div class="h-12"/>
+
+			<BxDateTimeValue
+				v-model="dtValue"
+			/>
+
+
+
+<!--			<BxCalendar/>-->
 
 <!--			&lt;!&ndash; Month navigation header &ndash;&gt;-->
 <!--			<div class="grid grid-cols-3 place-items-center gap-8 p-4 w-1/2 mx-auto">-->
@@ -81,6 +92,10 @@ import { DateTime } from "luxon";
 import CalendarMakerSrv from "@/modules/admin/services/CalendarMakerSrv";
 // components
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
+import BxDateTimeValue from "@/modules/ui/components/BxForm/fields/BxDateTimeField.vue";
+
+
+const dtValue = ref(null);
 
 
 // Tracks the current month being viewed, initialized to current month

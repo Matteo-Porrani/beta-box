@@ -19,25 +19,53 @@
 			class="calendar-row grid grid-cols-7 gap-2 p-1"
 		>
 			<!-- Individual day cells -->
-			<article
+			<button
 				v-for="d in r"
 				:key="d[0]"
-				class="text-center rounded has-[.text-yellow-500]:border-2 has-[.text-yellow-500]:border-yellow-500 py-1"
-				:class="d.isPadding ? 'bg-stone-900' : 'bg-stone-600'"
+				class="text-center rounded border-2 has-[.text-yellow-500]:border-yellow-500 py-1"
+				:class="dayDynamicClasses(d)"
+				@click="onDayClick(d.date)"
 			>
-				<p :class="{'font-bold text-yellow-500' : d.isToday}">{{ d.date.split("-").at(2) }}</p>
-			</article>
+				<span>{{ d.date.split("-").at(2) }}</span>
+			</button>
 		</div>
 	</div></template>
 
 
 <script setup>
-import { ref, computed, defineProps } from 'vue';
+import { ref, computed, defineProps, defineEmits } from 'vue';
 
-defineProps({
+const $p = defineProps({
 	rows: {
 		type: Array,
 		required: true,
+	},
+	selectedDay: { type: String, required: true }
+})
+
+const $emit = defineEmits(["dayClicked"]);
+
+function onDayClick(strDate) {
+	$emit("dayClicked", strDate)
+}
+
+
+const dayDynamicClasses = computed(() => {
+	return (day) => {
+		const c = ["border-transparent"];
+
+		if (day.isToday) c.splice(0, 1, "border-yellow-500")
+
+		if (day.date === $p.selectedDay) {
+			c.push("bg-sky-500")
+		} else {
+			if (day.isPadding) {
+				c.push("bg-stone-900")
+			} else {
+				c.push("bg-stone-600")
+			}
+		}
+		return c.join(" ");
 	}
 })
 
