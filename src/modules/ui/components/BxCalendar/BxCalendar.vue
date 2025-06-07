@@ -51,8 +51,9 @@ const innerMode = ref(null);
 const cursorDate = ref(null);
 initCursorDate();
 function initCursorDate() {
-	cursorDate.value = ($p.selectedDateTime !== '-@00:00')
-		? DateTime.fromISO($p.selectedDateTime.split("@")[0]).startOf("month")
+	const selectedDate = $p.selectedDateTime.split("@")[0];
+	cursorDate.value = selectedDate !== '-'
+		? DateTime.fromISO(selectedDate).startOf("month")
 		: DateTime.now().startOf("month");
 }
 

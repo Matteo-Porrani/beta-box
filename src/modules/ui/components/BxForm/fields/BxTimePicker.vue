@@ -3,7 +3,7 @@
 		class="w-[450px] rounded border border-stone-500 bg-stone-800 p-1"
 	>
 
-<!--		<pre>timeValue : {{ timeValue }}</pre>-->
+		<pre>timeValue : {{ timeValue }}</pre>
 <!--		<pre>model : {{ model }}</pre>-->
 
 		<div class="flex items-center justify-between">
@@ -38,7 +38,7 @@
 				v-for="opt in hourOpts"
 				:key="opt.value"
 				:label="opt.label"
-				type="soft"
+				:type="itemButtonType('$H', opt.value)"
 				size="small"
 				no-min-width
 				@click="updateValue('$H', opt.value)"
@@ -53,7 +53,7 @@
 				v-for="opt in minOpts"
 				:key="opt"
 				:label="opt.label"
-				type="soft"
+				:type="itemButtonType('$M', opt.value)"
 				size="small"
 				no-min-width
 				@click="updateValue('$M', opt.value)"
@@ -77,8 +77,8 @@ const $emit = defineEmits(["closeTimePicker"])
 
 const computedValue = computed(() => `${timeValue.$H}:${timeValue.$M}`)
 const timeValue = reactive({
-  hour: null,
-  min: null,
+  $H: null,
+  $M: null,
 })
 
 
@@ -123,6 +123,14 @@ function _buildOpts(optsCount, valueCb) {
 		acc.push(opt);
 		return acc;
 	}, [])
+}
+
+function itemIsCurrent(key, item) {
+	return parseInt(timeValue[key]) === parseInt(item);
+}
+
+function itemButtonType(key, item) {
+	return itemIsCurrent(key, item) ? "primary" : "soft";
 }
 
 </script>
