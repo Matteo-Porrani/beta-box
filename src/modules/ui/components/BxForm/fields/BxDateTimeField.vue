@@ -1,26 +1,27 @@
 <template>
 	<div class="relative bx-date-time-field-root w-fit">
 
-<!--		<div>-->
-<!--			<pre>computedDTValue: {{ computedDTValue }}</pre>-->
-<!--		</div>-->
-
 		<div
 			id="dateTimeContainer"
 			ref="dateTimeContainer"
-			class="flex gap-1"
+			class="flex items-center gap-1"
 		>
 			<button
-				class="block w-48 text-xl text-stone-800 bg-stone-400 placeholder-stone-500 rounded p-1"
+				class="block w-32 text-stone-800 bg-stone-400 placeholder-stone-500 rounded p-1"
 				@click="toggleCalVisible"
 			>
 				{{ displayedDateValue }}
 			</button>
 
 			<button
+				v-if="showTime"
 				class="block w-24 text-xl text-stone-800 bg-stone-400 placeholder-stone-500 rounded p-1"
 			>
 				{{ dateTimeValue.time }}
+			</button>
+
+			<button @click="resetValue" class="text-stone-500 hover:text-pink-600">
+				<BxIcon icon="xmark"/>
 			</button>
 		</div>
 
@@ -43,11 +44,15 @@
 import { ref, reactive, computed, defineProps, defineEmits, defineModel, watch, onMounted } from 'vue';
 // libs
 import { DateTime } from "luxon";
-// services
-import BxCalendar from "@/modules/ui/components/BxCalendar/BxCalendar.vue";
+
+
+
 
 // special prop
 const model = defineModel();
+defineProps({
+	showTime: { type: Boolean, default: false }
+})
 
 const $emit = defineEmits(["update:modelValue"]);
 
@@ -86,6 +91,13 @@ function onDayClicked(date) {
 	toggleCalVisible();
 }
 // =============================================
+
+function resetValue() {
+	dateTimeValue.date = null;
+	dateTimeValue.time = "00:00";
+	model.value = null;
+}
+
 </script>
 
 
