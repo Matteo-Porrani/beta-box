@@ -16,7 +16,7 @@
 		<article
 			v-for="i in filteredList"
 			:key="i.id"
-			class="grid grid-cols-12 items-center border border-stone-500 rounded mb-1 p-1"
+			class="grid grid-cols-12 items-center border border-stone-500 rounded mb-1 py-0.5"
 		>
 
 			<!-- (1) -->
@@ -31,7 +31,7 @@
 
 			<!-- (2) -->
 			<button
-				class="block w-20 h-10 rounded overflow-hidden"
+				class="block w-20 h-8 rounded overflow-hidden"
 				@click="openPreview(i.id)"
 			>
 				<img :src="i.dataUrl" alt="thumbnail" class="object-cover" />
