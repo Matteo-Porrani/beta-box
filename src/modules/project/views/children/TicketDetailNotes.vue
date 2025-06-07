@@ -10,7 +10,7 @@
 				:key="b[0]"
 				text
 				:icon="b[0]"
-				class="min-w-0"
+				no-min-width
 				@click="_setValueOnAll({ key: 'open', value: b[1] })"
 			/>
 

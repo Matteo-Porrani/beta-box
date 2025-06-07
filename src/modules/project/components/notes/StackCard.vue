@@ -6,10 +6,9 @@
 
 			<div class="flex">
 				<BxIconButton
-					class="w-10"
-					size="small"
 					text
 					icon="card_id"
+					no-min-width
 					@click="$emit('openDetail', ticket.id)"
 				/>
 				<button

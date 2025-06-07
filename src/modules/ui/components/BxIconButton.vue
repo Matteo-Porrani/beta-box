@@ -4,6 +4,7 @@
 		:label="label"
 		:type="type"
 		:size="size"
+		:no-min-width="noMinWidth"
 	>
 		<template #default v-if="!right">
 			<BxIcon :icon="icon" :size="size" class="-ms-0.5"/>
@@ -25,10 +26,9 @@ export default {
 		text: Boolean,
 		label: String,
 		type: String,
-		size: String
+		size: String,
+		noMinWidth: Boolean,
 	},
-
-	computed: {},
 
 }
 </script>

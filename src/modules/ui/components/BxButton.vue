@@ -20,7 +20,8 @@ export default {
 			type: String,
 			default: "primary"
 		},
-		size: String
+		size: String,
+		noMinWidth: Boolean
 	},
 
 	computed: {
@@ -34,7 +35,9 @@ export default {
 		},
 
 		dimClass() {
-			return this.size === "small" ? "h-6 px-1 min-w-10" : "py-1 px-2 min-w-24"
+			const minWidthClass = this.noMinWidth ? "" : (this.size === "small" ? "min-w-10" : "min-w-24");
+			const heightClass = this.size === "small" ? "h-6 px-1" : "py-1 px-2";
+			return `${heightClass} ${minWidthClass}`;
 		},
 
 		bgClass() {
