@@ -1,10 +1,7 @@
 <template>
-<!--	<div>-->
-<!--		<pre>cursorDate: {{ cursorDate }}</pre>-->
-<!--	</div>-->
-
 	<div
-		class="grid gap-1 grid-rows-[auto_1fr] w-[450px] variable-height rounded border border-stone-500 bg-stone-800 p-1"
+		data-test="bx-calendar-root"
+		class="w-[450px] variable-height grid grid-rows-[auto_1fr] gap-1 rounded border border-stone-500 bg-stone-800 p-1"
 	>
 		<BxCalendarNav
 			:cursorDate="cursorDate"

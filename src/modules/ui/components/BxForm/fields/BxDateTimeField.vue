@@ -15,7 +15,7 @@
 
 			<button
 				v-if="showTime"
-				class="block w-24 text-xl text-stone-800 bg-stone-400 placeholder-stone-500 rounded p-1"
+				class="block w-24 text-stone-800 bg-stone-400 placeholder-stone-500 rounded p-1"
 			>
 				{{ dateTimeValue.time }}
 			</button>

@@ -20,6 +20,11 @@
 				v-model="dtValue"
 			/>
 
+			<BxDateTimeField
+				v-model="dtValue2"
+				show-time
+			/>
+
 		</template>
 	</DefaultLayout>
 </template>
@@ -38,6 +43,7 @@ import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 
 
 const dtValue = ref(null);
+const dtValue2 = ref(null);
 
 
 // Tracks the current month being viewed, initialized to current month
