@@ -77,3 +77,49 @@ function _getPrimitiveSortValue(objValue) {
 	if (Object.hasOwn(objValue, "title")) return objValue.title;
 	return objValue.id;
 }
+
+
+
+
+/**
+ * Mutates (updates) objects in an array by applying a set of properties (patch),
+ * optionally filtering which items to update and restricting which properties are allowed.
+ *
+ * This function is useful for bulk-editing items in-place, such as marking form steps
+ * as "visited", "current", or "errored", without replacing the objects.
+ *
+ * @template T
+ * @param {T[]} array - The array of objects to be mutated.
+ * @param {Partial<T>} patch - An object containing the properties and values to assign to each selected item.
+ * @param {(item: T) => boolean} [filterFn] - Optional. A predicate function to select which items to update. Defaults to all items.
+ * @param {Array<keyof T>} [whitelist] - Optional. A list of property names that are allowed to be updated. If omitted, all keys in `patch` are applied.
+ *
+ * @example
+ * mutateItems(steps, { visited: true, error: false })
+ * // Marks all steps as visited, removes error state
+ *
+ * @example
+ * mutateItems(steps, { current: true }, step => step.label === 'Blue')
+ * // Sets only the "Blue" step to current
+ *
+ * @example - the 'whitelist' argument is provided, only 'visited' will be updated
+ * mutateItems(steps, { foo: 'bar', visited: true }, undefined, ['visited'])
+ * // Only applies `visited`, silently ignores `foo`
+ */
+export function mutateItems(array, patch, filterFn = () => true, whitelist = null) {
+	for (const item of array) {
+		// Check if this item matches the filter criteria
+		if (filterFn(item)) {
+			// If a whitelist is provided, strip out any patch keys not listed
+			const safePatch = whitelist
+				? Object.fromEntries(
+					Object.entries(patch).filter(([key]) => whitelist.includes(key))
+				)
+				: patch
+			
+			// Apply the patch to the item (mutating it directly)
+			Object.assign(item, safePatch)
+		}
+	}
+}
+

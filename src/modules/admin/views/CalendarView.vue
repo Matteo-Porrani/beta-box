@@ -12,33 +12,47 @@
 	<DefaultLayout>
 		<template #default>
 
-			<p class="text-2xl">Test field : {{ dtValue }}</p>
+			<div class="h-36 border">
+				<pre>currentStep: {{ currentStep }}</pre>
+			</div>
 
-			<div class="h-12"/>
+			<div class="border border-red-500 h-[70vh] grid grid-cols-2 gap-1 p-1">
 
-			<BxDateTimeField
-				v-model="dtValue"
-			/>
+				<BxStepTracker
+					:steps="steps"
+					@step-clicked="onStepClicked"
+				/>
 
+				<div class="border rounded p-1">
+
+					<div class="h-[50vh]">
+						<div class="text-4xl">{{ currentStep }}</div>
+
+					</div>
+
+					<div class="flex justify-between">
+						<BxButton
+							label="Prev"
+							@click="moveByOne({ back: 1 })"
+						/>
+						<BxButton
+							label="Next"
+							@click="moveByOne({})"
+						/>
+					</div>
+
+				</div>
+
+			</div>
+
+
+
+<!--
+			<BxDateTimeField v-model="dtValue"/>
 			<div class="h-20"></div>
 
-			<BxDateTimeField
-				v-model="dtValue2"
-				show-time
-			/>
-
-
-
-			<div class="h-12"></div>
-
-
-<!--			<p class="text-3xl">{{ timeValue }}</p>-->
-
-<!--			<BxTimePicker-->
-<!--				:range="18"-->
-<!--				v-model="timeValue"-->
-<!--			/>-->
-
+			<BxDateTimeField v-model="dtValue2" show-time/>
+-->
 		</template>
 	</DefaultLayout>
 </template>
@@ -54,6 +68,100 @@ import { DateTime } from "luxon";
 import CalendarMakerSrv from "@/modules/admin/services/CalendarMakerSrv";
 // components
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
+import BxStepTracker from "@/modules/ui/components/BxStepTracker/BxStepTracker.vue";
+import BxButton from "@/modules/ui/components/BxButton.vue";
+
+
+const steps = ref([
+	{
+		index: 0,
+		sectionCode: "$A",
+		code: "step_0",
+		label: "Blue",
+		visited: true,
+		error: true,
+		current: false,
+	},
+	{
+		index: 1,
+		sectionCode: "$A",
+		code: "step_1",
+		label: "Green",
+		visited: true,
+		error: false,
+		current: false,
+	},
+	{
+		index: 2,
+		sectionCode: "$A",
+		code: "step_2",
+		label: "Yellow",
+		visited: true,
+		error: false,
+		current: true,
+	},
+	{
+		index: 3,
+		sectionCode: "$B",
+		code: "step_3",
+		label: "Purple",
+		visited: false,
+		error: false,
+		current: false,
+	},
+	{
+		index: 4,
+		sectionCode: "$B",
+		code: "step_4",
+		label: "Violet",
+		visited: false,
+		error: false,
+		current: false,
+	},
+])
+
+const currentStep = computed(() => steps.value.find(s => s.current).code);
+
+
+// =============================================
+
+function onStepClicked(step) {
+	// set step as current
+	setStepAsCurrent(step)
+}
+
+
+/**
+ * @param {Object} step
+ */
+function setStepAsCurrent(step) {
+	// set all as not current
+	for (const step of steps.value) {
+		updateStepData(step.code, "current", false);
+	}
+
+	updateStepData(step.code, "current", true)
+}
+
+
+function updateStepData(code, property, value) {
+	const target = steps.value.find(s => s.code === code);
+	if (target) {
+		target[property] = value;
+	}
+}
+
+// =============================================
+
+function moveByOne({ back = 0 }) {
+	const currIndex = steps.value.findIndex(s => s.code === currentStep.value);
+	const nextIndex = back ? currIndex - 1 : currIndex + 1;
+	const nextStep = steps.value[nextIndex];
+	setStepAsCurrent(nextStep);
+}
+
+
+// =============================================
 
 const timeValue = ref("00:00")
 
