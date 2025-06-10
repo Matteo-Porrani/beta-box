@@ -1,4 +1,4 @@
-export const DEFAULT_DISPLAYED_ENTITY = "ticket";
+export const DEFAULT_DISPLAYED_ENTITY = "dummy";
 
 
 export const ENTITY_TEMP_DESC = {

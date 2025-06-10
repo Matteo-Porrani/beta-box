@@ -49,6 +49,12 @@
 			/>
 		</template>
 
+		<template v-if="fieldDesc.type === 'TM'">
+			<BxTimeInput
+				v-model="value"
+			/>
+		</template>
+
 		<!--	--------------------------------------------------------	-->
 
 		<template v-if="fieldDesc.type === 'L'">

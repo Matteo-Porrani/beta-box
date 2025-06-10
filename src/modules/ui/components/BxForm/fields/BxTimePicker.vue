@@ -95,7 +95,7 @@ function updateValue(key, v) {
 	v = adjustValue(v);
 	timeValue[key] = v;
 	model.value = computedValue.value;
-	$emit("timePicked")
+	$emit("timePicked", computedValue.value)
 }
 
 
