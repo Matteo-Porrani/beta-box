@@ -23,6 +23,7 @@
 			class="absolute"
 			v-if="timePickerVisible"
 			v-model="internalValue"
+			:range="range"
 			@time-picked="onTimePicked"
 			@close-time-picker="timePickerVisible = false"
 		/>
@@ -36,6 +37,9 @@ import { formatDurationFromMin, parseDurationInMin } from "@/modules/core/utils/
 
 
 const model = defineModel();
+defineProps({
+	range: { type: Number, default: 9 }
+})
 
 const timePickerVisible = ref(false);
 const internalValue = ref(null)

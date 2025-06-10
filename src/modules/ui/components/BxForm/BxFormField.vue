@@ -52,6 +52,7 @@
 		<template v-if="fieldDesc.type === 'TM'">
 			<BxTimeInput
 				v-model="value"
+				:range="fieldDesc.max"
 			/>
 		</template>
 
