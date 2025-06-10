@@ -65,7 +65,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 // utils
 import { nrm } from "@/modules/core/utils/core-utils";
 // const
-import { ENTITY_TEMP_DESC } from "@/modules/admin/const/const-admin";
+import { DEFAULT_DISPLAYED_ENTITY, ENTITY_TEMP_DESC } from "@/modules/admin/const/const-admin";
 // components
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import EntityTable from "@/modules/admin/components/EntityTable.vue";
@@ -156,7 +156,7 @@ export default {
 			await this.loadTables(otherTables)
 
 			// this will display 'ticket' as default table in the grid
-			this.tableName = "ticket";
+			this.tableName = DEFAULT_DISPLAYED_ENTITY;
 
 			this.contentLoaded = true;
 		},
