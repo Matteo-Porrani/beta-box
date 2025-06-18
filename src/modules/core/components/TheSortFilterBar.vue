@@ -61,7 +61,6 @@ import { nextTick } from "vue";
 
 export default {
 	name: "TheSortFilterBar",
-	components: { },
 
 	props: {
 
@@ -79,7 +78,8 @@ export default {
 
 	},
 
-	emits: ["sortFilterChange"],
+	emits: ["sortFilterChange", "filterReset"],
+	expose: ["setKeyToValue"],
 
 	data() {
 		return {
@@ -120,11 +120,18 @@ export default {
 			}
 		},
 
+		// ============================================= MUTATION FROM PARENT
+
+		setKeyToValue(key, value) {
+			this[key] = value;
+		},
+
 		// ============================================= UTILITY
 
 		resetFilter() {
 			this.filterNeedle = "";
 			this.showFilterByCol = false;
+			this.$emit("filterReset");
 		},
 
 		toggleOrder() {

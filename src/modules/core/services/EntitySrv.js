@@ -54,6 +54,10 @@ class EntitySrv {
 	
 	// ============================================= READ DATA
 	
+	/**
+	 * @param {string} tableName
+	 * @returns {Array<object>}
+	 */
 	getItems(tableName) {
 		return store.getters["entity/getItemsFromTable"](tableName);
 	}

@@ -1,18 +1,30 @@
 <template>
 	<TheSortFilterBar
+		ref="sortFilterBar_ref"
 		:column-options="sortKeys"
 		@sort-filter-change="onSortFilterChange"
+		@filter-reset="onPredefinedFilterChange({ value: 0 })"
 	/>
 
 	<div class="h-1"/>
 
-	<div class="border border-stone-500 rounded p-1 flex justify-between items-center gap-2 h-10">
-		<div class="flex gap-2 items-center">
-			<BxSwitch v-model="compactTable"/>
-			<span>Compact view</span>
+	<div class="border border-stone-500 rounded p-1 flex justify-between items-center gap-2 h-12">
+
+		<div class="">
+			<BxFormField
+				ref="filterSelect_ref"
+				:fieldDesc="filterSelectDesc"
+				class="border-0"
+				@valueChanged="onPredefinedFilterChange"
+			/>
 		</div>
 
-		<div class="flex gap-2">
+		<div class="flex gap-4">
+			<div class="flex gap-2 items-center w-48">
+				<BxSwitch v-model="compactTable"/>
+				<span>Compact view</span>
+			</div>
+
 			<p class="flex items-center gap-2 w-32 text-center">
 				<input type="checkbox" v-model="activeFilter.showActive">
 				Active
@@ -47,9 +59,12 @@
 <script>
 // services
 import ProjectSrv from "@/modules/project/services/ProjectSrv";
+import FilterSrv from "@/modules/project/services/FilterSrv";
 // components
 import TheSortFilterBar from "@/modules/core/components/TheSortFilterBar.vue";
 import TicketRow from "@/modules/project/components/TicketRow.vue";
+import { isFalsy, nrm } from "@/modules/core/utils/core-utils";
+import { nextTick } from "vue";
 
 
 export default {
@@ -103,6 +118,23 @@ export default {
 				this.filterByCol,
 				this.activeFilter
 			) ?? []
+		},
+
+		filterSelectDesc() {
+			return {
+				"type": "L",
+				"field": "Filter",
+				// "entity": "Dummy",
+				// "order": 3,
+				// "pk": true,
+				// "list": "$feelings",
+				// "multiple": false,
+				// "readonly": false,
+				// "picker_col": false,
+				// "required": false,
+				// "id": 24,
+				"options": FilterSrv.getFilterOpts()
+			}
 		}
 	},
 
@@ -132,6 +164,40 @@ export default {
 				query: { from: "project_board" }
 			})
 		},
+
+		/**
+		 * Reacts to selection of a predefined filter
+		 * @param { { key: string, value: string } } payload
+		 */
+		onPredefinedFilterChange(payload) {
+			if (!this.$refs.sortFilterBar_ref) return;
+			const { value } = payload;
+
+			// this is reset
+			if (Number(value) < 1) {
+				this.$refs.filterSelect_ref.initField(0);
+				return;
+			}
+
+			const filter = FilterSrv.getFilterById(value)
+			if (filter) this.applyFilter(filter);
+		},
+
+		applyFilter(f) {
+			if (!isFalsy(f.filterNeedle)) {
+				// this will activate switch, then we need to wait for next tick
+				this.$refs.sortFilterBar_ref.setKeyToValue("showFilterByCol", true);
+
+				nextTick(() => {
+					[
+						"filterNeedle",
+						"filterByCol",
+						"sortByCol",
+						"sortAsc",
+					].forEach(key => this.$refs.sortFilterBar_ref.setKeyToValue(key, f[key]))
+				})
+			}
+		}
 
 	}
 
