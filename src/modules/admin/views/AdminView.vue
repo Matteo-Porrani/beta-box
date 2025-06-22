@@ -70,6 +70,7 @@ import { DEFAULT_DISPLAYED_ENTITY, ENTITY_TEMP_DESC } from "@/modules/admin/cons
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import EntityTable from "@/modules/admin/components/EntityTable.vue";
 import EntityForm from "@/modules/admin/components/EntityForm.vue";
+import EntitySrv from "@/modules/core/services/EntitySrv";
 
 
 export default {
@@ -96,10 +97,6 @@ export default {
 	},
 
 	computed: {
-		...mapState({
-			entities: $s => $s.entity.entities,
-		}),
-
 		...mapGetters("entity", [
 			"getListOptions",
 			"getEntityDescription"
@@ -108,7 +105,6 @@ export default {
 		entitiesList() {
 			return this.getListOptions('$entities') ?? [];
 		},
-
 	},
 
 	watch: {
@@ -185,7 +181,10 @@ export default {
 		 * @private
 		 */
 		_cloneItemAndEmitEdit(itemId, isDuplication = false) {
-			const srcObject = this.entities[this.tableName].find(r => r.id === itemId);
+			// retrieve the source item
+			const srcObject = EntitySrv.getItemById(this.tableName, itemId);
+
+			// make defensive copy
 			const clone = nrm(srcObject);
 			if (isDuplication) delete clone.id;
 

@@ -1,37 +1,9 @@
 /*
 
-The `EntitySrv` is a core service that acts as a central access point
-for entity-related data and metadata in the application.
-Its main responsibilities are:
-
-1. **Entity Data Access**
-   - Provides methods to retrieve items from different entity tables through `getItems(tableName)`
-   - Acts as a facade to the Vuex store's entity module, abstracting away the direct store access
-
-2. **Entity Metadata Management**
-   - Retrieves entity descriptions and field definitions through `getEntityDescription(snakeCaseEntityName)`
-   - Provides access to entity types through `getEntityTypes()`
-   - Offers specialized methods for handling list fields through `getListFieldsDictionary(pascalCaseEntityName)`
-
-3. **Debugging Support**
-   - Includes a `logEntityFieldDefs()` method for logging field definitions, which appears to be used for debugging purposes
-
-4. **Integration Point**
-   - Serves as a central integration point for other services like:
-     - `HydrationSrv` - for transforming flat objects into nested entities
-     - `TableSrv` - for handling table-related operations
-     - `ProjectSrv` - for project-specific entity operations
-     - `ContentSrv` - for content-related entity operations
-
-5. **Data Normalization**
-   - Works in conjunction with the Vuex store's entity module to provide normalized data access
-   - Handles the conversion between different naming conventions (pascal case to snake case)
-
-The service is designed to be a single source of truth for entity-related operations,
-providing a clean interface for other parts of the application
-to interact with entity data and metadata.
-It's particularly focused on abstracting away the complexity of entity data access
-and providing consistent methods for working with different types of entities in the system.
+The `EntitySrv` is meant to simplify reading operations from store-entity.
+	- most of the exposed methods are direct façade for store-entity getters (is this a good idea ?)
+	- getListFieldsDictionary() is a helper that offers additional functionality built on getters
+	- logEntityFieldDefs() is a debug helper
 
  */
 
