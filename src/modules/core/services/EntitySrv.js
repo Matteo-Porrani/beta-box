@@ -45,7 +45,7 @@ class EntitySrv {
 	
 	// ============================================= SECTION
 	
-	getEntityTypes() {
+	getListOfEntities() {
 		return store.getters["entity/getListOptions"]("$entities").map(o => o.value);
 	}
 	

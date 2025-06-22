@@ -60,7 +60,7 @@ class HydrationSrv {
 		
 		// Handle relations owned by the object (direct foreign keys)
 		for (const [key, value] of Object.entries(obj)) {
-			if (!this.#getEntityTypes().includes(key.toLowerCase())) continue;
+			if (!this.#getListOfEntities().includes(key.toLowerCase())) continue;
 			
 			result = this.#multiplicityMap[key]
 					? this.#hydrateMultiple(result, key, value)
@@ -227,9 +227,9 @@ class HydrationSrv {
 	 * Retrieves and caches the list of known entity types
 	 * @returns {string[]} Array of entity type names in lowercase
 	 */
-	#getEntityTypes() {
+	#getListOfEntities() {
 		if (!this.#entityTypesCache) {
-			this.#entityTypesCache = EntitySrv.getEntityTypes();
+			this.#entityTypesCache = EntitySrv.getListOfEntities();
 		}
 		return this.#entityTypesCache;
 	}

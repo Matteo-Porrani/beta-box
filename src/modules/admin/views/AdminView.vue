@@ -61,7 +61,7 @@
 <script>
 // Vue related
 import { nextTick } from "vue";
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions } from "vuex";
 // utils
 import { nrm } from "@/modules/core/utils/core-utils";
 // const
@@ -96,21 +96,9 @@ export default {
 		}
 	},
 
-	computed: {
-		...mapGetters("entity", [
-			"getListOptions",
-			"getEntityDescription"
-		]),
-
-		entitiesList() {
-			return this.getListOptions('$entities') ?? [];
-		},
-	},
-
 	watch: {
-
 		tableName(newVal) {
-			const desc = this.getEntityDescription(newVal);
+			const desc = EntitySrv.getEntityDescription(newVal);
 
 			if (desc?.length > 0) {
 				this.formDescription = desc;
@@ -145,9 +133,7 @@ export default {
 			await this.loadTables(["list_option"]);
 
 			// otherTables holds names of all tables other than 'list_option'
-			const otherTables = this.entitiesList
-				.filter(ent => ent.value !== "list_option")
-				.map(t => t.value);
+			const otherTables = EntitySrv.getListOfEntities().filter(ent => ent !== "list_option")
 
 			await this.loadTables(otherTables)
 
