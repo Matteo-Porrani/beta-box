@@ -56,16 +56,27 @@ class EntitySrv {
 	/**
 	 * Takes the (pascal case) entity name as input param (eg : "Ticket", "FieldDefinition"),
 	 * and returns a dictionary with the fields of type "L" found in the entity description
-	 * @param pascalCaseEntityName
-	 * @returns {*}
+	 * @param {string} pascalCaseEntityName
+	 * @returns {object}
+	 *
+	 * @example - for Ticket entity, 2 fields are of type "L" and their linked to $team & $phase lists
+	 * {
+	 *     "team": "$team",
+	 *     "phase": "$phase"
+	 * }
 	 */
 	getListFieldsDictionary(pascalCaseEntityName) {
 		const d = this.getEntityDescription(pascalToSnake(pascalCaseEntityName));
-		return d.filter(f => f.type === "L")
-			.reduce((a, f) => {
-				a[f.field] = f.list
-				return a;
-			}, {});
+
+		/*
+		filter(f => f.type === "L") keeps only items with type "L".
+		map(f => [f.field, f.list]) creates key-value pairs.
+		Object.fromEntries(...) converts those pairs into an object.
+		 */
+		return Object.fromEntries(
+			d.filter(f => f.type === "L").map(f => [f.field, f.list])
+		);
+		
 	}
 	
 	// ============================================= DEBUG
