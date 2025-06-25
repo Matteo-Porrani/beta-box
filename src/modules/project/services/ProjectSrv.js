@@ -1,7 +1,7 @@
 // services
 import EntitySrv from "@/modules/core/services/EntitySrv";
 import TableSrv from "@/modules/core/services/TableSrv";
-// import SearchSrv from "@/modules/core/services/SearchSrv";
+import SearchSrv from "@/modules/core/services/SearchSrv";
 import HydrationSrv from "@/modules/core/services/HydrationSrv";
 // utils
 import { formatDurationFromMin, nrm } from "@/modules/core/utils/core-utils";
@@ -44,8 +44,13 @@ class ProjectSrv {
 		
 		// filter on custom needle
 		return needle
-			? filterArrayWithDeepMatch(ht, needle, [], filterByCol)
-			: ht
+			? SearchSrv.filterObjectsByNeedle(ht, needle, filterByCol)
+			: ht;
+		
+		// FIXME -- fix global search
+		// return needle
+		// 	? filterArrayWithDeepMatch(ht, needle, [], filterByCol)
+		// 	: ht
 	}
 	
 	// ============================================= TICKETS BY PHASE

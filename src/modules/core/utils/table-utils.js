@@ -59,7 +59,7 @@ export function filterArrayWithDeepMatch(array, needle, exclude = [], only = nul
 export function flatObjectMatchesSearch(object, needle, exclude = [], only = null) {
 	const flatObject = flattenObject(object, exclude);
 	return only
-		? flatObject[only].toLowerCase().includes(needle.toLowerCase())
+		? flatObject[only]?.toLowerCase().includes(needle.toLowerCase())
 		: Object.values(flatObject)
 		.some(value => String(value).toLowerCase().includes(needle.toLowerCase()))
 }
