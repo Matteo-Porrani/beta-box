@@ -1,11 +1,11 @@
 // services
 import EntitySrv from "@/modules/core/services/EntitySrv";
 import TableSrv from "@/modules/core/services/TableSrv";
-import SearchSrv from "@/modules/core/services/SearchSrv";
+// import SearchSrv from "@/modules/core/services/SearchSrv";
 import HydrationSrv from "@/modules/core/services/HydrationSrv";
 // utils
 import { formatDurationFromMin, nrm } from "@/modules/core/utils/core-utils";
-import { filterTableByNeedle, sortRows } from "@/modules/core/utils/table-utils";
+import { filterTableByNeedle, sortRows, filterArrayWithDeepMatch } from "@/modules/core/utils/table-utils";
 import { convertFromAppDateFormatToStdFormat, splitDurationIntoHourPercents } from "@/modules/core/utils/date-utils";
 
 class ProjectSrv {
@@ -35,7 +35,7 @@ class ProjectSrv {
 			return HydrationSrv.hydrateObject(t, desc)
 		});
 		
-		// retrieve liste labels
+		// retrieve list labels
 		ht = TableSrv.getListLabels(ht, "Ticket");
 		// filter on active / inactive
 		ht = this.#applyActiveInactiveFilter(ht, showActive, showInactive)
@@ -44,8 +44,8 @@ class ProjectSrv {
 		
 		// filter on custom needle
 		return needle
-			? SearchSrv.filterObjectsByNeedle(ht, needle, filterByCol)
-			: ht;
+			? filterArrayWithDeepMatch(ht, needle, [], filterByCol)
+			: ht
 	}
 	
 	// ============================================= TICKETS BY PHASE

@@ -124,18 +124,10 @@ export default {
 			return {
 				"type": "L",
 				"field": "Filter",
-				// "entity": "Dummy",
-				// "order": 3,
-				// "pk": true,
-				// "list": "$feelings",
-				// "multiple": false,
-				// "readonly": false,
-				// "picker_col": false,
-				// "required": false,
-				// "id": 24,
 				"options": FilterSrv.getFilterOpts()
 			}
-		}
+		},
+
 	},
 
 	methods: {
@@ -204,4 +196,11 @@ export default {
 }
 </script>
 
+
+<style scoped>
+input,
+select {
+	@apply bg-stone-700 rounded text-stone-200 p-1
+}
+</style>
 

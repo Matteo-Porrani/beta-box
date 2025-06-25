@@ -50,6 +50,40 @@ export function filterTableByNeedle(array, needle, specificKey = null) {
 }
 
 
+
+
+export function filterArrayWithDeepMatch(array, needle, exclude = [], only = null) {
+	return array.filter(obj => flatObjectMatchesSearch(obj, needle, exclude, only))
+}
+
+export function flatObjectMatchesSearch(object, needle, exclude = [], only = null) {
+	const flatObject = flattenObject(object, exclude);
+	return only
+		? flatObject[only].toLowerCase().includes(needle.toLowerCase())
+		: Object.values(flatObject)
+		.some(value => String(value).toLowerCase().includes(needle.toLowerCase()))
+}
+
+export function flattenObject(object, exclude = []) {
+	const flatEntries = [];
+	
+	for (const [key, value] of Object.entries(object)) {
+		if (exclude.length > 0 && exclude.includes(key)) continue;
+		
+		flatEntries.push(
+			(typeof value === "object" && !Array.isArray(value))
+				? flattenObject(value, exclude)
+				: Array.isArray(value)
+					? { [key]: JSON.stringify(value) }
+					: { [key]: value }
+		)
+	}
+	
+	return flatEntries.flat(Infinity)
+		.reduce((acc, obj) => ({ ...acc, ...obj }), {});
+}
+
+
 export function sortRows(rows, byKey, sortAsc) {
 	rows.sort((a, b) => {
 		let valA = a[byKey];

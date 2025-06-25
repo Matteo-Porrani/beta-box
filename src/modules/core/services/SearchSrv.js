@@ -25,6 +25,10 @@ class SearchSrv {
 	 * @returns {Object[]} Filtered array of matching objects.
 	 */
 	filterObjectsByNeedle(array, needle, specificKey = null, excludeKey = 'id') {
+		
+		console.log("///", JSON.parse(JSON.stringify(array)))
+		
+		
 		const normalizedNeedle = this.#normalize(String(needle));
 		
 		return array.filter(obj => {
