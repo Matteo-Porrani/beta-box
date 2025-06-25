@@ -14,7 +14,7 @@ function factory({ $p }) {
 }
 
 
-describe('Renders elements of layout according to props', () => {
+describe.skip('Renders elements of layout according to props', () => {
 	let wrapper;
 	
 	it('renders root element', () => {

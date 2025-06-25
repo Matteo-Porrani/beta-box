@@ -19,7 +19,7 @@ describe("", () => {
 
 
 
-describe("", () => {
+describe("DummyOne mounts", () => {
 	it('should ', () => {
 		
 		const wrapper = mount(DummyOne, {
@@ -27,7 +27,7 @@ describe("", () => {
 				count: 125,
 			}
 		});
-		console.log(wrapper.html());
+		// console.log(wrapper.html());
 		
 
 		// expect(test).toBe(false);
