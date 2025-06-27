@@ -5,7 +5,7 @@ import SearchSrv from "@/modules/core/services/SearchSrv";
 import HydrationSrv from "@/modules/core/services/HydrationSrv";
 // utils
 import { formatDurationFromMin, nrm } from "@/modules/core/utils/core-utils";
-import { filterTableByNeedle, sortRows, filterArrayWithDeepMatch } from "@/modules/core/utils/table-utils";
+import { filterTableByNeedle, sortRows } from "@/modules/core/utils/table-utils";
 import { convertFromAppDateFormatToStdFormat, splitDurationIntoHourPercents } from "@/modules/core/utils/date-utils";
 
 class ProjectSrv {
@@ -46,11 +46,6 @@ class ProjectSrv {
 		return needle
 			? SearchSrv.filterObjectsByNeedle(ht, needle, filterByCol)
 			: ht;
-		
-		// FIXME -- fix global search
-		// return needle
-		// 	? filterArrayWithDeepMatch(ht, needle, [], filterByCol)
-		// 	: ht
 	}
 	
 	// ============================================= TICKETS BY PHASE
