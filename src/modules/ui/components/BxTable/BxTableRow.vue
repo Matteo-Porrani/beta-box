@@ -122,7 +122,7 @@ tr {
 
 tr:has(td:hover),
 tr:has(td:hover) > td[data-field="id"] {
-	@apply bg-stone-900
+	@apply bg-stone-700
 }
 
 th,

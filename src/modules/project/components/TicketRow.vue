@@ -1,6 +1,6 @@
 <template>
 	<article
-		class="grid gap-1 border border-stone-500 text-stone-300 text-sm rounded p-1 h-8 items-center"
+		class="grid gap-1 border border-stone-500 text-stone-300 text-sm rounded p-1 h-8 items-center hover:bg-stone-700"
 		:class="{ 'bg-stone-500' : ticket.isHeader, 'compact': compact }"
 	>
 
