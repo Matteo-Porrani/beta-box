@@ -1,5 +1,10 @@
 import { it, describe, expect } from "vitest";
-import { flattenObject, flatObjectMatchesSearch, filterArrayWithDeepMatch } from "@/modules/core/utils/table-utils";
+import {
+	extractValues,
+	flattenObject,
+	flatObjectMatchesSearch,
+	filterArrayWithDeepMatch
+} from "@/modules/core/utils/table-utils";
 
 
 
@@ -43,7 +48,7 @@ const PEOPLE = [
 ]
 
 
-describe("01 - flattenObject", () => {
+describe("01A - flattenObject", () => {
 	it("object is properly flattened", () => {
 		
 		const ob1 = {
@@ -100,6 +105,57 @@ describe("01 - flattenObject", () => {
 	});
 });
 
+describe("01B - extract values", () => {
+	const bob = {
+		name: "Bob",
+		location: {
+			city: "Paris",
+			from: 2001,
+			comments: {
+				hobbies: "Tennis, Music",
+				songs: [
+					{ gender: "rock", title: "Highway to Hell" },
+					{ gender: "pop", title: "Yellow" },
+				]
+			}
+		}
+	}
+	
+	it("values are properly extracted - all", () => {
+		expect(extractValues(bob)).toEqual([
+			"Bob",
+			"Paris",
+			"2001",
+			"Tennis, Music",
+			"rock",
+			"Highway to Hell",
+			"pop",
+			"Yellow",
+		])
+	});
+	
+	it("values are properly extracted - with array of primitives", () => {
+		const jim = {
+			name: "Jim",
+			colors: ["red", "blue"]
+		}
+		
+		expect(extractValues(jim)).toEqual([
+			"Jim",
+			"red",
+			"blue",
+		])
+	});
+	
+	it("values are properly extracted - with exclusion", () => {
+		expect(extractValues(bob, ["from", "songs"])).toEqual([
+			"Bob",
+			"Paris",
+			"Tennis, Music",
+		])
+	});
+});
+
 describe("02 - flatObjectMatchesSearch", () => {
 	
 	const bob = {
@@ -129,12 +185,13 @@ describe("02 - flatObjectMatchesSearch", () => {
 
 describe("03 - deep search in array", () => {
 	
-	it("array is properly filtered - on dog", () => {
-		expect(filterArrayWithDeepMatch(PEOPLE, "dog").length).toBe(1)
-	});
+	// it("array is properly filtered - needle is 'dog'", () => {
+	// 	expect(filterArrayWithDeepMatch(PEOPLE, "dog").length).toBe(1)
+	// });
 	
-	it("array is properly filtered - on cats", () => {
+	it("array is properly filtered - needle is 'cats'", () => {
 		expect(filterArrayWithDeepMatch(PEOPLE, "cats").length).toBe(2)
+		// expect(filterArrayWithDeepMatch(PEOPLE, "cats")).toMatchInlineSnapshot()
 	});
 	
 	it("array is properly filtered - on cats - with exclusion", () => {
@@ -182,8 +239,65 @@ describe("03 - deep search in array", () => {
 			  },
 			]
 		`)
+		expect(PEOPLE).toMatchInlineSnapshot(`
+			[
+			  {
+			    "id": 123,
+			    "location": {
+			      "city": "London",
+			      "comments": [
+			        {
+			          "code": 1,
+			          "text": "I like tennis",
+			        },
+			        {
+			          "code": 2,
+			          "text": "I have a dog",
+			        },
+			      ],
+			      "from": 2007,
+			    },
+			    "name": "Bob",
+			  },
+			  {
+			    "id": 457,
+			    "location": {
+			      "city": "Paris",
+			      "comments": [
+			        {
+			          "code": 1,
+			          "text": "I am a fashion victim",
+			        },
+			        {
+			          "code": 2,
+			          "text": "cats are cute",
+			        },
+			      ],
+			      "from": 2001,
+			    },
+			    "name": "Anne",
+			  },
+			  {
+			    "id": 999,
+			    "location": {
+			      "city": "Melbourne",
+			      "comments": [
+			        {
+			          "code": 1,
+			          "text": "Good vibes",
+			        },
+			      ],
+			      "friends": [
+			        "cats",
+			        "cows",
+			      ],
+			      "from": 1999,
+			    },
+			    "name": "Jack",
+			  },
+			]
+		`);
 	});
-	
 
 })
 

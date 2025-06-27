@@ -53,17 +53,83 @@ export function filterTableByNeedle(array, needle, specificKey = null) {
 
 
 export function filterArrayWithDeepMatch(array, needle, exclude = [], only = null) {
-	return array.filter(obj => flatObjectMatchesSearch(obj, needle, exclude, only))
+	return array
+		.map(obj => structuredClone(obj))
+		.filter(obj => flatObjectMatchesSearch(obj, needle, exclude, only))
 }
 
 export function flatObjectMatchesSearch(object, needle, exclude = [], only = null) {
 	const flatObject = flattenObject(object, exclude);
+	const flatValues = extractValues(object, exclude);
+	
 	return only
-		? flatObject[only]?.toLowerCase().includes(needle.toLowerCase())
-		: Object.values(flatObject)
-		.some(value => String(value).toLowerCase().includes(needle.toLowerCase()))
+		? flatObject[only]?.toLowerCase().includes(needle.toLowerCase()) // check on specific key
+		: flatValues.some(value => String(value).toLowerCase().includes(needle.toLowerCase()));
 }
 
+/**
+ * Recursively extracts all primitive values from a nested object structure.
+ * Arrays and objects are traversed deeply.
+ *
+ * @param {object} obj - The input object to extract values from.
+ * @param {array} exclude - The input object to extract values from.
+ * @returns {Array} - A flat array containing all primitive values found.
+ */
+export function extractValues(obj, exclude = []) {
+	let vals = [] // Initialize an array to collect values
+	
+	// Iterate over the values of the object
+	for (let [k, v] of Object.entries(obj)) {
+		if (exclude.includes(k)) continue;
+		if (typeof v === "object") {
+			// If the value is an array, recurse on each element
+			if (Array.isArray(v)) {
+				v.forEach(intV => {
+					if (typeof intV === "object") {
+						vals.push(extractValues(intV, exclude))
+					} else {
+						vals.push(intV); // handles arrays of primitives
+					}
+				})
+			} else {
+				// If it's an object (but not an array), recurse directly
+				vals.push(extractValues(v, exclude))
+			}
+		} else {
+			// If the value is a primitive (string, number, boolean, etc.), add it
+			vals.push(v)
+		}
+	}
+	
+	// Flatten the nested arrays into a single-level array (deep flatten)
+	return vals.flat(Infinity).map(v => String(v));
+}
+
+/**
+ * Recursively flattens a nested object into a single-level object.
+ *
+ * - Nested objects are merged into the top-level object with their properties preserved.
+ * - Arrays are stringified.
+ * - Keys listed in the `exclude` array are skipped.
+ *
+ * @param {Object} object - The input object to flatten.
+ * @param {string[]} [exclude=[]] - An array of keys to exclude from flattening.
+ * @returns {Object} A new flat object with all nested keys merged at the top level.
+ *
+ * @example
+ * flattenObject({
+ *   name: "Alice",
+ *   info: {
+ *     age: 30,
+ *     address: {
+ *       city: "Paris"
+ *     }
+ *   },
+ *   tags: ["dev", "designer"]
+ * });
+ * // Returns:
+ * // { name: "Alice", age: 30, city: "Paris", tags: "[\"dev\",\"designer\"]" }
+ */
 export function flattenObject(object, exclude = []) {
 	const flatEntries = [];
 	
