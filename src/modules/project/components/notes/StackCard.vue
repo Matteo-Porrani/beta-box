@@ -56,8 +56,8 @@ const $p = defineProps({
 })
 const subtitle = computed(() => {
 	const bits = [];
-	if ($p.ticket.team) bits.push($p.ticket.team);
 	if ($p.ticket.topic) bits.push($p.ticket.topic.name);
+	if ($p.ticket.team) bits.push($p.ticket.team);
 	return bits.join(" - ");
 })
 
