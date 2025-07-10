@@ -29,7 +29,7 @@ export default {
 			}
 		},
 
-		getListOptions: (state) => {
+		getListItemsByListCode: (state) => {
 			return (listCode) => {
 				return state.entities.list_option
 					.filter(el => el.list === listCode)
@@ -53,7 +53,7 @@ export default {
 		_getOptionsForListFields: (state, getters) => {
 			return (fields) => {
 				for (const f of fields) {
-					if (f.type === "L" && f.list) f.options = getters.getListOptions(f.list);
+					if (f.type === "L" && f.list) f.options = getters.getListItemsByListCode(f.list);
 				}
 				return fields;
 			}
@@ -90,7 +90,7 @@ export default {
 		
 		getLabelFromListValue: (state, getters) => {
 			return (listName, value) => {
-				const opts = getters.getListOptions(listName);
+				const opts = getters.getListItemsByListCode(listName);
 				const match = opts.find(o => o.value === value);
 				return match ? match.label : "";
 			}

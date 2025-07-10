@@ -46,7 +46,7 @@ class EntitySrv {
 	// ============================================= SECTION
 	
 	getListOfEntities() {
-		return store.getters["entity/getListOptions"]("$entities").map(o => o.value);
+		return store.getters["entity/getListItemsByListCode"]("$entities").map(o => o.value);
 	}
 	
 	getEntityDescription(snakeCaseEntityName) {

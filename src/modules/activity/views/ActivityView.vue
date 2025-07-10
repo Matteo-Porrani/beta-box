@@ -112,7 +112,7 @@ export default {
 		}),
 
 		...mapGetters("entity", [
-			"getListOptions",
+			"getListItemsByListCode",
 			"getEntityDescription"
 		]),
 

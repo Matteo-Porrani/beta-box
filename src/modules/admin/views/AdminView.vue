@@ -61,7 +61,7 @@
 <script>
 // Vue related
 import { nextTick } from "vue";
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 // utils
 import { nrm } from "@/modules/core/utils/core-utils";
 // const
@@ -96,6 +96,16 @@ export default {
 		}
 	},
 
+	computed: {
+		...mapGetters("entity", [
+			"getListItemsByListCode",
+		]),
+
+		entitiesList() {
+			return this.getListItemsByListCode('$entities') ?? [];
+		},
+	},
+
 	watch: {
 		tableName(newVal) {
 			const desc = EntitySrv.getEntityDescription(newVal);
@@ -108,7 +118,7 @@ export default {
 
 				if (newVal === "field_definition") {
 					const typeEntry = hcDesc.find(e => e.field === "type");
-					typeEntry.options = this.getListOptions(typeEntry.list);
+					typeEntry.options = this.getListItemsByListCode(typeEntry.list);
 				}
 
 				this.formDescription = hcDesc;
