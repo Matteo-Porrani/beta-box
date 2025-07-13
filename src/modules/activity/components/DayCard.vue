@@ -5,6 +5,12 @@
 		:class="day.isCurrentDay ? 'border-yellow-400' : 'border-transparent'"
 	>
 		<div class="flex justify-between items-center font-bold text-stone-300 p-2">
+			<BxIconButton
+				icon="view"
+				size="small"
+				type="soft"
+				@click="openDailySpeechBoard"
+			/>
 			<h3>{{ day.formattedDate }}</h3>
 			<p>{{ day.totalDuration }}</p>
 		</div>
@@ -47,10 +53,13 @@
 
 <script>
 
+import BxIconButton from "@/modules/ui/components/BxIconButton.vue";
+
 export default {
 	name: "DayCard",
 
 	components: {
+		BxIconButton
 	},
 
 	props: {
@@ -71,6 +80,17 @@ export default {
 				$E: 'bg-orange-500',
 				$O: 'bg-stone-400',
 			}
+		}
+	},
+
+	methods: {
+		openDailySpeechBoard() {
+			console.log('openDailySpeechBoard', this.day.date, this.day.id);
+
+			this.$router.push({
+				name: 'activity_daily_speech',
+				params: { dayId: this.day.id, dayDate: this.day.date }
+			})
 		}
 	}
 }

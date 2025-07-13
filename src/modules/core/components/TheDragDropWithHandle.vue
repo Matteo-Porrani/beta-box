@@ -29,7 +29,7 @@
 
 <script>
 export default {
-	name: "TheDragDrop",
+	name: "TheDragDropWithHandle",
 
 	props: {
 		items: {
@@ -140,8 +140,9 @@ article.drag-over {
 .drag-handle {
 	width: 20px;
 	height: 70%;
+	max-height: 50px;
 	cursor: grab;
-	background: #6b7280;
+	background: #52525b;
 	border-radius: 4px 0 0 4px;
 	display: flex;
 	align-items: center;
@@ -157,7 +158,7 @@ article.drag-over {
 
 .drag-handle::before {
 	content: "⋮⋮";
-	color: #aaafb9;
+	color: #a1a1aa;
 	font-size: 22px;
 	letter-spacing: -2px;
 }

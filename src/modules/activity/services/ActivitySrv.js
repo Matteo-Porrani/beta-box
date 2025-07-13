@@ -27,6 +27,11 @@ class ActivitySrv {
 		return this.getActivitiesByRange({ start, end });
 	}
 	
+	/**
+	 * @param {string} start - ex : "2025-04-21@00:00"
+	 * @param {string} end
+	 * @return {*}
+	 */
 	getActivitiesByRange({ start, end }) {
 		const daysOnPeriod = this.#getDaysOnPeriod({ start, end });
 		/* [
