@@ -37,14 +37,14 @@
 
 				<div>
 					<h2 class="text-2xl font-bold mb-6 text-center">Demo 2</h2>
-					<TheDragDropWithHandle
+					<TheDragDropWrapper
 						:items="localColors"
 						@reorder="handleReorder"
 					>
 						<template #default="{ item }">
 							<DragDemoItem :item="item"/>
 						</template>
-					</TheDragDropWithHandle>
+					</TheDragDropWrapper>
 				</div>
 			</div>
 			-->
@@ -71,7 +71,7 @@ import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import moment from "moment";
 import { DateTime } from "luxon";
 import TheDragDrop from "@/modules/core/components/TheDragDrop.vue";
-import TheDragDropWithHandle from "@/modules/core/components/TheDragDropWithHandle.vue";
+import TheDragDropWrapper from "@/modules/core/components/TheDragDropWrapper.vue";
 import DragDemoItem from "@/modules/core/components/DragDemoItem.vue";
  */
 
@@ -80,7 +80,7 @@ export default {
 
 	components: {
 		// TheDragDrop,
-		// TheDragDropWithHandle,
+		// TheDragDropWrapper,
 		// DragDemoItem,
 		DefaultLayout,
 	},

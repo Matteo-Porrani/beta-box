@@ -16,7 +16,7 @@
 
 			<div class="grid grid-cols-5 gap-8 ms-6">
 
-				<TheDragDropWithHandle
+				<TheDragDropWrapper
 					has-handle
 					:items="activities"
 					@reorder="handleReorder"
@@ -29,7 +29,7 @@
 							:is-being-dragged="isBeingDragged"
 						/>
 					</template>
-				</TheDragDropWithHandle>
+				</TheDragDropWrapper>
 
 				<div class="col-span-2">
 					<div class="text-xl mb-2">Comments</div>
@@ -50,7 +50,7 @@
 import { activitySrv } from "@/modules/activity/services/ActivitySrv";
 // components
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
-import TheDragDropWithHandle from "@/modules/core/components/TheDragDropWithHandle.vue";
+import TheDragDropWrapper from "@/modules/core/components/TheDragDropWrapper.vue";
 import DailySpeechActivityItem from "@/modules/activity/components/DailySpeechActivityItem.vue";
 
 
@@ -59,7 +59,7 @@ export default {
 
 	components: {
 		DailySpeechActivityItem,
-		TheDragDropWithHandle,
+		TheDragDropWrapper,
 		DefaultLayout
 	},
 
