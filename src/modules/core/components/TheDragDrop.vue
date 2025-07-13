@@ -14,7 +14,7 @@
 					'drag-over': dragOverIndex === index
 				}"
 		>
-			<slot :item="item" :index="index" />
+			<slot :item="item" />
 		</article>
 	</div>
 </template>

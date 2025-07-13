@@ -4,23 +4,28 @@
 		<article
 			v-for="(item, index) in items"
 			:key="item.id"
-			:draggable="isDraggable"
+			:draggable="!hasHandle || isDraggable"
 			@dragstart="handleDragStart($event, index)"
 			@dragover="handleDragOver($event, index)"
 			@drop="handleDrop($event, index)"
 			@dragend="handleDragEnd"
 			:class="{
+					'grid-multi-cols': hasHandle,
+					'draggable': !hasHandle,
 					'dragging': draggedIndex === index,
 					'drag-over': dragOverIndex === index
 				}"
 		>
-			<div 
+			<aside
+				v-if="hasHandle"
 				class="drag-handle"
 				@mousedown="enableDrag"
 				@mouseup="disableDrag"
 				@mouseleave="disableDrag"
-			></div>
-			<slot :item="item" :index="index" />
+			/>
+			<slot
+				:item="item"
+			/>
 		</article>
 	</div>
 </template>
@@ -36,6 +41,10 @@ export default {
 			type: Array,
 			required: true,
 		},
+		hasHandle: {
+			type: Boolean,
+			default: false
+		}
 	},
 
 	emits: ['reorder'],
@@ -108,23 +117,20 @@ export default {
 }
 
 article {
-	//border: 2px solid crimson;
-	//background: gray;
-	border-radius: 4px;
 	display: grid;
-	grid-template-columns: auto 1fr;
-	//cursor: grab;
+	//background: #3f3f46;
+	border-radius: 4px;
 	transition: opacity 0.2s ease, transform 0.2s ease;
 	user-select: none;
 }
 
-/*
-article:hover {
-	border: 2px solid transparent;
-	transform: translateY(-2px);
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+article.grid-multi-cols {
+	grid-template-columns: auto 1fr;
 }
- */
+
+article.draggable {
+	cursor: grab;
+}
 
 article.dragging {
 	opacity: 0.5;
@@ -133,7 +139,6 @@ article.dragging {
 }
 
 article.drag-over {
-	/*background: goldenrod;*/
 	transform: scale(1.02);
 }
 
@@ -142,7 +147,7 @@ article.drag-over {
 	height: 70%;
 	max-height: 50px;
 	cursor: grab;
-	background: #52525b;
+	background: #3f3f46;
 	border-radius: 4px 0 0 4px;
 	display: flex;
 	align-items: center;
@@ -150,18 +155,14 @@ article.drag-over {
 	position: relative;
 }
 
-/*
-.drag-handle:hover {
-	background: coral;
-}
- */
-
 .drag-handle::before {
 	content: "⋮⋮";
-	color: #a1a1aa;
+	color: #71717a;
 	font-size: 22px;
 	letter-spacing: -2px;
 }
+
+
 
 
 .debug {

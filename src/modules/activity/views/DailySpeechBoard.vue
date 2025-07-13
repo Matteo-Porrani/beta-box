@@ -17,6 +17,7 @@
 			<div class="grid grid-cols-5 gap-8 ms-6">
 
 				<TheDragDropWithHandle
+					has-handle
 					:items="activities"
 					@reorder="handleReorder"
 					class="col-span-2"
@@ -29,11 +30,11 @@
 				<div class="col-span-2">
 					<div class="text-2xl mb-2">Comments</div>
 
-					<pre>{{ activities.map(a => ({ id: a.id, comment: a.comment, order: a.order })) }}</pre>
+<!--					<pre>{{ activities.map(a => ({ id: a.id, comment: a.comment, order: a.order })) }}</pre>-->
 
-<!--					<textarea-->
-<!--						class="w-full h-[50vh] font-cc text-2xl resize-none focus:outline-none bg-zinc-700 rounded p-2"-->
-<!--					></textarea>-->
+					<textarea
+						class="w-full h-[50vh] font-cc text-2xl resize-none focus:outline-none bg-zinc-700 rounded p-2"
+					></textarea>
 				</div>
 
 			</div>

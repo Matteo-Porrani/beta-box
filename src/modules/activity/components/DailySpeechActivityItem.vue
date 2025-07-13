@@ -1,6 +1,6 @@
 <template>
-	<article
-		class="border border-stone-500 rounded space-y-2 p-2"
+	<div
+		class="border border-zinc-500 rounded space-y-2 p-2"
 	>
 
 		<div class="flex gap-2 text-sm">
@@ -8,7 +8,7 @@
 				class="text-zinc-800 rounded flex-1 px-1"
 				:class="headerColorClass"
 			>
-				<p>{{ item.id }}  {{ typeLabel }}</p>
+				<p>{{ typeLabel }}</p>
 			</div>
 
 			<div class="w-16 grid place-items-center">
@@ -26,7 +26,7 @@
 		</div>
 
 		<p class="text-xl">{{ item.description }}</p>
-	</article>
+	</div>
 </template>
 
 
