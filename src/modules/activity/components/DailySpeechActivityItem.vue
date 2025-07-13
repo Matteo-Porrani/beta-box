@@ -8,7 +8,7 @@
 				class="text-zinc-800 rounded flex-1 px-1"
 				:class="headerColorClass"
 			>
-				<p>{{ typeLabel }}</p>
+				<p>{{ item.id }}  {{ typeLabel }}</p>
 			</div>
 
 			<div class="w-16 grid place-items-center">

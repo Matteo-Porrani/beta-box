@@ -28,9 +28,12 @@
 
 				<div class="col-span-2">
 					<div class="text-2xl mb-2">Comments</div>
-					<textarea
-						class="w-full h-[50vh] font-cc text-2xl resize-none focus:outline-none bg-zinc-700 rounded p-2"
-					></textarea>
+
+					<pre>{{ activities.map(a => ({ id: a.id, comment: a.comment, order: a.order })) }}</pre>
+
+<!--					<textarea-->
+<!--						class="w-full h-[50vh] font-cc text-2xl resize-none focus:outline-none bg-zinc-700 rounded p-2"-->
+<!--					></textarea>-->
 				</div>
 
 			</div>
@@ -74,12 +77,16 @@ export default {
 			const boardDate = this.$route.params.dayDate;
 			const data = activitySrv.getActivitiesByRange({ start: boardDate, end: boardDate })
 
-			if (data) this.activities = data[0]?.activities
+			if (data) this.activities = this.updateOrderProp(data[0]?.activities); // add 'order' prop
 			this.loadDone = true
 		},
 
 		handleReorder(reorderedItems) {
-			this.activities = reorderedItems;
+			this.activities = this.updateOrderProp(reorderedItems); // maintain 'order' prop, unused for now...
+		},
+
+		updateOrderProp(list) {
+			return list.map((a, idx) => ({ ...a, order: idx + 1 }))
 		}
 	}
 }
