@@ -1,6 +1,6 @@
 <template>
 	<DefaultLayout>
-		<div class="grid place-content-center py-8">
+		<div class="grid py-8">
 
 			<div
 				v-if="needsInitialization"
@@ -18,6 +18,10 @@
 				</button>
 			</div>
 
+			<TheDragDrop v-else />
+
+
+<!--
 			<div
 				v-else
 				class="flex flex-col items-center"
@@ -29,7 +33,7 @@
 				/>
 				<h1 class="text-4xl font-bold mt-6">Welcome to BetaBox !</h1>
 			</div>
-
+-->
 		</div>
 	</DefaultLayout>
 </template>
@@ -40,11 +44,13 @@ import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 
 import moment from "moment";
 import { DateTime } from "luxon";
+import TheDragDrop from "@/modules/core/components/TheDragDrop.vue";
 
 export default {
 	name: 'HomeView',
 
 	components: {
+		TheDragDrop,
 		DefaultLayout,
 	},
 
