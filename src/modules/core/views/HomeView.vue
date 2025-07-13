@@ -18,20 +18,37 @@
 				</button>
 			</div>
 
-			<div v-else class="max-w-2xl mx-auto">
-				<h2 class="text-2xl font-bold mb-6 text-center">Drag & Drop Demo</h2>
-				<TheDragDrop 
-					:items="localColors" 
-					@reorder="handleReorder"
-				>
-					<template #default="{ item }">
-						<DragDemoItem :item="item"/>
-					</template>
-				</TheDragDrop>
+			<!-- DRAG & DROP DEMO -->
+			<!--
+			<div v-else class="grid grid-cols-3">
+				<div>
+					<h2 class="text-2xl font-bold mb-6 text-center">Demo 1</h2>
+					<TheDragDrop
+						:items="localColors"
+						@reorder="handleReorder"
+					>
+						<template #default="{ item }">
+							<DragDemoItem :item="item"/>
+						</template>
+					</TheDragDrop>
+				</div>
+
+				<div></div>
+
+				<div>
+					<h2 class="text-2xl font-bold mb-6 text-center">Demo 2</h2>
+					<TheDragDropWithHandle
+						:items="localColors"
+						@reorder="handleReorder"
+					>
+						<template #default="{ item }">
+							<DragDemoItem :item="item"/>
+						</template>
+					</TheDragDropWithHandle>
+				</div>
 			</div>
+			-->
 
-
-<!--
 			<div
 				v-else
 				class="flex flex-col items-center"
@@ -43,7 +60,6 @@
 				/>
 				<h1 class="text-4xl font-bold mt-6">Welcome to BetaBox !</h1>
 			</div>
--->
 		</div>
 	</DefaultLayout>
 </template>
@@ -51,18 +67,21 @@
 <script>
 import { mapState } from "vuex";
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
-
+/*
 import moment from "moment";
 import { DateTime } from "luxon";
 import TheDragDrop from "@/modules/core/components/TheDragDrop.vue";
+import TheDragDropWithHandle from "@/modules/core/components/TheDragDropWithHandle.vue";
 import DragDemoItem from "@/modules/core/components/DragDemoItem.vue";
+ */
 
 export default {
 	name: 'HomeView',
 
 	components: {
-		TheDragDrop,
-		DragDemoItem,
+		// TheDragDrop,
+		// TheDragDropWithHandle,
+		// DragDemoItem,
 		DefaultLayout,
 	},
 
@@ -70,12 +89,12 @@ export default {
 		return {
 			needsInitialization: false,
 			localColors: [
-				{ id: 1, name: 'Red Item' },
-				{ id: 2, name: 'Green Item' },
-				{ id: 3, name: 'Blue Item' },
-				{ id: 4, name: 'Yellow Item' },
-				{ id: 5, name: 'Purple Item' },
-				{ id: 6, name: 'Orange Item' },
+				{ id: 1, name: 'Red' },
+				{ id: 2, name: 'Green' },
+				{ id: 3, name: 'Blue' },
+				{ id: 4, name: 'Yellow' },
+				{ id: 5, name: 'Purple' },
+				{ id: 6, name: 'Orange' },
 			]
 		}
 	},
