@@ -31,6 +31,10 @@
 
 
 <script>
+// Vue & composables
+import { toRef } from 'vue';
+import { useActivityType } from "@/modules/activity/composables/useActivityType";
+// services
 import { activitySrv } from "@/modules/activity/services/ActivitySrv";
 
 export default {
@@ -43,25 +47,14 @@ export default {
 		}
 	},
 
-	computed: {
-
-		typeLabel() {
-			return this.item?.type
-				? activitySrv.getLabelFromActivityCode(this.item.type)
-				: "-";
-		},
-
-		headerColorClass() {
-			const colorMap = {
-				'$D': 'bg-yellow-400', // develop
-				'$A': 'bg-purple-500', // analyze
-				'$R': 'bg-sky-400', // meet
-				'$E': 'bg-orange-500', // exchange
-				'$O': 'bg-stone-400', // other
-			};
-			return colorMap[this.item.type] || 'bg-stone-400';
-		},
-
+	setup(props) {
+		const itemRef = toRef(props, 'item');
+		const { typeLabel, headerColorClass } = useActivityType(itemRef, activitySrv);
+		
+		return {
+			typeLabel,
+			headerColorClass
+		};
 	},
 
 }

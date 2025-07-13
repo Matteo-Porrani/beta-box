@@ -59,8 +59,10 @@
 </template>
 
 <script>
-import { activitySrv } from "@/modules/activity/services/ActivitySrv";
+import { toRef } from 'vue';
+import { useActivityType } from "@/modules/activity/composables/useActivityType";
 import { nrm } from "@/modules/core/utils/core-utils";
+import { activitySrv } from "@/modules/activity/services/ActivitySrv";
 
 export default {
 	name: "ActivityCard",
@@ -76,25 +78,14 @@ export default {
 
 	emits: ["editActivity"],
 
-	computed: {
-
-		typeLabel() {
-			return this.activity?.type
-				? activitySrv.getLabelFromActivityCode(this.activity.type)
-				: "-";
-		},
-
-		headerColorClass() {
-			const colorMap = {
-				'$D': 'bg-yellow-400', // develop
-				'$A': 'bg-purple-500', // analyze
-				'$R': 'bg-sky-400', // meet
-				'$E': 'bg-orange-500', // exchange
-				'$O': 'bg-stone-400', // other
-			};
-			return colorMap[this.activity.type] || 'bg-stone-400';
-		},
-
+	setup(props) {
+		const activityRef = toRef(props, 'activity');
+		const { typeLabel, headerColorClass } = useActivityType(activityRef, activitySrv);
+		
+		return {
+			typeLabel,
+			headerColorClass
+		};
 	},
 
 	methods: {
