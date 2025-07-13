@@ -22,16 +22,17 @@
 					@reorder="handleReorder"
 					class="col-span-2"
 				>
-					<template #default="{ item }">
-						<DailySpeechActivityItem :item="item"/>
+					<!-- here we must use the props' names as defined in the slot definition -->
+					<template #default="{ item, isBeingDragged }">
+						<DailySpeechActivityItem
+							:item="item"
+							:is-being-dragged="isBeingDragged"
+						/>
 					</template>
 				</TheDragDropWithHandle>
 
 				<div class="col-span-2">
-					<div class="text-2xl mb-2">Comments</div>
-
-<!--					<pre>{{ activities.map(a => ({ id: a.id, comment: a.comment, order: a.order })) }}</pre>-->
-
+					<div class="text-xl mb-2">Comments</div>
 					<textarea
 						class="w-full h-[50vh] font-cc text-2xl resize-none focus:outline-none bg-zinc-700 rounded p-2"
 					></textarea>

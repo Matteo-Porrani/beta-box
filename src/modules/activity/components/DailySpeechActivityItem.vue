@@ -1,6 +1,9 @@
 <template>
 	<div
-		class="border border-zinc-500 rounded space-y-2 p-2"
+		class="border-2 border-zinc-700 rounded space-y-2 p-2"
+		:class="{
+			'bg-zinc-900': isBeingDragged
+		}"
 	>
 
 		<div class="flex gap-2 text-sm">
@@ -19,13 +22,13 @@
 		<div
 			v-for="t in item.ticketInfo"
 			:key="t.id"
-			class="border border-zinc-500 rounded p-1"
+			class="bg-zinc-700 text-sm rounded p-1"
 		>
 			<p class="font-bold">{{ t.title }}</p>
 			<p>{{ t.desc }}</p>
 		</div>
 
-		<p class="text-xl">{{ item.description }}</p>
+		<p>{{ item.description }}</p>
 	</div>
 </template>
 
@@ -44,7 +47,11 @@ export default {
 		item: {
 			type: Object,
 			required: true
-		}
+		},
+		isBeingDragged: {
+			type: Boolean,
+			default: false
+		},
 	},
 
 	setup(props) {

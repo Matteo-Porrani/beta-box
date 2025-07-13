@@ -1,6 +1,5 @@
 <template>
 	<div class="drag-container">
-
 		<article
 			v-for="(item, index) in items"
 			:key="item.id"
@@ -16,6 +15,7 @@
 					'drag-over': dragOverIndex === index
 				}"
 		>
+			<!-- handle -->
 			<aside
 				v-if="hasHandle"
 				class="drag-handle"
@@ -25,6 +25,7 @@
 			/>
 			<slot
 				:item="item"
+				:isBeingDragged="draggedIndex === index"
 			/>
 		</article>
 	</div>
@@ -47,7 +48,7 @@ export default {
 		}
 	},
 
-	emits: ['reorder'],
+	emits: ["reorder"],
 
 	data() {
 		return {
@@ -80,7 +81,7 @@ export default {
 				reorderedItems.splice(this.draggedIndex, 1);
 				reorderedItems.splice(dropIndex, 0, draggedItem);
 				
-				this.$emit('reorder', reorderedItems);
+				this.$emit("reorder", reorderedItems);
 			}
 			
 			this.draggedIndex = null;
@@ -109,8 +110,6 @@ export default {
 
 <style scoped>
 .drag-container {
-	//border: 2px solid gold;
-	//width: fit-content;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
@@ -118,12 +117,12 @@ export default {
 
 article {
 	display: grid;
-	//background: #3f3f46;
 	border-radius: 4px;
 	transition: opacity 0.2s ease, transform 0.2s ease;
 	user-select: none;
 }
 
+/* used if handle */
 article.grid-multi-cols {
 	grid-template-columns: auto 1fr;
 }
@@ -135,24 +134,22 @@ article.draggable {
 article.dragging {
 	opacity: 0.5;
 	cursor: grabbing;
-	border-color: goldenrod;
 }
 
 article.drag-over {
 	transform: scale(1.02);
 }
 
+/* style for handle */
 .drag-handle {
+	background: #3f3f46;
+	cursor: grab;
+	display: grid;
+	place-items: center;
 	width: 20px;
 	height: 70%;
 	max-height: 50px;
-	cursor: grab;
-	background: #3f3f46;
 	border-radius: 4px 0 0 4px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: relative;
 }
 
 .drag-handle::before {
