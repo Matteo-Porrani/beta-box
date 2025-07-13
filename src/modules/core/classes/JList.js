@@ -81,4 +81,46 @@ export class JList {
 		return originalSize - this.#items.length;
 	}
 	
+	update(criteria, changes) {
+		let updatedCount = 0;
+		
+		this.#items.forEach(item => {
+			const matches = criteria.every(criterion => {
+				const value = item[criterion.key];
+				return criterion.matchFn(value);
+			});
+			
+			if (matches) {
+				Object.assign(item, changes);
+				updatedCount++;
+			}
+		});
+		
+		return updatedCount;
+	}
+	
+	updateWithFn(criteria, updateSpecs) {
+		let updatedCount = 0;
+		
+		this.#items.forEach(item => {
+			const matches = criteria.every(criterion => {
+				const value = item[criterion.key];
+				return criterion.matchFn(value);
+			});
+			
+			if (matches) {
+				updateSpecs.forEach(spec => {
+					item[spec.key] = spec.updateFn(item[spec.key]);
+				});
+				updatedCount++;
+			}
+		});
+		
+		return updatedCount;
+	}
+	
 }
+
+
+
+

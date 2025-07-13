@@ -78,7 +78,6 @@ describe("01 - READING BASIC PROPERTIES", () => {
 });
 
 
-
 describe("02 - ADDING ITEMS", () => {
 	
 	it("adds item at the end", () => {
@@ -193,5 +192,52 @@ describe("03 - DELETING ITEMS", () => {
 });
 
 
+describe("04 - UPDATING ITEMS", () => {
+	
+	it("updates single item by with fixed changes", () => {
+		const list = new JList(PEOPLE);
+		
+		const updated = list.update(
+			[{ key: "name", matchFn: (value) => value === "Alice" }], // criteria
+			{ age: 29 } // changes
+		);
+		
+		expect(updated).toBe(1);
+		expect(list.items).toEqual([
+			{ id: 1, name: "Alice", age: 29, city: "Amsterdam" },
+			{ id: 2, name: "Bob", age: 33, city: "Berlin" },
+			{ id: 3, name: "Charlie", age: 44, city: "Chicago" },
+			{ id: 4, name: "Diana", age: 54, city: "Dublin" },
+		])
+		
+	});
+	
+	it("updates single item with update functions", () => {
+		const list = new JList(PEOPLE);
+		
+		const updated = list.updateWithFn(
+			[
+				{ key: "id", matchFn: (value) => value < 10 }
+			], // will update all
+			[
+				{ key: "age", updateFn: (value) => value + 1 }, // will increment age property by 1
+			]
+		);
+		
+		expect(updated).toBe(4);
+		expect(list.items).toEqual([
+			{ id: 1, name: "Alice", age: 29, city: "Amsterdam" },
+			{ id: 2, name: "Bob", age: 34, city: "Berlin" },
+			{ id: 3, name: "Charlie", age: 45, city: "Chicago" },
+			{ id: 4, name: "Diana", age: 55, city: "Dublin" },
+		])
+		
+	});
+	
+	
+	
+	
+	
+});
 
 
