@@ -64,4 +64,21 @@ export class JList {
 		}
 	}
 	
+	delete(criteria) {
+		const originalSize = this.#items.length;
+		this.#items = this.#items.filter(item => {
+			return !criteria.every(criterion => {
+				const value = item[criterion.key];
+				return criterion.matchFn(value);
+			});
+		});
+		return originalSize - this.#items.length;
+	}
+	
+	deleteById(id) {
+		const originalSize = this.#items.length;
+		this.#items = this.#items.filter(item => item.id !== id);
+		return originalSize - this.#items.length;
+	}
+	
 }

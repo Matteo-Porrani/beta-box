@@ -13,7 +13,21 @@ const PEOPLE = [
 const PRODUCTS = [
 	{ id: "IP", name: "iPad Pro 5", price: 900 },
 	{ id: "PR", name: "Epson QuickJet", price: 230 },
-]
+];
+
+const GROCERIES = [
+	{ id: 1, name: "Milk", expiration: "2023-01-01" },
+	{ id: 2, name: "Bread", expiration: "2023-01-02" },
+	{ id: 3, name: "Eggs", expiration: "2023-01-03" },
+	{ id: 4, name: "Cheese", expiration: "2023-01-02" },
+	{ id: 5, name: "Tomatoes", expiration: "2023-01-05" },
+	{ id: 6, name: "Onions", expiration: "2023-01-06" },
+	{ id: 7, name: "Apples", expiration: "2023-01-02" },
+	{ id: 8, name: "Bananas", expiration: "2023-01-03" },
+	{ id: 9, name: "Oranges", expiration: "2023-01-09" },
+	{ id: 10, name: "Pears", expiration: "2023-01-03" },
+];
+
 
 describe("01 - READING BASIC PROPERTIES", () => {
 	
@@ -51,7 +65,12 @@ describe("01 - READING BASIC PROPERTIES", () => {
 	})
 	
 	it("properly clones items on initialization", () => {
-		PEOPLE[0].name = "Alexandra";
+		
+		const CLONES = [...PEOPLE];
+		
+		const list = new JList(CLONES);
+		CLONES[0].name = "Alexandra";
+
 		expect(list.items).not.toEqual(PEOPLE);
 		expect(list.first.name).toBe("Alice");
 	})
@@ -101,3 +120,78 @@ describe("02 - ADDING ITEMS", () => {
 	});
 	
 });
+
+
+describe("03 - DELETING ITEMS", () => {
+	
+	it("deletes item by ID", () => {
+		
+		const list = new JList(PEOPLE);
+		
+		const deleted = list.deleteById(2);
+		
+		expect(deleted).toBe(1);
+		expect(list.size).toBe(3);
+		expect(list.items).toEqual(
+			[
+				{
+					"age": 28,
+					"city": "Amsterdam",
+					"id": 1,
+					"name": "Alice",
+				},
+				{
+					"age": 44,
+					"city": "Chicago",
+					"id": 3,
+					"name": "Charlie",
+				},
+				{
+					"age": 54,
+					"city": "Dublin",
+					"id": 4,
+					"name": "Diana",
+				},
+			]
+		)
+		
+	});
+	
+	it("deletes single item by criteria", () => {
+		
+		const list = new JList(PEOPLE);
+		
+		const deleted = list.delete([
+			{ key: "name", matchFn: (value) => value === "Charlie" }
+		]);
+		
+		expect(deleted).toBe(1);
+		expect(list.size).toBe(3);
+		expect(list.items).toEqual([
+			{ id: 1, name: "Alice", age: 28, city: "Amsterdam" },
+			{ id: 2, name: "Bob", age: 33, city: "Berlin" },
+			{ id: 4, name: "Diana", age: 54, city: "Dublin" },
+		]);
+	});
+	
+	it("deletes multiple items by criteria", () => {
+		
+		const list = new JList(GROCERIES);
+		
+		const deleted = list.delete([
+			{ key: "expiration", matchFn: (value) => value <= "2023-01-02" },
+		]);
+		
+		expect(deleted).toBe(4);
+		expect(list.size).toBe(6);
+		expect(list.items.map(item => item.id)).toEqual(
+			[3, 5, 6, 8, 9, 10]
+		);
+		
+	})
+	
+});
+
+
+
+
