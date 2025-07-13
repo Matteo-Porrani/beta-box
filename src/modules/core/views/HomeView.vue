@@ -18,7 +18,17 @@
 				</button>
 			</div>
 
-			<TheDragDrop v-else />
+			<div v-else class="max-w-2xl mx-auto">
+				<h2 class="text-2xl font-bold mb-6 text-center">Drag & Drop Demo</h2>
+				<TheDragDrop 
+					:items="localColors" 
+					@reorder="handleReorder"
+				>
+					<template #default="{ item }">
+						<DragDemoItem :item="item"/>
+					</template>
+				</TheDragDrop>
+			</div>
 
 
 <!--
@@ -45,18 +55,28 @@ import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import moment from "moment";
 import { DateTime } from "luxon";
 import TheDragDrop from "@/modules/core/components/TheDragDrop.vue";
+import DragDemoItem from "@/modules/core/components/DragDemoItem.vue";
 
 export default {
 	name: 'HomeView',
 
 	components: {
 		TheDragDrop,
+		DragDemoItem,
 		DefaultLayout,
 	},
 
 	data() {
 		return {
-			needsInitialization: false
+			needsInitialization: false,
+			localColors: [
+				{ id: 1, name: 'Red Item' },
+				{ id: 2, name: 'Green Item' },
+				{ id: 3, name: 'Blue Item' },
+				{ id: 4, name: 'Yellow Item' },
+				{ id: 5, name: 'Purple Item' },
+				{ id: 6, name: 'Orange Item' },
+			]
 		}
 	},
 
@@ -86,6 +106,11 @@ export default {
 
 		initializeApp() {
 			this.$router.push("/data-manager");
+		},
+
+		handleReorder(reorderedItems) {
+			this.localColors = reorderedItems;
+			console.log('Items reordered:', reorderedItems);
 		},
 
 	}

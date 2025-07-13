@@ -1,5 +1,4 @@
 <template>
-
 	<div class="drag-container">
 
 		<article
@@ -15,42 +14,28 @@
 					'drag-over': dragOverIndex === index
 				}"
 		>
-			<DragDemoItem :item="item" />
+			<slot :item="item" :index="index" />
 		</article>
-	</div>
-
-
-	<div class="debug">
-		<pre>{{ items }}</pre>
 	</div>
 </template>
 
 
 
 <script>
-import DragDemoItem from "./DragDemoItem.vue";
-
 export default {
 	name: "TheDragDrop",
 
-	components: {
-		DragDemoItem
+	props: {
+		items: {
+			type: Array,
+			required: true,
+		},
 	},
+
+	emits: ['reorder'],
 
 	data() {
 		return {
-			items: [
-				{ id: 1, name: 'Red' },
-				{ id: 2, name: 'Green' },
-				{ id: 3, name: 'Blue' },
-				{ id: 4, name: 'Yellow' },
-				{ id: 5, name: 'Purple' },
-				{ id: 6, name: 'Orange' },
-				{ id: 7, name: 'Black' },
-				{ id: 8, name: 'White' },
-				{ id: 9, name: 'Indigo' },
-				{ id: 10, name: 'Crimson' },
-			],
 			draggedIndex: null,
 			dragOverIndex: null,
 		};
@@ -79,7 +64,7 @@ export default {
 				newItems.splice(this.draggedIndex, 1);
 				newItems.splice(dropIndex, 0, draggedItem);
 				
-				this.items = newItems;
+				this.$emit('reorder', newItems);
 			}
 			
 			this.draggedIndex = null;
@@ -99,7 +84,7 @@ export default {
 
 <style scoped>
 .drag-container {
-	border: 2px solid gold;
+	//border: 2px solid gold;
 	width: fit-content;
 	display: flex;
 	flex-direction: column;
@@ -107,7 +92,7 @@ export default {
 }
 
 article {
-	border: 2px solid crimson;
+	//border: 2px solid crimson;
 	border-radius: 4px;
 	width: 400px;
 	display: grid;

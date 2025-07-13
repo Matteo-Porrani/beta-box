@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-purple-700 p-2">
+	<div class="bg-purple-900 rounded p-2">
 
 		<p>{{ item.id }}</p>
 		<p>{{ item.name }}</p>
