@@ -28,6 +28,37 @@ const GROCERIES = [
 	{ id: 10, name: "Pears", expiration: "2023-01-03" },
 ];
 
+const VEHICLES = [
+	{ id: 1, color: "red", brand: "Toyota", model: "Camry", year: 2020 },
+	{ id: 2, color: "black", brand: "Honda", model: "Civic", year: 2019 },
+	{ id: 3, color: "red", brand: "Ford", model: "Mustang", year: 2021 },
+	{ id: 4, color: "red", brand: "Chevrolet", model: "Cruze", year: 2022 },
+	{ id: 5, color: "blue", brand: "Nissan", model: "Altima", year: 2018 },
+	{ id: 6, color: "red", brand: "Mazda", model: "MX-5", year: 2019 },
+	{ id: 7, color: "black", brand: "Subaru", model: "Impreza", year: 2017 },
+	{ id: 8, color: "white", brand: "Volkswagen", model: "Jetta", year: 2022 },
+]
+
+
+describe("00 - TESTING CLONING", () => {
+	
+	it("clones the array passed for initialization", () => {
+	
+		const ROBOTS = [
+			{ id: 1, name: "Beta", power: 4000 },
+			{ id: 2, name: "Makro", power: 5500 },
+			{ id: 3, name: "Thyps", power: 3400 },
+		]
+		const list = new JList(ROBOTS);
+		
+		ROBOTS[0].name = "Alpha";
+		
+		expect(list.first.name).toBe("Beta");
+		expect(ROBOTS[0].name).toBe("Alpha");
+	});
+	
+});
+
 
 describe("01 - READING BASIC PROPERTIES", () => {
 	
@@ -62,17 +93,6 @@ describe("01 - READING BASIC PROPERTIES", () => {
 	
 	it("returns the items", () => {
 		expect(list.items).toEqual(PEOPLE);
-	})
-	
-	it("properly clones items on initialization", () => {
-		
-		const CLONES = [...PEOPLE];
-		
-		const list = new JList(CLONES);
-		CLONES[0].name = "Alexandra";
-
-		expect(list.items).not.toEqual(PEOPLE);
-		expect(list.first.name).toBe("Alice");
 	})
 	
 });
@@ -150,7 +170,7 @@ describe("03 - DELETING ITEMS", () => {
 					"city": "Dublin",
 					"id": 4,
 					"name": "Diana",
-				},
+				}
 			]
 		)
 		
@@ -169,7 +189,7 @@ describe("03 - DELETING ITEMS", () => {
 		expect(list.items).toEqual([
 			{ id: 1, name: "Alice", age: 28, city: "Amsterdam" },
 			{ id: 2, name: "Bob", age: 33, city: "Berlin" },
-			{ id: 4, name: "Diana", age: 54, city: "Dublin" },
+			{ id: 4, name: "Diana", age: 54, city: "Dublin" }
 		]);
 	});
 	
@@ -229,15 +249,51 @@ describe("04 - UPDATING ITEMS", () => {
 			{ id: 1, name: "Alice", age: 29, city: "Amsterdam" },
 			{ id: 2, name: "Bob", age: 34, city: "Berlin" },
 			{ id: 3, name: "Charlie", age: 45, city: "Chicago" },
-			{ id: 4, name: "Diana", age: 55, city: "Dublin" },
+			{ id: 4, name: "Diana", age: 55, city: "Dublin" }
 		])
 		
 	});
 	
-	
-	
-	
-	
 });
+
+
+describe("05 - FINDING ITEMS", () => {
+	it("finds single item by criteria", () => {
+		
+		const list = new JList(PEOPLE);
+		
+		const found = list.find([
+			{ key: "name", matchFn: (value) => value === "Alice" }
+		]);
+		
+		expect(found).toEqual([{ id: 1, name: "Alice", age: 28, city: "Amsterdam" }]);
+	});
+	
+	it("finds multiple items by criteria", () => {
+		
+		const list = new JList(VEHICLES);
+		
+		const found = list.find([
+			{ key: "color", matchFn: (value) => value === "red" },
+			{ key: "year", matchFn: (value) => value <= 2020 },
+		]);
+		
+		// console.log(found)
+		
+		expect(found.length).toBe(2);
+		expect(found).toEqual([
+			{ id: 1, color: "red", brand: "Toyota", model: "Camry", year: 2020 },
+			{ id: 6, color: "red", brand: "Mazda", model: "MX-5", year: 2019 }
+		]);
+		
+
+	});
+	
+	it("finds single item by id", () => {
+		const list = new JList(PEOPLE);
+		const found = list.findById(4);
+		expect(found).toEqual({ id: 4, name: "Diana", age: 54, city: "Dublin" });
+	})
+})
 
 

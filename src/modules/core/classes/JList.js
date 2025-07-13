@@ -7,6 +7,7 @@ export class JList {
 		this.#items = structuredClone(items);
 	}
 	
+	// =============================================
 	
 	/**
 	 * @param {Array<object>} items
@@ -23,6 +24,15 @@ export class JList {
 			}
 		}
 	}
+	
+	#matchesCriteria(item, criteria) {
+		return criteria.every(criterion => {
+			const value = item[criterion.key];
+			return criterion.matchFn(value);
+		});
+	}
+	
+	// =============================================
 	
 	get items() {
 		return this.#items;
@@ -48,6 +58,8 @@ export class JList {
 		return this.#items.some(item => item.id === id);
 	}
 	
+	// =============================================
+	
 	add(item, { prepend = false } = {}) {
 		if (typeof item !== "object" || item === null) {
 			throw new TypeError("Item must be a valid object.");
@@ -67,10 +79,7 @@ export class JList {
 	delete(criteria) {
 		const originalSize = this.#items.length;
 		this.#items = this.#items.filter(item => {
-			return !criteria.every(criterion => {
-				const value = item[criterion.key];
-				return criterion.matchFn(value);
-			});
+			return !this.#matchesCriteria(item, criteria);
 		});
 		return originalSize - this.#items.length;
 	}
@@ -85,12 +94,7 @@ export class JList {
 		let updatedCount = 0;
 		
 		this.#items.forEach(item => {
-			const matches = criteria.every(criterion => {
-				const value = item[criterion.key];
-				return criterion.matchFn(value);
-			});
-			
-			if (matches) {
+			if (this.#matchesCriteria(item, criteria)) {
 				Object.assign(item, changes);
 				updatedCount++;
 			}
@@ -103,12 +107,7 @@ export class JList {
 		let updatedCount = 0;
 		
 		this.#items.forEach(item => {
-			const matches = criteria.every(criterion => {
-				const value = item[criterion.key];
-				return criterion.matchFn(value);
-			});
-			
-			if (matches) {
+			if (this.#matchesCriteria(item, criteria)) {
 				updateSpecs.forEach(spec => {
 					item[spec.key] = spec.updateFn(item[spec.key]);
 				});
@@ -117,6 +116,16 @@ export class JList {
 		});
 		
 		return updatedCount;
+	}
+	
+	// =============================================
+	
+	find(criteria) {
+		return this.#items.filter(item => this.#matchesCriteria(item, criteria));
+	}
+	
+	findById(id) {
+		return this.#items.find(item => item.id === id);
 	}
 	
 }
