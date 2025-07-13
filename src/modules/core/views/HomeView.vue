@@ -22,20 +22,6 @@
 			<!--
 			<div v-else class="grid grid-cols-3">
 				<div>
-					<h2 class="text-2xl font-bold mb-6 text-center">Demo 1</h2>
-					<TheDragDrop
-						:items="localColors"
-						@reorder="handleReorder"
-					>
-						<template #default="{ item }">
-							<DragDemoItem :item="item"/>
-						</template>
-					</TheDragDrop>
-				</div>
-
-				<div></div>
-
-				<div>
 					<h2 class="text-2xl font-bold mb-6 text-center">Demo 2</h2>
 					<TheDragDropWrapper
 						:items="localColors"
@@ -70,7 +56,6 @@ import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 /*
 import moment from "moment";
 import { DateTime } from "luxon";
-import TheDragDrop from "@/modules/core/components/TheDragDrop.vue";
 import TheDragDropWrapper from "@/modules/core/components/TheDragDropWrapper.vue";
 import DragDemoItem from "@/modules/core/components/DragDemoItem.vue";
  */
@@ -79,7 +64,6 @@ export default {
 	name: 'HomeView',
 
 	components: {
-		// TheDragDrop,
 		// TheDragDropWrapper,
 		// DragDemoItem,
 		DefaultLayout,
