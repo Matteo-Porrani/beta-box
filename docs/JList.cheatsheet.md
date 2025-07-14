@@ -80,7 +80,7 @@ list.deleteById(999); // 0
 ```
 
 ### `.update(criteria, changes)`
-Updates items matching criteria. Returns count of updated items.
+Updates items matching criteria. Returns count of updated items. ID mutations are prevented.
 ```javascript
 // Update age for all Johns
 list.update([{ key: "name", matchFn: name => name === "John" }], { age: 31 });
@@ -90,10 +90,26 @@ list.update([{ key: "age", matchFn: age => age < 30 }], {
     status: "young", 
     category: "A" 
 });
+
+// ID mutation attempts are ignored
+list.update([{ key: "name", matchFn: name => name === "John" }], { id: 999 }); // ID stays unchanged
+```
+
+### `.updateById(id, changes)`
+Updates item by ID. Returns count of updated items (1 or 0). ID mutations are prevented.
+```javascript
+// Update item by ID
+list.updateById(1, { name: "Johnny", age: 32 });
+
+// Update multiple fields
+list.updateById(2, { status: "active", lastLogin: new Date() });
+
+// ID mutation attempts are ignored
+list.updateById(1, { id: 999 }); // ID stays unchanged
 ```
 
 ### `.updateWithFn(criteria, updateSpecs)`
-Updates items using functions. Returns count of updated items.
+Updates items using functions. Returns count of updated items. ID mutations are prevented.
 ```javascript
 // Increment age by 1
 list.updateWithFn(
@@ -108,6 +124,12 @@ list.updateWithFn(
         { key: "age", updateFn: age => age * 1.1 },
         { key: "name", updateFn: name => name.toUpperCase() }
     ]
+);
+
+// ID mutation attempts are prevented
+list.updateWithFn(
+    [{ key: "name", matchFn: name => name === "John" }],
+    [{ key: "id", updateFn: () => 999 }] // ID stays unchanged
 );
 ```
 
@@ -202,5 +224,10 @@ All search/update methods use criteria arrays:
 - `add()` throws `TypeError` for invalid objects or duplicate IDs
 - `replaceItems()` throws `TypeError` for non-arrays or invalid objects
 - `sort()` throws `TypeError` for invalid options, keys, or missing properties
+
+## ID Protection
+- All update methods (`update()`, `updateById()`, `updateWithFn()`) prevent ID mutations
+- Attempts to change an item's ID are silently ignored
+- The original ID is always preserved after updates
 
 
