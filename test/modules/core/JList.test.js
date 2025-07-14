@@ -296,4 +296,63 @@ describe("05 - FINDING ITEMS", () => {
 	})
 })
 
+describe("06 - SORTING ITEMS", () => {
+	
+	it("sorts items by NUMERIC key", () => {
+		const list = new JList([
+			{ id: 7, name: "Peter", age: 44, city: "Chicago" },
+			{ id: 1, name: "Jack", age: 25, city: "London" },
+			{ id: 25, name: "Mary", age: 38, city: "Paris" },
+			{ id: 33, name: "Albert", age: 55, city: "Madrid" },
+		]);
+		
+		list.sort({ key: "age", order: 1 });
+		
+		expect(list.items).toEqual([
+			{ id: 1, name: "Jack", age: 25, city: "London" },
+			{ id: 25, name: "Mary", age: 38, city: "Paris" },
+			{ id: 7, name: "Peter", age: 44, city: "Chicago" },
+			{ id: 33, name: "Albert", age: 55, city: "Madrid" },
+		]);
+		
+	});
+	
+	it("sorts items by ALPHABETICAL key", () => {
+		const list = new JList([
+			{ id: 7, name: "Peter", age: 44, city: "Chicago" },
+			{ id: 1, name: "Jack", age: 25, city: "London" },
+			{ id: 25, name: "Mary", age: 38, city: "Paris" },
+			{ id: 33, name: "Albert", age: 55, city: "Madrid" },
+		]);
+		
+		list.sort({ key: "name", order: -1 });
+		
+		expect(list.items).toEqual([
+			{ id: 7, name: "Peter", age: 44, city: "Chicago" },
+			{ id: 25, name: "Mary", age: 38, city: "Paris" },
+			{ id: 1, name: "Jack", age: 25, city: "London" },
+			{ id: 33, name: "Albert", age: 55, city: "Madrid" },
+		]);
+	});
+	
+	it("sorts items by NESTED key", () => {
+		const list = new JList([
+			{ id: 77, name: "Peter", location: { city: "Washington" } },
+			{ id: 5, name: "Will", location: { city: "Detroit" } },
+			{ id: 31, name: "Karen", location: { city: "Atlanta" } },
+		]);
+		
+		list.sort({ key: "location.city", order: 1 });
+		
+		expect(list.items).toEqual([
+			{ id: 31, name: "Karen", location: { city: "Atlanta" } },
+			{ id: 5, name: "Will", location: { city: "Detroit" } },
+			{ id: 77, name: "Peter", location: { city: "Washington" } },
+		]);
+	});
+	
+})
+
+
+
 

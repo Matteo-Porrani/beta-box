@@ -127,6 +127,42 @@ export class JList {
 	findById(id) {
 		return this.#items.find(item => item.id === id);
 	}
+
+	// =============================================
+
+	
+	sort({ key = "id", order = 1 } = {}) {
+
+		if (typeof key !== "string") {
+			throw new TypeError("Sort key must be a string.");
+		}
+
+		if (order !== 1 && order !== -1) {
+			throw new TypeError("Sort order must be 1 (ascending) or -1 (descending).");
+		}
+
+		// Helper function to get nested property value
+		const getNestedValue = (obj, keyPath) => {
+			return keyPath.split('.').reduce((current, prop) => {
+				return current?.[prop];
+			}, obj);
+		};
+
+		// Validate that the key path exists on all items
+		for (const item of this.#items) {
+			const value = getNestedValue(item, key);
+			if (value === undefined) {
+				throw new TypeError(`Key path '${key}' not found on item with id '${item.id}'.`);
+			}
+		}
+
+		this.#items.sort((a, b) => {
+			const valueA = getNestedValue(a, key);
+			const valueB = getNestedValue(b, key);
+
+			return (valueA > valueB ? 1 : valueA < valueB ? -1 : 0) * order;
+		});
+	}
 	
 }
 
