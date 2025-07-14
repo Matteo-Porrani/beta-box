@@ -26,6 +26,7 @@
 			<slot
 				:item="item"
 				:isBeingDragged="draggedIndex === index"
+				:isDragOver="dragOverIndex === index"
 			/>
 		</article>
 	</div>
@@ -147,8 +148,7 @@ article.drag-over {
 	display: grid;
 	place-items: center;
 	width: 20px;
-	height: 70%;
-	max-height: 50px;
+	max-height: 40px;
 	border-radius: 4px 0 0 4px;
 }
 

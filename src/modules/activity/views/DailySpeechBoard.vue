@@ -23,10 +23,11 @@
 					class="col-span-2"
 				>
 					<!-- here we must use the props' names as defined in the slot definition -->
-					<template #default="{ item, isBeingDragged }">
+					<template #default="{ item, isBeingDragged, isDragOver }">
 						<DailySpeechActivityItem
 							:item="item"
 							:is-being-dragged="isBeingDragged"
+							:is-drag-over="isDragOver"
 						/>
 					</template>
 				</TheDragDropWrapper>
