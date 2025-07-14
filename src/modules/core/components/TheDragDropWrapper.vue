@@ -13,7 +13,7 @@
 					'draggable': !hasHandle,
 					'dragging': draggedIndex === index,
 					'drag-over': dragOverIndex === index,
-					'ghost-placeholder': isLivePreview && dragOverIndex === index && draggedIndex !== index
+					'ghost-placeholder': isLivePreview && (dragOverIndex === index) && (draggedIndex !== index)
 				}"
 			:style="{
 				transform: itemTransforms[item.id] || 'translateY(0)',
@@ -181,19 +181,11 @@ export default {
 			// Remove the dragged item from its current position
 			newOrder.splice(draggedItemIndex, 1);
 			
-			// Insert after the target position
-			// When dragging over an item, we want to place the dragged item after it
-			let insertIndex = overIndex;
-			if (draggedItemIndex < overIndex) {
-				// If we're dragging from earlier in the list, the target has shifted left
-				insertIndex = overIndex;
-			} else {
-				// If we're dragging from later in the list, insert right after the target
-				insertIndex = overIndex + 1;
-			}
-			
+			// Use overIndex directly for both UP and DOWN directions
+			// This works because overIndex represents the exact array index where we want to insert
+
 			// Insert at the calculated position
-			newOrder.splice(insertIndex, 0, draggedItem);
+			newOrder.splice(overIndex, 0, draggedItem);
 			
 			return newOrder;
 		},
@@ -239,8 +231,8 @@ article.drag-over {
 
 /* Ghost placeholder styling for live preview */
 article.ghost-placeholder {
-	background-color: #fef3c7;
-	border: 2px dashed #f59e0b;
+	//background-color: #fef3c7;
+	border: 2px dashed #fde047; /* yellow-300 */
 	opacity: 0.7;
 }
 

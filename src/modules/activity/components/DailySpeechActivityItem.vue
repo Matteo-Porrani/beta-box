@@ -26,7 +26,7 @@ in order to inform the user that a drop zone is available.
 
 <template>
 	<div
-		class="border-2 border-zinc-700 rounded space-y-2 p-2 h-32"
+		class="h-32 border-2 border-zinc-700 rounded space-y-2 p-2"
 		:class="{
 			'bg-zinc-900': isBeingDragged,
 			'bg-zinc-500': isDragOver,
