@@ -1,7 +1,7 @@
 <template>
 	<div class="drag-container">
 		<article
-			v-for="(item, index) in items"
+			v-for="(item, index) in displayItems"
 			:key="item.id"
 			:draggable="!hasHandle || isDraggable"
 			@dragstart="handleDragStart($event, index)"
@@ -12,8 +12,13 @@
 					'grid-multi-cols': hasHandle,
 					'draggable': !hasHandle,
 					'dragging': draggedIndex === index,
-					'drag-over': dragOverIndex === index
+					'drag-over': dragOverIndex === index,
+					'ghost-placeholder': isLivePreview && dragOverIndex === index && draggedIndex !== index
 				}"
+			:style="{
+				transform: itemTransforms[item.id] || 'translateY(0)',
+				transition: isLivePreview ? 'transform 0.2s ease' : 'none'
+			}"
 		>
 			<!-- handle -->
 			<aside
@@ -56,12 +61,44 @@ export default {
 			draggedIndex: null,
 			dragOverIndex: null,
 			isDraggable: false,
+			previewItems: [],
+			isLivePreview: false,
+			draggedItemId: null,
+			originalDragIndex: null,
+			lastDragOverIndex: null,
 		};
+	},
+
+	computed: {
+		displayItems() {
+			return this.isLivePreview ? this.previewItems : this.items;
+		},
+
+		itemTransforms() {
+			if (!this.isLivePreview || this.draggedIndex === null) {
+				return {};
+			}
+			
+			const transforms = {};
+			this.displayItems.forEach((item, index) => {
+				if (index === this.draggedIndex) {
+					transforms[item.id] = 'translateY(0)';
+				} else {
+					transforms[item.id] = 'translateY(0)';
+				}
+			});
+			return transforms;
+		}
 	},
 
 	methods: {
 		handleDragStart(event, index) {
 			this.draggedIndex = index;
+			this.originalDragIndex = index;
+			this.draggedItemId = this.items[index].id;
+			this.previewItems = [...this.items];
+			this.isLivePreview = true;
+			this.lastDragOverIndex = null;
 			event.dataTransfer.effectAllowed = 'move';
 			event.dataTransfer.setData('text/html', event.target);
 		},
@@ -70,29 +107,46 @@ export default {
 			event.preventDefault();
 			event.dataTransfer.dropEffect = 'move';
 			this.dragOverIndex = index;
+			
+			// Only update preview if drop target has changed
+			if (this.isLivePreview && this.draggedItemId !== null && this.lastDragOverIndex !== index) {
+				this.previewItems = this.calculatePreviewOrder(this.draggedItemId, index);
+				this.lastDragOverIndex = index;
+			}
 		},
 
 		handleDrop(event, dropIndex) {
 			event.preventDefault();
 			
-			if (this.draggedIndex !== null && this.draggedIndex !== dropIndex) {
-				const draggedItem = this.items[this.draggedIndex];
-				const reorderedItems = [...this.items];
+			if (this.draggedItemId !== null && this.originalDragIndex !== dropIndex) {
+				// Calculate the final order if we haven't already
+				if (this.lastDragOverIndex !== dropIndex) {
+					this.previewItems = this.calculatePreviewOrder(this.draggedItemId, dropIndex);
+				}
 				
-				reorderedItems.splice(this.draggedIndex, 1);
-				reorderedItems.splice(dropIndex, 0, draggedItem);
-				
-				this.$emit("reorder", reorderedItems);
+				// Emit the final reordered items
+				this.$emit("reorder", this.previewItems);
 			}
 			
+			// Reset all preview state
 			this.draggedIndex = null;
 			this.dragOverIndex = null;
+			this.isLivePreview = false;
+			this.previewItems = [];
+			this.draggedItemId = null;
+			this.originalDragIndex = null;
+			this.lastDragOverIndex = null;
 		},
 
 		handleDragEnd() {
 			this.draggedIndex = null;
 			this.dragOverIndex = null;
 			this.isDraggable = false;
+			this.isLivePreview = false;
+			this.previewItems = [];
+			this.draggedItemId = null;
+			this.originalDragIndex = null;
+			this.lastDragOverIndex = null;
 		},
 
 		enableDrag() {
@@ -101,6 +155,47 @@ export default {
 
 		disableDrag() {
 			this.isDraggable = false;
+		},
+
+		calculatePreviewOrder(draggedItemId, overIndex) {
+			if (draggedItemId === null || overIndex === null) {
+				return this.previewItems;
+			}
+
+			// Use the original items array to get stable indices
+			const newOrder = [...this.items];
+			
+			// Find the dragged item by ID
+			const draggedItemIndex = newOrder.findIndex(item => item.id === draggedItemId);
+			if (draggedItemIndex === -1) {
+				return this.previewItems;
+			}
+			
+			// If dropping on the same position, no change needed
+			if (draggedItemIndex === overIndex) {
+				return this.previewItems;
+			}
+			
+			const draggedItem = newOrder[draggedItemIndex];
+			
+			// Remove the dragged item from its current position
+			newOrder.splice(draggedItemIndex, 1);
+			
+			// Insert after the target position
+			// When dragging over an item, we want to place the dragged item after it
+			let insertIndex = overIndex;
+			if (draggedItemIndex < overIndex) {
+				// If we're dragging from earlier in the list, the target has shifted left
+				insertIndex = overIndex;
+			} else {
+				// If we're dragging from later in the list, insert right after the target
+				insertIndex = overIndex + 1;
+			}
+			
+			// Insert at the calculated position
+			newOrder.splice(insertIndex, 0, draggedItem);
+			
+			return newOrder;
 		},
 	},
 
@@ -121,6 +216,7 @@ article {
 	border-radius: 4px;
 	transition: opacity 0.2s ease, transform 0.2s ease;
 	user-select: none;
+	will-change: transform;
 }
 
 /* used if handle */
@@ -139,6 +235,13 @@ article.dragging {
 
 article.drag-over {
 	transform: scale(1.02);
+}
+
+/* Ghost placeholder styling for live preview */
+article.ghost-placeholder {
+	background-color: #fef3c7;
+	border: 2px dashed #f59e0b;
+	opacity: 0.7;
 }
 
 /* style for handle */
