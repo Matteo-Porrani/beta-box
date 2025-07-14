@@ -95,12 +95,27 @@ export class JList {
 		
 		this.#items.forEach(item => {
 			if (this.#matchesCriteria(item, criteria)) {
+				const originalId = item.id;
 				Object.assign(item, changes);
+				item.id = originalId; // Prevent ID mutation
 				updatedCount++;
 			}
 		});
 		
 		return updatedCount;
+	}
+	
+	updateById(id, changes) {
+		const idxToUpdate = this.#items.findIndex(item => item.id === id);
+		if (idxToUpdate > -1) {
+			const targetItem = this.#items[idxToUpdate];
+			const originalId = targetItem.id;
+			Object.assign(targetItem, changes);
+			targetItem.id = originalId; // Prevent ID mutation
+
+			return 1;
+		}
+		return 0;
 	}
 	
 	updateWithFn(criteria, updateSpecs) {

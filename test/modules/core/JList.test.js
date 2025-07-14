@@ -251,7 +251,36 @@ describe("04 - UPDATING ITEMS", () => {
 			{ id: 3, name: "Charlie", age: 45, city: "Chicago" },
 			{ id: 4, name: "Diana", age: 55, city: "Dublin" }
 		])
+	});
+	
+	it("prevents ID mutation", () => {
+		const list = new JList([
+			{ id: 101, name: "PHP" },
+			{ id: 102, name: "Python" },
+			{ id: 103, name: "JavaScript" },
+		]);
 		
+		// trying to update ID
+		const updated = list.updateById(101, { id: 999, name: "Rust" });
+		
+		expect(updated).toBe(1); // the 'name' property was updated on the corresponding item
+		expect(list.items).toEqual([
+			{ id: 101, name: "Rust" }, // the 'id' property was not updated
+			{ id: 102, name: "Python" },
+			{ id: 103, name: "JavaScript" },
+		]);
+	});
+	
+	it("doesn't update if ID is not found", () => {
+		const list = new JList([
+			{ id: 101, name: "PHP" },
+			{ id: 102, name: "Python" },
+			{ id: 103, name: "JavaScript" },
+		]);
+		
+		// trying to update ID
+		const updated = list.updateById(999, { name: "Rust" });
+		expect(updated).toBe(0);
 	});
 	
 });
