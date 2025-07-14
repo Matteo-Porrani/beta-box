@@ -16,7 +16,6 @@
 					'ghost-placeholder': isLivePreview && (dragOverIndex === index) && (draggedIndex !== index)
 				}"
 			:style="{
-				transform: itemTransforms[item.id] || 'translateY(0)',
 				transition: isLivePreview ? 'transform 0.2s ease' : 'none'
 			}"
 		>
@@ -74,21 +73,6 @@ export default {
 			return this.isLivePreview ? this.previewItems : this.items;
 		},
 
-		itemTransforms() {
-			if (!this.isLivePreview || this.draggedIndex === null) {
-				return {};
-			}
-			
-			const transforms = {};
-			this.displayItems.forEach((item, index) => {
-				if (index === this.draggedIndex) {
-					transforms[item.id] = 'translateY(0)';
-				} else {
-					transforms[item.id] = 'translateY(0)';
-				}
-			});
-			return transforms;
-		}
 	},
 
 	methods: {
@@ -254,18 +238,5 @@ article.ghost-placeholder {
 	letter-spacing: -2px;
 }
 
-
-
-
-.debug {
-	position: fixed;
-	width: 700px;
-	height: 700px;
-	overflow-y: auto;
-	top: 40px;
-	right: 40px;
-	z-index: 999;
-	padding: 10px;
-}
 </style>
 
