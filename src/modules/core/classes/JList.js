@@ -130,7 +130,11 @@ export class JList {
 
 	// =============================================
 
-	
+	replaceItems(items) {
+		this.#validateItems(items);
+		this.#items = structuredClone(items);
+	}
+
 	sort({ key = "id", order = 1 } = {}) {
 
 		if (typeof key !== "string") {

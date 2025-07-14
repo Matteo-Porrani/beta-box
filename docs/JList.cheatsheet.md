@@ -134,6 +134,22 @@ list.findById(1); // { id: 1, name: "John", age: 30 }
 list.findById(999); // undefined
 ```
 
+### `.replaceItems(items)`
+Replaces all items with a new array. Validates and clones the new items.
+```javascript
+// Replace with new data
+list.replaceItems([
+    { id: 10, name: "New User", age: 40 },
+    { id: 20, name: "Another User", age: 50 }
+]);
+
+// Replace with empty array
+list.replaceItems([]);
+
+// Replace with data from API
+list.replaceItems(apiResponse.data);
+```
+
 ### `.sort({ key = "id", order = 1 })`
 Sorts items by key. Mutates the list.
 - `order: 1` = ascending, `order: -1` = descending
@@ -184,6 +200,7 @@ All search/update methods use criteria arrays:
 ## Error Handling
 - Constructor throws `TypeError` for non-arrays or invalid objects
 - `add()` throws `TypeError` for invalid objects or duplicate IDs
+- `replaceItems()` throws `TypeError` for non-arrays or invalid objects
 - `sort()` throws `TypeError` for invalid options, keys, or missing properties
 
 
