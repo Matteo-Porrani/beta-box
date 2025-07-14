@@ -253,7 +253,7 @@ describe("04 - UPDATING ITEMS", () => {
 		])
 	});
 	
-	it("prevents ID mutation", () => {
+	it("prevents ID mutation - updateById", () => {
 		const list = new JList([
 			{ id: 101, name: "PHP" },
 			{ id: 102, name: "Python" },
@@ -262,6 +262,49 @@ describe("04 - UPDATING ITEMS", () => {
 		
 		// trying to update ID
 		const updated = list.updateById(101, { id: 999, name: "Rust" });
+		
+		expect(updated).toBe(1); // the 'name' property was updated on the corresponding item
+		expect(list.items).toEqual([
+			{ id: 101, name: "Rust" }, // the 'id' property was not updated
+			{ id: 102, name: "Python" },
+			{ id: 103, name: "JavaScript" },
+		]);
+	});
+	
+	it("prevents ID mutation - update", () => {
+		const list = new JList([
+			{ id: 101, name: "PHP" },
+			{ id: 102, name: "Python" },
+			{ id: 103, name: "JavaScript" },
+		]);
+		
+		const updated = list.update(
+			[{ key: "id", matchFn: (id) => id === 101 }],
+			{ id: 999, name: "Rust" } // trying to update ID
+		);
+		
+		expect(updated).toBe(1); // the 'name' property was updated on the corresponding item
+		expect(list.items).toEqual([
+			{ id: 101, name: "Rust" }, // the 'id' property was not updated
+			{ id: 102, name: "Python" },
+			{ id: 103, name: "JavaScript" },
+		]);
+	});
+	
+	it("prevents ID mutation - updateWithFn", () => {
+		const list = new JList([
+			{ id: 101, name: "PHP" },
+			{ id: 102, name: "Python" },
+			{ id: 103, name: "JavaScript" },
+		]);
+		
+		const updated = list.updateWithFn(
+			[{ key: "id", matchFn: (id) => id === 101 }],
+			[
+				{ key: "id", updateFn: (id) => id * 10 }, // trying to update ID
+				{ key: "name", updateFn: () => "Rust" },
+			]
+		);
 		
 		expect(updated).toBe(1); // the 'name' property was updated on the corresponding item
 		expect(list.items).toEqual([

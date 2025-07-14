@@ -123,9 +123,11 @@ export class JList {
 		
 		this.#items.forEach(item => {
 			if (this.#matchesCriteria(item, criteria)) {
+				const originalId = item.id;
 				updateSpecs.forEach(spec => {
 					item[spec.key] = spec.updateFn(item[spec.key]);
 				});
+				item.id = originalId; // Prevent ID mutation
 				updatedCount++;
 			}
 		});
