@@ -19,7 +19,7 @@ export class JList {
 		}
 		
 		for (const [index, item] of items.entries()) {
-			if (typeof item !== "object" || item === null) {
+			if (typeof item !== "object" || item === null || !Object.hasOwn(item, "id")) {
 				throw new TypeError(`Item at index ${index} is not a valid object.`);
 			}
 		}

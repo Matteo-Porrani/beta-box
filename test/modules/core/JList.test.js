@@ -40,7 +40,15 @@ const VEHICLES = [
 ]
 
 
-describe("00 - TESTING CLONING", () => {
+describe("00 - INITIALIZATION", () => {
+	
+	it("throws error when objects in the array don't have an 'id' property", () => {
+		expect(() => new JList([
+			{ name: "Amy", city: "Amsterdam" },
+			{ name: "Ben", city: "Berlin" },
+			{ name: "Charlie", city: "Chicago" },
+		])).toThrow;
+	});
 	
 	it("clones the array passed for initialization", () => {
 	
