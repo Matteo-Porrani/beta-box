@@ -4,7 +4,7 @@
 ```javascript
 new JList(items = [])
 ```
-Creates a new JList instance with an array of objects.
+Creates a new JList instance with an array of objects. **All objects must have an `id` property.**
 
 ```javascript
 const list = new JList([
@@ -220,9 +220,9 @@ All search/update methods use criteria arrays:
 ```
 
 ## Error Handling
-- Constructor throws `TypeError` for non-arrays or invalid objects
+- Constructor throws `TypeError` for non-arrays or invalid objects (objects must have an 'id' property)
 - `add()` throws `TypeError` for invalid objects or duplicate IDs
-- `replaceItems()` throws `TypeError` for non-arrays or invalid objects
+- `replaceItems()` throws `TypeError` for non-arrays or invalid objects (objects must have an 'id' property)
 - `sort()` throws `TypeError` for invalid options, keys, or missing properties
 
 ## ID Protection
