@@ -29,12 +29,13 @@
 			/>
 		</div>
 
-		<!-- Hover zone for color selector (right 20% of card) -->
-		<div
-			class="absolute top-0 right-0 h-full w-1/5 z-20"
-			@mouseenter="showColorSelector = true"
-			@mouseleave="showColorSelector = false"
-		></div>
+		<!-- 3 dots menu button -->
+		<button
+			class="absolute top-1 right-1 w-5 h-5 rounded bg-stone-700 hover:bg-stone-600 border border-stone-500 flex items-center justify-center text-white text-xs z-20 transition-colors duration-150"
+			@click.stop="toggleColorSelector"
+		>
+			⋯
+		</button>
 
 		<!-- Color selector -->
 		<ColorSelector
@@ -42,6 +43,7 @@
 			:todo="todo"
 			:visible="showColorSelector"
 			@update="handleTodoUpdate"
+			@close="showColorSelector = false"
 		/>
 		
 		<!-- Title task indicator -->
@@ -55,7 +57,7 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick, defineProps, defineEmits } from 'vue'
+import { ref, computed, nextTick, onMounted, onUnmounted, defineProps, defineEmits } from 'vue'
 import ColorSelector from './ColorSelector.vue'
 
 const props = defineProps({
@@ -140,4 +142,22 @@ function saveEdit() {
 function handleTodoUpdate(updatedTodo) {
 	emit('update', updatedTodo)
 }
+
+function toggleColorSelector() {
+	showColorSelector.value = !showColorSelector.value
+}
+
+function handleClickOutside(event) {
+	if (showColorSelector.value && !event.target.closest('.color-selector')) {
+		showColorSelector.value = false
+	}
+}
+
+onMounted(() => {
+	document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+	document.removeEventListener('click', handleClickOutside)
+})
 </script>

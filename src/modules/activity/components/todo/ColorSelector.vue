@@ -1,14 +1,16 @@
 <template>
 	<div
 		v-if="visible"
-		class="absolute right-0 top-0 h-full flex flex-col justify-center z-10"
-		style="width: 20%;"
+		class="absolute top-0 right-1 z-30 color-selector"
 		@click.stop
 	>
-		<div class="bg-stone-900 border border-stone-600 rounded-lg shadow-lg p-1 space-y-1">
+		<div 
+			class="bg-stone-900 border border-stone-600 rounded shadow-lg px-1 py-0.5 flex gap-0.5"
+			@click.stop
+		>
 			<!-- Title toggle button -->
 			<button
-				class="w-8 h-8 rounded border border-stone-500 flex items-center justify-center text-xs font-bold transition-colors duration-150"
+				class="w-4 h-4 rounded border border-stone-500 flex items-center justify-center text-xs font-bold transition-colors duration-150"
 				:class="{
 					'bg-yellow-400 text-black border-yellow-400': todo.starred,
 					'bg-stone-700 text-white hover:bg-stone-600': !todo.starred
@@ -22,7 +24,7 @@
 			<button
 				v-for="color in colorOptions"
 				:key="color.code"
-				class="w-8 h-8 rounded border transition-all duration-150"
+				class="w-4 h-4 rounded border transition-all duration-150"
 				:class="[
 					color.bgClass,
 					{
@@ -51,7 +53,7 @@ const props = defineProps({
 	}
 })
 
-const emit = defineEmits(['update'])
+const emit = defineEmits(['update', 'close'])
 
 const colorOptions = [
 	{ code: '$D', name: 'Default', bgClass: 'bg-yellow-600' },
@@ -66,6 +68,7 @@ function toggleTitle() {
 		...props.todo,
 		starred: !props.todo.starred
 	})
+	emit('close')
 }
 
 function selectColor(colorCode) {
@@ -75,5 +78,6 @@ function selectColor(colorCode) {
 			color: colorCode
 		})
 	}
+	emit('close')
 }
 </script>
