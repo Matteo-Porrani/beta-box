@@ -301,8 +301,8 @@ async function saveTodo() {
 		})
 		
 		// Place in pending slot if creation was successful
-		if (result.result === 'OK' && pendingSlot.value.row !== null && pendingSlot.value.column !== null) {
-			gridMatrix.value[pendingSlot.value.row][pendingSlot.value.column] = result.data
+		if (result.status === 'OK' && pendingSlot.value.row !== null && pendingSlot.value.column !== null) {
+			gridMatrix.value[pendingSlot.value.row][pendingSlot.value.column] = result.itemId
 			saveGridToStorage()
 		}
 	}
