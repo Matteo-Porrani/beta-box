@@ -1,11 +1,9 @@
 <template>
 	<div
-		class="relative h-full w-full rounded-lg border border-stone-600 transition-all duration-200 cursor-move"
-		:class="cardClasses"
-		draggable="true"
+		class="relative h-full w-full rounded-lg border border-stone-600 transition-all duration-200"
+		:class="[cardClasses, { 'cursor-move': !isEditing, 'cursor-text': isEditing }]"
+		:draggable="!isEditing"
 		@dragstart="handleDragStart"
-		@mouseenter="showColorSelector = true"
-		@mouseleave="showColorSelector = false"
 	>
 		<!-- Main content area -->
 		<div class="p-2 h-full flex flex-col">
@@ -14,7 +12,7 @@
 				v-if="!isEditing"
 				class="flex-1 text-sm text-white leading-relaxed whitespace-pre-wrap break-words"
 				style="text-align: left; vertical-align: top;"
-				@dblclick="startEditing"
+				@dblclick.stop="startEditing"
 			>
 				{{ todo.desc }}
 			</div>
@@ -30,6 +28,13 @@
 				@blur="saveEdit"
 			/>
 		</div>
+
+		<!-- Hover zone for color selector (right 20% of card) -->
+		<div
+			class="absolute top-0 right-0 h-full w-1/5 z-20"
+			@mouseenter="showColorSelector = true"
+			@mouseleave="showColorSelector = false"
+		></div>
 
 		<!-- Color selector -->
 		<ColorSelector
@@ -91,6 +96,10 @@ const cardClasses = computed(() => {
 })
 
 function handleDragStart(event) {
+	if (isEditing.value) {
+		event.preventDefault()
+		return
+	}
 	event.dataTransfer.setData('text/plain', props.todo.id.toString())
 	event.dataTransfer.effectAllowed = 'move'
 }
