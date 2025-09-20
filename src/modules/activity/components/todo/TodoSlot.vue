@@ -15,12 +15,12 @@
 		<slot />
 		
 		<!-- Empty slot indicator -->
-<!--		<div-->
-<!--			v-if="isEmpty"-->
-<!--			class="absolute inset-0 flex items-center justify-center text-stone-500 text-sm"-->
-<!--		>-->
-<!--			<span class="pointer-events-none">+</span>-->
-<!--		</div>-->
+		<div
+			v-if="isEmpty"
+			class="absolute inset-0 flex items-center justify-center text-stone-500 text-sm"
+		>
+			<span class="pointer-events-none">+</span>
+		</div>
 	</div>
 </template>
 

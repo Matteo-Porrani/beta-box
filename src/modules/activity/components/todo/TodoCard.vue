@@ -26,8 +26,8 @@
 				ref="editInput"
 				v-model="editText"
 				:class="[
-					'flex-1 bg-transparent text-stone-800 leading-relaxed resize-none outline-none border-none overflow-hidden p-0',
-					todo.starred ? 'text-lg font-semibold' : 'text-sm'
+					'flex-1 bg-transparent leading-relaxed resize-none outline-none border-none overflow-hidden p-0',
+					todo.starred ? 'text-lg font-semibold text-white' : 'text-sm text-stone-800'
 				]"
 				style="text-align: left; vertical-align: top;"
 				@keydown="handleKeyDown"

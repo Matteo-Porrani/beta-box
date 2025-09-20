@@ -20,24 +20,26 @@
 		<!-- Main grid area -->
 		<div class="bg-stone-800 p-4 overflow-hidden">
 			<div
-				class="grid gap-0.5 h-full"
+				class="grid gap-x-3 gapx-y-1 h-full"
 				:style="gridStyle"
 			>
-				<TodoSlot
-					v-for="(todoId, index) in gridMatrix.flat()"
-					:key="`slot-${Math.floor(index / gridConfig.columns)}-${index % gridConfig.columns}`"
-					:row="Math.floor(index / gridConfig.columns)"
-					:column="index % gridConfig.columns"
-					:todo-id="todoId"
-					@drop="handleTodoDrop"
-					@click="handleSlotClick"
-				>
-					<TodoCard
-						v-if="todoId && getTodoById(todoId)"
-						:todo="getTodoById(todoId)"
-						@update="handleTodoUpdate"
-					/>
-				</TodoSlot>
+				<template v-for="row in gridConfig.rows" :key="`row-${row}`">
+					<TodoSlot
+						v-for="col in gridConfig.columns"
+						:key="`slot-${row-1}-${col-1}`"
+						:row="row-1"
+						:column="col-1"
+						:todo-id="gridMatrix[row-1] && gridMatrix[row-1][col-1]"
+						@drop="handleTodoDrop"
+						@click="handleSlotClick"
+					>
+						<TodoCard
+							v-if="gridMatrix[row-1] && gridMatrix[row-1][col-1] && getTodoById(gridMatrix[row-1][col-1])"
+							:todo="getTodoById(gridMatrix[row-1][col-1])"
+							@update="handleTodoUpdate"
+						/>
+					</TodoSlot>
+				</template>
 			</div>
 		</div>
 
@@ -130,6 +132,10 @@ const store = useStore()
 const gridConfigRef = ref(null)
 const todoModalRef = ref(null)
 
+// Constants for maximum grid size
+const MAX_COLUMNS = 8
+const MAX_ROWS = 10
+
 // Reactive data
 const gridConfig = reactive({
 	columns: 6,
@@ -169,8 +175,9 @@ const colorOptions = [
 
 // Methods
 function initializeGrid() {
-	gridMatrix.value = Array(gridConfig.rows).fill(null).map(() => 
-		Array(gridConfig.columns).fill(null)
+	// Always initialize to maximum size to prevent data loss
+	gridMatrix.value = Array(MAX_ROWS).fill(null).map(() => 
+		Array(MAX_COLUMNS).fill(null)
 	)
 }
 
@@ -182,7 +189,15 @@ function loadGridFromStorage() {
 			if (data.matrix && data.config) {
 				gridConfig.columns = data.config.columns
 				gridConfig.rows = data.config.rows
-				gridMatrix.value = data.matrix
+				
+				// Ensure loaded matrix is always maximum size
+				const loadedMatrix = data.matrix
+				gridMatrix.value = Array(MAX_ROWS).fill(null).map((_, row) => 
+					Array(MAX_COLUMNS).fill(null).map((_, col) => {
+						// Copy existing data if it exists
+						return (loadedMatrix[row] && loadedMatrix[row][col]) ? loadedMatrix[row][col] : null
+					})
+				)
 				return
 			}
 		} catch (e) {
@@ -212,24 +227,9 @@ function openGridConfig() {
 }
 
 function applyGridConfig(newConfig) {
-	// Create new matrix with new dimensions
-	const newMatrix = Array(newConfig.rows).fill(null).map(() => 
-		Array(newConfig.columns).fill(null)
-	)
-	
-	// Copy existing todos to new matrix (as much as fits)
-	for (let row = 0; row < Math.min(gridConfig.rows, newConfig.rows); row++) {
-		for (let col = 0; col < Math.min(gridConfig.columns, newConfig.columns); col++) {
-			if (gridMatrix.value[row] && gridMatrix.value[row][col]) {
-				newMatrix[row][col] = gridMatrix.value[row][col]
-			}
-		}
-	}
-	
-	// Update config and matrix
+	// Just update the display configuration - matrix stays at maximum size
 	gridConfig.columns = newConfig.columns
 	gridConfig.rows = newConfig.rows
-	gridMatrix.value = newMatrix
 	
 	saveGridToStorage()
 }
