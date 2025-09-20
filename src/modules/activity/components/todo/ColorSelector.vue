@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="visible"
-		class="absolute top-0 right-1 z-30 color-selector"
+		class="absolute top-1 right-1 z-30 color-selector"
 		@click.stop
 	>
 		<div 
@@ -10,9 +10,9 @@
 		>
 			<!-- Title toggle button -->
 			<button
-				class="w-4 h-4 rounded border border-stone-500 flex items-center justify-center text-xs font-bold transition-colors duration-150"
+				class="size-6 rounded border border-stone-500 flex items-center justify-center text-xs font-bold transition-colors duration-150"
 				:class="{
-					'bg-yellow-400 text-black border-yellow-400': todo.starred,
+					'border-2 border-yellow-400': todo.starred,
 					'bg-stone-700 text-white hover:bg-stone-600': !todo.starred
 				}"
 				@click="toggleTitle"
@@ -24,7 +24,7 @@
 			<button
 				v-for="color in colorOptions"
 				:key="color.code"
-				class="w-4 h-4 rounded border transition-all duration-150"
+				class="size-6 rounded border transition-all duration-150"
 				:class="[
 					color.bgClass,
 					{
@@ -56,11 +56,11 @@ const props = defineProps({
 const emit = defineEmits(['update', 'close'])
 
 const colorOptions = [
-	{ code: '$D', name: 'Default', bgClass: 'bg-yellow-600' },
-	{ code: '$A', name: 'Category A', bgClass: 'bg-blue-600' },
-	{ code: '$B', name: 'Category B', bgClass: 'bg-purple-600' },
-	{ code: '$C', name: 'Category C', bgClass: 'bg-green-600' },
-	{ code: '$E', name: 'Category E', bgClass: 'bg-red-600' }
+	{ code: '$D', name: 'Default', bgClass: 'bg-yellow-300' },
+	{ code: '$A', name: 'Category A', bgClass: 'bg-sky-400' },
+	{ code: '$B', name: 'Category B', bgClass: 'bg-violet-500' },
+	{ code: '$E', name: 'Category E', bgClass: 'bg-orange-400' },
+	{ code: '$C', name: 'Category C', bgClass: 'bg-emerald-500' }
 ]
 
 function toggleTitle() {

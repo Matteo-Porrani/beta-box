@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="relative h-full w-full rounded-lg border border-stone-600 transition-all duration-200 overflow-hidden"
+		class="relative h-full w-full rounded border border-stone-600 transition-all duration-200 overflow-hidden"
 		:class="[cardClasses, { 'cursor-move': !isEditing, 'cursor-text': isEditing }]"
 		:draggable="!isEditing"
 		@dragstart="handleDragStart"
