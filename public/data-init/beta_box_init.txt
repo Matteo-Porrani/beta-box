@@ -135,10 +135,10 @@
             "id": 31
         },
         {
-            "list": "$feelings",
-            "code": "$A",
-            "label": "Anger",
-            "order": 2,
+            "list": "$entities",
+            "code": "week",
+            "label": "Week",
+            "order": 8,
             "default": false,
             "id": 32
         },
@@ -565,6 +565,30 @@
                 "id",
                 "date"
             ]
+        },
+        {
+            "id": 29,
+            "type": "N",
+            "entity": "Week",
+            "order": 1,
+            "field": "id",
+            "pk": true,
+            "readonly": true,
+            "multiple": false,
+            "picker_col": true,
+            "required": false
+        },
+        {
+            "id": 30,
+            "type": "T",
+            "entity": "Week",
+            "order": 2,
+            "field": "days",
+            "pk": false,
+            "readonly": false,
+            "multiple": false,
+            "picker_col": true,
+            "required": false
         }
     ],
     "ticket": [
@@ -576,8 +600,30 @@
     ],
     "day": [
         {
-            "date": "2025-04-07@00:00",
+            "date": "2025-09-01@00:00",
             "id": 1
+        },
+        {
+            "date": "2025-09-02@00:00",
+            "id": 2
+        },
+        {
+            "date": "2025-09-03@00:00",
+            "id": 3
+        },
+        {
+            "date": "2025-09-04@00:00",
+            "id": 4
+        },
+        {
+            "date": "2025-09-05@00:00",
+            "id": 5
+        }
+    ],
+    "week": [
+        {
+            "id": 1,
+            "days": "1:2:3:4:5"
         }
     ]
 }
