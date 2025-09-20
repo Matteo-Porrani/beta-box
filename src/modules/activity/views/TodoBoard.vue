@@ -115,12 +115,16 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
 import BxIcon from '@/modules/ui/components/BxIcon.vue'
 import BxButton from '@/modules/ui/components/BxButton.vue'
 import BxModal from '@/modules/ui/components/BxModal.vue'
 import TodoSlot from '../components/todo/TodoSlot.vue'
 import TodoCard from '../components/todo/TodoCard.vue'
 import GridConfig from '../components/todo/GridConfig.vue'
+
+// Store
+const store = useStore()
 
 // Refs
 const gridConfigRef = ref(null)
@@ -133,7 +137,6 @@ const gridConfig = reactive({
 })
 
 const gridMatrix = ref([])
-const todos = ref([])
 const todoForm = reactive({
 	id: null,
 	desc: '',
@@ -143,7 +146,6 @@ const todoForm = reactive({
 })
 
 const pendingSlot = ref({ row: null, column: null })
-const nextTodoId = ref(1)
 
 // Computed
 const gridStyle = computed(() => ({
@@ -152,6 +154,10 @@ const gridStyle = computed(() => ({
 }))
 
 const isEditingTodo = computed(() => todoForm.id !== null)
+
+const tasks = computed(() => store.getters['entity/getItemsFromTable']('task'))
+
+const loading = computed(() => store.state.entity.loading)
 
 const colorOptions = [
 	{ code: '$D', name: 'Default', bgClass: 'bg-yellow-600' },
@@ -198,7 +204,7 @@ function saveGridToStorage() {
 }
 
 function getTodoById(id) {
-	return todos.value.find(todo => todo.id === id)
+	return tasks.value.find(task => task.id === id)
 }
 
 function openGridConfig() {
@@ -259,11 +265,11 @@ function handleTodoDrop({ todoId, targetRow, targetColumn }) {
 	}
 }
 
-function handleTodoUpdate(updatedTodo) {
-	const index = todos.value.findIndex(todo => todo.id === updatedTodo.id)
-	if (index !== -1) {
-		todos.value[index] = { ...updatedTodo }
-	}
+async function handleTodoUpdate(updatedTodo) {
+	await store.dispatch('entity/updateItem', {
+		tableName: 'task',
+		item: updatedTodo
+	})
 }
 
 function resetTodoForm() {
@@ -274,27 +280,29 @@ function resetTodoForm() {
 	todoForm.done = false
 }
 
-function saveTodo() {
+async function saveTodo() {
 	if (!todoForm.desc.trim()) return
 	
 	if (isEditingTodo.value) {
 		// Update existing todo
-		handleTodoUpdate({ ...todoForm })
+		await handleTodoUpdate({ ...todoForm })
 	} else {
 		// Create new todo
 		const newTodo = {
-			id: nextTodoId.value++,
 			desc: todoForm.desc,
 			color: todoForm.color,
 			starred: todoForm.starred,
 			done: todoForm.done
 		}
 		
-		todos.value.push(newTodo)
+		const result = await store.dispatch('entity/addItem', {
+			tableName: 'task',
+			item: newTodo
+		})
 		
-		// Place in pending slot
-		if (pendingSlot.value.row !== null && pendingSlot.value.column !== null) {
-			gridMatrix.value[pendingSlot.value.row][pendingSlot.value.column] = newTodo.id
+		// Place in pending slot if creation was successful
+		if (result.result === 'OK' && pendingSlot.value.row !== null && pendingSlot.value.column !== null) {
+			gridMatrix.value[pendingSlot.value.row][pendingSlot.value.column] = result.data
 			saveGridToStorage()
 		}
 	}
@@ -309,8 +317,9 @@ function cancelTodoForm() {
 }
 
 // Lifecycle
-onMounted(() => {
+onMounted(async () => {
 	loadGridFromStorage()
+	await store.dispatch('entity/loadItems', 'task')
 })
 </script>
 

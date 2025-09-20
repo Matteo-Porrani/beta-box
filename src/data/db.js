@@ -6,7 +6,7 @@ export const db = new Dexie('betaBoxDatabase');
 db.version(15).stores({
 	field_definition: '++id, entity, list, rel_entity',
 	list_option: '++id, list, code, label',
-	task: '++id, desc, dueAt',
+	task: '++id, desc',
 	tag: '++id, name',
 	color: '++id, label',
 	dummy: '++id, name',
