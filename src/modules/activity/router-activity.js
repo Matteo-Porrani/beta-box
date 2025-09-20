@@ -4,6 +4,7 @@ const ActivityView = () => import("./views/ActivityView.vue");
 const CalendarManager = () => import("./views/CalendarManager.vue");
 const SprintManager = () => import("./views/SprintManager.vue");
 const DailySpeechBoard = () => import("./views/DailySpeechBoard.vue");
+const TodoBoard = () => import("./views/TodoBoard.vue");
 
 const moduleRoute = {
 	path: "/activity",
@@ -29,6 +30,11 @@ const moduleRoute = {
 			name: "activity_daily_speech",
 			path: "daily-speech/:dayId/:dayDate",
 			component: DailySpeechBoard,
+		},
+		{
+			name: "activity_todo_board",
+			path: "todo-board",
+			component: TodoBoard,
 		},
 		
 	]
