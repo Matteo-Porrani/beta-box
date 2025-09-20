@@ -254,19 +254,6 @@
             "id": 4
         },
         {
-            "type": "E",
-            "entity": "Task",
-            "order": 6,
-            "field": "tagId",
-            "pk": false,
-            "rel_entity": "Tag",
-            "multiple": true,
-            "readonly": false,
-            "picker_col": false,
-            "id": 5,
-            "required": false
-        },
-        {
             "type": "N",
             "entity": "Tag",
             "order": 1,
@@ -303,25 +290,6 @@
             "readonly": false,
             "picker_col": false,
             "id": 8
-        },
-        {
-            "type": "D",
-            "name": "test",
-            "isFavorite": false,
-            "desc": "Magical",
-            "done": false,
-            "starred": false,
-            "entity": "Task",
-            "order": 3,
-            "field": "expiresOn",
-            "pk": false,
-            "multiple": false,
-            "readonly": false,
-            "picker_col": false,
-            "required": false,
-            "id": 9,
-            "color": "$indigo",
-            "expiresOn": "2025-03-04@20:05"
         },
         {
             "type": "N",
@@ -494,7 +462,7 @@
             "order": 7,
             "field": "color",
             "pk": false,
-            "list": "$colors",
+            "list": "$activity_type",
             "rel_entity": "",
             "multiple": false,
             "readonly": false,
