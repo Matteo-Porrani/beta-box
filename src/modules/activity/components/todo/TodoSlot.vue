@@ -1,8 +1,8 @@
 <template>
 	<div
-		class="relative border-2 border-dashed border-stone-600 rounded-lg bg-stone-800 transition-colors duration-200"
+		class="relative border border-dashed border-transparent rounded transition-colors duration-200"
 		:class="{
-			'border-blue-400 bg-stone-700': isDragOver,
+			'border-yellow-400 bg-stone-600': isDragOver,
 			'border-stone-500': !isDragOver && !isEmpty,
 			'border-stone-600': !isDragOver && isEmpty
 		}"
@@ -15,12 +15,12 @@
 		<slot />
 		
 		<!-- Empty slot indicator -->
-		<div
-			v-if="isEmpty"
-			class="absolute inset-0 flex items-center justify-center text-stone-500 text-sm"
-		>
-			<span class="pointer-events-none">+</span>
-		</div>
+<!--		<div-->
+<!--			v-if="isEmpty"-->
+<!--			class="absolute inset-0 flex items-center justify-center text-stone-500 text-sm"-->
+<!--		>-->
+<!--			<span class="pointer-events-none">+</span>-->
+<!--		</div>-->
 	</div>
 </template>
 

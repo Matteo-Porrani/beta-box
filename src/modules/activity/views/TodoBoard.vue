@@ -20,7 +20,7 @@
 		<!-- Main grid area -->
 		<div class="bg-stone-800 p-4 overflow-hidden">
 			<div
-				class="grid gap-2 h-full"
+				class="grid gap-0.5 h-full"
 				:style="gridStyle"
 			>
 				<TodoSlot

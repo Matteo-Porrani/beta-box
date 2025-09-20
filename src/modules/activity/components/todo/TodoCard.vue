@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="relative h-full w-full rounded-lg border border-stone-600 transition-all duration-200"
+		class="relative h-full w-full rounded-lg border border-stone-600 transition-all duration-200 overflow-hidden"
 		:class="[cardClasses, { 'cursor-move': !isEditing, 'cursor-text': isEditing }]"
 		:draggable="!isEditing"
 		@dragstart="handleDragStart"
@@ -10,7 +10,10 @@
 			<!-- Editable text area -->
 			<div
 				v-if="!isEditing"
-				class="flex-1 text-sm text-white leading-relaxed whitespace-pre-wrap break-words"
+				:class="[
+					'flex-1 leading-relaxed whitespace-pre-wrap break-words',
+					todo.starred ? 'text-lg font-semibold' : 'text-sm text-stone-800'
+				]"
 				style="text-align: left; vertical-align: top;"
 				@dblclick.stop="startEditing"
 			>
@@ -22,7 +25,10 @@
 				v-else
 				ref="editInput"
 				v-model="editText"
-				class="flex-1 bg-transparent text-sm text-white leading-relaxed resize-none outline-none border-none p-0"
+				:class="[
+					'flex-1 bg-transparent text-stone-800 leading-relaxed resize-none outline-none border-none overflow-hidden p-0',
+					todo.starred ? 'text-lg font-semibold' : 'text-sm'
+				]"
 				style="text-align: left; vertical-align: top;"
 				@keydown="handleKeyDown"
 				@blur="saveEdit"
@@ -31,7 +37,8 @@
 
 		<!-- 3 dots menu button -->
 		<button
-			class="absolute top-1 right-1 w-5 h-5 rounded bg-stone-700 hover:bg-stone-600 border border-stone-500 flex items-center justify-center text-white text-xs z-20 transition-colors duration-150"
+			class="absolute top-1 right-1 w-5 h-5 rounded hover:bg-stone-600 flex items-center justify-center text-xs z-20 transition-colors duration-150"
+			:class="[todo.starred ? 'text-white' : 'text-stone-800']"
 			@click.stop="toggleColorSelector"
 		>
 			⋯
@@ -46,13 +53,6 @@
 			@close="showColorSelector = false"
 		/>
 		
-		<!-- Title task indicator -->
-		<div
-			v-if="todo.starred"
-			class="absolute top-1 right-1 w-4 h-4 bg-yellow-400 rounded-sm flex items-center justify-center"
-		>
-			<span class="text-xs font-bold text-black">T</span>
-		</div>
 	</div>
 </template>
 
@@ -75,23 +75,26 @@ const showColorSelector = ref(false)
 const editInput = ref(null)
 
 const cardClasses = computed(() => {
-	const baseClasses = ['hover:border-stone-500']
+	const baseClasses = []
 	
-	// Color-based background classes
-	const colorClasses = {
-		'$D': 'bg-yellow-600',
-		'$A': 'bg-blue-600',
-		'$B': 'bg-purple-600',
-		'$C': 'bg-green-600',
-		'$E': 'bg-red-600'
-	}
-	
-	const bgColor = colorClasses[props.todo.color] || 'bg-stone-700'
-	baseClasses.push(bgColor)
-	
-	// Title task styling
 	if (props.todo.starred) {
-		baseClasses.push('ring-2 ring-yellow-400')
+		// Title task styling: transparent background, no special border
+		baseClasses.push('bg-transparent')
+	} else {
+		// Regular task styling
+		baseClasses.push('hover:border-stone-500')
+		
+		// Color-based background classes for regular tasks
+		const colorClasses = {
+			'$D': 'bg-yellow-300',
+			'$A': 'bg-sky-400',
+			'$B': 'bg-violet-500',
+			'$C': 'bg-emerald-500',
+			'$E': 'bg-orange-400'
+		}
+		
+		const bgColor = colorClasses[props.todo.color] || 'bg-stone-700'
+		baseClasses.push(bgColor)
 	}
 	
 	return baseClasses
