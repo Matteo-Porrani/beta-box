@@ -8,7 +8,7 @@
 		<!-- Main content area -->
 		<div class="font-cc p-2 h-full flex flex-col">
 			<!-- Editable text area -->
-<!--			<pre class="text-xs text-blue-500 absolute bottom-1 right-1">#{{ todo.id }}</pre>-->
+<!--			<pre class="text-xs text-blue-500 absolute bottom-1 right-1">{{ todo.id }}</pre>-->
 			<div
 				v-if="!isEditing"
 				:class="[
@@ -68,6 +68,8 @@
 
 <script setup>
 import { ref, computed, nextTick, onMounted, onUnmounted, defineProps, defineEmits } from 'vue'
+import { ACTIVITY_COLOR_MAP } from "@/modules/activity/const/activity-const";
+
 import ColorSelector from './ColorSelector.vue'
 
 const props = defineProps({
@@ -99,15 +101,9 @@ const cardClasses = computed(() => {
 		baseClasses.push('hover:border-stone-500')
 		
 		// Color-based background classes for regular tasks
-		const colorClasses = {
-			'$D': 'bg-yellow-300',
-			'$A': 'bg-sky-400',
-			'$B': 'bg-violet-500',
-			'$C': 'bg-emerald-500',
-			'$E': 'bg-orange-400'
-		}
-		
-		const bgColor = colorClasses[props.todo.color] || 'bg-stone-700'
+		const bgColor = (props.todo.done)
+			? 'bg-green-500 line-through'
+			: ACTIVITY_COLOR_MAP[props.todo.color] || 'bg-stone-700'
 		baseClasses.push(bgColor)
 	}
 	

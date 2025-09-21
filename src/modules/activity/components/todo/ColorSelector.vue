@@ -4,6 +4,8 @@
 		class="absolute top-1 right-1 z-30 space-y-1 bg-stone-800 rounded p-1"
 		@click.stop
 	>
+
+		<!-- COLOR OPTIONS -->
 		<div 
 			class="flex gap-0.5"
 			@click.stop
@@ -37,6 +39,13 @@
 			/>
 		</div>
 
+		<!-- DONE -->
+		<div class="flex items-center gap-1 text-xs">
+			<BxSwitch v-model="isCompleted"/>
+			<p>DONE</p>
+		</div>
+
+		<!-- DELETE -->
 		<div>
 			<BxIconButton
 				type="danger"
@@ -51,7 +60,8 @@
 </template>
 
 <script setup>
-import { computed, defineProps, defineEmits } from 'vue'
+import { ref, computed, watch, defineProps, defineEmits, onMounted } from 'vue'
+import { ACTIVITY_COLOR_MAP } from "@/modules/activity/const/activity-const";
 
 const props = defineProps({
 	todo: {
@@ -66,13 +76,46 @@ const props = defineProps({
 
 const emit = defineEmits(['update', 'close', 'delete'])
 
-const colorOptions = [
-	{ code: '$D', bgClass: 'bg-yellow-300' },
-	{ code: '$E', bgClass: 'bg-orange-400' },
-	{ code: '$A', bgClass: 'bg-sky-400' },
-	{ code: '$B', bgClass: 'bg-violet-500' },
-	{ code: '$C', bgClass: 'bg-emerald-500' }
-]
+
+/*
+{
+	'$D': 'bg-yellow-300',
+	'$E': 'bg-orange-400',
+	'$A': 'bg-slate-400',
+	'$B': 'bg-purple-400',
+	'$C': 'bg-rose-500'
+}
+ */
+
+const colorOptions = Object.entries(ACTIVITY_COLOR_MAP).map(([key, value]) => {
+	return {
+		code: key,
+		bgClass: value
+	}
+})
+
+// const colorOptions = [
+// 	{ code: '$D', bgClass: 'bg-yellow-300' },
+// 	{ code: '$E', bgClass: 'bg-orange-400' },
+// 	{ code: '$A', bgClass: 'bg-sky-400' },
+// 	{ code: '$B', bgClass: 'bg-violet-500' },
+// 	{ code: '$C', bgClass: 'bg-emerald-500' }
+// ]
+
+const isCompleted = ref(false);
+
+onMounted(() => {
+	isCompleted.value = props.todo.done;
+})
+
+watch(isCompleted, (value) => {
+	if (value !== props.todo.done) {
+		emit('update', {
+			...props.todo,
+			done: isCompleted.value
+		})
+	}
+})
 
 function toggleTitle() {
 	emit('update', {
