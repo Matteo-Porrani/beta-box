@@ -7,7 +7,12 @@ class TodoGridSrv {
 	static STORAGE_KEY = 'betaTodoBoardMatrix';
 	static DEFAULT_CONFIG = {
 		columns: 6,
-		rows: 8
+		rows: 8,
+		activeBoard: 1
+	};
+	static DEFAULT_BOARD = {
+		id: 1,
+		name: 'Default Board'
 	};
 	
 	constructor() {
@@ -40,60 +45,176 @@ class TodoGridSrv {
 	}
 	
 	/**
-	 * Loads grid configuration and matrix from localStorage
-	 * @return {{matrix: Array, config: Object}} Grid data or default structure
+	 * Loads multi-board grid data from localStorage
+	 * @return {{config: Object, boardItems: Array, matrixData: Object}} Multi-board data structure
 	 */
 	loadGridFromStorage() {
 		const stored = localStorage.getItem(TodoGridSrv.STORAGE_KEY);
 		if (stored) {
 			try {
 				const data = JSON.parse(stored);
+				
+				// Check if this is the new multi-board format
+				if (data.boardItems && data.matrixData && data.config) {
+					return {
+						config: data.config,
+						boardItems: data.boardItems,
+						matrixData: data.matrixData
+					};
+				}
+				
+				// Handle old single-board format - migrate to multi-board
 				if (data.matrix && data.config) {
-					// Ensure loaded matrix is always maximum size
-					const loadedMatrix = data.matrix;
-					const matrix = Array(TodoGridSrv.MAX_ROWS).fill(null).map((_, row) => 
+					console.log('Migrating single-board data to multi-board format');
+					const migratedMatrix = Array(TodoGridSrv.MAX_ROWS).fill(null).map((_, row) => 
 						Array(TodoGridSrv.MAX_COLUMNS).fill(null).map((_, col) => {
-							// Copy existing data if it exists
-							return (loadedMatrix[row] && loadedMatrix[row][col]) ? loadedMatrix[row][col] : null;
+							return (data.matrix[row] && data.matrix[row][col]) ? data.matrix[row][col] : null;
 						})
 					);
 					
-					return {
-						matrix,
+					const multiboardData = {
 						config: {
 							columns: data.config.columns,
-							rows: data.config.rows
+							rows: data.config.rows,
+							activeBoard: 1
+						},
+						boardItems: [{ ...TodoGridSrv.DEFAULT_BOARD }],
+						matrixData: {
+							'1': migratedMatrix
 						}
 					};
+					
+					// Save the migrated data
+					this.saveGridToStorage(multiboardData);
+					return multiboardData;
 				}
 			} catch (e) {
 				console.warn('Failed to load grid from storage:', e);
 			}
 		}
 		
-		// Return default structure
+		// Return default multi-board structure
+		const defaultData = {
+			config: { ...TodoGridSrv.DEFAULT_CONFIG },
+			boardItems: [{ ...TodoGridSrv.DEFAULT_BOARD }],
+			matrixData: {
+				'1': this.initializeGrid()
+			}
+		};
+		
+		this.saveGridToStorage(defaultData);
+		return defaultData;
+	}
+	
+	/**
+	 * Saves multi-board grid data to localStorage
+	 * @param {Object} data - Complete multi-board data structure
+	 */
+	saveGridToStorage(data) {
+		localStorage.setItem(TodoGridSrv.STORAGE_KEY, JSON.stringify(data));
+	}
+	
+	// ============================================================================
+	// BOARD MANAGEMENT METHODS
+	// ============================================================================
+	
+	/**
+	 * Creates a new board with the given name
+	 * @param {string} name - Name for the new board
+	 * @param {Object} currentData - Current multi-board data
+	 * @return {Object} Updated multi-board data with new board
+	 */
+	createBoard(name, currentData) {
+		const newBoardId = Math.max(...currentData.boardItems.map(b => b.id), 0) + 1;
+		const newBoard = {
+			id: newBoardId,
+			name: name
+		};
+		
+		const updatedData = {
+			...currentData,
+			boardItems: [...currentData.boardItems, newBoard],
+			matrixData: {
+				...currentData.matrixData,
+				[newBoardId]: this.initializeGrid()
+			}
+		};
+		
+		return updatedData;
+	}
+	
+	/**
+	 * Deletes a board (if it's not the last one)
+	 * @param {number} boardId - ID of board to delete
+	 * @param {Object} currentData - Current multi-board data
+	 * @return {Object|null} Updated data or null if deletion not allowed
+	 */
+	deleteBoard(boardId, currentData) {
+		// Don't allow deleting the last board
+		if (currentData.boardItems.length <= 1) {
+			return null;
+		}
+		
+		const updatedBoardItems = currentData.boardItems.filter(board => board.id !== boardId);
+		const updatedMatrixData = { ...currentData.matrixData };
+		delete updatedMatrixData[boardId];
+		
+		// If deleting the active board, switch to the first remaining board
+		let updatedConfig = { ...currentData.config };
+		if (updatedConfig.activeBoard === boardId) {
+			updatedConfig.activeBoard = updatedBoardItems[0].id;
+		}
+		
 		return {
-			matrix: this.initializeGrid(),
-			config: { ...TodoGridSrv.DEFAULT_CONFIG }
+			config: updatedConfig,
+			boardItems: updatedBoardItems,
+			matrixData: updatedMatrixData
 		};
 	}
 	
 	/**
-	 * Saves grid configuration and matrix to localStorage
-	 * @param {Array} matrix - The grid matrix
-	 * @param {Object} config - Grid configuration {columns, rows}
+	 * Renames a board
+	 * @param {number} boardId - ID of board to rename
+	 * @param {string} newName - New name for the board
+	 * @param {Object} currentData - Current multi-board data
+	 * @return {Object} Updated multi-board data
 	 */
-	saveGridToStorage(matrix, config) {
-		const data = {
-			matrix,
-			config: {
-				columns: config.columns,
-				rows: config.rows
-			}
+	renameBoard(boardId, newName, currentData) {
+		const updatedBoardItems = currentData.boardItems.map(board => 
+			board.id === boardId ? { ...board, name: newName } : board
+		);
+		
+		return {
+			...currentData,
+			boardItems: updatedBoardItems
 		};
-		localStorage.setItem(TodoGridSrv.STORAGE_KEY, JSON.stringify(data));
 	}
 	
+	/**
+	 * Gets the list of boards
+	 * @param {Object} currentData - Current multi-board data
+	 * @return {Array} Array of board objects
+	 */
+	getBoardList(currentData) {
+		return currentData.boardItems;
+	}
+	
+	/**
+	 * Switches the active board
+	 * @param {number} boardId - ID of board to make active
+	 * @param {Object} currentData - Current multi-board data
+	 * @return {Object} Updated multi-board data with new active board
+	 */
+	switchActiveBoard(boardId, currentData) {
+		return {
+			...currentData,
+			config: {
+				...currentData.config,
+				activeBoard: boardId
+			}
+		};
+	}
+
 	// ============================================================================
 	// GRID CONFIGURATION VALIDATION
 	// ============================================================================
@@ -131,15 +252,17 @@ class TodoGridSrv {
 	// ============================================================================
 	
 	/**
-	 * Finds the position of a todo in the grid matrix
-	 * @param {Array} matrix - The grid matrix
+	 * Finds the position of a todo in a specific board's grid matrix
 	 * @param {number} todoId - Todo ID to find
-	 * @param {Object} config - Grid configuration {columns, rows}
+	 * @param {number} boardId - Board ID to search in
+	 * @param {Object} multiboardData - Complete multi-board data
 	 * @return {{row: number|null, column: number|null}} Position or null values
 	 */
-	getTodoPosition(matrix, todoId, config) {
+	getTodoPosition(todoId, boardId, multiboardData) {
+		const matrix = multiboardData.matrixData[boardId];
 		if (!matrix || !todoId) return { row: null, column: null };
 		
+		const config = multiboardData.config;
 		for (let r = 0; r < config.rows; r++) {
 			for (let c = 0; c < config.columns; c++) {
 				if (matrix[r] && matrix[r][c] === todoId) {
@@ -152,14 +275,16 @@ class TodoGridSrv {
 	}
 	
 	/**
-	 * Finds the next available slot in the grid matrix
-	 * @param {Array} matrix - The grid matrix
-	 * @param {Object} config - Grid configuration {columns, rows}
+	 * Finds the next available slot in a specific board's grid matrix
+	 * @param {number} boardId - Board ID to search in
+	 * @param {Object} multiboardData - Complete multi-board data
 	 * @return {{row: number|null, column: number|null}} Next available position
 	 */
-	getNextAvailableSlot(matrix, config) {
+	getNextAvailableSlot(boardId, multiboardData) {
+		const matrix = multiboardData.matrixData[boardId];
 		if (!matrix) return { column: null, row: null };
 
+		const config = multiboardData.config;
 		for (let c = 0; c < config.columns; c++) {
 			for (let r = 0; r < config.rows; r++) {
 				if (!matrix[r]) continue;
@@ -178,14 +303,17 @@ class TodoGridSrv {
 	
 	/**
 	 * Handles moving a todo from one position to another (drag & drop)
-	 * @param {Array} matrix - The grid matrix
 	 * @param {number} todoId - Todo ID being moved
 	 * @param {number} targetRow - Target row position
 	 * @param {number} targetColumn - Target column position
-	 * @param {Object} config - Grid configuration {columns, rows}
-	 * @return {Array} Updated matrix
+	 * @param {number} boardId - Board ID where the move happens
+	 * @param {Object} multiboardData - Complete multi-board data
+	 * @return {Object} Updated multi-board data
 	 */
-	moveTodo(matrix, todoId, targetRow, targetColumn, config) {
+	moveTodo(todoId, targetRow, targetColumn, boardId, multiboardData) {
+		const matrix = multiboardData.matrixData[boardId];
+		const config = multiboardData.config;
+		
 		// Find current position of the todo
 		let currentRow = -1, currentColumn = -1;
 		
@@ -209,41 +337,64 @@ class TodoGridSrv {
 			newMatrix[currentRow][currentColumn] = targetTodoId;
 			newMatrix[targetRow][targetColumn] = todoId;
 			
-			return newMatrix;
+			return {
+				...multiboardData,
+				matrixData: {
+					...multiboardData.matrixData,
+					[boardId]: newMatrix
+				}
+			};
 		}
 		
-		return matrix; // Return unchanged if todo not found
+		return multiboardData; // Return unchanged if todo not found
 	}
 	
 	/**
 	 * Places a todo in a specific position
-	 * @param {Array} matrix - The grid matrix
 	 * @param {number} todoId - Todo ID to place
 	 * @param {number} row - Row position
 	 * @param {number} column - Column position
-	 * @return {Array} Updated matrix
+	 * @param {number} boardId - Board ID where to place the todo
+	 * @param {Object} multiboardData - Complete multi-board data
+	 * @return {Object} Updated multi-board data
 	 */
-	placeTodo(matrix, todoId, row, column) {
-		const newMatrix = matrix.map(row => [...row]);
+	placeTodo(todoId, row, column, boardId, multiboardData) {
+		const matrix = multiboardData.matrixData[boardId];
+		const newMatrix = matrix.map(matrixRow => [...matrixRow]);
 		newMatrix[row][column] = todoId;
-		return newMatrix;
+		
+		return {
+			...multiboardData,
+			matrixData: {
+				...multiboardData.matrixData,
+				[boardId]: newMatrix
+			}
+		};
 	}
 	
 	/**
-	 * Removes a todo from the grid matrix
-	 * @param {Array} matrix - The grid matrix
+	 * Removes a todo from a specific board's grid matrix
 	 * @param {number} todoId - Todo ID to remove
-	 * @param {Object} config - Grid configuration {columns, rows}
-	 * @return {Array} Updated matrix
+	 * @param {number} boardId - Board ID where to remove the todo
+	 * @param {Object} multiboardData - Complete multi-board data
+	 * @return {Object} Updated multi-board data
 	 */
-	removeTodo(matrix, todoId, config) {
-		const position = this.getTodoPosition(matrix, todoId, config);
+	removeTodo(todoId, boardId, multiboardData) {
+		const position = this.getTodoPosition(todoId, boardId, multiboardData);
 		if (position.row !== null && position.column !== null) {
+			const matrix = multiboardData.matrixData[boardId];
 			const newMatrix = matrix.map(row => [...row]);
 			newMatrix[position.row][position.column] = null;
-			return newMatrix;
+			
+			return {
+				...multiboardData,
+				matrixData: {
+					...multiboardData.matrixData,
+					[boardId]: newMatrix
+				}
+			};
 		}
-		return matrix; // Return unchanged if todo not found
+		return multiboardData; // Return unchanged if todo not found
 	}
 	
 	// ============================================================================

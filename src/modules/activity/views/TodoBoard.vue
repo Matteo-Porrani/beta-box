@@ -1,5 +1,5 @@
 <template>
-	<section class="h-full grid grid-rows-[auto_1fr]">
+	<section class="h-full grid grid-rows-[auto_auto_1fr]">
 		<!-- Toolbar -->
 		<div class="toolbar flex items-center gap-4 p-1">
 			<router-link
@@ -77,8 +77,12 @@
 			</div>
 		</div>
 
+		<div>
+			<h1>BOARD {{ gridConfig.activeBoard }}</h1>
+		</div>
+
 		<!-- Main grid area -->
-		<div class="bg-stone-800 p-4 overflow-hidden">
+		<div class="bg-stone-800 rounded p-4 overflow-hidden">
 			<div
 				class="grid gap-x-3 gapx-y-1 h-full"
 				:style="gridStyle"
@@ -89,12 +93,12 @@
 						:key="`slot-${row-1}-${col-1}`"
 						:row="row-1"
 						:column="col-1"
-						:todo-id="gridMatrix[row-1] && gridMatrix[row-1][col-1]"
+						:todo-id="currentMatrix[row-1] && currentMatrix[row-1][col-1]"
 						@drop="handleTodoDrop"
 					>
 						<TodoCard
-							v-if="gridMatrix[row-1] && gridMatrix[row-1][col-1] && getTodoById(gridMatrix[row-1][col-1])"
-							:todo="getTodoById(gridMatrix[row-1][col-1])"
+							v-if="currentMatrix[row-1] && currentMatrix[row-1][col-1] && getTodoById(currentMatrix[row-1][col-1])"
+							:todo="getTodoById(currentMatrix[row-1][col-1])"
 							:position="{ row: row-1, column: col-1 }"
 							@update="handleTodoUpdate"
 							@delete="handleTodoDelete"
@@ -132,10 +136,13 @@ const MAX_ROWS = todoGridSrv.maxRows
 // Reactive data
 const gridConfig = reactive({
 	columns: 6,
-	rows: 8
+	rows: 8,
+	activeBoard: 1
 })
 
-const gridMatrix = ref([])
+const boardItems = ref([])
+const matrixData = ref({})
+const currentBoardId = ref(1)
 const todoForm = reactive({
 	id: null,
 	desc: '',
@@ -144,8 +151,16 @@ const todoForm = reactive({
 	done: false
 })
 
+// Computed values
+const currentMatrix = computed(() => matrixData.value[currentBoardId.value] || [])
+const multiboardData = computed(() => ({
+	config: gridConfig,
+	boardItems: boardItems.value,
+	matrixData: matrixData.value
+}))
+
 const nextAvailableSlot = computed(() => 
-	todoGridSrv.getNextAvailableSlot(gridMatrix.value, gridConfig)
+	todoGridSrv.getNextAvailableSlot(currentBoardId.value, multiboardData.value)
 )
 
 // Computed
@@ -164,13 +179,16 @@ const tasks = computed(() => store.getters['entity/getItemsFromTable']('task'))
 
 function loadGridFromStorage() {
 	const data = todoGridSrv.loadGridFromStorage()
-	gridMatrix.value = data.matrix
 	gridConfig.columns = data.config.columns
 	gridConfig.rows = data.config.rows
+	gridConfig.activeBoard = data.config.activeBoard
+	boardItems.value = data.boardItems
+	matrixData.value = data.matrixData
+	currentBoardId.value = data.config.activeBoard
 }
 
 function saveGridToStorage() {
-	todoGridSrv.saveGridToStorage(gridMatrix.value, gridConfig)
+	todoGridSrv.saveGridToStorage(multiboardData.value)
 }
 
 // ============================================================================
@@ -202,7 +220,7 @@ function getTodoById(id) {
 }
 
 function getTodoPosition(todoId) {
-	return todoGridSrv.getTodoPosition(gridMatrix.value, todoId, gridConfig)
+	return todoGridSrv.getTodoPosition(todoId, currentBoardId.value, multiboardData.value)
 }
 
 // ============================================================================
@@ -210,13 +228,16 @@ function getTodoPosition(todoId) {
 // ============================================================================
 
 function handleTodoDrop({ todoId, targetRow, targetColumn }) {
-	gridMatrix.value = todoGridSrv.moveTodo(
-		gridMatrix.value, 
+	const updatedData = todoGridSrv.moveTodo(
 		todoId, 
 		targetRow, 
 		targetColumn, 
-		gridConfig
+		currentBoardId.value,
+		multiboardData.value
 	)
+	
+	// Update local state
+	matrixData.value = updatedData.matrixData
 	saveGridToStorage()
 }
 
@@ -232,7 +253,10 @@ async function handleTodoUpdate(updatedTodo) {
 }
 
 async function handleTodoDelete(todoId) {
-	gridMatrix.value = todoGridSrv.removeTodo(gridMatrix.value, todoId, gridConfig)
+	const updatedData = todoGridSrv.removeTodo(todoId, currentBoardId.value, multiboardData.value)
+	
+	// Update local state
+	matrixData.value = updatedData.matrixData
 	saveGridToStorage()
 
 	await store.dispatch('entity/deleteItem', {
@@ -272,7 +296,10 @@ async function saveTodo() {
 		// Place in next available slot if creation was successful
 		if (result.status === 'OK' && nextAvailableSlot.value.row !== null && nextAvailableSlot.value.column !== null) {
 			const { column, row } = nextAvailableSlot.value;
-			gridMatrix.value = todoGridSrv.placeTodo(gridMatrix.value, result.itemId, row, column)
+			const updatedData = todoGridSrv.placeTodo(result.itemId, row, column, currentBoardId.value, multiboardData.value)
+			
+			// Update local state
+			matrixData.value = updatedData.matrixData
 			saveGridToStorage()
 		}
 	}
