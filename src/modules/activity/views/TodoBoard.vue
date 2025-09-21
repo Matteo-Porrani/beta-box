@@ -15,7 +15,7 @@
 				<select 
 					v-model="currentBoardId"
 					@change="switchBoard"
-					class="bg-stone-800 text-white rounded p-1 text-sm border border-stone-600"
+					class="w-56 bg-stone-800 text-white rounded p-1 text-xs border border-stone-600"
 				>
 					<option 
 						v-for="board in boardItems" 
@@ -25,10 +25,9 @@
 						{{ board.name }}
 					</option>
 				</select>
-				<BxButton
-					label="New Board"
+				<BxIconButton
+					icon="add"
 					size="small"
-					type="soft"
 					@click="createNewBoard"
 				/>
 			</div>
@@ -101,10 +100,17 @@
 		</div>
 
 		<!-- Board info -->
-		<div class="bg-stone-700 border-b border-stone-600">
+		<div class="flex items-center justify-between bg-stone-700 border-b border-stone-600 py-1">
 			<h1 class="text-white font-bold">
 				#{{ currentBoardId }} - {{ currentBoard?.name || 'Loading...' }}
 			</h1>
+
+			<BxIconButton
+				icon="trash"
+				type="danger"
+				size="small"
+				@click="deleteCurrentBoard"
+			/>
 		</div>
 
 		<!-- Main grid area -->
@@ -371,6 +377,59 @@ function createNewBoard() {
 	gridConfig.activeBoard = newBoard.id
 	
 	saveGridToStorage()
+}
+
+async function deleteCurrentBoard() {
+	// Don't allow deleting if it's the last board
+	if (boardItems.value.length <= 1) {
+		alert('Cannot delete the last board')
+		return
+	}
+	
+	// Confirm deletion
+	if (!confirm(`Are you sure you want to delete "${currentBoard.value?.name}"?`)) {
+		return
+	}
+
+	// Delete all Tasks from this board before deleting the board
+	const boardMatrix = matrixData.value[currentBoardId.value]
+	if (boardMatrix) {
+		const todoIdsToDelete = []
+		
+		// Collect all todo IDs from the current board's matrix
+		for (let row = 0; row < gridConfig.rows; row++) {
+			for (let col = 0; col < gridConfig.columns; col++) {
+				if (boardMatrix[row] && boardMatrix[row][col]) {
+					todoIdsToDelete.push(boardMatrix[row][col])
+				}
+			}
+		}
+		
+		// Delete all todos from the store
+		for (const todoId of todoIdsToDelete) {
+			await store.dispatch('entity/deleteItem', {
+				tableName: 'task',
+				id: todoId
+			})
+		}
+	}
+	
+	// Delete board using service
+	const updatedData = todoGridSrv.deleteBoard(currentBoardId.value, multiboardData.value)
+	
+	if (updatedData) {
+		// Update local state
+		boardItems.value = updatedData.boardItems
+		matrixData.value = updatedData.matrixData
+		gridConfig.columns = updatedData.config.columns
+		gridConfig.rows = updatedData.config.rows
+		gridConfig.activeBoard = updatedData.config.activeBoard
+		
+		// Switch to the new active board
+		currentBoardId.value = updatedData.config.activeBoard
+		
+		saveGridToStorage()
+	}
 }
 
 
