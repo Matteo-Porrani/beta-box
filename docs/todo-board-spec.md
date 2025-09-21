@@ -3,24 +3,26 @@
 ## Core Functionality
 
 ### Slot-Based Grid System
-- **Grid Configuration**: User sets columns × rows (default: 6×8 = 48 slots)
-- **Fixed Workspace**: No scrolling, work within slot limitations
+- **Grid Configuration**: User sets columns × rows via inline +/- controls (default: 6×8 = 48 slots)
+- **Fixed Workspace**: No scrolling, work within slot limitations  
 - **Slot Management**: Each slot contains 0 or 1 todo item
-- **Drag & Drop**: Move todos between any slots
+- **Drag & Drop**: Move todos between any slots with visual feedback
+- **Auto-placement**: New todos automatically placed in next available slot
 
 ### Todo Item Operations
-- **Create**: Add new todo (only if empty slots available)
-- **Read**: Display todos in their assigned grid positions
-- **Update**: Edit todo details, move between slots, change colors
-- **Delete**: Remove todo items, free up slots
-- **Color Change**: Hover right edge (20% width) to show color selector
-- **Title Toggle**: First selector option toggles TITLE/DEFAULT task type
-- **Inline Edit**: Double-click description to edit text inline
+- **Create**: Add new todo via inline input field, automatically placed in next available slot
+- **Read**: Display todos in their assigned grid positions with position indicators
+- **Update**: Edit todo details, move between slots via drag-and-drop, change colors
+- **Delete**: Remove todo items via color selector delete button, frees up slots
+- **Color Change**: Click 3-dots menu button to show color selector
+- **Title Toggle**: "T" button in color selector toggles TITLE/DEFAULT task type
+- **Inline Edit**: Double-click description to edit text inline (TAB to save, ENTER for new line)
 
 ### Workspace Configuration
-- **Columns**: Configurable number (3-8 recommended)
-- **Rows**: Configurable number (5-10 recommended) 
-- **Persistence**: Save configuration in localStorage
+- **Columns**: Configurable via inline +/- controls (3-10 range)
+- **Rows**: Configurable via inline +/- controls (5-10 range)
+- **Maximum Matrix**: Fixed 10×10 to prevent data loss during resizing
+- **Persistence**: Save configuration and matrix in localStorage
 
 ### Todo Types
 - **TITLE TASK**: when `starred: true` (important/highlighted)
@@ -69,28 +71,29 @@ matrix: [
 ## Technical Implementation
 
 ### Component Structure
-- **TodoBoard.vue**: Main grid component with configurable layout
+- **TodoBoard.vue**: Main grid component with inline controls and todo input
 - **TodoSlot.vue**: Individual slot container (empty or with todo)
-- **TodoCard.vue**: Todo item card with TITLE/DEFAULT styling and color selector
-- **ColorSelector.vue**: Hover-triggered color picker component
-- **GridConfig.vue**: Simple grid size configuration modal
+- **TodoCard.vue**: Todo item card with TITLE/DEFAULT styling, position display, and 3-dots menu
+- **ColorSelector.vue**: Click-triggered color picker with delete button
 
 ### Grid Layout Implementation
 - **CSS Grid**: `grid-template-columns` and `grid-template-rows`
 - **Responsive Sizing**: Cards auto-size to fit viewport
-- **Slot Positioning**: Absolute positioning within grid cells
-- **Empty Slot Styling**: Dashed borders for available slots
-- **Task Styling**: Visual distinction between TITLE (starred) and DEFAULT tasks
-- **Text Alignment**: TOP-LEFT alignment for all todo text
-- **Dark Theme**: Follow existing app dark mode design (dark backgrounds, white text, blue accents)
-- **Tailwind CSS**: Use Tailwind classes for all styling (consistent with existing codebase)
+- **Slot Positioning**: Grid-based layout with drag-and-drop zones
+- **Empty Slot Styling**: Dashed borders with "+" indicator for available slots
+- **Task Styling**: Visual distinction between TITLE (starred=transparent bg) and DEFAULT tasks
+- **Position Display**: Each card shows "C#/R#" position indicator in bottom-left corner
+- **Text Alignment**: TOP-LEFT alignment with tight line-height for compact display
+- **Dark Theme**: Stone-based color palette with hover effects
+- **Tailwind CSS**: All styling uses Tailwind classes (consistent with existing codebase)
 
 ### Color Selector Feature
-- **Hover Zone**: Right 20% of card width triggers color selector
-- **Title Toggle**: First option ("T") toggles TITLE TASK (starred property)
-- **Color Options**: 5 color swatches below title toggle ($D, $A, etc.)
-- **Quick Selection**: Click option to instantly update todo
-- **Visual Feedback**: Highlight current color/title state in selector
+- **Trigger**: 3-dots menu button in top-right corner of each card
+- **Title Toggle**: "T" button toggles TITLE TASK (starred property)
+- **Color Options**: 5 color swatches ($D=yellow, $A=blue, $B=purple, $C=green, $E=orange)
+- **Delete Function**: Red delete button to remove todo and clear grid position
+- **Auto-close**: Selector closes automatically after any selection
+- **Visual Feedback**: Current color and title state highlighted in selector
 
 ### Inline Text Editing
 - **Edit Mode**: Double-click description text to enter edit mode
@@ -100,10 +103,11 @@ matrix: [
 - **Auto-save**: Changes saved on TAB or focus loss
 
 ### State Management
-- Grid matrix stored in localStorage (key: 'betaTodoBoardMatrix')
-- Todos stored separately without position data
-- Matrix operations for slot management
-- Grid dimension validation
+- **Grid Matrix**: Stored in localStorage (key: 'betaTodoBoardMatrix') with config
+- **Todo Data**: Stored in IndexedDB via Vuex store (separate from position data)
+- **Fixed Matrix Size**: 10×10 maximum to prevent data loss during grid resizing
+- **Real-time Updates**: Automatic localStorage sync on all grid operations
+- **Position Tracking**: `getTodoPosition()` function searches matrix for todo IDs
 
 ### Grid Operations
 - **Get Todo at Position**: `matrix[row][column]` returns todo ID
@@ -119,11 +123,11 @@ matrix: [
 - Matrix validation (prevent out-of-bounds)
 
 ## UI Components (Reuse Existing)
-- BxForm for todo creation/editing
-- BxModal for form overlay
-- BxButton for actions
-- BxIcon for priority indicators
-- Existing grid/layout classes
+- **BxButton**: For grid controls (+/-), Add button, and color selector actions
+- **BxIcon**: For back navigation and visual indicators
+- **BxIconButton**: For delete functionality in color selector
+- **Font classes**: Custom font (font-cc) for card content
+- **Tailwind utilities**: All styling via existing utility classes
 
 ## Next Steps
 
@@ -135,11 +139,12 @@ matrix: [
 - **Responsive Design**: Ensure grid layout works on different screen sizes
 
 ### User Experience Enhancements
-- **Delete Functionality**: Add ability to delete todos (right-click context menu or keyboard shortcut)
+- ✅ **Delete Functionality**: Implemented via color selector delete button
 - **Keyboard Navigation**: Implement arrow key navigation between slots
 - **Bulk Operations**: Select multiple todos for batch color changes or moves
 - **Search/Filter**: Add search bar to highlight todos matching criteria
 - **Undo/Redo**: Implement action history for drag-and-drop operations
+- **Grid Presets**: Quick size presets (small/medium/large grid configurations)
 
 ### Performance Optimizations
 - **Virtual Scrolling**: Consider for very large grids (>100 slots)
