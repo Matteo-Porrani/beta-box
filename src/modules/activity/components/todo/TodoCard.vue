@@ -12,7 +12,7 @@
 			<div
 				v-if="!isEditing"
 				:class="[
-					'flex-1 leading-relaxed whitespace-pre-wrap break-words',
+					'flex-1 leading-tight whitespace-pre-wrap break-words',
 					todo.starred ? 'text-lg font-semibold' : 'text-sm text-stone-800'
 				]"
 				style="text-align: left; vertical-align: top;"
@@ -27,7 +27,7 @@
 				ref="editInput"
 				v-model="editText"
 				:class="[
-					'flex-1 bg-transparent leading-relaxed resize-none outline-none border-none overflow-hidden p-0',
+					'flex-1 bg-transparent leading-tight resize-none outline-none border-none overflow-hidden p-0',
 					todo.starred ? 'text-lg font-semibold text-white' : 'text-sm text-stone-800'
 				]"
 				style="text-align: left; vertical-align: top;"
