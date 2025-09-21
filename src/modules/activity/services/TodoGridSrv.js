@@ -144,6 +144,30 @@ class TodoGridSrv {
 	}
 	
 	/**
+	 * Gets all todo IDs from a specific board's matrix
+	 * @param {number} boardId - Board ID to collect todos from
+	 * @param {Object} multiboardData - Complete multi-board data
+	 * @return {Array<number>} Array of todo IDs found in the board
+	 */
+	getTodoIdsFromBoard(boardId, multiboardData) {
+		const matrix = multiboardData.matrixData[boardId];
+		const config = multiboardData.config;
+		const todoIds = [];
+		
+		if (matrix) {
+			for (let row = 0; row < config.rows; row++) {
+				for (let col = 0; col < config.columns; col++) {
+					if (matrix[row] && matrix[row][col]) {
+						todoIds.push(matrix[row][col]);
+					}
+				}
+			}
+		}
+		
+		return todoIds;
+	}
+
+	/**
 	 * Deletes a board (if it's not the last one)
 	 * @param {number} boardId - ID of board to delete
 	 * @param {Object} currentData - Current multi-board data

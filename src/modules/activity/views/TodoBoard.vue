@@ -392,26 +392,14 @@ async function deleteCurrentBoard() {
 	}
 
 	// Delete all Tasks from this board before deleting the board
-	const boardMatrix = matrixData.value[currentBoardId.value]
-	if (boardMatrix) {
-		const todoIdsToDelete = []
-		
-		// Collect all todo IDs from the current board's matrix
-		for (let row = 0; row < gridConfig.rows; row++) {
-			for (let col = 0; col < gridConfig.columns; col++) {
-				if (boardMatrix[row] && boardMatrix[row][col]) {
-					todoIdsToDelete.push(boardMatrix[row][col])
-				}
-			}
-		}
-		
-		// Delete all todos from the store
-		for (const todoId of todoIdsToDelete) {
-			await store.dispatch('entity/deleteItem', {
-				tableName: 'task',
-				id: todoId
-			})
-		}
+	const todoIdsToDelete = todoGridSrv.getTodoIdsFromBoard(currentBoardId.value, multiboardData.value)
+	
+	// Delete all todos from the store
+	for (const todoId of todoIdsToDelete) {
+		await store.dispatch('entity/deleteItem', {
+			tableName: 'task',
+			id: todoId
+		})
 	}
 	
 	// Delete board using service
