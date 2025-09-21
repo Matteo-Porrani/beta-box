@@ -77,8 +77,11 @@
 			</div>
 		</div>
 
-		<div>
-			<h1>BOARD {{ gridConfig.activeBoard }}</h1>
+		<!-- Board info -->
+		<div class="bg-stone-700 border-b border-stone-600">
+			<h1 class="text-white font-bold">
+				#{{ currentBoardId }} - {{ currentBoard?.name || 'Loading...' }}
+			</h1>
 		</div>
 
 		<!-- Main grid area -->
@@ -161,6 +164,10 @@ const multiboardData = computed(() => ({
 
 const nextAvailableSlot = computed(() => 
 	todoGridSrv.getNextAvailableSlot(currentBoardId.value, multiboardData.value)
+)
+
+const currentBoard = computed(() => 
+	boardItems.value.find(board => board.id === currentBoardId.value)
 )
 
 // Computed
