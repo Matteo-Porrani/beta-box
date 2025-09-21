@@ -25,16 +25,16 @@
 				/>
 			</div>
 
-			<pre>NEXT: {{ nextAvailableSlot.column  }}/{{ nextAvailableSlot.row  }} </pre>
+<!--			<pre>NEXT: {{ nextAvailableSlot.column  }}/{{ nextAvailableSlot.row  }} </pre>-->
 
-			<BxButton
-				label="RESET GRID"
-				size="small"
-				@click="initializeGrid"
-			/>
+<!--			<BxButton-->
+<!--				label="RESET GRID"-->
+<!--				size="small"-->
+<!--				@click="initializeGrid"-->
+<!--			/>-->
 			
 			<!-- Grid controls -->
-			<div class="ml-auto flex items-center gap-4">
+			<div class="ml-auto flex items-center gap-2 bg-stone-800 rounded p-1">
 				<!-- Columns control -->
 				<div class="flex items-center gap-2">
 					<span class="text-white text-sm">Columns</span>

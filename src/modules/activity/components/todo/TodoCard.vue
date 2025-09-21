@@ -8,7 +8,7 @@
 		<!-- Main content area -->
 		<div class="font-cc p-2 h-full flex flex-col">
 			<!-- Editable text area -->
-			<pre class="text-xs text-blue-500 absolute bottom-1 right-1">#{{ todo.id }}</pre>
+<!--			<pre class="text-xs text-blue-500 absolute bottom-1 right-1">#{{ todo.id }}</pre>-->
 			<div
 				v-if="!isEditing"
 				:class="[
@@ -37,12 +37,12 @@
 		</div>
 
 		<!-- Position indicator -->
-		<div
-			v-if="position.row !== null && position.column !== null"
-			class="absolute bottom-1 left-1 text-xs px-1 py-0.5 bg-black bg-opacity-50 rounded text-white font-mono z-10"
-		>
-			C{{ position.column + 1 }}/R{{ position.row + 1 }}
-		</div>
+<!--		<div-->
+<!--			v-if="position.row !== null && position.column !== null"-->
+<!--			class="absolute bottom-1 left-1 text-xs px-1 py-0.5 bg-black bg-opacity-50 rounded text-white font-mono z-10"-->
+<!--		>-->
+<!--			C{{ position.column + 1 }}/R{{ position.row + 1 }}-->
+<!--		</div>-->
 
 		<!-- 3 dots menu button -->
 		<button
