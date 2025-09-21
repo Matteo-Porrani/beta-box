@@ -33,12 +33,48 @@
 				@click="initializeGrid"
 			/>
 			
-			<BxButton
-				type="soft"
-				label="Grid Config"
-				class="ml-auto"
-				@click="openGridConfig"
-			/>
+			<!-- Grid controls -->
+			<div class="ml-auto flex items-center gap-4">
+				<!-- Columns control -->
+				<div class="flex items-center gap-2">
+					<span class="text-white text-sm">Columns</span>
+					<BxButton
+						type="soft"
+						label="-"
+						size="small"
+						:disabled="gridConfig.columns <= 3"
+						@click="adjustColumns(-1)"
+					/>
+					<span class="text-white text-sm w-6 text-center">{{ gridConfig.columns }}</span>
+					<BxButton
+						type="soft"
+						label="+"
+						size="small"
+						:disabled="gridConfig.columns >= MAX_COLUMNS"
+						@click="adjustColumns(1)"
+					/>
+				</div>
+				
+				<!-- Rows control -->
+				<div class="flex items-center gap-2">
+					<span class="text-white text-sm">Rows</span>
+					<BxButton
+						type="soft"
+						label="-"
+						size="small"
+						:disabled="gridConfig.rows <= 5"
+						@click="adjustRows(-1)"
+					/>
+					<span class="text-white text-sm w-6 text-center">{{ gridConfig.rows }}</span>
+					<BxButton
+						type="soft"
+						label="+"
+						size="small"
+						:disabled="gridConfig.rows >= MAX_ROWS"
+						@click="adjustRows(1)"
+					/>
+				</div>
+			</div>
 		</div>
 
 		<!-- Main grid area -->
@@ -95,7 +131,7 @@ const gridConfigRef = ref(null)
 const todoModalRef = ref(null)
 
 // Constants for maximum grid size
-const MAX_COLUMNS = 8
+const MAX_COLUMNS = 10
 const MAX_ROWS = 10
 
 // Reactive data
@@ -209,6 +245,22 @@ function applyGridConfig(newConfig) {
 	gridConfig.rows = newConfig.rows
 	
 	saveGridToStorage()
+}
+
+function adjustColumns(delta) {
+	const newColumns = gridConfig.columns + delta
+	if (newColumns >= 3 && newColumns <= MAX_COLUMNS) {
+		gridConfig.columns = newColumns
+		saveGridToStorage()
+	}
+}
+
+function adjustRows(delta) {
+	const newRows = gridConfig.rows + delta
+	if (newRows >= 5 && newRows <= MAX_ROWS) {
+		gridConfig.rows = newRows
+		saveGridToStorage()
+	}
 }
 
 function handleTodoDrop({ todoId, targetRow, targetColumn }) {
