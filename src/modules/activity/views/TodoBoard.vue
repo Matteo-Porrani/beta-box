@@ -111,6 +111,9 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { todoGridSrv } from '../services/TodoGridSrv.js'
+
+
 import BxIcon from '@/modules/ui/components/BxIcon.vue'
 import BxButton from '@/modules/ui/components/BxButton.vue'
 import TodoSlot from '../components/todo/TodoSlot.vue'
@@ -122,9 +125,9 @@ const store = useStore()
 // Refs
 // (no refs needed currently)
 
-// Constants for maximum grid size
-const MAX_COLUMNS = 10
-const MAX_ROWS = 10
+// Constants from service
+const MAX_COLUMNS = todoGridSrv.maxColumns
+const MAX_ROWS = todoGridSrv.maxRows
 
 // Reactive data
 const gridConfig = reactive({
@@ -141,7 +144,9 @@ const todoForm = reactive({
 	done: false
 })
 
-const nextAvailableSlot = computed(() => getNextAvailableSlot())
+const nextAvailableSlot = computed(() => 
+	todoGridSrv.getNextAvailableSlot(gridMatrix.value, gridConfig)
+)
 
 // Computed
 const gridStyle = computed(() => ({
@@ -157,48 +162,15 @@ const tasks = computed(() => store.getters['entity/getItemsFromTable']('task'))
 // GRID INITIALIZATION & PERSISTENCE
 // ============================================================================
 
-function initializeGrid() {
-	// Always initialize to maximum size to prevent data loss
-	gridMatrix.value = Array(MAX_ROWS).fill(null).map(() =>
-		Array(MAX_COLUMNS).fill(null)
-	)
-}
-
 function loadGridFromStorage() {
-	const stored = localStorage.getItem('betaTodoBoardMatrix')
-	if (stored) {
-		try {
-			const data = JSON.parse(stored)
-			if (data.matrix && data.config) {
-				gridConfig.columns = data.config.columns
-				gridConfig.rows = data.config.rows
-				
-				// Ensure loaded matrix is always maximum size
-				const loadedMatrix = data.matrix
-				gridMatrix.value = Array(MAX_ROWS).fill(null).map((_, row) => 
-					Array(MAX_COLUMNS).fill(null).map((_, col) => {
-						// Copy existing data if it exists
-						return (loadedMatrix[row] && loadedMatrix[row][col]) ? loadedMatrix[row][col] : null
-					})
-				)
-				return
-			}
-		} catch (e) {
-			console.warn('Failed to load grid from storage:', e)
-		}
-	}
-	initializeGrid()
+	const data = todoGridSrv.loadGridFromStorage()
+	gridMatrix.value = data.matrix
+	gridConfig.columns = data.config.columns
+	gridConfig.rows = data.config.rows
 }
 
 function saveGridToStorage() {
-	const data = {
-		matrix: gridMatrix.value,
-		config: {
-			columns: gridConfig.columns,
-			rows: gridConfig.rows
-		}
-	}
-	localStorage.setItem('betaTodoBoardMatrix', JSON.stringify(data))
+	todoGridSrv.saveGridToStorage(gridMatrix.value, gridConfig)
 }
 
 // ============================================================================
@@ -206,16 +178,16 @@ function saveGridToStorage() {
 // ============================================================================
 
 function adjustColumns(delta) {
-	const newColumns = gridConfig.columns + delta
-	if (newColumns >= 3 && newColumns <= MAX_COLUMNS) {
+	const newColumns = todoGridSrv.adjustColumns(gridConfig.columns, delta)
+	if (newColumns !== null) {
 		gridConfig.columns = newColumns
 		saveGridToStorage()
 	}
 }
 
 function adjustRows(delta) {
-	const newRows = gridConfig.rows + delta
-	if (newRows >= 5 && newRows <= MAX_ROWS) {
+	const newRows = todoGridSrv.adjustRows(gridConfig.rows, delta)
+	if (newRows !== null) {
 		gridConfig.rows = newRows
 		saveGridToStorage()
 	}
@@ -230,37 +202,7 @@ function getTodoById(id) {
 }
 
 function getTodoPosition(todoId) {
-	if (!gridMatrix.value || !todoId) return { row: null, column: null }
-	
-	for (let r = 0; r < gridConfig.rows; r++) {
-		for (let c = 0; c < gridConfig.columns; c++) {
-			if (gridMatrix.value[r] && gridMatrix.value[r][c] === todoId) {
-				return { row: r, column: c }
-			}
-		}
-	}
-	
-	return { row: null, column: null }
-}
-
-/**
- * Returns the first available slot in the grid matrix
- * to be used for new todos
- * @return {{column: null, row: null}|{column: number, row: number}}
- */
-function getNextAvailableSlot() {
-	if (!gridMatrix.value) return { column: null, row: null }
-
-	for (let c = 0; c < gridConfig.columns; c++) {
-		for (let r = 0; r < gridConfig.rows; r++) {
-			if (!gridMatrix.value[r]) continue;
-			if (!gridMatrix.value[r][c]) {
-				return { row: r, column: c }
-			}
-		}
-	}
-
-	return { column: null, row: null }
+	return todoGridSrv.getTodoPosition(gridMatrix.value, todoId, gridConfig)
 }
 
 // ============================================================================
@@ -268,28 +210,14 @@ function getNextAvailableSlot() {
 // ============================================================================
 
 function handleTodoDrop({ todoId, targetRow, targetColumn }) {
-	// Find current position of the todo
-	let currentRow = -1, currentColumn = -1
-	
-	for (let r = 0; r < gridConfig.rows; r++) {
-		for (let c = 0; c < gridConfig.columns; c++) {
-			if (gridMatrix.value[r][c] === todoId) {
-				currentRow = r
-				currentColumn = c
-				break
-			}
-		}
-		if (currentRow !== -1) break
-	}
-	
-	if (currentRow !== -1 && currentColumn !== -1) {
-		// Swap positions
-		const targetTodoId = gridMatrix.value[targetRow][targetColumn]
-		gridMatrix.value[currentRow][currentColumn] = targetTodoId
-		gridMatrix.value[targetRow][targetColumn] = todoId
-		
-		saveGridToStorage()
-	}
+	gridMatrix.value = todoGridSrv.moveTodo(
+		gridMatrix.value, 
+		todoId, 
+		targetRow, 
+		targetColumn, 
+		gridConfig
+	)
+	saveGridToStorage()
 }
 
 // ============================================================================
@@ -304,9 +232,8 @@ async function handleTodoUpdate(updatedTodo) {
 }
 
 async function handleTodoDelete(todoId) {
-	const { row, column } = getTodoPosition(todoId);
-	gridMatrix.value[row][column] = null;
-	saveGridToStorage();
+	gridMatrix.value = todoGridSrv.removeTodo(gridMatrix.value, todoId, gridConfig)
+	saveGridToStorage()
 
 	await store.dispatch('entity/deleteItem', {
 		tableName: 'task',
@@ -341,15 +268,11 @@ async function saveTodo() {
 			tableName: 'task',
 			item: newTodo
 		})
-		
 
 		// Place in next available slot if creation was successful
 		if (result.status === 'OK' && nextAvailableSlot.value.row !== null && nextAvailableSlot.value.column !== null) {
-
-			console.log("...placing todo", result.itemId, "in slot", nextAvailableSlot.value);
-
 			const { column, row } = nextAvailableSlot.value;
-			gridMatrix.value[row][column] = result.itemId;
+			gridMatrix.value = todoGridSrv.placeTodo(gridMatrix.value, result.itemId, row, column)
 			saveGridToStorage()
 		}
 	}
