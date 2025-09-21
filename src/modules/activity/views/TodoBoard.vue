@@ -1,7 +1,7 @@
 <template>
 	<section class="h-full grid grid-rows-[auto_1fr]">
 		<!-- Toolbar -->
-		<div class="toolbar px-1 flex justify-between items-center">
+		<div class="toolbar flex items-center gap-4 px-1">
 			<router-link
 				to="/"
 				class="flex gap-1 items-center text-stone-400 hover:text-stone-300 text-sm"
@@ -9,10 +9,33 @@
 				<BxIcon icon="arrow_left" size="small"/>
 				BACK
 			</router-link>
+
+			<div class="todo-form flex gap-1 items-center">
+				<input
+					v-model="todoForm.desc"
+					type="text"
+					class="w-[50vw] bg-stone-800 rounded text-white p-1"
+				/>
+				<BxButton
+					label="Add"
+					size="small"
+					:disabled="!todoForm.desc"
+					@click="saveTodo"
+				/>
+			</div>
+
+			<pre>NEXT: {{ nextAvailableSlot.column  }}/{{ nextAvailableSlot.row  }} </pre>
+
+			<BxButton
+				label="RESET GRID"
+				size="small"
+				@click="initializeGrid"
+			/>
 			
 			<BxButton
 				type="soft"
 				label="Grid Config"
+				class="ml-auto"
 				@click="openGridConfig"
 			/>
 		</div>
@@ -37,6 +60,7 @@
 							v-if="gridMatrix[row-1] && gridMatrix[row-1][col-1] && getTodoById(gridMatrix[row-1][col-1])"
 							:todo="getTodoById(gridMatrix[row-1][col-1])"
 							@update="handleTodoUpdate"
+							@delete="handleTodoDelete"
 						/>
 					</TodoSlot>
 				</template>
@@ -49,69 +73,6 @@
 			@apply="applyGridConfig"
 		/>
 
-		<!-- Todo Form Modal -->
-		<BxModal ref="todoModalRef">
-			<template #header>
-				<h2 class="font-bold text-3xl text-white">{{ isEditingTodo ? 'Edit' : 'New' }} Todo</h2>
-			</template>
-
-			<template #body>
-				<div class="space-y-4">
-					<div>
-						<label class="block text-sm font-medium text-stone-300 mb-2">
-							Description
-						</label>
-						<textarea
-							v-model="todoForm.desc"
-							class="w-full px-3 py-2 bg-stone-700 border border-stone-600 rounded-lg text-white focus:border-blue-500 focus:outline-none resize-none"
-							rows="3"
-							placeholder="Enter todo description..."
-						/>
-					</div>
-					
-					<div class="flex items-center gap-4">
-						<label class="flex items-center gap-2">
-							<input
-								v-model="todoForm.starred"
-								type="checkbox"
-								class="w-4 h-4"
-							/>
-							<span class="text-stone-300">Title Task</span>
-						</label>
-						
-						<div class="flex gap-2">
-							<button
-								v-for="color in colorOptions"
-								:key="color.code"
-								class="w-8 h-8 rounded border transition-all duration-150"
-								:class="[
-									color.bgClass,
-									{
-										'border-white border-2': todoForm.color === color.code,
-										'border-stone-500': todoForm.color !== color.code
-									}
-								]"
-								@click="todoForm.color = color.code"
-							/>
-						</div>
-					</div>
-				</div>
-			</template>
-
-			<template #footer>
-				<div class="w-full flex justify-between">
-					<BxButton
-						type="soft"
-						label="Cancel"
-						@click="cancelTodoForm"
-					/>
-					<BxButton
-						label="Save"
-						@click="saveTodo"
-					/>
-				</div>
-			</template>
-		</BxModal>
 	</section>
 </template>
 
@@ -120,7 +81,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import BxIcon from '@/modules/ui/components/BxIcon.vue'
 import BxButton from '@/modules/ui/components/BxButton.vue'
-import BxModal from '@/modules/ui/components/BxModal.vue'
+// import BxModal from '@/modules/ui/components/BxModal.vue'
 import TodoSlot from '../components/todo/TodoSlot.vue'
 import TodoCard from '../components/todo/TodoCard.vue'
 import GridConfig from '../components/todo/GridConfig.vue'
@@ -152,6 +113,7 @@ const todoForm = reactive({
 })
 
 const pendingSlot = ref({ row: null, column: null })
+const nextAvailableSlot = computed(() => getNextAvailableSlot())
 
 // Computed
 const gridStyle = computed(() => ({
@@ -165,18 +127,18 @@ const tasks = computed(() => store.getters['entity/getItemsFromTable']('task'))
 
 const loading = computed(() => store.state.entity.loading)
 
-const colorOptions = [
-	{ code: '$D', name: 'Default', bgClass: 'bg-yellow-600' },
-	{ code: '$A', name: 'Category A', bgClass: 'bg-blue-600' },
-	{ code: '$B', name: 'Category B', bgClass: 'bg-purple-600' },
-	{ code: '$C', name: 'Category C', bgClass: 'bg-green-600' },
-	{ code: '$E', name: 'Category E', bgClass: 'bg-red-600' }
-]
+// const colorOptions = [
+// 	{ code: '$D', name: 'Default', bgClass: 'bg-yellow-600' },
+// 	{ code: '$A', name: 'Category A', bgClass: 'bg-blue-600' },
+// 	{ code: '$B', name: 'Category B', bgClass: 'bg-purple-600' },
+// 	{ code: '$C', name: 'Category C', bgClass: 'bg-green-600' },
+// 	{ code: '$E', name: 'Category E', bgClass: 'bg-red-600' }
+// ]
 
 // Methods
 function initializeGrid() {
 	// Always initialize to maximum size to prevent data loss
-	gridMatrix.value = Array(MAX_ROWS).fill(null).map(() => 
+	gridMatrix.value = Array(MAX_ROWS).fill(null).map(() =>
 		Array(MAX_COLUMNS).fill(null)
 	)
 }
@@ -272,6 +234,13 @@ async function handleTodoUpdate(updatedTodo) {
 	})
 }
 
+async function handleTodoDelete(todoId) {
+	await store.dispatch('entity/deleteItem', {
+		tableName: 'task',
+		id: todoId
+	})
+}
+
 function resetTodoForm() {
 	todoForm.id = null
 	todoForm.desc = ''
@@ -284,15 +253,15 @@ async function saveTodo() {
 	if (!todoForm.desc.trim()) return
 	
 	if (isEditingTodo.value) {
-		// Update existing todo
+		// Update existing task
 		await handleTodoUpdate({ ...todoForm })
 	} else {
-		// Create new todo
+		// Create new task
 		const newTodo = {
 			desc: todoForm.desc,
-			color: todoForm.color,
-			starred: todoForm.starred,
-			done: todoForm.done
+			color: "$D",
+			starred: false,
+			done: false
 		}
 		
 		const result = await store.dispatch('entity/addItem', {
@@ -300,15 +269,45 @@ async function saveTodo() {
 			item: newTodo
 		})
 		
-		// Place in pending slot if creation was successful
-		if (result.status === 'OK' && pendingSlot.value.row !== null && pendingSlot.value.column !== null) {
-			gridMatrix.value[pendingSlot.value.row][pendingSlot.value.column] = result.itemId
+		// // Place in pending slot if creation was successful
+		// if (result.status === 'OK' && pendingSlot.value.row !== null && pendingSlot.value.column !== null) {
+		// 	gridMatrix.value[pendingSlot.value.row][pendingSlot.value.column] = result.itemId
+		// 	saveGridToStorage()
+		// }
+
+		// Place in next available slot if creation was successful
+		if (result.status === 'OK' && nextAvailableSlot.value.row !== null && nextAvailableSlot.value.column !== null) {
+
+			console.log("...placing todo", result.itemId, "in slot", nextAvailableSlot.value);
+
+			const { column, row } = nextAvailableSlot.value;
+			gridMatrix.value[row][column] = result.itemId;
 			saveGridToStorage()
 		}
 	}
 	
 	todoModalRef.value?.close()
 	resetTodoForm()
+}
+
+/**
+ * Returns the first available slot in the grid matrix
+ * to be used for new todos
+ * @return {{column: null, row: null}|{column: number, row: number}}
+ */
+function getNextAvailableSlot() {
+	if (!gridMatrix.value) return { column: null, row: null }
+
+	for (let c = 0; c < gridConfig.columns; c++) {
+		for (let r = 0; r < gridConfig.rows; r++) {
+			if (!gridMatrix.value[r]) continue;
+			if (!gridMatrix.value[r][c]) {
+				return { row: r, column: c }
+			}
+		}
+	}
+
+	return { column: null, row: null }
 }
 
 function cancelTodoForm() {

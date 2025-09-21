@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="visible"
-		class="absolute top-1 right-1 z-30 color-selector"
+		class="absolute top-1 right-1 z-30 space-y-1 bg-blue-800 rounded p-1"
 		@click.stop
 	>
 		<div 
@@ -36,6 +36,17 @@
 				@click="selectColor(color.code)"
 			/>
 		</div>
+
+		<div>
+			<BxIconButton
+				type="danger"
+				icon="trash"
+				label="Delete"
+				size="small"
+				class="ml-auto"
+				@click="emit('delete')"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -53,7 +64,7 @@ const props = defineProps({
 	}
 })
 
-const emit = defineEmits(['update', 'close'])
+const emit = defineEmits(['update', 'close', 'delete'])
 
 const colorOptions = [
 	{ code: '$D', name: 'Default', bgClass: 'bg-yellow-300' },

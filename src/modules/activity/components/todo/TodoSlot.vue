@@ -10,7 +10,6 @@
 		@dragenter.prevent="handleDragEnter"
 		@dragleave="handleDragLeave"
 		@drop.prevent="handleDrop"
-		@click="handleSlotClick"
 	>
 		<slot />
 		
@@ -74,12 +73,12 @@ function handleDrop(event) {
 	})
 }
 
-function handleSlotClick() {
-	if (isEmpty.value) {
-		emit('click', {
-			row: props.row,
-			column: props.column
-		})
-	}
-}
+// function handleSlotClick() {
+// 	if (isEmpty.value) {
+// 		emit('click', {
+// 			row: props.row,
+// 			column: props.column
+// 		})
+// 	}
+// }
 </script>

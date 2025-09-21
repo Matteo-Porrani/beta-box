@@ -6,7 +6,7 @@
 		@dragstart="handleDragStart"
 	>
 		<!-- Main content area -->
-		<div class="p-2 h-full flex flex-col">
+		<div class="font-cc p-2 h-full flex flex-col">
 			<!-- Editable text area -->
 			<div
 				v-if="!isEditing"
@@ -50,6 +50,7 @@
 			:todo="todo"
 			:visible="showColorSelector"
 			@update="handleTodoUpdate"
+			@delete="handleTodoDelete"
 			@close="showColorSelector = false"
 		/>
 		
@@ -67,7 +68,7 @@ const props = defineProps({
 	}
 })
 
-const emit = defineEmits(['update'])
+const emit = defineEmits(['update', 'delete'])
 
 const isEditing = ref(false)
 const editText = ref('')
@@ -144,6 +145,10 @@ function saveEdit() {
 
 function handleTodoUpdate(updatedTodo) {
 	emit('update', updatedTodo)
+}
+
+function handleTodoDelete() {
+	emit('delete', props.todo.id)
 }
 
 function toggleColorSelector() {
