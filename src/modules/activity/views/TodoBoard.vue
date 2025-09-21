@@ -104,11 +104,6 @@
 			</div>
 		</div>
 
-		<!-- Grid Configuration Modal -->
-		<GridConfig
-			ref="gridConfigRef"
-			@apply="applyGridConfig"
-		/>
 
 	</section>
 </template>
@@ -118,17 +113,14 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import BxIcon from '@/modules/ui/components/BxIcon.vue'
 import BxButton from '@/modules/ui/components/BxButton.vue'
-// import BxModal from '@/modules/ui/components/BxModal.vue'
 import TodoSlot from '../components/todo/TodoSlot.vue'
 import TodoCard from '../components/todo/TodoCard.vue'
-import GridConfig from '../components/todo/GridConfig.vue'
 
 // Store
 const store = useStore()
 
 // Refs
-const gridConfigRef = ref(null)
-const todoModalRef = ref(null)
+// (no refs needed currently)
 
 // Constants for maximum grid size
 const MAX_COLUMNS = 10
@@ -149,7 +141,6 @@ const todoForm = reactive({
 	done: false
 })
 
-const pendingSlot = ref({ row: null, column: null })
 const nextAvailableSlot = computed(() => getNextAvailableSlot())
 
 // Computed
@@ -235,17 +226,6 @@ function getTodoPosition(todoId) {
 	return { row: null, column: null }
 }
 
-function openGridConfig() {
-	gridConfigRef.value?.open(gridConfig)
-}
-
-function applyGridConfig(newConfig) {
-	// Just update the display configuration - matrix stays at maximum size
-	gridConfig.columns = newConfig.columns
-	gridConfig.rows = newConfig.rows
-	
-	saveGridToStorage()
-}
 
 function adjustColumns(delta) {
 	const newColumns = gridConfig.columns + delta
@@ -334,11 +314,6 @@ async function saveTodo() {
 			item: newTodo
 		})
 		
-		// // Place in pending slot if creation was successful
-		// if (result.status === 'OK' && pendingSlot.value.row !== null && pendingSlot.value.column !== null) {
-		// 	gridMatrix.value[pendingSlot.value.row][pendingSlot.value.column] = result.itemId
-		// 	saveGridToStorage()
-		// }
 
 		// Place in next available slot if creation was successful
 		if (result.status === 'OK' && nextAvailableSlot.value.row !== null && nextAvailableSlot.value.column !== null) {
@@ -351,7 +326,6 @@ async function saveTodo() {
 		}
 	}
 	
-	todoModalRef.value?.close()
 	resetTodoForm()
 }
 
@@ -375,10 +349,6 @@ function getNextAvailableSlot() {
 	return { column: null, row: null }
 }
 
-function cancelTodoForm() {
-	todoModalRef.value?.close()
-	resetTodoForm()
-}
 
 // Lifecycle
 onMounted(async () => {
