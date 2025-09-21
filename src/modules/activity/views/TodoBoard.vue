@@ -100,15 +100,23 @@
 		</div>
 
 		<!-- Board info -->
-		<div class="flex items-center justify-between bg-stone-700 border-b border-stone-600 py-1">
+		<div class="flex items-center gap-2 bg-stone-700 border-b border-stone-600 py-1">
 			<h1 class="text-white font-bold">
 				#{{ currentBoardId }} - {{ currentBoard?.name || 'Loading...' }}
 			</h1>
 
 			<BxIconButton
+				icon="edit"
+				size="small"
+				type="secondary"
+				@click="updateCurrentBoard"
+			/>
+
+			<BxIconButton
 				icon="trash"
 				type="danger"
 				size="small"
+				class="ml-auto"
 				@click="deleteCurrentBoard"
 			/>
 		</div>
@@ -141,10 +149,12 @@
 		</div>
 
 
-		<!-- New Board Modal -->
+		<!-- Board Modal (Create/Edit) -->
 		<BxModal ref="newBoardModal">
 			<template #header>
-				<h2 class="text-white text-lg font-bold">Create New Board</h2>
+				<h2 class="text-white text-lg font-bold">
+					{{ isEditingBoard ? 'Edit Board Name' : 'Create New Board' }}
+				</h2>
 			</template>
 			
 			<template #body>
@@ -156,7 +166,7 @@
 							type="text"
 							placeholder="Enter board name..."
 							class="w-full bg-stone-800 text-white rounded p-2 border border-stone-600 focus:border-stone-400 outline-none"
-							@keyup.enter="confirmCreateBoard"
+							@keyup.enter="confirmBoardAction"
 							ref="boardNameInput"
 						/>
 					</div>
@@ -168,12 +178,12 @@
 					<BxButton
 						label="Cancel"
 						type="soft"
-						@click="cancelCreateBoard"
+						@click="cancelBoardAction"
 					/>
 					<BxButton
-						label="Create"
+						:label="isEditingBoard ? 'Update' : 'Create'"
 						:disabled="!newBoardName.trim()"
-						@click="confirmCreateBoard"
+						@click="confirmBoardAction"
 					/>
 				</div>
 			</template>
@@ -198,6 +208,7 @@ const store = useStore()
 const newBoardModal = ref(null)
 const boardNameInput = ref(null)
 const newBoardName = ref('')
+const isEditingBoard = ref(false)
 
 // Constants from service
 const MAX_COLUMNS = todoGridSrv.maxColumns
@@ -397,7 +408,8 @@ function switchBoard() {
 }
 
 function createNewBoard() {
-	// Reset and open modal
+	// Set create mode and reset form
+	isEditingBoard.value = false
 	newBoardName.value = ''
 	newBoardModal.value.open()
 	
@@ -407,32 +419,57 @@ function createNewBoard() {
 	}, 100)
 }
 
-function cancelCreateBoard() {
+function updateCurrentBoard() {
+	// Set edit mode and populate current board name
+	isEditingBoard.value = true
+	newBoardName.value = currentBoard.value?.name || ''
+	newBoardModal.value.open()
+	
+	// Focus input after modal opens
+	setTimeout(() => {
+		boardNameInput.value?.focus()
+		boardNameInput.value?.select() // Select all text for easy editing
+	}, 100)
+}
+
+function cancelBoardAction() {
 	newBoardName.value = ''
+	isEditingBoard.value = false
 	newBoardModal.value.close()
 }
 
-function confirmCreateBoard() {
+function confirmBoardAction() {
 	if (!newBoardName.value.trim()) return
 	
-	// Create new board using service
-	const updatedData = todoGridSrv.createBoard(newBoardName.value.trim(), multiboardData.value)
-	
-	// Update local state
-	boardItems.value = updatedData.boardItems
-	matrixData.value = updatedData.matrixData
-	
-	// Switch to the new board (it will be the last one created)
-	const newBoard = updatedData.boardItems[updatedData.boardItems.length - 1]
-	currentBoardId.value = newBoard.id
-	
-	// Update grid config to reflect the new active board
-	gridConfig.activeBoard = newBoard.id
-	
-	saveGridToStorage()
+	if (isEditingBoard.value) {
+		// Update existing board name
+		const updatedData = todoGridSrv.renameBoard(currentBoardId.value, newBoardName.value.trim(), multiboardData.value)
+		
+		// Update local state
+		boardItems.value = updatedData.boardItems
+		
+		saveGridToStorage()
+	} else {
+		// Create new board
+		const updatedData = todoGridSrv.createBoard(newBoardName.value.trim(), multiboardData.value)
+		
+		// Update local state
+		boardItems.value = updatedData.boardItems
+		matrixData.value = updatedData.matrixData
+		
+		// Switch to the new board (it will be the last one created)
+		const newBoard = updatedData.boardItems[updatedData.boardItems.length - 1]
+		currentBoardId.value = newBoard.id
+		
+		// Update grid config to reflect the new active board
+		gridConfig.activeBoard = newBoard.id
+		
+		saveGridToStorage()
+	}
 	
 	// Close modal and reset
 	newBoardName.value = ''
+	isEditingBoard.value = false
 	newBoardModal.value.close()
 }
 
