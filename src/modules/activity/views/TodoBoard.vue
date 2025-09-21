@@ -153,17 +153,10 @@ const isEditingTodo = computed(() => todoForm.id !== null)
 
 const tasks = computed(() => store.getters['entity/getItemsFromTable']('task'))
 
-const loading = computed(() => store.state.entity.loading)
+// ============================================================================
+// GRID INITIALIZATION & PERSISTENCE
+// ============================================================================
 
-// const colorOptions = [
-// 	{ code: '$D', name: 'Default', bgClass: 'bg-yellow-600' },
-// 	{ code: '$A', name: 'Category A', bgClass: 'bg-blue-600' },
-// 	{ code: '$B', name: 'Category B', bgClass: 'bg-purple-600' },
-// 	{ code: '$C', name: 'Category C', bgClass: 'bg-green-600' },
-// 	{ code: '$E', name: 'Category E', bgClass: 'bg-red-600' }
-// ]
-
-// Methods
 function initializeGrid() {
 	// Always initialize to maximum size to prevent data loss
 	gridMatrix.value = Array(MAX_ROWS).fill(null).map(() =>
@@ -208,6 +201,30 @@ function saveGridToStorage() {
 	localStorage.setItem('betaTodoBoardMatrix', JSON.stringify(data))
 }
 
+// ============================================================================
+// GRID CONFIGURATION CONTROLS
+// ============================================================================
+
+function adjustColumns(delta) {
+	const newColumns = gridConfig.columns + delta
+	if (newColumns >= 3 && newColumns <= MAX_COLUMNS) {
+		gridConfig.columns = newColumns
+		saveGridToStorage()
+	}
+}
+
+function adjustRows(delta) {
+	const newRows = gridConfig.rows + delta
+	if (newRows >= 5 && newRows <= MAX_ROWS) {
+		gridConfig.rows = newRows
+		saveGridToStorage()
+	}
+}
+
+// ============================================================================
+// TODO DATA ACCESS & POSITION UTILITIES
+// ============================================================================
+
 function getTodoById(id) {
 	return tasks.value.find(task => task.id === id)
 }
@@ -226,22 +243,29 @@ function getTodoPosition(todoId) {
 	return { row: null, column: null }
 }
 
+/**
+ * Returns the first available slot in the grid matrix
+ * to be used for new todos
+ * @return {{column: null, row: null}|{column: number, row: number}}
+ */
+function getNextAvailableSlot() {
+	if (!gridMatrix.value) return { column: null, row: null }
 
-function adjustColumns(delta) {
-	const newColumns = gridConfig.columns + delta
-	if (newColumns >= 3 && newColumns <= MAX_COLUMNS) {
-		gridConfig.columns = newColumns
-		saveGridToStorage()
+	for (let c = 0; c < gridConfig.columns; c++) {
+		for (let r = 0; r < gridConfig.rows; r++) {
+			if (!gridMatrix.value[r]) continue;
+			if (!gridMatrix.value[r][c]) {
+				return { row: r, column: c }
+			}
+		}
 	}
+
+	return { column: null, row: null }
 }
 
-function adjustRows(delta) {
-	const newRows = gridConfig.rows + delta
-	if (newRows >= 5 && newRows <= MAX_ROWS) {
-		gridConfig.rows = newRows
-		saveGridToStorage()
-	}
-}
+// ============================================================================
+// DRAG & DROP OPERATIONS
+// ============================================================================
 
 function handleTodoDrop({ todoId, targetRow, targetColumn }) {
 	// Find current position of the todo
@@ -267,6 +291,10 @@ function handleTodoDrop({ todoId, targetRow, targetColumn }) {
 		saveGridToStorage()
 	}
 }
+
+// ============================================================================
+// TODO CRUD OPERATIONS
+// ============================================================================
 
 async function handleTodoUpdate(updatedTodo) {
 	await store.dispatch('entity/updateItem', {
@@ -327,26 +355,6 @@ async function saveTodo() {
 	}
 	
 	resetTodoForm()
-}
-
-/**
- * Returns the first available slot in the grid matrix
- * to be used for new todos
- * @return {{column: null, row: null}|{column: number, row: number}}
- */
-function getNextAvailableSlot() {
-	if (!gridMatrix.value) return { column: null, row: null }
-
-	for (let c = 0; c < gridConfig.columns; c++) {
-		for (let r = 0; r < gridConfig.rows; r++) {
-			if (!gridMatrix.value[r]) continue;
-			if (!gridMatrix.value[r][c]) {
-				return { row: r, column: c }
-			}
-		}
-	}
-
-	return { column: null, row: null }
 }
 
 
