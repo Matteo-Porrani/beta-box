@@ -1,7 +1,7 @@
 <template>
 	<section class="h-full grid grid-rows-[auto_1fr]">
 		<!-- Toolbar -->
-		<div class="toolbar flex items-center gap-4 px-1">
+		<div class="toolbar flex items-center gap-4 p-1">
 			<router-link
 				to="/"
 				class="flex gap-1 items-center text-stone-400 hover:text-stone-300 text-sm"
@@ -13,6 +13,7 @@
 			<div class="todo-form flex gap-1 items-center">
 				<input
 					v-model="todoForm.desc"
+					placeholder="New task..."
 					type="text"
 					class="w-[50vw] bg-stone-800 rounded text-white p-1"
 				/>
@@ -54,11 +55,11 @@
 						:column="col-1"
 						:todo-id="gridMatrix[row-1] && gridMatrix[row-1][col-1]"
 						@drop="handleTodoDrop"
-						@click="handleSlotClick"
 					>
 						<TodoCard
 							v-if="gridMatrix[row-1] && gridMatrix[row-1][col-1] && getTodoById(gridMatrix[row-1][col-1])"
 							:todo="getTodoById(gridMatrix[row-1][col-1])"
+							:position="{ row: row-1, column: col-1 }"
 							@update="handleTodoUpdate"
 							@delete="handleTodoDelete"
 						/>
@@ -184,6 +185,20 @@ function getTodoById(id) {
 	return tasks.value.find(task => task.id === id)
 }
 
+function getTodoPosition(todoId) {
+	if (!gridMatrix.value || !todoId) return { row: null, column: null }
+	
+	for (let r = 0; r < gridConfig.rows; r++) {
+		for (let c = 0; c < gridConfig.columns; c++) {
+			if (gridMatrix.value[r] && gridMatrix.value[r][c] === todoId) {
+				return { row: r, column: c }
+			}
+		}
+	}
+	
+	return { row: null, column: null }
+}
+
 function openGridConfig() {
 	gridConfigRef.value?.open(gridConfig)
 }
@@ -194,12 +209,6 @@ function applyGridConfig(newConfig) {
 	gridConfig.rows = newConfig.rows
 	
 	saveGridToStorage()
-}
-
-function handleSlotClick({ row, column }) {
-	pendingSlot.value = { row, column }
-	resetTodoForm()
-	todoModalRef.value?.open()
 }
 
 function handleTodoDrop({ todoId, targetRow, targetColumn }) {
@@ -235,6 +244,10 @@ async function handleTodoUpdate(updatedTodo) {
 }
 
 async function handleTodoDelete(todoId) {
+	const { row, column } = getTodoPosition(todoId);
+	gridMatrix.value[row][column] = null;
+	saveGridToStorage();
+
 	await store.dispatch('entity/deleteItem', {
 		tableName: 'task',
 		id: todoId
