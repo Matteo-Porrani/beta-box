@@ -10,6 +10,29 @@
 				BACK
 			</router-link>
 
+			<!-- Board selector -->
+			<div class="flex items-center gap-2">
+				<select 
+					v-model="currentBoardId"
+					@change="switchBoard"
+					class="bg-stone-800 text-white rounded p-1 text-sm border border-stone-600"
+				>
+					<option 
+						v-for="board in boardItems" 
+						:key="board.id" 
+						:value="board.id"
+					>
+						{{ board.name }}
+					</option>
+				</select>
+				<BxButton
+					label="New Board"
+					size="small"
+					type="soft"
+					@click="createNewBoard"
+				/>
+			</div>
+
 			<div class="todo-form flex gap-1 items-center">
 				<input
 					v-model="todoForm.desc"
@@ -312,6 +335,42 @@ async function saveTodo() {
 	}
 	
 	resetTodoForm()
+}
+
+// ============================================================================
+// BOARD SWITCHING & MANAGEMENT
+// ============================================================================
+
+function switchBoard() {
+	// Save current state before switching
+	saveGridToStorage()
+	
+	// Update grid config to match current board
+	gridConfig.activeBoard = currentBoardId.value
+	
+	// Save updated config
+	saveGridToStorage()
+}
+
+function createNewBoard() {
+	const boardName = prompt('Enter name for new board:')
+	if (!boardName || !boardName.trim()) return
+	
+	// Create new board using service
+	const updatedData = todoGridSrv.createBoard(boardName.trim(), multiboardData.value)
+	
+	// Update local state
+	boardItems.value = updatedData.boardItems
+	matrixData.value = updatedData.matrixData
+	
+	// Switch to the new board (it will be the last one created)
+	const newBoard = updatedData.boardItems[updatedData.boardItems.length - 1]
+	currentBoardId.value = newBoard.id
+	
+	// Update grid config to reflect the new active board
+	gridConfig.activeBoard = newBoard.id
+	
+	saveGridToStorage()
 }
 
 
