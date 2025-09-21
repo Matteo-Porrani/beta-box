@@ -141,6 +141,44 @@
 		</div>
 
 
+		<!-- New Board Modal -->
+		<BxModal ref="newBoardModal">
+			<template #header>
+				<h2 class="text-white text-lg font-bold">Create New Board</h2>
+			</template>
+			
+			<template #body>
+				<div class="space-y-4">
+					<div>
+						<label class="block text-white text-sm font-medium mb-2">Board Name</label>
+						<input
+							v-model="newBoardName"
+							type="text"
+							placeholder="Enter board name..."
+							class="w-full bg-stone-800 text-white rounded p-2 border border-stone-600 focus:border-stone-400 outline-none"
+							@keyup.enter="confirmCreateBoard"
+							ref="boardNameInput"
+						/>
+					</div>
+				</div>
+			</template>
+			
+			<template #footer>
+				<div class="flex gap-2 justify-end">
+					<BxButton
+						label="Cancel"
+						type="soft"
+						@click="cancelCreateBoard"
+					/>
+					<BxButton
+						label="Create"
+						:disabled="!newBoardName.trim()"
+						@click="confirmCreateBoard"
+					/>
+				</div>
+			</template>
+		</BxModal>
+
 	</section>
 </template>
 
@@ -150,8 +188,6 @@ import { useStore } from 'vuex'
 import { todoGridSrv } from '../services/TodoGridSrv.js'
 
 
-import BxIcon from '@/modules/ui/components/BxIcon.vue'
-import BxButton from '@/modules/ui/components/BxButton.vue'
 import TodoSlot from '../components/todo/TodoSlot.vue'
 import TodoCard from '../components/todo/TodoCard.vue'
 
@@ -159,7 +195,9 @@ import TodoCard from '../components/todo/TodoCard.vue'
 const store = useStore()
 
 // Refs
-// (no refs needed currently)
+const newBoardModal = ref(null)
+const boardNameInput = ref(null)
+const newBoardName = ref('')
 
 // Constants from service
 const MAX_COLUMNS = todoGridSrv.maxColumns
@@ -359,11 +397,26 @@ function switchBoard() {
 }
 
 function createNewBoard() {
-	const boardName = prompt('Enter name for new board:')
-	if (!boardName || !boardName.trim()) return
+	// Reset and open modal
+	newBoardName.value = ''
+	newBoardModal.value.open()
+	
+	// Focus input after modal opens
+	setTimeout(() => {
+		boardNameInput.value?.focus()
+	}, 100)
+}
+
+function cancelCreateBoard() {
+	newBoardName.value = ''
+	newBoardModal.value.close()
+}
+
+function confirmCreateBoard() {
+	if (!newBoardName.value.trim()) return
 	
 	// Create new board using service
-	const updatedData = todoGridSrv.createBoard(boardName.trim(), multiboardData.value)
+	const updatedData = todoGridSrv.createBoard(newBoardName.value.trim(), multiboardData.value)
 	
 	// Update local state
 	boardItems.value = updatedData.boardItems
@@ -377,6 +430,10 @@ function createNewBoard() {
 	gridConfig.activeBoard = newBoard.id
 	
 	saveGridToStorage()
+	
+	// Close modal and reset
+	newBoardName.value = ''
+	newBoardModal.value.close()
 }
 
 async function deleteCurrentBoard() {
