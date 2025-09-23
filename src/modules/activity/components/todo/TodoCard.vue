@@ -1,25 +1,23 @@
 <template>
 	<div
-		class="relative h-full w-full rounded border border-stone-600 transition-all duration-200 overflow-hidden"
+		class="relative grid rounded border border-stone-600 transition-all duration-200"
 		:class="[cardClasses, { 'cursor-move': !isEditing, 'cursor-text': isEditing }]"
 		:draggable="!isEditing"
 		@dragstart="handleDragStart"
 	>
 		<!-- Main content area -->
-		<div class="font-cc p-2 h-full flex flex-col">
+		<div class="font-cc grid overflow-y-hidden p-1">
 			<!-- Editable text area -->
-<!--			<pre class="text-xs text-blue-500 absolute bottom-1 right-1">{{ todo.id }}</pre>-->
-			<div
+			<p
 				v-if="!isEditing"
 				:class="[
 					'flex-1 leading-tight whitespace-pre-wrap break-words',
 					todo.starred ? 'text-lg font-semibold' : 'text-sm text-stone-800'
 				]"
-				style="text-align: left; vertical-align: top;"
 				@dblclick.stop="startEditing"
 			>
 				{{ todo.desc }}
-			</div>
+			</p>
 			
 			<!-- Edit mode textarea -->
 			<textarea
@@ -178,3 +176,4 @@ onUnmounted(() => {
 	document.removeEventListener('click', handleClickOutside)
 })
 </script>
+

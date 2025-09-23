@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="relative border border-dashed border-transparent rounded transition-colors duration-200"
+		class="relative grid border border-dashed border-transparent rounded transition-colors duration-200"
 		:class="{
 			'border-yellow-400 bg-stone-600': isDragOver,
 			'border-stone-500': !isDragOver && !isEmpty,
