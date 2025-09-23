@@ -302,15 +302,17 @@ class TodoGridSrv {
 	 * Finds the next available slot in a specific board's grid matrix
 	 * @param {number} boardId - Board ID to search in
 	 * @param {Object} multiboardData - Complete multi-board data
+	 * @param {number} [startColumn=0] - Column to start search from
+	 * @param {number} [startRow=0] - Row to start search from
 	 * @return {{row: number|null, column: number|null}} Next available position
 	 */
-	getNextAvailableSlot(boardId, multiboardData) {
+	getNextAvailableSlot(boardId, multiboardData, startColumn = 0, startRow = 0) {
 		const matrix = multiboardData.matrixData[boardId];
 		if (!matrix) return { column: null, row: null };
 
 		const config = multiboardData.config;
-		for (let c = 0; c < config.columns; c++) {
-			for (let r = 0; r < config.rows; r++) {
+		for (let c = startColumn; c < config.columns; c++) {
+			for (let r = (c === startColumn ? startRow : 0); r < config.rows; r++) {
 				if (!matrix[r]) continue;
 				if (!matrix[r][c]) {
 					return { row: r, column: c };
