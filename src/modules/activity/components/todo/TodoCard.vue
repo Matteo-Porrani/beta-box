@@ -58,6 +58,7 @@
 			:visible="showColorSelector"
 			@update="handleTodoUpdate"
 			@delete="handleTodoDelete"
+			@copy="handleTodoCopy"
 			@close="showColorSelector = false"
 		/>
 		
@@ -81,7 +82,7 @@ const props = defineProps({
 	}
 })
 
-const emit = defineEmits(['update', 'delete'])
+const emit = defineEmits(['update', 'delete', 'copy'])
 
 const isEditing = ref(false)
 const editText = ref('')
@@ -156,6 +157,10 @@ function handleTodoUpdate(updatedTodo) {
 
 function handleTodoDelete() {
 	emit('delete', props.todo.id)
+}
+
+function handleTodoCopy() {
+	emit('copy', props.todo.id)
 }
 
 function toggleColorSelector() {

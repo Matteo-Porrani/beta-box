@@ -45,14 +45,19 @@
 			<p>DONE</p>
 		</div>
 
-		<!-- DELETE -->
-		<div>
+		<!-- ACTIONS -->
+		<div class="flex items-center justify-between">
+			<BxIconButton
+				type="secondary"
+				icon="copy"
+				size="small"
+				@click="emit('copy')"
+			/>
+
 			<BxIconButton
 				type="danger"
 				icon="trash"
-				label="Delete"
 				size="small"
-				class="ml-auto"
 				@click="emit('delete')"
 			/>
 		</div>
@@ -76,31 +81,12 @@ const props = defineProps({
 
 const emit = defineEmits(['update', 'close', 'delete'])
 
-
-/*
-{
-	'$D': 'bg-yellow-300',
-	'$E': 'bg-orange-400',
-	'$A': 'bg-slate-400',
-	'$B': 'bg-purple-400',
-	'$C': 'bg-rose-500'
-}
- */
-
 const colorOptions = Object.entries(ACTIVITY_COLOR_MAP).map(([key, value]) => {
 	return {
 		code: key,
 		bgClass: value
 	}
 })
-
-// const colorOptions = [
-// 	{ code: '$D', bgClass: 'bg-yellow-300' },
-// 	{ code: '$E', bgClass: 'bg-orange-400' },
-// 	{ code: '$A', bgClass: 'bg-sky-400' },
-// 	{ code: '$B', bgClass: 'bg-violet-500' },
-// 	{ code: '$C', bgClass: 'bg-emerald-500' }
-// ]
 
 const isCompleted = ref(false);
 

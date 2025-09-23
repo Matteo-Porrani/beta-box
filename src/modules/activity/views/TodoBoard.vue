@@ -123,6 +123,7 @@
 							:position="{ row: row-1, column: col-1 }"
 							@update="handleTodoUpdate"
 							@delete="handleTodoDelete"
+							@copy="handleTodoCopy"
 						/>
 					</TodoSlot>
 				</template>
@@ -318,7 +319,7 @@ async function handleTodoUpdate(updatedTodo) {
 
 async function handleTodoDelete(todoId) {
 	const updatedData = todoGridSrv.removeTodo(todoId, currentBoardId.value, multiboardData.value)
-	
+
 	// Update local state
 	matrixData.value = updatedData.matrixData
 	saveGridToStorage()
@@ -327,6 +328,53 @@ async function handleTodoDelete(todoId) {
 		tableName: 'task',
 		id: todoId
 	})
+}
+
+async function handleTodoCopy(todoId) {
+	const sourceTodo = getTodoById(todoId)
+	if (!sourceTodo) return
+
+	// Clone todo object (without ID)
+	const newTodo = {
+		desc: sourceTodo.desc,
+		color: sourceTodo.color,
+		starred: sourceTodo.starred,
+		done: sourceTodo.done
+	}
+
+	// Create new todo in store (auto-generates ID)
+	const result = await store.dispatch('entity/addItem', {
+		tableName: 'task',
+		item: newTodo
+	})
+
+	if (result.status === 'OK') {
+		// Find source position
+		const sourcePosition = getTodoPosition(todoId)
+
+		// Find next available slot starting from source position
+		const nextSlot = todoGridSrv.getNextAvailableSlot(
+			currentBoardId.value,
+			multiboardData.value,
+			sourcePosition.column,
+			sourcePosition.row
+		)
+
+		// Place duplicate in next available slot
+		if (nextSlot.row !== null && nextSlot.column !== null) {
+			const updatedData = todoGridSrv.placeTodo(
+				result.itemId,
+				nextSlot.row,
+				nextSlot.column,
+				currentBoardId.value,
+				multiboardData.value
+			)
+
+			// Update local state
+			matrixData.value = updatedData.matrixData
+			saveGridToStorage()
+		}
+	}
 }
 
 function resetTodoForm() {
