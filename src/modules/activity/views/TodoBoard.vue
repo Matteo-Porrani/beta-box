@@ -1,7 +1,7 @@
 <template>
-	<section class="h-full grid grid-rows-[auto_auto_1fr]">
+	<section class="h-full grid grid-rows-[auto_1fr]">
 		<!-- Toolbar -->
-		<div class="toolbar flex items-center gap-4 p-1">
+		<div class="toolbar flex items-center gap-8 p-1">
 			<router-link
 				to="/"
 				class="flex gap-1 items-center text-stone-400 hover:text-stone-300 text-sm"
@@ -30,6 +30,19 @@
 					size="small"
 					@click="createNewBoard"
 				/>
+				<BxIconButton
+					icon="edit"
+					size="small"
+					type="secondary"
+					@click="updateCurrentBoard"
+				/>
+				<BxIconButton
+					icon="trash"
+					type="secondary"
+					size="small"
+					class="ml-auto"
+					@click="deleteCurrentBoard"
+				/>
 			</div>
 
 			<div class="todo-form flex gap-1 items-center">
@@ -47,30 +60,21 @@
 				/>
 			</div>
 
-<!--			<pre>NEXT: {{ nextAvailableSlot.column  }}/{{ nextAvailableSlot.row  }} </pre>-->
-
-<!--			<BxButton-->
-<!--				label="RESET GRID"-->
-<!--				size="small"-->
-<!--				@click="initializeGrid"-->
-<!--			/>-->
-			
 			<!-- Grid controls -->
-			<div class="ml-auto flex items-center gap-2 bg-stone-800 rounded p-1">
+			<div class="ml-auto flex items-center gap-8 bg-stone-800 rounded p-1">
 				<!-- Columns control -->
 				<div class="flex items-center gap-2">
-					<span class="text-white text-sm">Columns</span>
-					<BxButton
+					<BxIconButton
+						icon="caret_left"
 						type="soft"
-						label="-"
 						size="small"
 						:disabled="gridConfig.columns <= 3"
 						@click="adjustColumns(-1)"
 					/>
-					<span class="text-white text-sm w-6 text-center">{{ gridConfig.columns }}</span>
-					<BxButton
+					<span class="text-white text-sm w-8 text-center">{{ gridConfig.columns }} C</span>
+					<BxIconButton
+						icon="caret_right"
 						type="soft"
-						label="+"
 						size="small"
 						:disabled="gridConfig.columns >= MAX_COLUMNS"
 						@click="adjustColumns(1)"
@@ -79,46 +83,23 @@
 				
 				<!-- Rows control -->
 				<div class="flex items-center gap-2">
-					<span class="text-white text-sm">Rows</span>
-					<BxButton
+					<BxIconButton
+						icon="caret_left"
 						type="soft"
-						label="-"
 						size="small"
 						:disabled="gridConfig.rows <= 5"
 						@click="adjustRows(-1)"
 					/>
-					<span class="text-white text-sm w-6 text-center">{{ gridConfig.rows }}</span>
-					<BxButton
+					<span class="text-white text-sm w-8 text-center">{{ gridConfig.rows }} R</span>
+					<BxIconButton
+						icon="caret_right"
 						type="soft"
-						label="+"
 						size="small"
 						:disabled="gridConfig.rows >= MAX_ROWS"
 						@click="adjustRows(1)"
 					/>
 				</div>
 			</div>
-		</div>
-
-		<!-- Board info -->
-		<div class="flex items-center gap-2 bg-stone-700 border-b border-stone-600 py-1">
-			<h1 class="text-white font-bold">
-				#{{ currentBoardId }} - {{ currentBoard?.name || 'Loading...' }}
-			</h1>
-
-			<BxIconButton
-				icon="edit"
-				size="small"
-				type="secondary"
-				@click="updateCurrentBoard"
-			/>
-
-			<BxIconButton
-				icon="trash"
-				type="danger"
-				size="small"
-				class="ml-auto"
-				@click="deleteCurrentBoard"
-			/>
 		</div>
 
 		<!-- Main grid area -->
@@ -147,7 +128,6 @@
 				</template>
 			</div>
 		</div>
-
 
 		<!-- Board Modal (Create/Edit) -->
 		<BxModal ref="newBoardModal">
@@ -188,7 +168,6 @@
 				</div>
 			</template>
 		</BxModal>
-
 	</section>
 </template>
 
