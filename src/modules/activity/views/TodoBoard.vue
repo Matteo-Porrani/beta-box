@@ -66,8 +66,8 @@
 					type="range"
 					min="1"
 					max="2"
-					class="w-10 accent-sky-500"
-					v-model="textSize"
+					class="w-16 accent-sky-500"
+					v-model.number="textSize"
 				>
 				<p class="text-lg">A</p>
 			</div>
@@ -133,6 +133,7 @@
 							v-if="currentMatrix[row-1] && currentMatrix[row-1][col-1] && getTodoById(currentMatrix[row-1][col-1])"
 							:todo="getTodoById(currentMatrix[row-1][col-1])"
 							:position="{ row: row-1, column: col-1 }"
+							:text-size="textSize"
 							@update="handleTodoUpdate"
 							@delete="handleTodoDelete"
 							@copy="handleTodoCopy"
@@ -201,7 +202,7 @@ const store = useStore()
 const boardItems = ref([])
 const matrixData = ref({})
 const currentBoardId = ref(1)
-const textSize = ref(1)
+const textSize = ref(2)
 
 // Grid configuration composable
 const {

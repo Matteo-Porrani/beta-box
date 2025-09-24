@@ -12,7 +12,7 @@
 				v-if="!isEditing"
 				:class="[
 					'flex-1 leading-tight whitespace-pre-wrap break-words',
-					todo.starred ? 'text-lg font-semibold' : 'text-sm text-stone-800'
+					textSizeClasses
 				]"
 				@dblclick.stop="startEditing"
 			>
@@ -26,7 +26,7 @@
 				v-model="editText"
 				:class="[
 					'flex-1 bg-transparent leading-tight resize-none outline-none border-none overflow-hidden p-0',
-					todo.starred ? 'text-lg font-semibold text-white' : 'text-sm text-stone-800'
+					editTextSizeClasses
 				]"
 				style="text-align: left; vertical-align: top;"
 				@keydown="handleKeyDown"
@@ -79,6 +79,10 @@ const props = defineProps({
 	position: {
 		type: Object,
 		default: () => ({ row: null, column: null })
+	},
+	textSize: {
+		type: Number,
+		default: 1
 	}
 })
 
@@ -91,22 +95,40 @@ const editInput = ref(null)
 
 const cardClasses = computed(() => {
 	const baseClasses = []
-	
+
 	if (props.todo.starred) {
 		// Title task styling: transparent background, no special border
 		baseClasses.push('bg-transparent')
 	} else {
 		// Regular task styling
 		baseClasses.push('hover:border-stone-500')
-		
+
 		// Color-based background classes for regular tasks
 		const bgColor = (props.todo.done)
 			? 'bg-green-500 line-through'
 			: ACTIVITY_COLOR_MAP[props.todo.color] || 'bg-stone-700'
 		baseClasses.push(bgColor)
 	}
-	
+
 	return baseClasses
+})
+
+const textSizeClasses = computed(() => {
+	if (props.todo.starred) {
+		return 'text-lg font-semibold'
+	} else {
+		const sizeClass = Number(props.textSize) === 1 ? 'text-xs' : 'text-sm'
+		return `${sizeClass} text-stone-800`
+	}
+})
+
+const editTextSizeClasses = computed(() => {
+	if (props.todo.starred) {
+		return 'text-lg font-semibold text-white'
+	} else {
+		const sizeClass = Number(props.textSize) === 1 ? 'text-xs' : 'text-sm'
+		return `${sizeClass} text-stone-800`
+	}
 })
 
 function handleDragStart(event) {
