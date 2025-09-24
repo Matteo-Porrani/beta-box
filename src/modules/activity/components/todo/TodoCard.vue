@@ -66,7 +66,7 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, computed, nextTick, onMounted, onUnmounted, defineProps, defineEmits } from 'vue'
 import { ACTIVITY_COLOR_MAP } from "@/modules/activity/const/activity-const";
 
 import ColorSelector from './ColorSelector.vue'
