@@ -1,9 +1,36 @@
+/**
+ * TESTING VUE SINGLE FILE COMPONENTS (SFC) - Key Concepts & Patterns
+ *
+ * This test suite demonstrates comprehensive testing patterns for Vue SFCs:
+ *
+ * 1. ISOLATION: Mock external dependencies (components, constants, APIs)
+ * 2. FACTORY PATTERN: Use factory functions for consistent component creation
+ * 3. LIFECYCLE: Test component mounting, updating, and unmounting behaviors
+ * 4. REACTIVITY: Test Vue's reactive system using nextTick() for DOM updates
+ * 5. INTERACTION: Test user events (clicks, keyboard, drag & drop)
+ * 6. COMMUNICATION: Test component events and prop passing
+ * 7. STATE MANAGEMENT: Test internal reactive state and computed properties
+ * 8. DOM RENDERING: Test conditional rendering and class/style bindings
+ * 9. CLEANUP: Proper wrapper unmounting to prevent memory leaks
+ *
+ * Key Vue Test Utils concepts used:
+ * - mount(): Creates a wrapper with full rendering
+ * - wrapper.find(): Query DOM elements with CSS selectors
+ * - wrapper.findComponent(): Query child Vue components
+ * - wrapper.vm: Access component instance (props, data, methods, computed)
+ * - wrapper.emitted(): Track emitted events for parent-child communication
+ * - wrapper.trigger(): Simulate user interactions
+ * - nextTick(): Wait for Vue's reactivity system to update DOM
+ */
+
+// Testing Vue SFC (Single File Components) requires specific setup and patterns
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { nextTick } from 'vue'
+import { mount } from '@vue/test-utils' // Vue Test Utils provides the mount function for testing Vue components
+import { nextTick } from 'vue' // nextTick is essential for testing reactive updates and DOM changes
 import TodoCard from '@/modules/activity/components/todo/TodoCard.vue'
 
-// Mock the ColorSelector component
+// Mock the ColorSelector component to avoid complex child component dependencies
+// This isolates the TodoCard component and prevents external dependencies from affecting tests
 vi.mock('@/modules/activity/components/todo/ColorSelector.vue', () => ({
 	default: {
 		name: 'ColorSelector',
@@ -13,7 +40,8 @@ vi.mock('@/modules/activity/components/todo/ColorSelector.vue', () => ({
 	}
 }))
 
-// Mock the activity constants
+// Mock external constants to control test environment and avoid file system dependencies
+// This ensures tests are predictable and don't rely on external configuration
 vi.mock('@/modules/activity/const/activity-const', () => ({
 	ACTIVITY_COLOR_MAP: {
 		'$R': 'bg-red-500',
@@ -40,24 +68,29 @@ describe('TodoCard.vue', () => {
 		column: 1
 	}
 
+	// Factory function pattern: creates consistent component instances with customizable props
+	// This reduces test duplication and provides a consistent baseline for testing
 	function factory(props = {}) {
 		const defaultProps = {
 			todo: mockTodo,
 			position: mockPosition,
 			textSize: 1,
-			...props
+			...props // Allows overriding defaults for specific tests
 		}
 
 		return mount(TodoCard, {
 			props: defaultProps,
 			global: {
 				stubs: {
+					// Stub child components to isolate the component under test
 					ColorSelector: true
 				}
 			}
 		})
 	}
 
+	// Cleanup between tests to prevent memory leaks and test interference
+	// Vue Test Utils wrappers should always be unmounted after use
 	beforeEach(() => {
 		if (wrapper) {
 			wrapper.unmount()
@@ -71,6 +104,8 @@ describe('TodoCard.vue', () => {
 		})
 
 		it('uses default values for optional props', () => {
+			// Testing default prop values requires mounting WITHOUT the factory
+			// to avoid the factory's default prop assignments
 			wrapper = mount(TodoCard, {
 				props: {
 					todo: mockTodo
@@ -83,6 +118,7 @@ describe('TodoCard.vue', () => {
 				}
 			})
 
+			// wrapper.vm provides access to the component's internal state and computed properties
 			expect(wrapper.vm.position).toEqual({ row: null, column: null })
 			expect(wrapper.vm.textSize).toBe(1)
 		})
@@ -99,11 +135,14 @@ describe('TodoCard.vue', () => {
 		})
 	})
 
+	// Testing computed properties: Vue's reactivity system automatically updates computed values
+	// We test these by checking wrapper.vm.computedPropertyName
 	describe('Text Size Classes', () => {
 		it('applies text-lg font-semibold for starred todos', () => {
 			const starredTodo = { ...mockTodo, starred: true }
 			wrapper = factory({ todo: starredTodo, textSize: 1 })
 
+			// Testing computed properties via wrapper.vm gives direct access to component logic
 			expect(wrapper.vm.textSizeClasses).toBe('text-lg font-semibold')
 			expect(wrapper.vm.editTextSizeClasses).toBe('text-lg font-semibold text-white')
 		})
@@ -166,14 +205,18 @@ describe('TodoCard.vue', () => {
 		})
 	})
 
+	// Testing DOM rendering: wrapper.find() lets us query the rendered DOM
+	// This verifies that the component's template renders correctly based on state
 	describe('Text Display', () => {
 		it('displays todo description in paragraph when not editing', () => {
 			wrapper = factory()
 
+			// wrapper.find() uses CSS selectors to locate elements in the rendered DOM
 			const paragraph = wrapper.find('p')
 			expect(paragraph.exists()).toBe(true)
 			expect(paragraph.text()).toBe(mockTodo.desc)
 
+			// Testing conditional rendering: verify elements that should NOT be present
 			const textarea = wrapper.find('textarea')
 			expect(textarea.exists()).toBe(false)
 		})
@@ -191,17 +234,23 @@ describe('TodoCard.vue', () => {
 		it('switches to edit mode when paragraph is double-clicked', async () => {
 			wrapper = factory()
 
+			// Testing user interactions: trigger() simulates DOM events
 			const paragraph = wrapper.find('p')
 			await paragraph.trigger('dblclick')
 
+			// Check reactive state changes immediately after event
 			expect(wrapper.vm.isEditing).toBe(true)
 
+			// nextTick() waits for Vue's reactivity system to update the DOM
+			// Essential when testing DOM changes that happen after state updates
 			await nextTick()
 
+			// Verify DOM has re-rendered with new elements
 			const textarea = wrapper.find('textarea')
 			expect(textarea.exists()).toBe(true)
-			expect(textarea.element.value).toBe(mockTodo.desc)
+			expect(textarea.element.value).toBe(mockTodo.desc) // Access native DOM element properties
 
+			// Verify conditional rendering: original element should be gone
 			const paragraphAfter = wrapper.find('p')
 			expect(paragraphAfter.exists()).toBe(false)
 		})
@@ -223,13 +272,16 @@ describe('TodoCard.vue', () => {
 			await wrapper.find('p').trigger('dblclick')
 			await nextTick()
 
+			// Testing form interactions: setValue() and trigger() for form elements
 			const textarea = wrapper.find('textarea')
 			await textarea.setValue('Updated todo description')
-			await textarea.trigger('blur')
+			await textarea.trigger('blur') // Simulate losing focus
 
+			// Testing component events: wrapper.emitted() captures all emitted events
+			// This is crucial for testing parent-child communication in Vue
 			const updateEvents = wrapper.emitted('update')
 			expect(updateEvents).toHaveLength(1)
-			expect(updateEvents[0][0]).toEqual({
+			expect(updateEvents[0][0]).toEqual({ // First event, first argument
 				...mockTodo,
 				desc: 'Updated todo description'
 			})
@@ -303,8 +355,10 @@ describe('TodoCard.vue', () => {
 		it('sets drag data on dragstart', () => {
 			wrapper = factory()
 
+			// Testing complex browser APIs: mock the DataTransfer interface
+			// since it's not available in the test environment
 			const mockDataTransfer = {
-				setData: vi.fn(),
+				setData: vi.fn(), // Vitest mock functions to track calls
 				effectAllowed: null
 			}
 
@@ -313,8 +367,10 @@ describe('TodoCard.vue', () => {
 				preventDefault: vi.fn()
 			}
 
+			// Testing component methods directly via wrapper.vm
 			wrapper.vm.handleDragStart(dragEvent)
 
+			// Verify the method calls were made with correct parameters
 			expect(mockDataTransfer.setData).toHaveBeenCalledWith('text/plain', '1')
 			expect(mockDataTransfer.effectAllowed).toBe('move')
 			expect(dragEvent.preventDefault).not.toHaveBeenCalled()
@@ -372,6 +428,8 @@ describe('TodoCard.vue', () => {
 			await wrapper.find('button').trigger('click')
 			await nextTick()
 
+			// Testing child component rendering: findComponent() locates Vue components
+			// Use this instead of find() when looking for Vue components vs DOM elements
 			const colorSelector = wrapper.findComponent({ name: 'ColorSelector' })
 			expect(colorSelector.exists()).toBe(true)
 		})
@@ -431,10 +489,13 @@ describe('TodoCard.vue', () => {
 
 	describe('Click Outside Handling', () => {
 		it('sets up click outside listener on mount', () => {
+			// Testing lifecycle hooks: spy on global APIs to verify component behavior
+			// This ensures the component properly sets up and tears down event listeners
 			const addEventListenerSpy = vi.spyOn(document, 'addEventListener')
 
 			wrapper = factory()
 
+			// Verify that onMounted lifecycle hook executed correctly
 			expect(addEventListenerSpy).toHaveBeenCalledWith('click', expect.any(Function))
 		})
 
