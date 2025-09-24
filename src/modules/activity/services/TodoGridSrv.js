@@ -2,8 +2,8 @@ class TodoGridSrv {
 	static #instance = null; // Private static field
 	
 	// Constants for maximum grid size
-	static MAX_COLUMNS = 10;
-	static MAX_ROWS = 10;
+	static MAX_COLUMNS = 15;
+	static MAX_ROWS = 15;
 	static STORAGE_KEY = 'betaTodoBoardMatrix';
 	static DEFAULT_CONFIG = {
 		columns: 6,
@@ -36,12 +36,42 @@ class TodoGridSrv {
 	
 	/**
 	 * Creates an empty grid matrix at maximum size
-	 * @return {Array<Array<null>>} Empty 10x10 matrix
+	 * @return {Array<Array<null>>} Empty 15x15 matrix
 	 */
 	initializeGrid() {
 		return Array(TodoGridSrv.MAX_ROWS).fill(null).map(() =>
 			Array(TodoGridSrv.MAX_COLUMNS).fill(null)
 		);
+	}
+
+	/**
+	 * Expands an existing matrix to the current maximum size
+	 * Preserves all existing data in their original positions
+	 * @param {Array<Array>} matrix - The existing matrix to expand
+	 * @return {Array<Array<null>>} Expanded matrix at maximum size
+	 */
+	expandMatrix(matrix) {
+		if (!matrix || !Array.isArray(matrix)) {
+			return this.initializeGrid();
+		}
+
+		// Create new matrix at maximum size filled with null
+		const expandedMatrix = Array(TodoGridSrv.MAX_ROWS).fill(null).map(() =>
+			Array(TodoGridSrv.MAX_COLUMNS).fill(null)
+		);
+
+		// Copy existing data from smaller matrix (preserve positions)
+		for (let row = 0; row < Math.min(matrix.length, TodoGridSrv.MAX_ROWS); row++) {
+			if (matrix[row] && Array.isArray(matrix[row])) {
+				for (let col = 0; col < Math.min(matrix[row].length, TodoGridSrv.MAX_COLUMNS); col++) {
+					if (matrix[row][col]) {
+						expandedMatrix[row][col] = matrix[row][col];
+					}
+				}
+			}
+		}
+
+		return expandedMatrix;
 	}
 	
 	/**
@@ -56,21 +86,39 @@ class TodoGridSrv {
 				
 				// Check if this is the new multi-board format
 				if (data.boardItems && data.matrixData && data.config) {
-					return {
+					// Check if any matrix needs expansion to current max size
+					const expandedMatrixData = {};
+					let needsExpansion = false;
+
+					for (const boardId in data.matrixData) {
+						const matrix = data.matrixData[boardId];
+						if (matrix && (matrix.length < TodoGridSrv.MAX_ROWS ||
+							(matrix[0] && matrix[0].length < TodoGridSrv.MAX_COLUMNS))) {
+							expandedMatrixData[boardId] = this.expandMatrix(matrix);
+							needsExpansion = true;
+						} else {
+							expandedMatrixData[boardId] = matrix;
+						}
+					}
+
+					const result = {
 						config: data.config,
 						boardItems: data.boardItems,
-						matrixData: data.matrixData
+						matrixData: expandedMatrixData
 					};
+
+					// Save expanded data if any expansion was needed
+					if (needsExpansion) {
+						this.saveGridToStorage(result);
+					}
+
+					return result;
 				}
 				
 				// Handle old single-board format - migrate to multi-board
 				if (data.matrix && data.config) {
 					console.log('Migrating single-board data to multi-board format');
-					const migratedMatrix = Array(TodoGridSrv.MAX_ROWS).fill(null).map((_, row) => 
-						Array(TodoGridSrv.MAX_COLUMNS).fill(null).map((_, col) => {
-							return (data.matrix[row] && data.matrix[row][col]) ? data.matrix[row][col] : null;
-						})
-					);
+					const migratedMatrix = this.expandMatrix(data.matrix);
 					
 					const multiboardData = {
 						config: {
