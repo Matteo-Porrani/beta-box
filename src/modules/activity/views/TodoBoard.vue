@@ -173,10 +173,11 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { todoGridSrv } from '../services/TodoGridSrv.js'
-
+import { useBoardManagement } from '../composables/useBoardManagement.js'
+import { useTodoOperations } from '../composables/useTodoOperations.js'
+import { useGridConfig } from '../composables/useGridConfig.js'
 
 import TodoSlot from '../components/todo/TodoSlot.vue'
 import TodoCard from '../components/todo/TodoCard.vue'
@@ -184,367 +185,65 @@ import TodoCard from '../components/todo/TodoCard.vue'
 // Store
 const store = useStore()
 
-// Refs
-const newBoardModal = ref(null)
-const boardNameInput = ref(null)
-const newBoardName = ref('')
-const isEditingBoard = ref(false)
-
-// Constants from service
-const MAX_COLUMNS = todoGridSrv.maxColumns
-const MAX_ROWS = todoGridSrv.maxRows
-
 // Reactive data
-const gridConfig = reactive({
-	columns: 6,
-	rows: 8,
-	activeBoard: 1
-})
-
 const boardItems = ref([])
 const matrixData = ref({})
 const currentBoardId = ref(1)
-const todoForm = reactive({
-	id: null,
-	desc: '',
-	color: '$D',
-	starred: false,
-	done: false
-})
+
+// Grid configuration composable
+const {
+	MAX_COLUMNS,
+	MAX_ROWS,
+	gridConfig,
+	multiboardData,
+	gridStyle,
+	loadGridFromStorage,
+	adjustColumns,
+	adjustRows
+} = useGridConfig(boardItems, matrixData)
+
+// Board management composable
+const {
+	newBoardModal,
+	boardNameInput,
+	newBoardName,
+	isEditingBoard,
+	currentBoard,
+	switchBoard,
+	createNewBoard,
+	updateCurrentBoard,
+	cancelBoardAction,
+	confirmBoardAction,
+	deleteCurrentBoard
+} = useBoardManagement(store, multiboardData, currentBoardId, boardItems, matrixData, gridConfig)
+
+// Tasks from store
+const tasks = computed(() => store.getters['entity/getItemsFromTable']('task'))
+
+// Todo operations composable
+const {
+	todoForm,
+	isEditingTodo,
+	nextAvailableSlot,
+	getTodoById,
+	getTodoPosition,
+	handleTodoDrop,
+	handleTodoUpdate,
+	handleTodoDelete,
+	handleTodoCopy,
+	resetTodoForm,
+	saveTodo
+} = useTodoOperations(store, tasks, multiboardData, currentBoardId, matrixData)
 
 // Computed values
 const currentMatrix = computed(() => matrixData.value[currentBoardId.value] || [])
-const multiboardData = computed(() => ({
-	config: gridConfig,
-	boardItems: boardItems.value,
-	matrixData: matrixData.value
-}))
 
-const nextAvailableSlot = computed(() => 
-	todoGridSrv.getNextAvailableSlot(currentBoardId.value, multiboardData.value)
-)
-
-const currentBoard = computed(() => 
-	boardItems.value.find(board => board.id === currentBoardId.value)
-)
-
-// Computed
-const gridStyle = computed(() => ({
-	gridTemplateColumns: `repeat(${gridConfig.columns}, 1fr)`,
-	gridTemplateRows: `repeat(${gridConfig.rows}, 1fr)`
-}))
-
-const isEditingTodo = computed(() => todoForm.id !== null)
-
-const tasks = computed(() => store.getters['entity/getItemsFromTable']('task'))
-
-// ============================================================================
-// GRID INITIALIZATION & PERSISTENCE
-// ============================================================================
-
-function loadGridFromStorage() {
-	const data = todoGridSrv.loadGridFromStorage()
-	gridConfig.columns = data.config.columns
-	gridConfig.rows = data.config.rows
-	gridConfig.activeBoard = data.config.activeBoard
-	boardItems.value = data.boardItems
-	matrixData.value = data.matrixData
-	currentBoardId.value = data.config.activeBoard
-}
-
-function saveGridToStorage() {
-	todoGridSrv.saveGridToStorage(multiboardData.value)
-}
-
-// ============================================================================
-// GRID CONFIGURATION CONTROLS
-// ============================================================================
-
-function adjustColumns(delta) {
-	const newColumns = todoGridSrv.adjustColumns(gridConfig.columns, delta)
-	if (newColumns !== null) {
-		gridConfig.columns = newColumns
-		saveGridToStorage()
-	}
-}
-
-function adjustRows(delta) {
-	const newRows = todoGridSrv.adjustRows(gridConfig.rows, delta)
-	if (newRows !== null) {
-		gridConfig.rows = newRows
-		saveGridToStorage()
-	}
-}
-
-// ============================================================================
-// TODO DATA ACCESS & POSITION UTILITIES
-// ============================================================================
-
-function getTodoById(id) {
-	return tasks.value.find(task => task.id === id)
-}
-
-function getTodoPosition(todoId) {
-	return todoGridSrv.getTodoPosition(todoId, currentBoardId.value, multiboardData.value)
-}
-
-// ============================================================================
-// DRAG & DROP OPERATIONS
-// ============================================================================
-
-function handleTodoDrop({ todoId, targetRow, targetColumn }) {
-	const updatedData = todoGridSrv.moveTodo(
-		todoId, 
-		targetRow, 
-		targetColumn, 
-		currentBoardId.value,
-		multiboardData.value
-	)
-	
-	// Update local state
-	matrixData.value = updatedData.matrixData
-	saveGridToStorage()
-}
-
-// ============================================================================
-// TODO CRUD OPERATIONS
-// ============================================================================
-
-async function handleTodoUpdate(updatedTodo) {
-	await store.dispatch('entity/updateItem', {
-		tableName: 'task',
-		item: updatedTodo
-	})
-}
-
-async function handleTodoDelete(todoId) {
-	const updatedData = todoGridSrv.removeTodo(todoId, currentBoardId.value, multiboardData.value)
-
-	// Update local state
-	matrixData.value = updatedData.matrixData
-	saveGridToStorage()
-
-	await store.dispatch('entity/deleteItem', {
-		tableName: 'task',
-		id: todoId
-	})
-}
-
-async function handleTodoCopy(todoId) {
-	const sourceTodo = getTodoById(todoId)
-	if (!sourceTodo) return
-
-	// Clone todo object (without ID)
-	const newTodo = {
-		desc: sourceTodo.desc,
-		color: sourceTodo.color,
-		starred: sourceTodo.starred,
-		done: sourceTodo.done
-	}
-
-	// Create new todo in store (auto-generates ID)
-	const result = await store.dispatch('entity/addItem', {
-		tableName: 'task',
-		item: newTodo
-	})
-
-	if (result.status === 'OK') {
-		// Find source position
-		const sourcePosition = getTodoPosition(todoId)
-
-		// Find next available slot starting from source position
-		const nextSlot = todoGridSrv.getNextAvailableSlot(
-			currentBoardId.value,
-			multiboardData.value,
-			sourcePosition.column,
-			sourcePosition.row
-		)
-
-		// Place duplicate in next available slot
-		if (nextSlot.row !== null && nextSlot.column !== null) {
-			const updatedData = todoGridSrv.placeTodo(
-				result.itemId,
-				nextSlot.row,
-				nextSlot.column,
-				currentBoardId.value,
-				multiboardData.value
-			)
-
-			// Update local state
-			matrixData.value = updatedData.matrixData
-			saveGridToStorage()
-		}
-	}
-}
-
-function resetTodoForm() {
-	todoForm.id = null
-	todoForm.desc = ''
-	todoForm.color = '$D'
-	todoForm.starred = false
-	todoForm.done = false
-}
-
-async function saveTodo() {
-	if (!todoForm.desc.trim()) return
-	
-	if (isEditingTodo.value) {
-		// Update existing task
-		await handleTodoUpdate({ ...todoForm })
-	} else {
-		// Create new task
-		const newTodo = {
-			desc: todoForm.desc,
-			color: "$D",
-			starred: false,
-			done: false
-		}
-		
-		const result = await store.dispatch('entity/addItem', {
-			tableName: 'task',
-			item: newTodo
-		})
-
-		// Place in next available slot if creation was successful
-		if (result.status === 'OK' && nextAvailableSlot.value.row !== null && nextAvailableSlot.value.column !== null) {
-			const { column, row } = nextAvailableSlot.value;
-			const updatedData = todoGridSrv.placeTodo(result.itemId, row, column, currentBoardId.value, multiboardData.value)
-			
-			// Update local state
-			matrixData.value = updatedData.matrixData
-			saveGridToStorage()
-		}
-	}
-	
-	resetTodoForm()
-}
-
-// ============================================================================
-// BOARD SWITCHING & MANAGEMENT
-// ============================================================================
-
-function switchBoard() {
-	// Save current state before switching
-	saveGridToStorage()
-	
-	// Update grid config to match current board
-	gridConfig.activeBoard = currentBoardId.value
-	
-	// Save updated config
-	saveGridToStorage()
-}
-
-function createNewBoard() {
-	// Set create mode and reset form
-	isEditingBoard.value = false
-	newBoardName.value = ''
-	newBoardModal.value.open()
-	
-	// Focus input after modal opens
-	setTimeout(() => {
-		boardNameInput.value?.focus()
-	}, 100)
-}
-
-function updateCurrentBoard() {
-	// Set edit mode and populate current board name
-	isEditingBoard.value = true
-	newBoardName.value = currentBoard.value?.name || ''
-	newBoardModal.value.open()
-	
-	// Focus input after modal opens
-	setTimeout(() => {
-		boardNameInput.value?.focus()
-		boardNameInput.value?.select() // Select all text for easy editing
-	}, 100)
-}
-
-function cancelBoardAction() {
-	newBoardName.value = ''
-	isEditingBoard.value = false
-	newBoardModal.value.close()
-}
-
-function confirmBoardAction() {
-	if (!newBoardName.value.trim()) return
-	
-	if (isEditingBoard.value) {
-		// Update existing board name
-		const updatedData = todoGridSrv.renameBoard(currentBoardId.value, newBoardName.value.trim(), multiboardData.value)
-		
-		// Update local state
-		boardItems.value = updatedData.boardItems
-		
-		saveGridToStorage()
-	} else {
-		// Create new board
-		const updatedData = todoGridSrv.createBoard(newBoardName.value.trim(), multiboardData.value)
-		
-		// Update local state
-		boardItems.value = updatedData.boardItems
-		matrixData.value = updatedData.matrixData
-		
-		// Switch to the new board (it will be the last one created)
-		const newBoard = updatedData.boardItems[updatedData.boardItems.length - 1]
-		currentBoardId.value = newBoard.id
-		
-		// Update grid config to reflect the new active board
-		gridConfig.activeBoard = newBoard.id
-		
-		saveGridToStorage()
-	}
-	
-	// Close modal and reset
-	newBoardName.value = ''
-	isEditingBoard.value = false
-	newBoardModal.value.close()
-}
-
-async function deleteCurrentBoard() {
-	// Don't allow deleting if it's the last board
-	if (boardItems.value.length <= 1) {
-		alert('Cannot delete the last board')
-		return
-	}
-	
-	// Confirm deletion
-	if (!confirm(`Are you sure you want to delete "${currentBoard.value?.name}"?`)) {
-		return
-	}
-
-	// Delete all Tasks from this board before deleting the board
-	const todoIdsToDelete = todoGridSrv.getTodoIdsFromBoard(currentBoardId.value, multiboardData.value)
-	
-	// Delete all todos from the store
-	for (const todoId of todoIdsToDelete) {
-		await store.dispatch('entity/deleteItem', {
-			tableName: 'task',
-			id: todoId
-		})
-	}
-	
-	// Delete board using service
-	const updatedData = todoGridSrv.deleteBoard(currentBoardId.value, multiboardData.value)
-	
-	if (updatedData) {
-		// Update local state
-		boardItems.value = updatedData.boardItems
-		matrixData.value = updatedData.matrixData
-		gridConfig.columns = updatedData.config.columns
-		gridConfig.rows = updatedData.config.rows
-		gridConfig.activeBoard = updatedData.config.activeBoard
-		
-		// Switch to the new active board
-		currentBoardId.value = updatedData.config.activeBoard
-		
-		saveGridToStorage()
-	}
-}
 
 
 // Lifecycle
 onMounted(async () => {
-	loadGridFromStorage()
+	const activeBoardId = loadGridFromStorage()
+	currentBoardId.value = activeBoardId
 	await store.dispatch('entity/loadItems', 'task')
 })
 </script>
