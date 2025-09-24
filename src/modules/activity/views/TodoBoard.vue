@@ -1,7 +1,7 @@
 <template>
 	<section class="h-full grid grid-rows-[auto_1fr]">
 		<!-- Toolbar -->
-		<div class="toolbar flex items-center gap-8 p-1">
+		<div class="toolbar flex items-center gap-6 p-1">
 			<router-link
 				to="/"
 				class="flex gap-1 items-center text-stone-400 hover:text-stone-300 text-sm"
@@ -50,14 +50,26 @@
 					v-model="todoForm.desc"
 					placeholder="New task..."
 					type="text"
-					class="w-[50vw] bg-stone-800 rounded text-white p-1"
+					class="w-[40vw] bg-stone-800 rounded text-white p-1"
 				/>
 				<BxButton
-					label="Add"
+					label="Insert"
 					size="small"
 					:disabled="!todoForm.desc"
 					@click="saveTodo"
 				/>
+			</div>
+
+			<div class="flex items-center gap-2">
+				<p class="text-xs">A</p>
+				<input
+					type="range"
+					min="1"
+					max="2"
+					class="w-10 accent-sky-500"
+					v-model="textSize"
+				>
+				<p class="text-lg">A</p>
 			</div>
 
 			<!-- Grid controls -->
@@ -189,6 +201,7 @@ const store = useStore()
 const boardItems = ref([])
 const matrixData = ref({})
 const currentBoardId = ref(1)
+const textSize = ref(1)
 
 // Grid configuration composable
 const {
