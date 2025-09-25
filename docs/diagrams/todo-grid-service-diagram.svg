@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="500" y="30" font-family="monospace" font-size="18" font-weight="bold" text-anchor="middle" fill="#1f2937">TodoGridSrv.js - Multi-Board Todo Grid Management System</text>
+
+  <!-- Summary Section -->
+  <rect x="50" y="50" width="900" height="80" fill="#f9fafb" stroke="#374151" stroke-width="1"/>
+  <text x="500" y="75" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle" fill="#1f2937">Summary</text>
+  <text x="500" y="95" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">TodoGridSrv manages multi-board todo grids with localStorage persistence, automatic migration,</text>
+  <text x="500" y="110" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">board operations (CRUD), grid resizing (15x15 max), and position utilities for drag-drop functionality.</text>
+
+  <!-- Constants & Configuration -->
+  <rect x="50" y="160" width="180" height="100" fill="#fefce8" stroke="#374151" stroke-width="2"/>
+  <text x="140" y="185" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle" fill="#1f2937">Constants</text>
+  <text x="140" y="205" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">MAX_COLUMNS: 15</text>
+  <text x="140" y="220" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">MAX_ROWS: 15</text>
+  <text x="140" y="235" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">DEFAULT_CONFIG</text>
+  <text x="140" y="250" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">DEFAULT_BOARD</text>
+
+  <!-- TodoGridSrv Main Class -->
+  <rect x="280" y="160" width="220" height="100" fill="#e0f2fe" stroke="#374151" stroke-width="2"/>
+  <text x="390" y="185" font-family="monospace" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2937">TodoGridSrv</text>
+  <text x="390" y="205" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">(Singleton Pattern)</text>
+  <text x="390" y="225" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">Private static instance</text>
+  <text x="390" y="240" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">getInstance()</text>
+
+  <!-- localStorage -->
+  <rect x="550" y="160" width="160" height="100" fill="#f0fdf4" stroke="#374151" stroke-width="2"/>
+  <text x="630" y="185" font-family="monospace" font-size="12" text-anchor="middle" fill="#1f2937">localStorage</text>
+  <text x="630" y="205" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">STORAGE_KEY:</text>
+  <text x="630" y="220" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">'betaTodoBoardMatrix'</text>
+  <text x="630" y="235" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">Auto-migration</text>
+  <text x="630" y="250" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">Expansion handling</text>
+
+  <!-- Data Structure -->
+  <rect x="760" y="160" width="180" height="100" fill="#fdf2f8" stroke="#374151" stroke-width="2"/>
+  <text x="850" y="185" font-family="monospace" font-size="12" text-anchor="middle" fill="#1f2937">Multi-Board Data</text>
+  <text x="850" y="205" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">config: { columns, rows,</text>
+  <text x="850" y="220" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">         activeBoard }</text>
+  <text x="850" y="235" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">boardItems: [...]</text>
+  <text x="850" y="250" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">matrixData: { id: matrix }</text>
+
+  <!-- Grid Initialization & Persistence -->
+  <rect x="50" y="300" width="200" height="120" fill="#f3e8ff" stroke="#374151" stroke-width="2"/>
+  <text x="150" y="325" font-family="monospace" font-size="12" text-anchor="middle" fill="#1f2937">Grid Init &amp; Persistence</text>
+  <text x="150" y="345" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">initializeGrid()</text>
+  <text x="150" y="360" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">expandMatrix()</text>
+  <text x="150" y="375" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">loadGridFromStorage()</text>
+  <text x="150" y="390" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">saveGridToStorage()</text>
+  <text x="150" y="405" font-family="monospace" font-size="9" text-anchor="middle" fill="#1f2937">Migration Support</text>
+
+  <!-- Board Management -->
+  <rect x="280" y="300" width="200" height="120" fill="#fff7ed" stroke="#374151" stroke-width="2"/>
+  <text x="380" y="325" font-family="monospace" font-size="12" text-anchor="middle" fill="#1f2937">Board Management</text>
+  <text x="380" y="345" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">createBoard(name)</text>
+  <text x="380" y="360" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">deleteBoard(id)</text>
+  <text x="380" y="375" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">renameBoard(id, name)</text>
+  <text x="380" y="390" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">switchActiveBoard(id)</text>
+  <text x="380" y="405" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">getBoardList()</text>
+
+  <!-- Grid Configuration -->
+  <rect x="510" y="300" width="180" height="120" fill="#f0fdf4" stroke="#374151" stroke-width="2"/>
+  <text x="600" y="325" font-family="monospace" font-size="12" text-anchor="middle" fill="#1f2937">Grid Configuration</text>
+  <text x="600" y="345" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">adjustColumns(delta)</text>
+  <text x="600" y="360" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">adjustRows(delta)</text>
+  <text x="600" y="375" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">Validation:</text>
+  <text x="600" y="390" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">Cols: 3-15, Rows: 5-15</text>
+
+  <!-- Position Utilities -->
+  <rect x="720" y="300" width="220" height="120" fill="#fefce8" stroke="#374151" stroke-width="2"/>
+  <text x="830" y="325" font-family="monospace" font-size="12" text-anchor="middle" fill="#1f2937">Position Utilities</text>
+  <text x="830" y="345" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">getTodoPosition(todoId, boardId)</text>
+  <text x="830" y="360" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">getNextAvailableSlot(boardId)</text>
+  <text x="830" y="375" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">getTodoIdsFromBoard(boardId)</text>
+  <text x="830" y="390" font-family="monospace" font-size="9" text-anchor="middle" fill="#1f2937">Returns: {row, column}</text>
+
+  <!-- Grid Operations -->
+  <rect x="50" y="460" width="220" height="120" fill="#e0f2fe" stroke="#374151" stroke-width="2"/>
+  <text x="160" y="485" font-family="monospace" font-size="12" text-anchor="middle" fill="#1f2937">Grid Operations</text>
+  <text x="160" y="505" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">moveTodo(id, row, col, boardId)</text>
+  <text x="160" y="520" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">placeTodo(id, row, col, boardId)</text>
+  <text x="160" y="535" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">removeTodo(id, boardId)</text>
+  <text x="160" y="550" font-family="monospace" font-size="9" text-anchor="middle" fill="#1f2937">Supports drag &amp; drop</text>
+  <text x="160" y="565" font-family="monospace" font-size="9" text-anchor="middle" fill="#1f2937">Position swapping</text>
+
+  <!-- Matrix Structure -->
+  <rect x="300" y="460" width="200" height="120" fill="#f3e8ff" stroke="#374151" stroke-width="2"/>
+  <text x="400" y="485" font-family="monospace" font-size="12" text-anchor="middle" fill="#1f2937">Matrix Structure</text>
+  <text x="400" y="505" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">15x15 2D Array</text>
+  <text x="400" y="520" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">null = empty slot</text>
+  <text x="400" y="535" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">number = todoId</text>
+  <text x="400" y="550" font-family="monospace" font-size="9" text-anchor="middle" fill="#1f2937">Auto-expansion from</text>
+  <text x="400" y="565" font-family="monospace" font-size="9" text-anchor="middle" fill="#1f2937">smaller matrices</text>
+
+  <!-- Migration & Compatibility -->
+  <rect x="530" y="460" width="200" height="120" fill="#fdf2f8" stroke="#374151" stroke-width="2"/>
+  <text x="630" y="485" font-family="monospace" font-size="12" text-anchor="middle" fill="#1f2937">Migration Support</text>
+  <text x="630" y="505" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">Single -&gt; Multi-board</text>
+  <text x="630" y="520" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">Matrix size expansion</text>
+  <text x="630" y="535" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">Data preservation</text>
+  <text x="630" y="550" font-family="monospace" font-size="9" text-anchor="middle" fill="#1f2937">Automatic detection</text>
+  <text x="630" y="565" font-family="monospace" font-size="9" text-anchor="middle" fill="#1f2937">&amp; conversion</text>
+
+  <!-- Getters -->
+  <rect x="760" y="460" width="180" height="120" fill="#fff7ed" stroke="#374151" stroke-width="2"/>
+  <text x="850" y="485" font-family="monospace" font-size="12" text-anchor="middle" fill="#1f2937">Public Getters</text>
+  <text x="850" y="505" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">maxColumns</text>
+  <text x="850" y="520" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">maxRows</text>
+  <text x="850" y="535" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">defaultConfig</text>
+  <text x="850" y="550" font-family="monospace" font-size="9" text-anchor="middle" fill="#1f2937">Read-only access to</text>
+  <text x="850" y="565" font-family="monospace" font-size="9" text-anchor="middle" fill="#1f2937">static constants</text>
+
+  <!-- Export -->
+  <rect x="400" y="620" width="200" height="60" fill="#f0fdf4" stroke="#374151" stroke-width="2"/>
+  <text x="500" y="645" font-family="monospace" font-size="12" text-anchor="middle" fill="#1f2937">Export</text>
+  <text x="500" y="665" font-family="monospace" font-size="10" text-anchor="middle" fill="#1f2937">todoGridSrv = getInstance()</text>
+
+  <!-- Arrows with cornered paths -->
+  <!-- Constants to TodoGridSrv -->
+  <path d="M230 210 L250 210 L250 210 L280 210" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- TodoGridSrv to localStorage -->
+  <path d="M500 210 L525 210 L525 210 L550 210" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- localStorage to Data Structure -->
+  <path d="M710 210 L735 210 L735 210 L760 210" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- TodoGridSrv to methods below -->
+  <path d="M300 260 L300 280 L150 280 L150 300" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M380 260 L380 280 L380 280 L380 300" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M460 260 L460 280 L600 280 L600 300" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M480 260 L480 280 L830 280 L830 300" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- Methods to lower level operations -->
+  <path d="M150 420 L150 440 L160 440 L160 460" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M380 420 L380 440 L400 440 L400 460" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M600 420 L600 440 L630 440 L630 460" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M830 420 L830 440 L850 440 L850 460" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- Export connection -->
+  <path d="M390 260 L390 600 L450 600 L450 620" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- Data Flow Labels -->
+  <text x="340" y="275" font-family="monospace" font-size="8" text-anchor="middle" fill="#6b7280">manages</text>
+  <text x="525" y="205" font-family="monospace" font-size="8" text-anchor="middle" fill="#6b7280">persists to</text>
+  <text x="735" y="205" font-family="monospace" font-size="8" text-anchor="middle" fill="#6b7280">stores as</text>
+  <text x="425" y="605" font-family="monospace" font-size="8" text-anchor="middle" fill="#6b7280">exports</text>
+</svg>

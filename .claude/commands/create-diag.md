@@ -14,12 +14,13 @@ Create an SVG diagram for: $ARGUMENTS
   - Light orange: #fff7ed
 - Dark borders for contrast: #374151
 - Dark text for readability: #1f2937
-- Include arrows to show data flow/relationships
+- Always use cornered arrows (right-angle paths) instead of straight diagonal lines
 - Add a title at the top
-- Include a brief summary section at the bottom
+- Put summary section at the top (after title)
 
 ## Output:
-- Generate SVG file with descriptive filename
+- Generate SVG file with descriptive filename in @docs/diagrams folder
 - Viewbox sized appropriately for content
 - Clean, professional diagram layout
 - All text must use monospace font
+- 
