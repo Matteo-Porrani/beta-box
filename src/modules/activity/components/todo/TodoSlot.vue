@@ -2,7 +2,7 @@
 	<div
 		class="relative grid border border-dashed border-transparent rounded transition-colors duration-200"
 		:class="{
-			'border-yellow-400 bg-stone-600': isDragOver,
+			'border-yellow-400 bg-stone-700': isDragOver,
 			'border-stone-500': !isDragOver && !isEmpty,
 			'border-stone-600': !isDragOver && isEmpty
 		}"
@@ -16,7 +16,7 @@
 		<!-- Empty slot indicator -->
 		<div
 			v-if="isEmpty"
-			class="absolute inset-0 flex items-center justify-center text-stone-500 text-sm"
+			class="absolute inset-0 flex items-center justify-center text-stone-700 text-sm"
 		>
 			<span class="pointer-events-none">+</span>
 		</div>
