@@ -75,9 +75,9 @@ class ActivitySrv {
 		return ids
 			.map(id => {
 				const match = tickets.find(t => t.id.toString() === id)
-				return { id: id, title: match.title, desc: match.description };
+				return match ? { id: id, title: match.title, desc: match.description } : null;
 			})
-			.filter(title => title !== undefined);
+			.filter(Boolean);
 		
 		// 5. Return array of titles
 		// ["RDTW-1234", "6543", "444"]
