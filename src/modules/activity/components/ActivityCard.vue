@@ -8,7 +8,7 @@
 			:class="headerColorClass"
 		>
 			<button
-				class="block flex items-center gap-1 w-4"
+				class="flex items-center gap-1 w-4"
 				@click="onEditActivity"
 			>
 				<div class="absolute origin-left -rotate-90 top-24 left-2 text-end w-24 text-sm font-semibold text-stone-800">
