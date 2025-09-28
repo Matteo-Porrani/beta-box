@@ -1,9 +1,20 @@
----
+
 # PROMPT
+```
 Check all .vue components in @src/modules/activity folder.
 Draw a simple diagram showing components family tree.
 For each component, add a short description.
----
+
+Follow this format to display the diagram:
+
+ParentComponent.vue (short description...)
+├── ChildComponentA.vue (short description...)
+│   ├── SubChildComponentB.vue (short description...)
+│   └── SubChildComponentC.vue (short description...)
+├── ChildComponentD.vue (short description...)
+│
+... more components
+```
 
 
 # Activity Module Component Family Tree
