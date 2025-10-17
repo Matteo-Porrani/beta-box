@@ -36,32 +36,48 @@
 				</div>
 
 				<!-- Column Headers -->
-				<div class="grid grid-cols-12 gap-4 mb-3 text-sm font-medium text-stone-400">
-					<div class="col-span-3">timestamp</div>
-					<div class="col-span-3">DD/MM/YY HH:MM:SS</div>
-					<div class="col-span-6">description</div>
+				<div class="grid gap-4 mb-3 text-sm font-medium text-stone-400" style="grid-template-columns: 3fr 40px 2fr 2fr 80px 1.5fr;">
+					<div>description</div>
+					<div class="text-center">#</div>
+					<div>timestamp</div>
+					<div>DD/MM/YY HH:MM:SS</div>
+					<div class="text-center">ref</div>
+					<div>distance</div>
 				</div>
 
 				<!-- Rows -->
 				<div class="space-y-3">
 					<div
-						v-for="row in rows"
+						v-for="(row, index) in rows"
 						:key="row.id"
-						class="grid grid-cols-12 gap-4"
+						class="grid gap-4 items-center"
+						style="grid-template-columns: 3fr 40px 2fr 2fr 80px 1.5fr;"
 					>
+						<!-- Description Input -->
+						<input
+							v-model="row.description"
+							type="text"
+							class="bg-stone-600 border border-stone-500 rounded px-3 py-2 text-stone-200 focus:outline-none focus:border-sky-500 transition-colors"
+						/>
+
+						<!-- Row Number -->
+						<div class="text-center text-stone-200 font-bold text-lg">
+							{{ index + 1 }}
+						</div>
+
 						<!-- Timestamp Input -->
 						<input
 							v-model="row.timestamp"
 							type="text"
-							class="col-span-3 bg-stone-600 border border-stone-500 rounded px-3 py-2 text-stone-200 focus:outline-none focus:border-sky-500 transition-colors"
+							class="bg-stone-600 border border-stone-500 rounded px-3 py-2 text-stone-200 focus:outline-none focus:border-sky-500 transition-colors"
 							@input="parseTimestamp(row)"
 						/>
 
 						<!-- Formatted Output -->
-						<div class="col-span-3 bg-stone-800 border border-stone-600 rounded px-3 py-2 flex items-center">
+						<div class="bg-stone-800 border border-stone-600 rounded px-3 py-2 flex items-center">
 							<span
 								v-if="row.formatted"
-								class="text-stone-200 font-mono"
+								class="text-stone-200 font-mono text-sm"
 							>
 								{{ row.formatted }}
 							</span>
@@ -79,12 +95,38 @@
 							</span>
 						</div>
 
-						<!-- Description Input -->
-						<input
-							v-model="row.description"
-							type="text"
-							class="col-span-6 bg-stone-600 border border-stone-500 rounded px-3 py-2 text-stone-200 focus:outline-none focus:border-sky-500 transition-colors"
-						/>
+						<!-- Reference Selector -->
+						<select
+							v-model="referenceRowId"
+							@change="calculateDistances"
+							class="bg-stone-600 border border-stone-500 rounded px-2 py-2 text-stone-200 text-sm focus:outline-none focus:border-sky-500 transition-colors cursor-pointer"
+						>
+							<option :value="null">-</option>
+							<option
+								v-for="(r, i) in rows"
+								:key="r.id"
+								:value="r.id"
+								:disabled="!r.formatted"
+							>
+								{{ i + 1 }}
+							</option>
+						</select>
+
+						<!-- Distance Display -->
+						<div class="bg-stone-800 border border-stone-600 rounded px-3 py-2 flex items-center">
+							<span
+								v-if="row.distance"
+								class="text-stone-200 font-mono text-sm"
+							>
+								{{ row.distance }}
+							</span>
+							<span
+								v-else
+								class="text-stone-500 text-sm"
+							>
+								-
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -121,14 +163,31 @@ const createEmptyRow = () => ({
 	timestamp: '',
 	formatted: '',
 	error: '',
+	distance: '',
 	description: ''
 });
 
 const rows = ref([
-	createEmptyRow(),
-	createEmptyRow(),
+	{
+		id: nextId++,
+		timestamp: '1729166147000',
+		formatted: '',
+		error: '',
+		distance: '',
+		description: 'Sample timestamp 1'
+	},
+	{
+		id: nextId++,
+		timestamp: '1729169747000',
+		formatted: '',
+		error: '',
+		distance: '',
+		description: 'Sample timestamp 2 (1 hour later)'
+	},
 	createEmptyRow()
 ]);
+
+const referenceRowId = ref(null);
 
 const addRow = () => {
 	rows.value.push(createEmptyRow());
@@ -147,6 +206,7 @@ const parseTimestamp = (row) => {
 
 	// If empty, just return
 	if (!row.timestamp || row.timestamp.trim() === '') {
+		calculateDistances();
 		return;
 	}
 
@@ -156,6 +216,7 @@ const parseTimestamp = (row) => {
 	// Validate
 	if (isNaN(timestamp)) {
 		row.error = 'Invalid timestamp';
+		calculateDistances();
 		return;
 	}
 
@@ -164,6 +225,7 @@ const parseTimestamp = (row) => {
 	// Valid range: roughly year 1970 to 2100
 	if (timestamp < 0 || timestamp > 4102444800000) {
 		row.error = 'Timestamp out of range';
+		calculateDistances();
 		return;
 	}
 
@@ -174,6 +236,7 @@ const parseTimestamp = (row) => {
 		// Check if date is valid
 		if (isNaN(date.getTime())) {
 			row.error = 'Invalid date';
+			calculateDistances();
 			return;
 		}
 
@@ -186,15 +249,82 @@ const parseTimestamp = (row) => {
 		const seconds = String(date.getSeconds()).padStart(2, '0');
 
 		row.formatted = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+		// Recalculate distances when timestamp changes
+		calculateDistances();
 	} catch (e) {
 		row.error = 'Error parsing timestamp';
+		calculateDistances();
 	}
+};
+
+const formatDuration = (milliseconds) => {
+	const absMs = Math.abs(milliseconds);
+	const seconds = Math.floor(absMs / 1000);
+	const minutes = Math.floor(seconds / 60);
+	const hours = Math.floor(minutes / 60);
+	const days = Math.floor(hours / 24);
+
+	const sign = milliseconds < 0 ? '-' : '+';
+
+	if (days > 0) {
+		const remainingHours = hours % 24;
+		const remainingMinutes = minutes % 60;
+		return `${sign}${days}d ${remainingHours}h ${remainingMinutes}m`;
+	} else if (hours > 0) {
+		const remainingMinutes = minutes % 60;
+		const remainingSeconds = seconds % 60;
+		return `${sign}${hours}h ${remainingMinutes}m ${remainingSeconds}s`;
+	} else if (minutes > 0) {
+		const remainingSeconds = seconds % 60;
+		return `${sign}${minutes}m ${remainingSeconds}s`;
+	} else {
+		return `${sign}${seconds}s`;
+	}
+};
+
+const calculateDistances = () => {
+	if (!referenceRowId.value) {
+		// Clear all distances if no reference is selected
+		rows.value.forEach(row => {
+			row.distance = '';
+		});
+		return;
+	}
+
+	// Find the reference row
+	const refRow = rows.value.find(row => row.id === referenceRowId.value);
+	if (!refRow || !refRow.timestamp || refRow.error) {
+		return;
+	}
+
+	const refTimestamp = Number(refRow.timestamp);
+
+	// Calculate distance for each row
+	rows.value.forEach(row => {
+		if (row.id === referenceRowId.value) {
+			row.distance = '(ref)';
+		} else if (!row.timestamp || row.error) {
+			row.distance = '';
+		} else {
+			const rowTimestamp = Number(row.timestamp);
+			const difference = rowTimestamp - refTimestamp;
+			row.distance = formatDuration(difference);
+		}
+	});
 };
 
 // ============================================= LIFECYCLE
 onMounted(() => {
 	updateTime();
 	intervalId = setInterval(updateTime, 1000);
+
+	// Parse initial sample timestamps
+	rows.value.forEach(row => {
+		if (row.timestamp) {
+			parseTimestamp(row);
+		}
+	});
 });
 
 onUnmounted(() => {
