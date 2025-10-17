@@ -164,25 +164,28 @@ const createEmptyRow = () => ({
 	formatted: '',
 	error: '',
 	distance: '',
-	description: ''
+	description: '',
+	normalizedTimestamp: null
 });
 
 const rows = ref([
 	{
 		id: nextId++,
-		timestamp: '1729166147000',
+		timestamp: '1729166147',
 		formatted: '',
 		error: '',
 		distance: '',
-		description: 'Sample timestamp 1'
+		description: 'Sample UNIX timestamp 1',
+		normalizedTimestamp: null
 	},
 	{
 		id: nextId++,
-		timestamp: '1729169747000',
+		timestamp: '1729169747',
 		formatted: '',
 		error: '',
 		distance: '',
-		description: 'Sample timestamp 2 (1 hour later)'
+		description: 'Sample UNIX timestamp 2 (1 hour later)',
+		normalizedTimestamp: null
 	},
 	createEmptyRow()
 ]);
@@ -211,7 +214,7 @@ const parseTimestamp = (row) => {
 	}
 
 	// Try to parse as number
-	const timestamp = Number(row.timestamp);
+	let timestamp = Number(row.timestamp);
 
 	// Validate
 	if (isNaN(timestamp)) {
@@ -220,8 +223,17 @@ const parseTimestamp = (row) => {
 		return;
 	}
 
+	// Detect if timestamp is in seconds (UNIX) or milliseconds (JavaScript)
+	// UNIX timestamps are typically < 10 billion (10000000000)
+	// This threshold represents: Sun Nov 20 2286 (in seconds) vs Thu Jan 01 1970 (in ms)
+	const isUnixSeconds = timestamp < 10000000000;
+
+	// Convert UNIX timestamp (seconds) to JavaScript timestamp (milliseconds)
+	if (isUnixSeconds) {
+		timestamp = timestamp * 1000;
+	}
+
 	// Check if it's a reasonable timestamp (not too old, not too far in future)
-	// JavaScript timestamps are in milliseconds
 	// Valid range: roughly year 1970 to 2100
 	if (timestamp < 0 || timestamp > 4102444800000) {
 		row.error = 'Timestamp out of range';
@@ -249,6 +261,9 @@ const parseTimestamp = (row) => {
 		const seconds = String(date.getSeconds()).padStart(2, '0');
 
 		row.formatted = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+		// Store the normalized timestamp in milliseconds for distance calculations
+		row.normalizedTimestamp = timestamp;
 
 		// Recalculate distances when timestamp changes
 		calculateDistances();
@@ -294,21 +309,20 @@ const calculateDistances = () => {
 
 	// Find the reference row
 	const refRow = rows.value.find(row => row.id === referenceRowId.value);
-	if (!refRow || !refRow.timestamp || refRow.error) {
+	if (!refRow || !refRow.timestamp || refRow.error || !refRow.normalizedTimestamp) {
 		return;
 	}
 
-	const refTimestamp = Number(refRow.timestamp);
+	const refTimestamp = refRow.normalizedTimestamp;
 
 	// Calculate distance for each row
 	rows.value.forEach(row => {
 		if (row.id === referenceRowId.value) {
 			row.distance = '(ref)';
-		} else if (!row.timestamp || row.error) {
+		} else if (!row.timestamp || row.error || !row.normalizedTimestamp) {
 			row.distance = '';
 		} else {
-			const rowTimestamp = Number(row.timestamp);
-			const difference = rowTimestamp - refTimestamp;
+			const difference = row.normalizedTimestamp - refTimestamp;
 			row.distance = formatDuration(difference);
 		}
 	});
