@@ -3,6 +3,7 @@ export const LINKS = [
 	["Activity", "/activity"],
 	["Project", "/project/phase"],
 	["Todo", "/activity/todo-board"],
+	["Time", "/time-tools"],
 	// ["Tasks (M)", "/tasks"],
 ]
 

@@ -17,6 +17,7 @@ import activityModule from "./modules/activity"
 import projectModule from "./modules/project"
 import taskModule from "./modules/task" // this will import ./modules/task/index.js
 import devModule from "./modules/dev"
+import timeToolsModule from "./modules/time-tools"
 // =============================================
 
 /**
@@ -48,6 +49,7 @@ registerModules({
 	activity: activityModule,
 	task: taskModule,
 	dev: devModule,
+	timeTools: timeToolsModule,
 });
 
 // Install plugins
