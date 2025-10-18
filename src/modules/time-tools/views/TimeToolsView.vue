@@ -46,88 +46,18 @@
 				</div>
 
 				<!-- Rows -->
-				<div class="space-y-3 font-cc">
-					<div
+				<div class="space-y-2 font-cc">
+					<TimestampConversionRow
 						v-for="(row, index) in rows"
 						:key="row.id"
-						class="grid gap-4 items-center"
-						style="grid-template-columns: 3fr 40px 2fr 2fr 80px 1.5fr;"
-					>
-						<!-- Description Input -->
-						<input
-							v-model="row.description"
-							type="text"
-							class="bg-stone-600 border border-stone-500 rounded px-3 py-2 text-stone-200 focus:outline-none focus:border-sky-500 transition-colors"
-						/>
-
-						<!-- Row Number -->
-						<div class="text-center text-stone-200 font-bold text-lg">
-							{{ index + 1 }}
-						</div>
-
-						<!-- Timestamp Input -->
-						<input
-							v-model="row.timestamp"
-							type="text"
-							class="bg-stone-600 border border-stone-500 rounded px-3 py-2 text-stone-200 focus:outline-none focus:border-sky-500 transition-colors"
-							@input="parseTimestamp(row)"
-						/>
-
-						<!-- Formatted Output -->
-						<div class="bg-stone-800 border border-stone-600 rounded px-3 py-2 flex items-center">
-							<span
-								v-if="row.formatted"
-								class="text-stone-200 text-sm"
-							>
-								{{ row.formatted }}
-							</span>
-							<span
-								v-else-if="row.error"
-								class="text-red-400 text-sm"
-							>
-								{{ row.error }}
-							</span>
-							<span
-								v-else
-								class="text-stone-500 text-sm"
-							>
-								-
-							</span>
-						</div>
-
-						<!-- Reference Selector -->
-						<select
-							v-model="referenceRowId"
-							@change="calculateDistances"
-							class="bg-stone-600 border border-stone-500 rounded px-2 py-2 text-stone-200 text-sm focus:outline-none focus:border-sky-500 transition-colors cursor-pointer"
-						>
-							<option :value="null">-</option>
-							<option
-								v-for="(r, i) in rows"
-								:key="r.id"
-								:value="r.id"
-								:disabled="!r.formatted"
-							>
-								{{ i + 1 }}
-							</option>
-						</select>
-
-						<!-- Distance Display -->
-						<div class="bg-stone-800 border border-stone-600 rounded px-3 py-2 flex items-center">
-							<span
-								v-if="row.distance"
-								class="text-stone-200 text-sm"
-							>
-								{{ row.distance }}
-							</span>
-							<span
-								v-else
-								class="text-stone-500 text-sm"
-							>
-								-
-							</span>
-						</div>
-					</div>
+						:row="row"
+						:row-number="index + 1"
+						:all-rows="rows"
+						:reference-row-id="referenceRowId"
+						@update:description="row.description = $event"
+						@update:timestamp="handleTimestampUpdate(row, $event)"
+						@update:referenceRowId="handleReferenceUpdate"
+					/>
 				</div>
 			</div>
 		</div>
@@ -137,6 +67,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
+import TimestampConversionRow from "../components/TimestampConversionRow.vue";
 
 // ============================================= CURRENT TIME
 const currentTime = ref("");
@@ -200,6 +131,16 @@ const removeRow = () => {
 	if (rows.value.length > 1) {
 		rows.value.pop();
 	}
+};
+
+const handleTimestampUpdate = (row, newValue) => {
+	row.timestamp = newValue;
+	parseTimestamp(row);
+};
+
+const handleReferenceUpdate = (newValue) => {
+	referenceRowId.value = newValue;
+	calculateDistances();
 };
 
 const parseTimestamp = (row) => {
@@ -347,4 +288,3 @@ onUnmounted(() => {
 	}
 });
 </script>
-
