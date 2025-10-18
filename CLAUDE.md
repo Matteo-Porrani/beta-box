@@ -141,6 +141,10 @@ moment.locale("fr");
 // Available globally as this.moment in components
 ```
 
+### JavaScript
+- Always use double quotes for strings (e.g. "abc")
+- Always use modern ES6 features
+
 ### Tailwind Classes
 - Use utility classes for spacing, colors, typography
 - Custom component styles when utilities aren't sufficient
