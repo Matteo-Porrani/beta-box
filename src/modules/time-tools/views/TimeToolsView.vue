@@ -15,28 +15,39 @@
 			<div class="bg-stone-700 rounded-lg p-6">
 				<div class="flex items-center justify-between mb-6">
 					<h2 class="text-xl font-semibold">Timestamp Parser</h2>
-					<div class="flex items-center gap-2">
+					<div class="flex items-center gap-4">
 						<button
-							@click="removeRow"
-							class="w-10 h-10 bg-stone-600 hover:bg-stone-500 rounded flex items-center justify-center font-bold text-xl transition-colors"
-							:disabled="rows.length <= 1"
-							:class="{ 'opacity-50 cursor-not-allowed': rows.length <= 1 }"
+							@click="resetAll"
+							class="flex items-center gap-2 px-4 py-2 bg-stone-600 hover:bg-stone-500 rounded transition-colors"
+							title="Reset all fields"
 						>
-							-
+							<IconRefresh :size="20" />
+							<span class="text-sm">Reset</span>
 						</button>
-						<span class="text-lg w-8 text-center">{{ rows.length }}</span>
-						<button
-							@click="addRow"
-							class="w-10 h-10 bg-stone-600 hover:bg-stone-500 rounded flex items-center justify-center font-bold text-xl transition-colors"
-						>
-							+
-						</button>
-						<span class="text-sm text-stone-400 ml-2">number of rows</span>
+						<div class="flex items-center gap-2">
+							<button
+								@click="removeRow"
+								class="w-10 h-10 bg-stone-600 hover:bg-stone-500 rounded flex items-center justify-center font-bold text-xl transition-colors"
+								:disabled="rows.length <= 1"
+								:class="{ 'opacity-50 cursor-not-allowed': rows.length <= 1 }"
+							>
+								-
+							</button>
+							<span class="text-lg w-8 text-center">{{ rows.length }}</span>
+							<button
+								@click="addRow"
+								class="w-10 h-10 bg-stone-600 hover:bg-stone-500 rounded flex items-center justify-center font-bold text-xl transition-colors"
+							>
+								+
+							</button>
+							<span class="text-sm text-stone-400 ml-2">number of rows</span>
+						</div>
 					</div>
 				</div>
 
 				<!-- Column Headers -->
-				<div class="grid gap-4 mb-3 text-sm font-medium text-stone-400" style="grid-template-columns: 3fr 40px 2fr 2fr 80px 1.5fr;">
+				<div class="timestamp-grid gap-4 mb-3 text-sm font-medium text-stone-400">
+					<div></div> <!-- Empty for delete button column -->
 					<div>description</div>
 					<div class="text-center">#</div>
 					<div>timestamp</div>
@@ -57,6 +68,7 @@
 						@update:description="row.description = $event"
 						@update:timestamp="handleTimestampUpdate(row, $event)"
 						@update:referenceRowId="handleReferenceUpdate"
+						@delete="deleteRow(row.id)"
 					/>
 				</div>
 			</div>
@@ -66,6 +78,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
+import { IconRefresh } from "@tabler/icons-vue";
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import TimestampConversionRow from "../components/TimestampConversionRow.vue";
 
@@ -131,6 +144,28 @@ const removeRow = () => {
 	if (rows.value.length > 1) {
 		rows.value.pop();
 	}
+};
+
+const deleteRow = (rowId) => {
+	if (rows.value.length > 1) {
+		// If deleting the reference row, clear the reference
+		if (referenceRowId.value === rowId) {
+			referenceRowId.value = null;
+		}
+		rows.value = rows.value.filter(row => row.id !== rowId);
+		calculateDistances();
+	}
+};
+
+const resetAll = () => {
+	// Reset to initial state with 3 empty rows
+	nextId = 1;
+	rows.value = [
+		createEmptyRow(),
+		createEmptyRow(),
+		createEmptyRow()
+	];
+	referenceRowId.value = null;
 };
 
 const handleTimestampUpdate = (row, newValue) => {
@@ -288,3 +323,10 @@ onUnmounted(() => {
 	}
 });
 </script>
+
+<style scoped>
+.timestamp-grid {
+	display: grid;
+	grid-template-columns: 40px 3fr 40px 2fr 2fr 80px 1.5fr;
+}
+</style>

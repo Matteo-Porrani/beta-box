@@ -1,8 +1,14 @@
 <template>
-	<div
-		class="grid gap-4 items-center"
-		style="grid-template-columns: 3fr 40px 2fr 2fr 80px 1.5fr;"
-	>
+	<div class="timestamp-grid gap-4 items-center">
+		<!-- Delete Button -->
+		<button
+			@click="$emit('delete')"
+			class="w-10 h-10 bg-red-600 hover:bg-red-500 rounded flex items-center justify-center transition-colors"
+			title="Delete row"
+		>
+			<IconTrash :size="20" class="text-white" />
+		</button>
+
 		<!-- Description Input -->
 		<input
 			:value="row.description"
@@ -81,8 +87,13 @@
 </template>
 
 <script>
+import { IconTrash } from "@tabler/icons-vue";
+
 export default {
 	name: "TimestampConversionRow",
+	components: {
+		IconTrash
+	},
 	props: {
 		row: {
 			type: Object,
@@ -101,6 +112,13 @@ export default {
 			default: null
 		}
 	},
-	emits: ["update:description", "update:timestamp", "update:referenceRowId"]
+	emits: ["update:description", "update:timestamp", "update:referenceRowId", "delete"]
 };
 </script>
+
+<style scoped>
+.timestamp-grid {
+	display: grid;
+	grid-template-columns: 40px 3fr 40px 2fr 2fr 80px 1.5fr;
+}
+</style>
