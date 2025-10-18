@@ -1,13 +1,14 @@
 <template>
 	<div class="timestamp-grid gap-4 items-center">
 		<!-- Delete Button -->
-		<button
+		<BxIconButton
 			@click="$emit('delete')"
-			class="w-10 h-10 bg-red-600 hover:bg-red-500 rounded flex items-center justify-center transition-colors"
+			icon="trash"
+			size="small"
+			type="danger"
+			no-min-width
 			title="Delete row"
-		>
-			<IconTrash :size="20" class="text-white" />
-		</button>
+		/>
 
 		<!-- Description Input -->
 		<input
@@ -87,13 +88,8 @@
 </template>
 
 <script>
-import { IconTrash } from "@tabler/icons-vue";
-
 export default {
 	name: "TimestampConversionRow",
-	components: {
-		IconTrash
-	},
 	props: {
 		row: {
 			type: Object,

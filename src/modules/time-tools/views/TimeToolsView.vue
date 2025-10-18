@@ -8,6 +8,16 @@
 					<span class="font-cc">{{ currentTime }}</span>
 					<span class="text-stone-500">|</span>
 					<span>{{ currentDate }}</span>
+					<span class="text-stone-500">|</span>
+					<span class="font-cc">{{ currentUnixTimestamp }}</span>
+					<BxIconButton
+						@click="copyCurrentTimestamp"
+						icon="copy"
+						type="soft"
+						size="small"
+						no-min-width
+						title="Copy current timestamp"
+					/>
 				</div>
 			</div>
 
@@ -16,30 +26,31 @@
 				<div class="flex items-center justify-between mb-6">
 					<h2 class="text-xl font-semibold">Timestamp Parser</h2>
 					<div class="flex items-center gap-4">
-						<button
+						<BxIconButton
 							@click="resetAll"
-							class="flex items-center gap-2 px-4 py-2 bg-stone-600 hover:bg-stone-500 rounded transition-colors"
+							icon="refresh"
+							label="Reset"
+							type="soft"
 							title="Reset all fields"
-						>
-							<IconRefresh :size="20" />
-							<span class="text-sm">Reset</span>
-						</button>
+						/>
 						<div class="flex items-center gap-2">
-							<button
+							<BxButton
 								@click="removeRow"
-								class="w-10 h-10 bg-stone-600 hover:bg-stone-500 rounded flex items-center justify-center font-bold text-xl transition-colors"
+								label="-"
+								type="secondary"
+								class="w-10"
+								no-min-width
 								:disabled="rows.length <= 1"
 								:class="{ 'opacity-50 cursor-not-allowed': rows.length <= 1 }"
-							>
-								-
-							</button>
+							/>
 							<span class="text-lg w-8 text-center">{{ rows.length }}</span>
-							<button
+							<BxButton
 								@click="addRow"
-								class="w-10 h-10 bg-stone-600 hover:bg-stone-500 rounded flex items-center justify-center font-bold text-xl transition-colors"
-							>
-								+
-							</button>
+								label="+"
+								type="secondary"
+								class="w-10"
+								no-min-width
+							/>
 							<span class="text-sm text-stone-400 ml-2">number of rows</span>
 						</div>
 					</div>
@@ -78,13 +89,13 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import { IconRefresh } from "@tabler/icons-vue";
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import TimestampConversionRow from "../components/TimestampConversionRow.vue";
 
 // ============================================= CURRENT TIME
 const currentTime = ref("");
 const currentDate = ref("");
+const currentUnixTimestamp = ref("");
 
 const updateTime = () => {
 	const now = new Date();
@@ -95,6 +106,15 @@ const updateTime = () => {
 		month: "long",
 		day: "numeric"
 	});
+	currentUnixTimestamp.value = Math.floor(now.getTime() / 1000);
+};
+
+const copyCurrentTimestamp = async () => {
+	try {
+		await navigator.clipboard.writeText(currentUnixTimestamp.value.toString());
+	} catch (err) {
+		console.error("Failed to copy timestamp:", err);
+	}
 };
 
 let intervalId = null;
