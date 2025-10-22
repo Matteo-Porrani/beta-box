@@ -69,15 +69,10 @@ import { mapActions, mapMutations, mapState } from "vuex";
 // utils
 import { isInteger } from "@/modules/core/utils/core-utils";
 import { prepareItem } from "@/modules/admin/utils/entity-utils";
-// components
-
 
 export default {
 
 	name: "EntityForm",
-
-	components: {
-	},
 
 	props: {
 		tableName: String,
