@@ -10,7 +10,7 @@
 		<aside
 			data-test="layout-menu"
 			class="bg-stone-800 rounded p-2 relative transition-all duration-300"
-			:class="isSidebarCollapsed ? 'w-16' : ''"
+			:class="isSidebarCollapsed ? 'w-12' : ''"
 		>
 			<div :class="isSidebarCollapsed ? 'flex flex-col items-center' : ''">
 				<h1
@@ -147,9 +147,19 @@ export default {
 		})
 	},
 
+	mounted() {
+		// Load sidebar collapsed state from localStorage
+		const savedState = localStorage.getItem("sidebarCollapsed");
+		if (savedState !== null) {
+			this.isSidebarCollapsed = savedState === "true";
+		}
+	},
+
 	methods: {
 		toggleSidebar() {
 			this.isSidebarCollapsed = !this.isSidebarCollapsed;
+			// Save state to localStorage
+			localStorage.setItem("sidebarCollapsed", this.isSidebarCollapsed.toString());
 		}
 	}
 }
