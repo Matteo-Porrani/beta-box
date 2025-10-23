@@ -28,8 +28,8 @@ in order to inform the user that a drop zone is available.
 	<div
 		class="h-32 border-2 border-zinc-700 rounded space-y-2 p-2"
 		:class="{
-			'bg-zinc-900': isBeingDragged,
-			'bg-zinc-500': isDragOver,
+			'bg-stone-900': isBeingDragged,
+			'bg-stone-500': isDragOver,
 		}"
 	>
 		<div class="flex gap-2 text-sm">
@@ -48,7 +48,7 @@ in order to inform the user that a drop zone is available.
 		<div
 			v-for="t in item.ticketInfo"
 			:key="t.id"
-			class="bg-zinc-700 text-sm rounded p-1"
+			class="bg-stone-700 text-sm rounded p-1"
 		>
 			<p class="font-bold">{{ t.title }}</p>
 			<p>{{ t.desc }}</p>

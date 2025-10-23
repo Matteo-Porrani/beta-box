@@ -2,7 +2,7 @@
 	<DefaultLayout>
 		<section class="h-full grid grid-rows-[auto_1fr]">
 			<!-- Toolbar -->
-			<div class="toolbar flex items-center gap-6 p-1">
+			<div class="toolbar flex items-center gap-6 bg-stone-700 rounded p-1">
 				<!-- Board selector -->
 			<div class="flex items-center gap-2">
 				<BxHoverSelect
@@ -35,7 +35,7 @@
 					v-model="todoForm.desc"
 					placeholder="New task..."
 					type="text"
-					class="w-[40vw] bg-stone-700 rounded text-white p-1"
+					class="w-96 bg-stone-800 rounded text-white p-1"
 				/>
 				<BxButton
 					label="Insert"
@@ -100,7 +100,7 @@
 		</div>
 
 		<!-- Main grid area -->
-		<div class="bg-stone-800 rounded p-4 overflow-hidden">
+		<div class="bg-stone-800 rounded overflow-hidden p-1">
 			<div
 				class="grid gap-x-3 gapx-y-1 h-full"
 				:style="gridStyle"
