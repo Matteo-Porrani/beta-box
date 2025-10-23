@@ -12,11 +12,19 @@
 
 			<!-- Board selector -->
 			<div class="flex items-center gap-2">
-				<BxHoverSelect
+				<select 
 					v-model="currentBoardId"
-					:options="boardItems"
 					@change="switchBoard"
-				/>
+					class="w-56 bg-stone-800 text-white rounded p-1 text-xs border border-stone-600"
+				>
+					<option 
+						v-for="board in boardItems" 
+						:key="board.id" 
+						:value="board.id"
+					>
+						{{ board.name }}
+					</option>
+				</select>
 				<BxIconButton
 					icon="add"
 					size="small"

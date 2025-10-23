@@ -8,6 +8,7 @@ import BxModal from "@/modules/ui/components/BxModal.vue";
 import BxNotif from "@/modules/ui/components/BxNotif.vue";
 
 import BxOptionSelector from "@/modules/ui/components/BxOptionSelector.vue";
+import BxHoverSelect from "@/modules/ui/components/BxHoverSelect.vue";
 
 import BxForm from "@/modules/ui/components/BxForm/BxForm.vue";
 import BxFormField from "@/modules/ui/components/BxForm/BxFormField.vue";
@@ -32,6 +33,7 @@ export function registerBxUi(app) {
 	app.component("BxNotif", BxNotif);
 	
 	app.component("BxOptionSelector", BxOptionSelector);
+	app.component("BxHoverSelect", BxHoverSelect);
 	
 	app.component("BxForm", BxForm);
 	app.component("BxFormField", BxFormField);
