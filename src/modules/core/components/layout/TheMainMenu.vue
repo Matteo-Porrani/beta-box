@@ -9,11 +9,11 @@
 			:to="l.path"
 			:data-test="`main-menu-link-${l.label}`"
 			:class="[
-				'flex items-center gap-2 hover:underline w-fit text-lg',
+				'flex items-center gap-2 hover:underline w-fit text-base',
 				{ 'justify-center': isCollapsed }
 			]"
 		>
-			<BxIcon :icon="l.icon" size="medium"/>
+			<BxIcon :icon="l.icon" size="small"/>
 			<span v-if="!isCollapsed">{{ l.label }}</span>
 		</router-link>
 
@@ -25,11 +25,11 @@
 			:to="l.path"
 			:data-test="`main-menu-admin-link-${l.label}`"
 			:class="[
-				'flex items-center gap-2 hover:underline w-fit text-lg',
+				'flex items-center gap-2 hover:underline w-fit text-base',
 				{ 'justify-center': isCollapsed }
 			]"
 		>
-			<BxIcon :icon="l.icon" size="medium"/>
+			<BxIcon :icon="l.icon" size="small"/>
 			<span v-if="!isCollapsed">{{ l.label }}</span>
 		</router-link>
 

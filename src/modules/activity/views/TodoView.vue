@@ -35,7 +35,7 @@
 					v-model="todoForm.desc"
 					placeholder="New task..."
 					type="text"
-					class="w-[40vw] bg-stone-800 rounded text-white p-1"
+					class="w-[40vw] bg-stone-700 rounded text-white p-1"
 				/>
 				<BxButton
 					label="Insert"
