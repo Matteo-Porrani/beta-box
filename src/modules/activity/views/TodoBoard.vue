@@ -202,7 +202,7 @@ const store = useStore()
 const boardItems = ref([])
 const matrixData = ref({})
 const currentBoardId = ref(1)
-const textSize = ref(2)
+const textSize = ref(1) // default value is small
 
 // Grid configuration composable
 const {
