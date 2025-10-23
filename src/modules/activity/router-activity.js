@@ -4,7 +4,7 @@ const ActivityView = () => import("./views/ActivityView.vue");
 const CalendarManager = () => import("./views/CalendarManager.vue");
 const SprintManager = () => import("./views/SprintManager.vue");
 const DailySpeechBoard = () => import("./views/DailySpeechBoard.vue");
-const TodoBoard = () => import("./views/TodoBoard.vue");
+const TodoView = () => import("./views/TodoView.vue");
 
 const moduleRoute = {
 	path: "/activity",
@@ -34,7 +34,7 @@ const moduleRoute = {
 		{
 			name: "activity_todo_board",
 			path: "todo-board",
-			component: TodoBoard,
+			component: TodoView,
 		},
 		
 	]

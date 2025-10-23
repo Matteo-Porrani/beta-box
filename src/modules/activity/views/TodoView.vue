@@ -1,16 +1,9 @@
 <template>
-	<section class="h-full grid grid-rows-[auto_1fr]">
-		<!-- Toolbar -->
-		<div class="toolbar flex items-center gap-6 p-1">
-			<router-link
-				to="/"
-				class="flex gap-1 items-center text-stone-400 hover:text-stone-300 text-sm"
-			>
-				<BxIcon icon="arrow_left" size="small"/>
-				BACK
-			</router-link>
-
-			<!-- Board selector -->
+	<DefaultLayout>
+		<section class="h-full grid grid-rows-[auto_1fr]">
+			<!-- Toolbar -->
+			<div class="toolbar flex items-center gap-6 p-1">
+				<!-- Board selector -->
 			<div class="flex items-center gap-2">
 				<BxHoverSelect
 					v-model="currentBoardId"
@@ -135,46 +128,48 @@
 			</div>
 		</div>
 
-		<!-- Board Modal (Create/Edit) -->
-		<BxModal ref="newBoardModal">
-			<template #header>
-				<h2 class="text-white text-lg font-bold">
-					{{ isEditingBoard ? 'Edit Board Name' : 'Create New Board' }}
-				</h2>
-			</template>
-			
-			<template #body>
-				<div class="space-y-4">
-					<div>
-						<label class="block text-white text-sm font-medium mb-2">Board Name</label>
-						<input
-							v-model="newBoardName"
-							type="text"
-							placeholder="Enter board name..."
-							class="w-full bg-stone-800 text-white rounded p-2 border border-stone-600 focus:border-stone-400 outline-none"
-							@keyup.enter="confirmBoardAction"
-							ref="boardNameInput"
-						/>
-					</div>
-				</div>
-			</template>
-			
-			<template #footer>
-				<div class="flex gap-2 justify-end">
-					<BxButton
-						label="Cancel"
-						type="soft"
-						@click="cancelBoardAction"
-					/>
-					<BxButton
-						:label="isEditingBoard ? 'Update' : 'Create'"
-						:disabled="!newBoardName.trim()"
-						@click="confirmBoardAction"
+		</section>
+	</DefaultLayout>
+
+	<!-- Board Modal (Create/Edit) -->
+	<BxModal ref="newBoardModal">
+		<template #header>
+			<h2 class="text-white text-lg font-bold">
+				{{ isEditingBoard ? 'Edit Board Name' : 'Create New Board' }}
+			</h2>
+		</template>
+
+		<template #body>
+			<div class="space-y-4">
+				<div>
+					<label class="block text-white text-sm font-medium mb-2">Board Name</label>
+					<input
+						v-model="newBoardName"
+						type="text"
+						placeholder="Enter board name..."
+						class="w-full bg-stone-800 text-white rounded p-2 border border-stone-600 focus:border-stone-400 outline-none"
+						@keyup.enter="confirmBoardAction"
+						ref="boardNameInput"
 					/>
 				</div>
-			</template>
-		</BxModal>
-	</section>
+			</div>
+		</template>
+
+		<template #footer>
+			<div class="flex gap-2 justify-end">
+				<BxButton
+					label="Cancel"
+					type="soft"
+					@click="cancelBoardAction"
+				/>
+				<BxButton
+					:label="isEditingBoard ? 'Update' : 'Create'"
+					:disabled="!newBoardName.trim()"
+					@click="confirmBoardAction"
+				/>
+			</div>
+		</template>
+	</BxModal>
 </template>
 
 <script setup>
@@ -184,6 +179,7 @@ import { useBoardManagement } from '../composables/useBoardManagement.js'
 import { useTodoOperations } from '../composables/useTodoOperations.js'
 import { useGridConfig } from '../composables/useGridConfig.js'
 
+import DefaultLayout from '@/modules/core/components/layout/DefaultLayout.vue'
 import TodoSlot from '../components/todo/TodoSlot.vue'
 import TodoCard from '../components/todo/TodoCard.vue'
 
