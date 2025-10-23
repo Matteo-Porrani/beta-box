@@ -1,8 +1,13 @@
 <template>
 	<div
 		class="bx-hover-select relative inline-block"
-		@mouseenter="showOptions = true"
-		@mouseleave="showOptions = false"
+		tabindex="0"
+		@mouseenter="openOnHover"
+		@mouseleave="closeOnHover"
+		@keydown.escape="showOptions = false"
+		@keydown.enter.prevent="toggleOptions"
+		@keydown.down.prevent="navigateDown"
+		@keydown.up.prevent="navigateUp"
 	>
 		<!-- Selected value display -->
 		<div
@@ -19,11 +24,16 @@
 				class="options-dropdown absolute top-full left-0 w-56 mt-1 bg-stone-800 border border-stone-600 rounded shadow-lg z-50 max-h-64 overflow-y-auto"
 			>
 				<div
-					v-for="option in options"
+					v-for="(option, index) in options"
 					:key="optionKey(option)"
 					@click="selectOption(option)"
 					class="option-item p-1 text-xs cursor-pointer hover:bg-stone-700 transition-colors"
-					:class="isSelected(option) ? 'bg-sky-500 text-stone-800 font-semibold' : 'text-white'"
+					@mouseenter="highlightedIndex = index"
+				:class="{
+					'bg-sky-500 text-stone-800 font-semibold': isSelected(option),
+					'bg-stone-700 text-yellow-400': !isSelected(option) && highlightedIndex === index,
+					'text-white': !isSelected(option) && highlightedIndex !== index
+				}"
 				>
 					{{ optionLabel(option) }}
 				</div>
@@ -57,6 +67,7 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue", "change"])
 
 const showOptions = ref(false)
+const highlightedIndex = ref(-1)
 
 const selectedLabel = computed(() => {
 	const selected = props.options.find(option =>
@@ -87,11 +98,62 @@ function selectOption(option) {
 	emit("change", value)
 	showOptions.value = false
 }
+
+function toggleOptions() {
+	if (showOptions.value && highlightedIndex.value >= 0) {
+		// If dropdown is open and an option is highlighted, select it
+		const option = props.options[highlightedIndex.value]
+		selectOption(option)
+	} else {
+		// Otherwise toggle the dropdown
+		showOptions.value = !showOptions.value
+		if (showOptions.value) {
+			// Reset highlighted index when opening
+			highlightedIndex.value = -1
+		}
+	}
+}
+
+function navigateDown() {
+	if (!showOptions.value) {
+		showOptions.value = true
+		highlightedIndex.value = 0
+	} else {
+		highlightedIndex.value = Math.min(highlightedIndex.value + 1, props.options.length - 1)
+	}
+}
+
+function navigateUp() {
+	if (!showOptions.value) {
+		showOptions.value = true
+		highlightedIndex.value = props.options.length - 1
+	} else {
+		highlightedIndex.value = Math.max(highlightedIndex.value - 1, 0)
+	}
+}
+
+function openOnHover() {
+	showOptions.value = true
+	highlightedIndex.value = -1
+}
+
+function closeOnHover() {
+	showOptions.value = false
+	highlightedIndex.value = -1
+}
 </script>
 
 <style scoped>
 .bx-hover-select {
 	@apply inline-block
+}
+
+.bx-hover-select:focus {
+	@apply outline-none
+}
+
+.bx-hover-select:focus .selected-value {
+	@apply ring-2 ring-sky-500 ring-opacity-50
 }
 
 .options-dropdown {

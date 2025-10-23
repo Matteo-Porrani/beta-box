@@ -38,7 +38,7 @@ src/modules/
 ## Code Conventions
 
 ### JavaScript Style
-- Use Vue 3 Options API (not Composition API)
+- Use Vue 3 Composition API
 - JavaScript-first approach with minimal TypeScript
 - Use template strings for dynamic content
 - Prefer `const` and `let` over `var`
