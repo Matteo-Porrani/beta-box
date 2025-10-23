@@ -1,16 +1,16 @@
 export const LINKS = [
-	["Home", "/"],
-	["Activity", "/activity"],
-	["Project", "/project/phase"],
-	["Todo", "/activity/todo-board"],
-	["Time", "/time-tools"],
+	{ label: "Home", path: "/", icon: "home" },
+	{ label: "Activity", path: "/activity", icon: "calendar" },
+	{ label: "Project", path: "/project/phase", icon: "folders" },
+	{ label: "Todo", path: "/activity/todo-board", icon: "cards" },
+	{ label: "Time", path: "/time-tools", icon: "stop_watch" },
 	// ["Tasks (M)", "/tasks"],
 ]
 
 export const ADMIN_LINKS = [
-	["Admin", "/admin"],
-	["Content", "/admin/content"],
-	["Data Manager", "/data-manager"],
+	{ label: "Admin", path: "/admin", icon: "dashboard" },
+	{ label: "Content", path: "/admin/content", icon: "edit" },
+	{ label: "Data Manager", path: "/data-manager", icon: "data" },
 
 	// ["Calendar", "/admin/calendar"],
 	// ["Dev", "/dev"],

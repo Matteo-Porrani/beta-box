@@ -5,24 +5,32 @@
 	>
 		<router-link
 			v-for="l in links"
-			:key="l[0]"
-			:to="l[1]"
-			:data-test="`main-menu-link-${l[0]}`"
-			class="hover:underline w-fit text-lg"
+			:key="l.label"
+			:to="l.path"
+			:data-test="`main-menu-link-${l.label}`"
+			:class="[
+				'flex items-center gap-2 hover:underline w-fit text-lg',
+				{ 'justify-center': isCollapsed }
+			]"
 		>
-			{{ l[0] }}
+			<BxIcon :icon="l.icon" size="medium"/>
+			<span v-if="!isCollapsed">{{ l.label }}</span>
 		</router-link>
 
 		<div class="border border-stone-500 mt-16"/>
 
 		<router-link
 			v-for="l in adminLinks"
-			:key="l[0]"
-			:to="l[1]"
-			:data-test="`main-menu-admin-link-${l[0]}`"
-			class="hover:underline w-fit text-lg"
+			:key="l.label"
+			:to="l.path"
+			:data-test="`main-menu-admin-link-${l.label}`"
+			:class="[
+				'flex items-center gap-2 hover:underline w-fit text-lg',
+				{ 'justify-center': isCollapsed }
+			]"
 		>
-			{{ l[0] }}
+			<BxIcon :icon="l.icon" size="medium"/>
+			<span v-if="!isCollapsed">{{ l.label }}</span>
 		</router-link>
 
 	</div>
@@ -34,6 +42,13 @@ import { LINKS, ADMIN_LINKS } from "@/modules/core/const/const-links";
 
 export default {
 	name: "TheMainMenu",
+
+	props: {
+		isCollapsed: {
+			type: Boolean,
+			default: false
+		}
+	},
 
 	data() {
 		return {

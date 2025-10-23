@@ -6,18 +6,12 @@
 		>
 
 			<div data-test="entity-selector">
-				<select
-					class="w-96 pr-2"
+				<BxHoverSelect
 					v-model="tableName"
-				>
-					<option
-						v-for="e in entitiesList"
-						:key="e.value"
-						:value="e.value"
-					>
-						{{ e.label }}
-					</option>
-				</select>
+					:options="entitiesList"
+					labelKey="label"
+					valueKey="value"
+				/>
 			</div>
 
 			<div class="h-4"></div>
@@ -200,7 +194,4 @@ export default {
 
 
 <style scoped>
-select {
-	@apply bg-stone-700 rounded text-stone-200 p-1 text-xl
-}
 </style>

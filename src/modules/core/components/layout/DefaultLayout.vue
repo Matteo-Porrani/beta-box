@@ -4,32 +4,59 @@
 
 	<section
 		data-test="default-layout-root"
-		class="relative grid grid-cols-8 gap-4"
+		class="relative grid gap-4"
+		:class="isSidebarCollapsed ? 'grid-cols-[auto_1fr]' : 'grid-cols-8'"
 	>
 		<aside
 			data-test="layout-menu"
-			class="bg-stone-800 rounded p-2"
+			class="bg-stone-800 rounded p-2 relative transition-all duration-300"
+			:class="isSidebarCollapsed ? 'w-16' : ''"
 		>
-			<h1
-				data-test="app-main-title"
-				class="flex items-center gap-1 text-2xl font-bold"
-			>
-				<span class="inline-block h-2 w-2 rounded bg-yellow-400"></span>
-				<span class="inline-block h-4 w-2 rounded bg-sky-500"></span>
-				Beta-Box
-			</h1>
-			<span class="text-xs font-mono">{{ appVersion }}</span>
+			<div :class="isSidebarCollapsed ? 'flex flex-col items-center' : ''">
+				<h1
+					v-if="!isSidebarCollapsed"
+					data-test="app-main-title"
+					class="flex items-center gap-1 text-2xl font-bold"
+				>
+					<span class="inline-block h-2 w-2 rounded bg-yellow-400"></span>
+					<span class="inline-block h-4 w-2 rounded bg-sky-500"></span>
+					Beta-Box
+				</h1>
+				<div
+					v-else
+					class="flex items-center gap-1"
+				>
+					<span class="inline-block h-2 w-2 rounded bg-yellow-400"></span>
+					<span class="inline-block h-4 w-2 rounded bg-sky-500"></span>
+				</div>
+				<span v-if="!isSidebarCollapsed" class="text-xs font-mono">{{ appVersion }}</span>
+			</div>
 
 			<div class="h-10"></div>
 
 			<slot name="menu">
-				<TheMainMenu/>
+				<TheMainMenu :is-collapsed="isSidebarCollapsed"/>
 			</slot>
+
+			<!-- Toggle button -->
+			<button
+				@click="toggleSidebar"
+				data-test="sidebar-toggle-btn"
+				class="absolute bottom-2 right-2 p-2 bg-stone-700 hover:bg-stone-600 rounded border border-stone-600 transition-colors"
+				:title="isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+			>
+				<BxIcon
+          :key="isSidebarCollapsed"
+          :icon="isSidebarCollapsed ? 'angle_right' : 'angle_left'"
+          size="small"
+				/>
+			</button>
 		</aside>
 
 		<div
 			data-test="layout-content"
-			class="col-span-7 bg-stone-800 rounded p-2"
+			class="bg-stone-800 rounded p-2"
+			:class="isSidebarCollapsed ? '' : 'col-span-7'"
 		>
 			<div
 				v-if="hasBreadcrumb"
@@ -106,12 +133,24 @@ export default {
 		}
 	},
 
+	data() {
+		return {
+			isSidebarCollapsed: false
+		}
+	},
+
 	computed: {
 		...mapState({
 			appVersion: $s => $s.APP_VERSION,
 			loading: $s => $s.entity.loading,
 			notifStack: $s => $s.notif.notifStack,
 		})
+	},
+
+	methods: {
+		toggleSidebar() {
+			this.isSidebarCollapsed = !this.isSidebarCollapsed;
+		}
 	}
 }
 </script>
