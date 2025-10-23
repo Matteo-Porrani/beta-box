@@ -210,7 +210,6 @@ const {
 	boardNameInput,
 	newBoardName,
 	isEditingBoard,
-	currentBoard,
 	switchBoard,
 	createNewBoard,
 	updateCurrentBoard,
@@ -225,15 +224,11 @@ const tasks = computed(() => store.getters['entity/getItemsFromTable']('task'))
 // Todo operations composable
 const {
 	todoForm,
-	isEditingTodo,
-	nextAvailableSlot,
 	getTodoById,
-	getTodoPosition,
 	handleTodoDrop,
 	handleTodoUpdate,
 	handleTodoDelete,
 	handleTodoCopy,
-	resetTodoForm,
 	saveTodo
 } = useTodoOperations(store, tasks, multiboardData, currentBoardId, matrixData)
 
@@ -244,8 +239,7 @@ const currentMatrix = computed(() => matrixData.value[currentBoardId.value] || [
 
 // Lifecycle
 onMounted(async () => {
-	const activeBoardId = loadGridFromStorage()
-	currentBoardId.value = activeBoardId
+	currentBoardId.value = loadGridFromStorage()
 	await store.dispatch('entity/loadItems', 'task')
 })
 </script>

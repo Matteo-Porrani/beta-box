@@ -9,8 +9,8 @@
 			:to="l.path"
 			:data-test="`main-menu-link-${l.label}`"
 			:class="[
-				'flex items-center gap-2 hover:underline w-fit text-base',
-				{ 'justify-center': isCollapsed }
+				'flex items-center gap-2 hover:underline text-base',
+				isCollapsed ? 'w-full justify-center' : 'w-fit'
 			]"
 		>
 			<BxIcon :icon="l.icon" size="small"/>
@@ -25,8 +25,8 @@
 			:to="l.path"
 			:data-test="`main-menu-admin-link-${l.label}`"
 			:class="[
-				'flex items-center gap-2 hover:underline w-fit text-base',
-				{ 'justify-center': isCollapsed }
+				'flex items-center gap-2 hover:underline text-base',
+				isCollapsed ? 'w-full justify-center' : 'w-fit'
 			]"
 		>
 			<BxIcon :icon="l.icon" size="small"/>
@@ -62,6 +62,6 @@ export default {
 
 <style scoped>
 .router-link-exact-active {
-	@apply text-sky-500 border-s-2 border-sky-500 ps-1
+	@apply text-sky-500 rounded
 }
 </style>

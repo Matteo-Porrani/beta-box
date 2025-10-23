@@ -4,13 +4,13 @@
 
 	<section
 		data-test="default-layout-root"
-		class="relative grid gap-4"
+		class="relative grid gap-2"
 		:class="isSidebarCollapsed ? 'grid-cols-[auto_1fr]' : 'grid-cols-8'"
 	>
 		<aside
 			data-test="layout-menu"
 			class="bg-stone-800 rounded p-2 relative transition-all duration-300"
-			:class="isSidebarCollapsed ? 'w-12' : ''"
+			:class="isSidebarCollapsed ? 'w-10' : ''"
 		>
 			<div :class="isSidebarCollapsed ? 'flex flex-col items-center' : ''">
 				<h1
@@ -29,7 +29,6 @@
 					<span class="inline-block h-2 w-2 rounded bg-yellow-400"></span>
 					<span class="inline-block h-4 w-2 rounded bg-sky-500"></span>
 				</div>
-				<span v-if="!isSidebarCollapsed" class="text-xs font-mono">{{ appVersion }}</span>
 			</div>
 
 			<div class="h-10"></div>
@@ -38,11 +37,19 @@
 				<TheMainMenu :is-collapsed="isSidebarCollapsed"/>
 			</slot>
 
+			<!-- Version tag -->
+			<span
+				v-if="!isSidebarCollapsed"
+				class="absolute bottom-2 left-2 text-xs font-mono"
+			>
+				{{ appVersion }}
+			</span>
+
 			<!-- Toggle button -->
 			<button
 				@click="toggleSidebar"
 				data-test="sidebar-toggle-btn"
-				class="absolute bottom-2 right-2 p-2 bg-stone-700 hover:bg-stone-600 rounded border border-stone-600 transition-colors"
+				class="absolute bottom-2 right-2 p-1 bg-stone-700 hover:bg-stone-600 rounded border border-stone-600 transition-colors"
 				:title="isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
 			>
 				<BxIcon
