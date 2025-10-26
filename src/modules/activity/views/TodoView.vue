@@ -177,17 +177,19 @@
 				v-if="selectedColumn !== null"
 				class="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 bg-stone-800 rounded-lg shadow-xl border border-stone-600 p-3 flex gap-3"
 			>
-				<BxButton
-					label="Delete all cards"
-					type="danger"
-					size="small"
-					@click="deleteAllColumnCards(selectedColumn)"
+				<BxIconButton
+            icon="trash"
+            label="Delete all"
+            type="danger"
+            size="small"
+            @click="deleteAllColumnCards(selectedColumn)"
 				/>
-				<BxButton
-					label="Toggle done"
-					type="success"
-					size="small"
-					@click="toggleAllColumnCardsDone(selectedColumn)"
+				<BxIconButton
+            icon="success"
+            label="Toggle done"
+            type="secondary"
+            size="small"
+            @click="toggleAllColumnCardsDone(selectedColumn)"
 				/>
 			</div>
 		</Transition>
