@@ -109,14 +109,36 @@
 				<div
 					v-for="col in gridConfig.columns"
 					:key="`header-${col-1}`"
-					class="rounded text-center text-xs font-medium cursor-pointer transition-colors hover:bg-stone-600 py-0.5"
+					class="relative rounded text-center text-xs font-medium cursor-pointer transition-colors hover:bg-stone-700 py-0.5"
 					:class="{
             'bg-sky-600 hover:bg-sky-500 text-white': selectedColumn === col-1,
             'text-stone-400': selectedColumn !== col-1,
           }"
 					@click="toggleColumnSelection(col-1)"
 				>
+					<!-- Left arrow button -->
+					<BxIconButton
+						v-if="selectedColumn === col-1 && selectedColumn !== 0"
+            no-min-width
+						icon="caret_left"
+						size="small"
+						type="primary"
+						class="absolute -left-7 top-1/2 -translate-y-1/2 w-6 z-50"
+						@click.stop="moveColumn(-1)"
+					/>
+
 					{{ col }}
+
+					<!-- Right arrow button -->
+					<BxIconButton
+						v-if="selectedColumn === col-1 && selectedColumn !== gridConfig.columns - 1"
+            no-min-width
+						icon="caret_right"
+						size="small"
+						type="primary"
+						class="absolute -right-7 top-1/2 -translate-y-1/2 w-6 z-50"
+						@click.stop="moveColumn(1)"
+					/>
 				</div>
 			</div>
 
@@ -148,6 +170,27 @@
 				</template>
 			</div>
 		</div>
+
+		<!-- Floating Action Container -->
+		<Transition name="fade">
+			<div
+				v-if="selectedColumn !== null"
+				class="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 bg-stone-800 rounded-lg shadow-xl border border-stone-600 p-3 flex gap-3"
+			>
+				<BxButton
+					label="Delete all cards"
+					type="danger"
+					size="small"
+					@click="deleteAllColumnCards(selectedColumn)"
+				/>
+				<BxButton
+					label="Toggle done"
+					type="success"
+					size="small"
+					@click="toggleAllColumnCardsDone(selectedColumn)"
+				/>
+			</div>
+		</Transition>
 
 		</section>
 	</DefaultLayout>
@@ -222,6 +265,7 @@ const {
 	multiboardData,
 	gridStyle,
 	loadGridFromStorage,
+	saveGridToStorage,
 	adjustColumns,
 	adjustRows
 } = useGridConfig(boardItems, matrixData)
@@ -267,10 +311,91 @@ function toggleColumnSelection(columnIndex) {
 	}
 }
 
-// Bulk operations (placeholders for future implementation)
-function deleteColumnCards(columnIndex) {
-	// TODO: Implement bulk delete for all cards in the specified column
-	console.log(`Delete all cards in column ${columnIndex}`)
+// Move column left (-1) or right (1)
+function moveColumn(direction) {
+	if (selectedColumn.value === null) return
+
+	const sourceCol = selectedColumn.value
+	const targetCol = sourceCol + direction
+
+	// Validate target column is within bounds
+	if (targetCol < 0 || targetCol >= gridConfig.columns) return
+
+	// Get current matrix
+	const matrix = matrixData.value[currentBoardId.value] || []
+
+	// Swap columns in each row
+	for (let row = 0; row < matrix.length; row++) {
+		if (!matrix[row]) continue
+
+		// Swap the todoId values between source and target columns
+		const temp = matrix[row][sourceCol]
+		matrix[row][sourceCol] = matrix[row][targetCol]
+		matrix[row][targetCol] = temp
+	}
+
+	// Update the matrix data to trigger reactivity
+	matrixData.value = { ...matrixData.value }
+
+	// Save to storage
+	saveGridToStorage()
+
+	// Update selection to follow the moved column
+	selectedColumn.value = targetCol
+}
+
+// Bulk operations
+function deleteAllColumnCards(columnIndex) {
+	if (columnIndex === null) return
+
+	const matrix = matrixData.value[currentBoardId.value] || []
+	const todoIdsToDelete = []
+
+	// Collect all todoIds from the specified column
+	for (let row = 0; row < matrix.length; row++) {
+		if (matrix[row] && matrix[row][columnIndex]) {
+			todoIdsToDelete.push(matrix[row][columnIndex])
+			// Clear the slot in the matrix
+			matrix[row][columnIndex] = null
+		}
+	}
+
+	// Delete each todo from the store
+	todoIdsToDelete.forEach(todoId => {
+		store.dispatch("entity/deleteItem", { table: "task", id: todoId })
+	})
+
+	// Update matrix data and save
+	matrixData.value = { ...matrixData.value }
+	saveGridToStorage()
+
+	// Deselect the column
+	selectedColumn.value = null
+}
+
+function toggleAllColumnCardsDone(columnIndex) {
+	if (columnIndex === null) return
+
+	const matrix = matrixData.value[currentBoardId.value] || []
+	const todoIdsToUpdate = []
+
+	// Collect all todoIds from the specified column
+	for (let row = 0; row < matrix.length; row++) {
+		if (matrix[row] && matrix[row][columnIndex]) {
+			todoIdsToUpdate.push(matrix[row][columnIndex])
+		}
+	}
+
+	// Toggle done state for each todo
+	todoIdsToUpdate.forEach(todoId => {
+		const todo = getTodoById(todoId)
+		if (todo) {
+			store.dispatch("entity/updateItem", {
+				tableName: "task",
+				item: { ...todo, done: !todo.done }
+			})
+		}
+	})
 }
 
 function moveColumnCards(fromColumn, toColumn) {
@@ -292,3 +417,14 @@ onMounted(async () => {
 })
 </script>
 
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
+</style>
