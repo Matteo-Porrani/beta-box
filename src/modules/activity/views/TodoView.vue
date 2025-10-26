@@ -238,6 +238,8 @@
 	</BxModal>
 </template>
 
+
+
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
@@ -259,7 +261,18 @@ const currentBoardId = ref(1)
 const textSize = ref(1) // default value is small
 const selectedColumn = ref(null) // Track selected column (null = none selected)
 
-// Grid configuration composable
+// Lifecycle
+onMounted(async () => {
+  currentBoardId.value = loadGridFromStorage()
+  await store.dispatch('entity/loadItems', 'task')
+})
+
+
+// Tasks from store
+const tasks = computed(() => store.getters['entity/getItemsFromTable']('task'))
+
+
+// ===================================================================== GRID CONFIGURATION COMPOSABLE
 const {
 	MAX_COLUMNS,
 	MAX_ROWS,
@@ -272,7 +285,8 @@ const {
 	adjustRows
 } = useGridConfig(boardItems, matrixData)
 
-// Board management composable
+
+// ===================================================================== BOARD MANAGEMENT COMPOSABLE
 const {
 	newBoardModal,
 	boardNameInput,
@@ -286,10 +300,8 @@ const {
 	deleteCurrentBoard
 } = useBoardManagement(store, multiboardData, currentBoardId, boardItems, matrixData, gridConfig)
 
-// Tasks from store
-const tasks = computed(() => store.getters['entity/getItemsFromTable']('task'))
 
-// Todo operations composable
+// ===================================================================== TODO OPERATIONS COMPOSABLE
 const {
 	todoForm,
 	getTodoById,
@@ -346,7 +358,7 @@ function moveColumn(direction) {
 	selectedColumn.value = targetCol
 }
 
-// Bulk operations
+// ===================================================================== BULK OPERATIONS
 function deleteAllColumnCards(columnIndex) {
 	if (columnIndex === null) return
 
@@ -400,24 +412,9 @@ function toggleAllColumnCardsDone(columnIndex) {
 	})
 }
 
-function moveColumnCards(fromColumn, toColumn) {
-	// TODO: Implement bulk move for all cards from one column to another
-	console.log(`Move all cards from column ${fromColumn} to column ${toColumn}`)
-}
-
-function copyColumnCards(columnIndex) {
-	// TODO: Implement bulk copy for all cards in the specified column
-	console.log(`Copy all cards in column ${columnIndex}`)
-}
-
-
-
-// Lifecycle
-onMounted(async () => {
-	currentBoardId.value = loadGridFromStorage()
-	await store.dispatch('entity/loadItems', 'task')
-})
 </script>
+
+
 
 <style scoped>
 .fade-enter-active,
