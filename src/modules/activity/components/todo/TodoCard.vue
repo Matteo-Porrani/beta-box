@@ -42,31 +42,36 @@
 <!--			C{{ position.column + 1 }}/R{{ position.row + 1 }}-->
 <!--		</div>-->
 
-		<!-- 3 dots menu button -->
-		<button
-			class="absolute top-1 right-1 w-5 h-5 rounded hover:bg-stone-600 flex items-center justify-center text-xs z-20 transition-colors duration-150"
-			:class="[todo.starred ? 'text-white' : 'text-stone-800']"
-			@click.stop="toggleColorSelector"
+		<!-- 3 dots menu button with hover menu -->
+		<div
+			class="absolute top-1 right-1 z-20"
+			@mouseenter="showColorSelector = true"
+			@mouseleave="handleMenuMouseLeave"
 		>
-			⋯
-		</button>
+			<button
+				class="w-5 h-5 rounded hover:bg-stone-600 flex items-center justify-center text-xs transition-colors duration-150"
+				:class="[todo.starred ? 'text-white' : 'text-stone-800']"
+			>
+				⋯
+			</button>
 
-		<!-- Color selector -->
-		<ColorSelector
-			v-if="showColorSelector"
-			:todo="todo"
-			:visible="showColorSelector"
-			@update="handleTodoUpdate"
-			@delete="handleTodoDelete"
-			@copy="handleTodoCopy"
-			@close="showColorSelector = false"
-		/>
+			<!-- Color selector -->
+			<ColorSelector
+				v-if="showColorSelector"
+				:todo="todo"
+				:visible="showColorSelector"
+				@update="handleTodoUpdate"
+				@delete="handleTodoDelete"
+				@copy="handleTodoCopy"
+				@close="showColorSelector = false"
+			/>
+		</div>
 		
 	</div>
 </template>
 
 <script setup>
-import { ref, computed, nextTick, onMounted, onUnmounted, defineProps, defineEmits } from 'vue'
+import { ref, computed, nextTick, defineProps, defineEmits } from 'vue'
 import { ACTIVITY_COLOR_MAP } from "@/modules/activity/const/activity-const";
 
 import ColorSelector from './ColorSelector.vue'
@@ -92,6 +97,7 @@ const isEditing = ref(false)
 const editText = ref('')
 const showColorSelector = ref(false)
 const editInput = ref(null)
+const closeTimeout = ref(null)
 
 const cardClasses = computed(() => {
 	const baseClasses = []
@@ -185,22 +191,16 @@ function handleTodoCopy() {
 	emit('copy', props.todo.id)
 }
 
-function toggleColorSelector() {
-	showColorSelector.value = !showColorSelector.value
-}
-
-function handleClickOutside(event) {
-	if (showColorSelector.value && !event.target.closest('.color-selector')) {
-		showColorSelector.value = false
+function handleMenuMouseLeave() {
+	// Clear any existing timeout
+	if (closeTimeout.value) {
+		clearTimeout(closeTimeout.value)
 	}
+
+	// Delay closing by 200ms to allow smooth transition between button and menu
+	closeTimeout.value = setTimeout(() => {
+		showColorSelector.value = false
+	}, 200)
 }
-
-onMounted(() => {
-	document.addEventListener('click', handleClickOutside)
-})
-
-onUnmounted(() => {
-	document.removeEventListener('click', handleClickOutside)
-})
 </script>
 

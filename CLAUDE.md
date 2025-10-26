@@ -141,6 +141,9 @@ moment.locale("fr");
 // Available globally as this.moment in components
 ```
 
+### General
+- NEVER use Playwright MCP unless I ask you to do so
+
 ### JavaScript
 - Always use double quotes for strings (e.g. "abc")
 - Always use modern ES6 features

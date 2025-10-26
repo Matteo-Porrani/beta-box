@@ -7,7 +7,7 @@
 
 		<!-- COLOR OPTIONS -->
 		<div 
-			class="flex gap-0.5"
+			class="flex gap-1"
 			@click.stop
 		>
 			<!-- Title toggle button -->
@@ -26,7 +26,7 @@
 			<button
 				v-for="color in colorOptions"
 				:key="color.code"
-				class="size-5 rounded border transition-all duration-150"
+				class="size-4 rounded-full border transition-all duration-150"
 				:class="[
 					color.bgClass,
 					{

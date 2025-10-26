@@ -102,7 +102,7 @@
 		<!-- Main grid area -->
 		<div class="bg-stone-800 rounded overflow-hidden p-1">
 			<div
-				class="grid gap-x-3 gapx-y-1 h-full"
+				class="grid gap-x-4 gap-y-0.5 h-full"
 				:style="gridStyle"
 			>
 				<template v-for="row in gridConfig.rows" :key="`row-${row}`">
