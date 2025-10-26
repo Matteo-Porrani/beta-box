@@ -1,11 +1,18 @@
 <template>
 	<DefaultLayout view-title="Dev">
 		<div class="dev-view-root">
+			<!--	======================================================================		-->
+      <!-- DURATION PICKER -->
+
+      <BxDurationPicker
+          v-model="timePickerValue"
+      />
+
 
 			<!--	======================================================================		-->
 			<!--	COLORS		-->
 
-			<div class="flex gap-2">
+      <div class="hidden flex gap-2">
 				<div class="color-sample bg-lime-600"></div>
 				<div class="color-sample bg-yellow-400"></div>
 				<div class="color-sample bg-sky-500"></div>
@@ -17,7 +24,10 @@
 
 			<div class="h-5"/>
 
-			<div class="flex items-center gap-5">
+      <!--	======================================================================		-->
+      <!--	BUTTONS		-->
+
+			<div class="hidden flex items-center gap-5">
 
 				<BxButton
 					label="Two"
@@ -90,65 +100,7 @@
 
 			</div>
 
-
-
 			<div class="h-5"/>
-
-
-			<div class="flex gap-2">
-				<button
-					class="
-					w-32 bg-stone-800 border border-stone-500 text-stone-500 hover:bg-stone-900
-					disabled:hover:cursor-not-allowed rounded py-2 px-6
-				"
-				>
-					Cancel
-				</button>
-				<button
-					class="
-					w-32 bg-sky-500 border border-sky-500 hover:bg-sky-400
-					disabled:hover:cursor-not-allowed rounded py-2 px-6 text-stone-800
-				"
-				>
-					Add
-				</button>
-
-				<button
-					class="flex items-center gap-1 hover:text-sky-500"
-				>
-					<BxIcon icon="add"/>
-					Add
-				</button>
-
-			</div>
-
-
-			<div class="h-5"/>
-
-			<button
-				@click="$emit('add-activity')"
-				class="
-					py-1 px-2 flex items-center justify-center gap-1 text-xs font-medium
-					text-stone-400 bg-stone-800 hover:bg-stone-700 border border-stone-700
-					rounded transition-colors
-				"
-			>
-				<BxIcon icon="add" size="small" class="text-stone-400" />
-			</button>
-
-			<div class="h-2"/>
-
-			<button
-				@click="$emit('add-activity')"
-				class="
-					py-1 px-2 flex items-center justify-center gap-1 text-xs font-medium
-					text-stone-400 bg-stone-800 hover:bg-stone-700 border border-stone-700
-					rounded transition-colors
-				"
-			>
-				<BxIcon icon="add" class="text-stone-400" />
-			</button>
-
 
 
 
@@ -183,16 +135,8 @@
 			<div class="h-10"></div>
 
 
-
-
-
-			<div class="h-10"></div>
-
-
 			<!--	======================================================================		-->
 			<!--	ICONS SAMPLES		-->
-
-
 
 			<section class="hidden">
 				<!-- (1) -->
@@ -241,6 +185,8 @@
 
 import DefaultLayout from "@/modules/core/components/layout/DefaultLayout.vue";
 import { mapState } from "vuex";
+
+import BxDurationPicker from "@/modules/ui/components/BxForm/fields/BxDurationPicker.vue";
 // import BxIcon from "@/components/UI/BxIcon.vue";
 // import BxModal from "@/components/UI/BxModal.vue";
 // import ActivityCard from "@/modules/activity/components/ActivityCard.vue";
@@ -255,11 +201,13 @@ export default {
 		// // ActivityCard,
 		// // BxModal,
 		// BxIcon,
+    BxDurationPicker,
 		DefaultLayout,
 	},
 
 	data() {
 		return {
+      timePickerValue: 60,
 			mockActivity: {"type":"$D","day":"1","description":"hello","tickets":"1","duration":"02:00","id":14,"url":"http://localhost:8080/admin","ticketInfo":["RDTW-1234"]},
 		}
 	},
