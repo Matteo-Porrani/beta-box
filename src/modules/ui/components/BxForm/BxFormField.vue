@@ -56,6 +56,13 @@
 			/>
 		</template>
 
+		<template v-if="fieldDesc.type === 'DR'">
+			<BxDurationPicker
+				v-model="value"
+				:max-duration="fieldDesc.max"
+			/>
+		</template>
+
 		<!--	--------------------------------------------------------	-->
 
 		<template v-if="fieldDesc.type === 'L'">
@@ -157,7 +164,12 @@ export default defineComponent({
 					this.value = initVal ?? false;
 					break;
 				case "E":
-					this.$refs.entity_picker_ref.setValue(initVal);
+					// Wait for next tick to ensure the ref is available
+					this.$nextTick(() => {
+						if (this.$refs.entity_picker_ref) {
+							this.$refs.entity_picker_ref.setValue(initVal);
+						}
+					});
 					break;
 				default:
 					// console.log("field initVal", initVal)

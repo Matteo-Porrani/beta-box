@@ -13,6 +13,6 @@ export const ADMIN_LINKS = [
 	{ label: "Data Manager", path: "/data-manager", icon: "data" },
 
 	// ["Calendar", "/admin/calendar"],
-	{ label: "Dev", path: "/dev", icon: "planet" },
+	// { label: "Dev", path: "/dev", icon: "planet" },
 ]
 

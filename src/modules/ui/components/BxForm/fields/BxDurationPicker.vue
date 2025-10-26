@@ -3,7 +3,7 @@
 
     <!-- Toggle button -->
     <button
-        class="bg-stone-700 hover:bg-stone-600 rounded w-24 p-1 border border-stone-500 transition-colors"
+        class="bg-stone-700 hover:bg-stone-600 rounded w-20 p-1 border border-stone-500 transition-colors"
         :class="{ 'opacity-50 cursor-not-allowed': disabled }"
         :disabled="disabled"
         :aria-expanded="pickerVisible"
@@ -29,7 +29,7 @@
 
       <!-- Current value label (blue) -->
       <div
-          class="absolute -top-8 bg-sky-500 text-stone-800 px-3 py-1 rounded text-sm font-medium shadow"
+          class="absolute -top-8 bg-sky-500 text-stone-800 rounded text-xs font-medium px-1 py-0.5"
           :style="{ left: currentValuePosition, transform: 'translateX(-50%)' }"
       >
         {{ formatDuration(durationValue) }}
@@ -38,7 +38,7 @@
       <!-- Hovered value label (yellow) -->
       <div
           v-if="hoveredSegment !== null"
-          class="absolute -top-8 bg-yellow-400 text-stone-800 px-3 py-1 rounded text-sm font-medium shadow"
+          class="absolute -top-8 bg-yellow-400 text-stone-800 rounded text-xs font-medium px-1 py-0.5"
           :style="{ left: hoveredValuePosition, transform: 'translateX(-50%)' }"
       >
         {{ formatDuration(hoveredSegment) }}
@@ -88,7 +88,6 @@
  * />
  */
 import { ref, computed, onMounted, onUnmounted, defineModel, defineProps, defineEmits } from "vue"
-import BxIconButton from "@/modules/ui/components/BxIconButton.vue";
 
 // Props
 const props = defineProps({
