@@ -101,6 +101,26 @@
 
 		<!-- Main grid area -->
 		<div class="bg-stone-800 rounded overflow-hidden p-1">
+			<!-- Column Headers -->
+			<div
+				class="grid gap-x-4 mb-2"
+				:style="{ gridTemplateColumns: `repeat(${gridConfig.columns}, 1fr)` }"
+			>
+				<div
+					v-for="col in gridConfig.columns"
+					:key="`header-${col-1}`"
+					class="rounded text-center text-xs font-medium cursor-pointer transition-colors hover:bg-stone-600 py-0.5"
+					:class="{
+            'bg-sky-600 hover:bg-sky-500 text-white': selectedColumn === col-1,
+            'text-stone-400': selectedColumn !== col-1,
+          }"
+					@click="toggleColumnSelection(col-1)"
+				>
+					{{ col }}
+				</div>
+			</div>
+
+			<!-- Grid -->
 			<div
 				class="grid gap-x-4 gap-y-0.5 h-full"
 				:style="gridStyle"
@@ -112,6 +132,7 @@
 						:row="row-1"
 						:column="col-1"
 						:todo-id="currentMatrix[row-1] && currentMatrix[row-1][col-1]"
+						:selected="selectedColumn === col-1"
 						@drop="handleTodoDrop"
 					>
 						<TodoCard
@@ -191,6 +212,7 @@ const boardItems = ref([])
 const matrixData = ref({})
 const currentBoardId = ref(1)
 const textSize = ref(1) // default value is small
+const selectedColumn = ref(null) // Track selected column (null = none selected)
 
 // Grid configuration composable
 const {
@@ -234,6 +256,32 @@ const {
 
 // Computed values
 const currentMatrix = computed(() => matrixData.value[currentBoardId.value] || [])
+
+// Column selection
+function toggleColumnSelection(columnIndex) {
+	// Toggle: if clicking the same column, deselect it
+	if (selectedColumn.value === columnIndex) {
+		selectedColumn.value = null
+	} else {
+		selectedColumn.value = columnIndex
+	}
+}
+
+// Bulk operations (placeholders for future implementation)
+function deleteColumnCards(columnIndex) {
+	// TODO: Implement bulk delete for all cards in the specified column
+	console.log(`Delete all cards in column ${columnIndex}`)
+}
+
+function moveColumnCards(fromColumn, toColumn) {
+	// TODO: Implement bulk move for all cards from one column to another
+	console.log(`Move all cards from column ${fromColumn} to column ${toColumn}`)
+}
+
+function copyColumnCards(columnIndex) {
+	// TODO: Implement bulk copy for all cards in the specified column
+	console.log(`Copy all cards in column ${columnIndex}`)
+}
 
 
 

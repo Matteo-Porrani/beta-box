@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="visible"
-		class="absolute top-1 right-1 z-30 space-y-1 bg-stone-800 rounded p-1"
+		class="absolute top-0.5 right-0.5 z-30 space-y-1 bg-stone-800 rounded p-1"
 		@click.stop
 	>
 

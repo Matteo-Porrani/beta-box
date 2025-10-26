@@ -49,10 +49,10 @@
 			@mouseleave="handleMenuMouseLeave"
 		>
 			<button
-				class="w-5 h-5 rounded hover:bg-stone-600 flex items-center justify-center text-xs transition-colors duration-150"
+				class="w-5 h-5 rounded flex items-center justify-center text-xs transition-colors duration-150"
 				:class="[todo.starred ? 'text-white' : 'text-stone-800']"
 			>
-				⋯
+				<span class="font-bold">⋯</span>
 			</button>
 
 			<!-- Color selector -->

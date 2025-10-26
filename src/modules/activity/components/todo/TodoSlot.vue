@@ -4,7 +4,8 @@
 		:class="{
 			'border-yellow-400 bg-stone-700': isDragOver,
 			'border-stone-500': !isDragOver && !isEmpty,
-			'border-stone-600': !isDragOver && isEmpty
+			'border-stone-600': !isDragOver && isEmpty,
+			'bg-sky-900/30': selected && !isDragOver
 		}"
 		@dragover.prevent="handleDragOver"
 		@dragenter.prevent="handleDragEnter"
@@ -38,6 +39,10 @@ const props = defineProps({
 	todoId: {
 		type: Number,
 		default: null
+	},
+	selected: {
+		type: Boolean,
+		default: false
 	}
 })
 
