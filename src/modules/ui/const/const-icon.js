@@ -66,6 +66,7 @@ export const ICON_DICT = {
 	link: "IconExternalLink",
 	loader: "IconLoader2",
 	modules: "IconHexagons",
+	photo: "IconPhoto",
 	planet: "IconPlanet",
 	refresh: "IconRefresh",
 	report: "IconReport",
@@ -78,6 +79,7 @@ export const ICON_DICT = {
 	tag_filled: "IconTagFilled",
 	trash: "IconTrash",
 	view: "IconEye",
+	world: "IconWorld",
 	xmark: "IconX",
 }
 

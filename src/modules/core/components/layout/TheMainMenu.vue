@@ -9,11 +9,11 @@
 			:to="l.path"
 			:data-test="`main-menu-link-${l.label}`"
 			:class="[
-				'flex items-center gap-2 hover:underline text-base',
+				'flex items-center gap-2 hover:underline text-base text-stone-400',
 				isCollapsed ? 'w-full justify-center' : 'w-fit'
 			]"
 		>
-			<BxIcon :icon="l.icon" size="small"/>
+			<BxIcon :icon="l.icon" size="medium"/>
 			<span v-if="!isCollapsed">{{ l.label }}</span>
 		</router-link>
 
@@ -25,11 +25,11 @@
 			:to="l.path"
 			:data-test="`main-menu-admin-link-${l.label}`"
 			:class="[
-				'flex items-center gap-2 hover:underline text-base',
+				'flex items-center gap-2 hover:underline text-base text-stone-400',
 				isCollapsed ? 'w-full justify-center' : 'w-fit'
 			]"
 		>
-			<BxIcon :icon="l.icon" size="small"/>
+			<BxIcon :icon="l.icon" size="medium"/>
 			<span v-if="!isCollapsed">{{ l.label }}</span>
 		</router-link>
 
@@ -62,6 +62,6 @@ export default {
 
 <style scoped>
 .router-link-exact-active {
-	@apply text-sky-500 rounded
+	@apply text-sky-400 rounded
 }
 </style>
