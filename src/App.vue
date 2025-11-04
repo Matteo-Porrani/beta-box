@@ -15,7 +15,7 @@ https://www.youtube.com/watch?v=akeLRzkBAz8&t=36s
 -->
 
 <template>
-	<section class="app-root grid p-2">
+	<section class="app-root h-[100vh] grid p-2">
 		<router-view/>
 	</section>
 </template>
