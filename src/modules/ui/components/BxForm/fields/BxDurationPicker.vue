@@ -27,31 +27,37 @@
         class="absolute top-0 left-full ml-2 timeline-container bg-stone-800 border border-stone-500 rounded z-50 p-2 shadow-lg"
     >
 
-      <!-- Current value label (blue) -->
-      <div
-          class="absolute -top-8 bg-sky-500 text-stone-800 rounded text-xs font-medium px-1 py-0.5"
-          :style="{ left: currentValuePosition, transform: 'translateX(-50%)' }"
-      >
-        {{ formatDuration(durationValue) }}
-      </div>
-
-      <!-- Hovered value label (yellow) -->
-      <div
-          v-if="hoveredSegment !== null"
-          class="absolute -top-8 bg-yellow-400 text-stone-800 rounded text-xs font-medium px-1 py-0.5"
-          :style="{ left: hoveredValuePosition, transform: 'translateX(-50%)' }"
-      >
-        {{ formatDuration(hoveredSegment) }}
-      </div>
-
       <!-- Segments row -->
-      <div class="flex gap-0.5">
+      <div class="flex gap-0.5 relative">
+
+        <!-- Current value label (blue) with connector -->
+        <div
+            class="absolute -top-10"
+            :style="{ left: currentValuePosition, transform: 'translateX(-50%)' }"
+        >
+          <div class="bg-sky-500 text-stone-800 rounded text-xs font-medium px-1 py-0.5">
+            {{ formatDuration(durationValue) }}
+          </div>
+          <div class="w-px h-4 bg-sky-500 mx-auto mt-0.5"></div>
+        </div>
+
+        <!-- Hovered value label (yellow) with connector -->
+        <div
+            v-if="hoveredSegment !== null"
+            class="absolute -top-10"
+            :style="{ left: hoveredValuePosition, transform: 'translateX(-50%)' }"
+        >
+          <div class="bg-yellow-400 text-stone-800 rounded text-xs font-medium px-1 py-0.5">
+            {{ formatDuration(hoveredSegment) }}
+          </div>
+          <div class="w-px h-4 bg-yellow-400 mx-auto mt-0.5"></div>
+        </div>
         <button
             v-for="segment in segments"
             :key="segment"
-            class="h-3 w-4 flex-1 rounded cursor-pointer transition-all duration-150 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400"
+            class="h-4 w-4 flex-1 rounded cursor-pointer transition-all duration-150 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400"
             :class="[
-              segment <= durationValue
+              segment <= (hoveredSegment !== null ? hoveredSegment : durationValue)
                 ? 'bg-sky-500 hover:bg-sky-400'
                 : 'bg-gray-400 hover:bg-gray-300'
             ]"
@@ -61,6 +67,7 @@
             @mouseleave="hoveredSegment = null"
         >
         </button>
+
       </div>
 
     </div>
@@ -149,6 +156,7 @@ function togglePicker() {
   pickerVisible.value = !pickerVisible.value;
 
   if (pickerVisible.value) {
+    hoveredSegment.value = null;
     emit("open");
   } else {
     emit("close");
@@ -199,7 +207,8 @@ function handleClickOutside(event) {
 const currentValuePosition = computed(() => {
   const segmentIndex = durationValue.value / props.step;
   const totalSegments = props.maxDuration / props.step;
-  const percentage = (segmentIndex / totalSegments) * 100;
+  // Center on the segment: (segmentIndex - 0.5) gives us the center of the segment
+  const percentage = ((segmentIndex - 0.5) / totalSegments) * 100;
   return `${percentage}%`;
 });
 
@@ -210,7 +219,8 @@ const hoveredValuePosition = computed(() => {
   if (hoveredSegment.value === null) return "0%";
   const segmentIndex = hoveredSegment.value / props.step;
   const totalSegments = props.maxDuration / props.step;
-  const percentage = (segmentIndex / totalSegments) * 100;
+  // Center on the segment: (segmentIndex - 0.5) gives us the center of the segment
+  const percentage = ((segmentIndex - 0.5) / totalSegments) * 100;
   return `${percentage}%`;
 });
 
