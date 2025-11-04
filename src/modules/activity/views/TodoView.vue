@@ -165,6 +165,7 @@
 							@update="handleTodoUpdate"
 							@delete="handleTodoDelete"
 							@copy="handleTodoCopy"
+							@move="handleTodoMove"
 						/>
 					</TodoSlot>
 				</template>
@@ -236,6 +237,58 @@
 			</div>
 		</template>
 	</BxModal>
+
+	<!-- Move Todo Modal -->
+	<BxModal ref="moveTodoModal">
+		<template #header>
+			<h2 class="text-white text-lg font-bold">
+				Move Todo to Board
+			</h2>
+		</template>
+
+		<template #body>
+			<div class="space-y-4">
+				<div>
+					<label class="block text-white text-sm font-medium mb-2">Select Target Board</label>
+					<div class="space-y-2">
+						<button
+							v-for="board in availableBoards"
+							:key="board.id"
+							class="w-full text-left bg-stone-800 text-white rounded p-3 border transition-all duration-150"
+							:class="{
+								'border-sky-500 bg-stone-700': targetBoardId === board.id,
+								'border-stone-600 hover:border-stone-500': targetBoardId !== board.id
+							}"
+							@click="targetBoardId = board.id"
+						>
+							<div class="flex items-center justify-between">
+								<span class="font-medium">{{ board.name }}</span>
+								<span class="text-xs text-stone-400">{{ board.cols }}C x {{ board.rows }}R</span>
+							</div>
+						</button>
+					</div>
+					<p v-if="availableBoards.length === 0" class="text-stone-400 text-sm mt-2">
+						No other boards available. Create a new board first.
+					</p>
+				</div>
+			</div>
+		</template>
+
+		<template #footer>
+			<div class="flex gap-2 justify-end">
+				<BxButton
+					label="Cancel"
+					type="soft"
+					@click="cancelTodoMove"
+				/>
+				<BxButton
+					label="Move"
+					:disabled="!targetBoardId"
+					@click="confirmTodoMove"
+				/>
+			</div>
+		</template>
+	</BxModal>
 </template>
 
 
@@ -260,6 +313,11 @@ const matrixData = ref({})
 const currentBoardId = ref(1)
 const textSize = ref(1) // default value is small
 const selectedColumn = ref(null) // Track selected column (null = none selected)
+
+// Move todo modal state
+const moveTodoModal = ref(null)
+const todoToMove = ref(null)
+const targetBoardId = ref(null)
 
 // Lifecycle
 onMounted(async () => {
@@ -314,6 +372,17 @@ const {
 
 // Computed values
 const currentMatrix = computed(() => matrixData.value[currentBoardId.value] || [])
+
+const availableBoards = computed(() => {
+	return boardItems.value
+		.filter(board => board.id !== currentBoardId.value)
+		.map(board => ({
+			id: board.id,
+			name: board.name,
+			cols: multiboardData.value[board.id]?.gridConfig?.columns || 0,
+			rows: multiboardData.value[board.id]?.gridConfig?.rows || 0
+		}))
+})
 
 // Column selection
 function toggleColumnSelection(columnIndex) {
@@ -410,6 +479,64 @@ function toggleAllColumnCardsDone(columnIndex) {
 			})
 		}
 	})
+}
+
+// ===================================================================== MOVE TODO OPERATIONS
+function handleTodoMove(todoId) {
+	todoToMove.value = todoId
+	targetBoardId.value = null
+	moveTodoModal.value.open()
+}
+
+function confirmTodoMove() {
+	if (!todoToMove.value || !targetBoardId.value) return
+
+	// 1. Find todo position in current board matrix
+	const currentMatrix = matrixData.value[currentBoardId.value]
+	let todoPosition = null
+
+	for (let row = 0; row < currentMatrix.length; row++) {
+		for (let col = 0; col < currentMatrix[row].length; col++) {
+			if (currentMatrix[row][col] === todoToMove.value) {
+				todoPosition = { row, col }
+				break
+			}
+		}
+		if (todoPosition) break
+	}
+
+	// 2. Remove from current board matrix
+	if (todoPosition) {
+		currentMatrix[todoPosition.row][todoPosition.col] = null
+	}
+
+	// 3. Find first empty slot in target board
+	const targetMatrix = matrixData.value[targetBoardId.value]
+	let placed = false
+
+	for (let row = 0; row < targetMatrix.length && !placed; row++) {
+		for (let col = 0; col < targetMatrix[row].length && !placed; col++) {
+			if (!targetMatrix[row][col]) {
+				targetMatrix[row][col] = todoToMove.value
+				placed = true
+			}
+		}
+	}
+
+	// 4. Update matrix data and save
+	matrixData.value = { ...matrixData.value }
+	saveGridToStorage()
+
+	// 5. Close modal and reset
+	moveTodoModal.value.close()
+	todoToMove.value = null
+	targetBoardId.value = null
+}
+
+function cancelTodoMove() {
+	moveTodoModal.value.close()
+	todoToMove.value = null
+	targetBoardId.value = null
 }
 
 </script>

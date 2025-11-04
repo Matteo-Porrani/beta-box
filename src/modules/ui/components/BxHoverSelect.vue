@@ -31,7 +31,7 @@
 					@mouseenter="highlightedIndex = index"
 				:class="{
 					'bg-sky-500 text-stone-800 font-semibold': isSelected(option),
-					'bg-stone-700 text-yellow-400': !isSelected(option) && highlightedIndex === index,
+					'bg-stone-700 text-sky-300': !isSelected(option) && highlightedIndex === index,
 					'text-white': !isSelected(option) && highlightedIndex !== index
 				}"
 				>

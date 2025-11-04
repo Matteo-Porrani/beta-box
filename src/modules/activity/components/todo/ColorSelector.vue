@@ -1,123 +1,133 @@
 <template>
-	<div
-		v-if="visible"
-		class="absolute top-0.5 right-0.5 z-30 space-y-1 bg-stone-800 rounded p-1"
-		@click.stop
-	>
+  <div
+      v-if="visible"
+      class="absolute top-0.5 right-0.5 z-30 space-y-1 bg-stone-800 rounded p-1"
+      @click.stop
+  >
 
-		<!-- COLOR OPTIONS -->
-		<div 
-			class="flex gap-1"
-			@click.stop
-		>
-			<!-- Title toggle button -->
-			<button
-				class="size-5 rounded border border-stone-500 flex items-center justify-center text-xs font-bold transition-colors duration-150"
-				:class="{
+    <!-- COLOR OPTIONS -->
+    <div
+        class="flex gap-1"
+        @click.stop
+    >
+      <!-- Title toggle button -->
+      <button
+          class="size-5 rounded border border-stone-500 flex items-center justify-center text-xs font-bold transition-colors duration-150"
+          :class="{
 					'border-2 border-yellow-400': todo.starred,
 					'bg-stone-700 text-white hover:bg-stone-600': !todo.starred
 				}"
-				@click="toggleTitle"
-			>
-				T
-			</button>
-			
-			<!-- Color options -->
-			<button
-				v-for="color in colorOptions"
-				:key="color.code"
-				class="size-4 rounded-full border transition-all duration-150"
-				:class="[
+          @click="toggleTitle"
+      >
+        T
+      </button>
+
+      <!-- Color options -->
+      <button
+          v-for="color in colorOptions"
+          :key="color.code"
+          class="size-4 rounded-full border transition-all duration-150"
+          :class="[
 					color.bgClass,
 					{
 						'border-white border-2': todo.color === color.code,
 						'border-stone-500 hover:border-stone-400': todo.color !== color.code
 					}
 				]"
-				:title="color.name"
-				@click="selectColor(color.code)"
-			/>
-		</div>
+          :title="color.name"
+          @click="selectColor(color.code)"
+      />
+    </div>
 
-		<!-- DONE -->
-		<div class="flex items-center gap-1 text-xs">
-			<BxSwitch v-model="isCompleted"/>
-			<p>DONE</p>
-		</div>
+    <!-- DONE -->
+    <div class="flex items-center gap-1 text-xs">
+      <BxSwitch v-model="isCompleted"/>
+      <p>DONE</p>
+    </div>
 
-		<!-- ACTIONS -->
-		<div class="flex items-center justify-between">
-			<BxIconButton
-				type="secondary"
-				icon="copy"
-				size="small"
-				@click="emit('copy')"
-			/>
+    <!-- ACTIONS -->
+    <div class="grid grid-cols-3 gap-1">
+      <BxIconButton
+          no-min-width
+          type="secondary"
+          icon="copy"
+          size="small"
+          @click="emit('copy')"
+      />
 
-			<BxIconButton
-				type="danger"
-				icon="trash"
-				size="small"
-				@click="emit('delete')"
-			/>
-		</div>
-	</div>
+      <BxIconButton
+          no-min-width
+          type="secondary"
+          icon="arrow_big_left"
+          size="small"
+          @click="emit('move')"
+      />
+
+      <BxIconButton
+          no-min-width
+          type="danger"
+          icon="trash"
+          size="small"
+          @click="emit('delete')"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, computed, watch, defineProps, defineEmits, onMounted } from 'vue'
-import { ACTIVITY_COLOR_MAP } from "@/modules/activity/const/activity-const";
+import {ref, computed, watch, defineProps, defineEmits, onMounted} from 'vue'
+import {ACTIVITY_COLOR_MAP} from "@/modules/activity/const/activity-const";
 
 const props = defineProps({
-	todo: {
-		type: Object,
-		required: true
-	},
-	visible: {
-		type: Boolean,
-		default: false
-	}
+  todo: {
+    type: Object,
+    required: true
+  },
+  visible: {
+    type: Boolean,
+    default: false
+  }
 })
 
-const emit = defineEmits(['update', 'close', 'delete'])
+const emit = defineEmits(['update', 'close', 'delete', 'copy', 'move'])
 
 const colorOptions = Object.entries(ACTIVITY_COLOR_MAP).map(([key, value]) => {
-	return {
-		code: key,
-		bgClass: value
-	}
+  return {
+    code: key,
+    bgClass: value
+  }
 })
 
 const isCompleted = ref(false);
 
 onMounted(() => {
-	isCompleted.value = props.todo.done;
+  isCompleted.value = props.todo.done;
 })
 
 watch(isCompleted, (value) => {
-	if (value !== props.todo.done) {
-		emit('update', {
-			...props.todo,
-			done: isCompleted.value
-		})
-	}
+  if (value !== props.todo.done) {
+    emit('update', {
+      ...props.todo,
+      done: isCompleted.value
+    })
+  }
 })
 
 function toggleTitle() {
-	emit('update', {
-		...props.todo,
-		starred: !props.todo.starred
-	})
-	emit('close')
+  emit('update', {
+    ...props.todo,
+    starred: !props.todo.starred
+  })
+  emit('close')
 }
 
 function selectColor(colorCode) {
-	if (colorCode !== props.todo.color) {
-		emit('update', {
-			...props.todo,
-			color: colorCode
-		})
-	}
-	emit('close')
+  if (colorCode !== props.todo.color) {
+    emit('update', {
+      ...props.todo,
+      color: colorCode
+    })
+  }
+  emit('close')
 }
 </script>

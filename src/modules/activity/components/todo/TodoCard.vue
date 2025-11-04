@@ -63,6 +63,7 @@
 				@update="handleTodoUpdate"
 				@delete="handleTodoDelete"
 				@copy="handleTodoCopy"
+				@move="handleTodoMove"
 				@close="showColorSelector = false"
 			/>
 		</div>
@@ -91,7 +92,7 @@ const props = defineProps({
 	}
 })
 
-const emit = defineEmits(['update', 'delete', 'copy'])
+const emit = defineEmits(['update', 'delete', 'copy', 'move'])
 
 const isEditing = ref(false)
 const editText = ref('')
@@ -189,6 +190,10 @@ function handleTodoDelete() {
 
 function handleTodoCopy() {
 	emit('copy', props.todo.id)
+}
+
+function handleTodoMove() {
+	emit('move', props.todo.id)
 }
 
 function handleMenuMouseLeave() {

@@ -29,6 +29,8 @@ export const ICON_DICT = {
 	arrow_right: "IconArrowRight",
 	arrow_up: "IconArrowUp",
 	arrow_down: "IconArrowDown",
+
+	arrow_big_left: "IconArrowBigLeft",
 	
 	expand: "IconLayoutNavbarExpand",
 	collapse: "IconLayoutNavbarCollapse",
