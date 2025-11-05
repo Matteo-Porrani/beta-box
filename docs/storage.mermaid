@@ -1,0 +1,26 @@
+flowchart BT
+
+    classDef alpha fill:#aba5de55,color:black,stroke:#333,stroke-width:2px
+
+    subgraph localStorage
+        data((data))
+    end
+
+    data <--> store_1 & store_2 & store_3
+
+    subgraph TAB_3
+        store_3
+    end
+
+    subgraph TAB_2
+        store_2
+    end
+
+    subgraph TAB_1
+        store_1
+    end
+
+    class localStorage,TAB_1 alpha
+
+
+
