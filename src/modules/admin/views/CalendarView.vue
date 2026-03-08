@@ -210,7 +210,7 @@ const rows = computed(() => {
  * @returns {Object} Calendar data including days, month name, and year
  */
 function buildMonth() {
-	return CalendarMakerSrv.parseCalendarTable(cursorDate.value.toISODate())
+	return CalendarMakerSrv.buildMonthGrid(cursorDate.value.toISODate())
 }
 
 

@@ -68,7 +68,7 @@ function openInnerSelection(mode) {
 // =============================================
 
 // Computed properties for calendar data
-const calElements = computed(() => CalendarMakerSrv.parseCalendarTable(cursorDate.value.toISODate()));
+const calElements = computed(() => CalendarMakerSrv.buildMonthGrid(cursorDate.value.toISODate()));
 
 /**
  * Organizes calendar days into weekly rows for display

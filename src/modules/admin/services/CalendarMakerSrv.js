@@ -34,8 +34,8 @@ class CalendarMakerSrv {
 	 * @returns {string} returns.monthYear - Year as string
 	 * @returns {Object}
 	 */
-	parseCalendarTable(originDate) {
-		const { cellsCount, tableA, monthName, monthNumber, monthYear } = this.getInfoFromOriginDate(originDate)
+	buildMonthGrid(originDate) {
+		const { cellsCount, tableA, monthName, monthNumber, monthYear } = this.getMonthMetadata(originDate)
 		
 		const days = [];
 		
@@ -72,7 +72,7 @@ class CalendarMakerSrv {
 	 * @returns {string} returns.monthName - Full month name
 	 * @returns {string} returns.monthYear - Year as string
 	 */
-	getInfoFromOriginDate(originDate) {
+	getMonthMetadata(originDate) {
 		const origin = DateTime.fromISO(originDate);
 		
 		// Get start and end of the month
